@@ -109,7 +109,7 @@ namespace WaveEngine.Components.Graphics2D
                 float opacity = this.RenderManager.DebugLines ? this.DebugAlpha : this.Transform2D.Opacity;
                 Color color = this.Sprite.TintColor * opacity;
 
-                this.spriteBatch.Draw(
+                this.spriteBatch.DrawVM(
                     this.Sprite.Texture,
                     this.position,
                     this.Sprite.SourceRectangle,

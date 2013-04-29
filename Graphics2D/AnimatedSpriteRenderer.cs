@@ -107,7 +107,7 @@ namespace WaveEngine.Components.Graphics2D
                     this.Transform2D.Opacity;
                 Color color = this.Sprite.TintColor * opacity;
 
-                this.spriteBatch.Draw(
+                this.spriteBatch.DrawVM(
                     this.Sprite.Texture,
                     this.position,
                     this.Animation2D.CurrentRectangle,
