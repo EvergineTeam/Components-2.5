@@ -91,7 +91,7 @@ namespace WaveEngine.Components.UI
         /// <param name="parameter">The parameter.</param>
         protected override void DrawBasicUnit(int parameter)
         {
-            RenderManager.LineBatch2D.DrawRectangle(this.Transform2D.Rectangle, this.Color);
+            RenderManager.LineBatch2D.DrawRectangleVM(this.Transform2D.Rectangle, this.Color);
         }
     }
 }

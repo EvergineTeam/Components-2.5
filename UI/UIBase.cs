@@ -122,6 +122,39 @@ namespace WaveEngine.Components.UI
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the opacity.
+        /// </summary>
+        /// <value>
+        /// The opacity property [0-Transparent 1-Opaque].
+        /// </value>
+        /// <exception cref="System.InvalidOperationException">There isn't Transform2D component.</exception>
+        public float Opacity
+        {
+            get
+            {
+                Transform2D transform = this.entity.FindComponent<Transform2D>();
+                if (transform != null)
+                {
+                    return transform.Opacity;
+                }
+                else
+                {
+                    throw new InvalidOperationException("There isn't Transform2D component.");
+                }
+            }
+
+            set
+            {
+                Transform2D transform = this.entity.FindComponent<Transform2D>();
+                if (transform != null)
+                {
+                    transform.Opacity = value;
+                }
+            }
+        }
+
         #endregion
 
         /// <summary>
