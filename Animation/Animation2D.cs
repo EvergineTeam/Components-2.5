@@ -27,16 +27,10 @@ namespace WaveEngine.Components.Animation
     /// </remarks>
     public class Animation2D : Behavior
     {
-        #region Static Fields
-
         /// <summary>
         ///     Number of instances of this component created.
         /// </summary>
         private static int instances;
-
-        #endregion
-
-        #region Fields
 
         /// <summary>
         ///     Transform of the <see cref="Sprite" />.
@@ -99,46 +93,7 @@ namespace WaveEngine.Components.Animation
         /// </summary>
         private Rectangle[] frames;
 
-        #endregion
-
-        #region Constructors and Destructors
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Animation2D" /> class.
-        /// </summary>
-        public Animation2D()
-            : base("SpriteSheet" + instances++)
-        {
-            this.animations = new Dictionary<string, StripAnimation>();
-            this.loop = true;
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Animation2D" /> class.
-        /// </summary>
-        /// <param name="path">Content-relative path to sprite sheet data.</param>
-        /// <param name="loader"><see cref="ISpriteSheetLoader"/> strategy</param>
-        private Animation2D(string path, ISpriteSheetLoader loader)
-            : this()
-        {
-            if (string.IsNullOrEmpty(path))
-            {
-                throw new ArgumentException("Path cannot be null.", "path");
-            }
-
-            if (loader == null)
-            {
-                throw new ArgumentException("Sprite sheet loader cannot be null.", "loader");
-            }
-
-            this.path = path;
-            this.spriteSheetLoader = loader;
-            this.frames = this.spriteSheetLoader.Parse(path);
-        }
-
-        #endregion
-
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         ///     Gets the names of the different animations.
@@ -196,7 +151,44 @@ namespace WaveEngine.Components.Animation
 
         #endregion
 
-        #region Public Methods and Operators
+        #region Initialize
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Animation2D" /> class.
+        /// </summary>
+        public Animation2D()
+            : base("SpriteSheet" + instances++)
+        {
+            this.animations = new Dictionary<string, StripAnimation>();
+            this.loop = true;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Animation2D" /> class.
+        /// </summary>
+        /// <param name="path">Content-relative path to sprite sheet data.</param>
+        /// <param name="loader"><see cref="ISpriteSheetLoader"/> strategy</param>
+        private Animation2D(string path, ISpriteSheetLoader loader)
+            : this()
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new ArgumentException("Path cannot be null.", "path");
+            }
+
+            if (loader == null)
+            {
+                throw new ArgumentException("Sprite sheet loader cannot be null.", "loader");
+            }
+
+            this.path = path;
+            this.spriteSheetLoader = loader;
+            this.frames = this.spriteSheetLoader.Parse(path);
+        }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Adds an animation to this behavior.
@@ -339,7 +331,7 @@ namespace WaveEngine.Components.Animation
 
         #endregion
 
-        #region Methods
+        #region Private Methods
 
         /// <summary>
         ///     Performs further custom initialization for this instance.

@@ -9,6 +9,7 @@
 #region Using Statements
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -30,7 +31,8 @@ namespace WaveEngine.Components.Animation
         /// <returns>Array of <see cref="Rectangle"/>.</returns>
         public Rectangle[] Parse(string path)
         {
-            var xml = XDocument.Load(WaveServices.Storage.OpenContentFile(path));
+            Stream stream = WaveServices.Storage.OpenContentFile(path);
+            var xml = XDocument.Load(stream);
             
             // <TextureAtlas imagePath="TimRunningSpriteSheet.png" width="1024" height="1024">
             //     <sprite n="slice25_25.png" x="426" y="2" w="119" h="129"/>
