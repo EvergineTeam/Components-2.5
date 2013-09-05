@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // Spinner
 //
-// Copyright © 2011 Weekend Game Studio. All rights reserved.
+// Copyright © 2010 - 2013 Wave Coorporation. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion

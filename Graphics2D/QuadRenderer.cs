@@ -1,0 +1,352 @@
+#region File Description
+//-----------------------------------------------------------------------------
+// QuadRenderer
+//
+// Copyright © 2013 Weekend Game Studio. All rights reserved.
+// Use is subject to license terms.
+//-----------------------------------------------------------------------------
+#endregion
+
+#region Using Statements
+using System;
+using System.Collections.Generic;
+using WaveEngine.Framework.Graphics;
+using WaveEngine.Framework;
+using WaveEngine.Common.Graphics;
+using WaveEngine.Common.Graphics.VertexFormats;
+using WaveEngine.Common.Math;
+using WaveEngine.Framework.Services;
+using WaveEngine.Materials.VertexFormats;
+using System.Runtime.InteropServices;
+using System.IO;
+#endregion
+
+namespace WaveEngine.Components.Graphics2D
+{
+    /// <summary>
+    /// Drawable for spare quads.
+    /// </summary>
+    public class QuadRenderer : Drawable2D
+    {
+        /// <summary>
+        /// Number of instances of this component created.
+        /// </summary>
+        private static int instances;
+
+        /// <summary>
+        /// The entity transform.
+        /// </summary>
+        [RequiredComponent]
+        public Transform2D Transform2D;
+
+        /// <summary>
+        /// The material
+        /// </summary>
+        [RequiredComponent]
+        public Material2D Material;
+
+        /// <summary>
+        /// The disposed
+        /// </summary>
+        protected bool disposed;
+
+        /// <summary>
+        /// The vertex buffer
+        /// </summary>
+        private VertexBuffer<byte> vertexBuffer;
+
+        /// <summary>
+        /// The index buffer
+        /// </summary>
+        private IndexBuffer indexBuffer;
+
+        /// <summary>
+        /// The texcoord1
+        /// </summary>
+        private Vector2[] texcoord1;
+
+        /// <summary>
+        /// The texcoord2
+        /// </summary>
+        private Vector2[] texcoord2;
+
+        #region Cached fields
+        /// <summary>
+        /// The viewport manager cached
+        /// </summary>
+        private ViewportManager viewportManager;
+
+        /// <summary>
+        /// The position cached
+        /// </summary>
+        private Vector2 position;
+
+        /// <summary>
+        /// The scale cached
+        /// </summary>
+        private Vector2 scale;
+
+        /// <summary>
+        /// The internal position cached
+        /// </summary>
+        private Vector3 internalPosition;
+
+        /// <summary>
+        /// The internal scale cached
+        /// </summary>
+        private Vector3 internalScale;
+
+        /// <summary>
+        /// The local world
+        /// </summary>
+        private Matrix localWorld;
+
+        /// <summary>
+        /// The quaternion matrix
+        /// </summary>
+        private Matrix quaternionMatrix;
+
+        /// <summary>
+        /// The translation matrix
+        /// </summary>
+        private Matrix translationMatrix;
+
+        /// <summary>
+        /// The scale matrix
+        /// </summary>
+        private Matrix scaleMatrix;
+
+        /// <summary>
+        /// The orientation
+        /// </summary>
+        private Quaternion orientation;
+
+        #endregion
+        
+        #region Initialize
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QuadRenderer" /> class.
+        /// </summary>
+        public QuadRenderer()
+            : this(DefaultLayers.Alpha)
+        { 
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QuadRenderer" /> class.
+        /// </summary>
+        /// <param name="layerType">Type of the layer.</param>
+        public QuadRenderer(Type layerType)
+            : this(layerType, null, null)
+        { 
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QuadRenderer" /> class.
+        /// </summary>
+        /// <param name="layerType">Type of the layer.</param>
+        /// <param name="texcoord1">The texcoord1.</param>
+        /// <param name="texcoord2">The texcoord2.</param>
+        public QuadRenderer(Type layerType, Vector2[] texcoord1, Vector2[] texcoord2)
+            : base("QuadRenderer" + instances, layerType)
+        {
+            instances++;
+
+            if (texcoord1 != null)
+            {
+                this.texcoord1 = texcoord1;
+            }
+
+            if (texcoord2 != null)
+            {
+                this.texcoord2 = texcoord2;
+            }
+
+            this.position = new Vector2();
+            this.scale = new Vector2(1);
+        }
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Allows to perform custom drawing.
+        /// </summary>
+        /// <param name="gameTime">The elapsed game time.</param>
+        /// <remarks>
+        /// This method will only be called if all the following points are true:
+        /// <list type="bullet">
+        /// <item>
+        /// <description>The parent of the owner <see cref="Entity" /> of the <see cref="Drawable" /> cascades its visibility to its children and it is visible.</description>
+        /// </item>
+        /// <item>
+        /// <description>The <see cref="Drawable" /> is active.</description>
+        /// </item>
+        /// <item>
+        /// <description>The owner <see cref="Entity" /> of the <see cref="Drawable" /> is active and visible.</description>
+        /// </item>
+        /// </list>
+        /// </remarks>
+        public override void Draw(TimeSpan gameTime)
+        {
+            base.Draw(gameTime);
+
+            this.position.X = this.Transform2D.X;
+            this.position.Y = this.Transform2D.Y;
+            this.scale.X = this.Transform2D.XScale;
+            this.scale.Y = this.Transform2D.YScale;
+
+            if (this.viewportManager.IsActivated)
+            {
+                this.viewportManager.Translate(ref this.position, ref this.scale);
+            }
+
+            Quaternion.CreateFromYawPitchRoll(0, 0, this.Transform2D.Rotation, out this.orientation);
+            Matrix.CreateFromQuaternion(ref this.orientation, out this.quaternionMatrix);
+
+            this.internalScale.X = this.scale.X;
+            this.internalScale.Y = this.scale.Y;
+            Matrix.CreateScale(ref this.internalScale, out this.scaleMatrix);
+
+            this.internalPosition.X = this.position.X - (this.Transform2D.Origin.X * this.Transform2D.Rectangle.Width);
+            this.internalPosition.Y = this.position.Y - (this.Transform2D.Origin.Y * this.Transform2D.Rectangle.Height);
+            this.internalPosition.Z = this.Transform2D.DrawOrder;
+            Matrix.CreateTranslation(ref this.internalPosition, out this.translationMatrix);
+
+            Matrix.Multiply(ref this.scaleMatrix, ref this.quaternionMatrix, out this.localWorld);
+            Matrix.Multiply(ref this.localWorld, ref this.translationMatrix, out this.localWorld);
+
+            this.Material.Material.Matrices.World = this.localWorld;
+        }
+
+        #endregion
+
+        #region Private Methods
+        /// <summary>
+        /// Performs further custom initialization for this instance.
+        /// </summary>
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            this.viewportManager = WaveServices.ViewportManager;
+
+            if (this.texcoord1 == null)
+            {
+                this.texcoord1 = new Vector2[4]
+                {
+                    new Vector2(0, 0),
+                    new Vector2(1, 0),
+                    new Vector2(1, 1),
+                    new Vector2(0, 1),
+                };
+            }
+
+            if (this.texcoord2 == null)
+            {
+                this.texcoord2 = new Vector2[4]
+                {
+                    new Vector2(0, 0),
+                    new Vector2(1, 0),
+                    new Vector2(1, 1),
+                    new Vector2(0, 1),
+                };
+            }
+
+            float halfWidth = this.Transform2D.Rectangle.Width;
+            float halfHeight = this.Transform2D.Rectangle.Height;
+
+            VertexPositionColorDualTexture[] vertices = new VertexPositionColorDualTexture[4];
+            vertices[0].Position = new Vector3(0f, 0f, 0f);
+            vertices[0].Color = Color.White;
+            vertices[0].TexCoord = this.texcoord1[0];
+            vertices[0].TexCoord2 = this.texcoord2[0];
+
+            vertices[1].Position = new Vector3(halfWidth, 0f, 0f);
+            vertices[1].Color = Color.White;
+            vertices[1].TexCoord = this.texcoord1[1];
+            vertices[1].TexCoord2 = this.texcoord2[1];
+
+            vertices[2].Position = new Vector3(halfWidth, halfHeight, 0f);
+            vertices[2].Color = Color.White;
+            vertices[2].TexCoord = this.texcoord1[2];
+            vertices[2].TexCoord2 = this.texcoord2[2];
+
+            vertices[3].Position = new Vector3(0f, halfHeight, 0f);
+            vertices[3].Color = Color.White;
+            vertices[3].TexCoord = this.texcoord1[3];
+            vertices[3].TexCoord2 = this.texcoord2[3];
+
+            this.vertexBuffer = new VertexBuffer<byte>(VertexPositionColorDualTexture.VertexFormat);
+
+            int objsize = Marshal.SizeOf(typeof(VertexPositionColorDualTexture));
+            int size = objsize * vertices.Length;
+            using (MemoryStream stream = new MemoryStream(size))
+            {
+                using (BinaryWriter writer = new BinaryWriter(stream))
+                {
+                    for (int i = 0; i < vertices.Length; i++)
+                    {
+                        var vertex = vertices[i];
+                        writer.Write(vertex.Position.X);
+                        writer.Write(vertex.Position.Y);
+                        writer.Write(vertex.Position.Z);
+                        writer.Write(vertex.Color.ToUnsignedInt());
+                        writer.Write(vertex.TexCoord.X);
+                        writer.Write(vertex.TexCoord.Y);
+                        writer.Write(vertex.TexCoord2.X);
+                        writer.Write(vertex.TexCoord2.Y);
+                    }
+                }
+
+                byte[] array = stream.ToArray();
+                this.vertexBuffer.SetData(4, array);
+                this.GraphicsDevice.BindVertexBuffer(this.vertexBuffer);
+            }
+
+            ushort[] indices = new ushort[6];
+            indices[0] = 0;
+            indices[1] = 1;
+            indices[2] = 2;
+            indices[3] = 2;
+            indices[4] = 3;
+            indices[5] = 0;
+
+            this.indexBuffer = new IndexBuffer(indices);
+            this.GraphicsDevice.BindIndexBuffer(this.indexBuffer);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    // ToDo
+                    this.disposed = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Draws the basic unit.
+        /// </summary>
+        /// <param name="parameter">The parameter.</param>
+        protected override void DrawBasicUnit(int parameter)
+        {
+            this.Material.Material.Apply(this.RenderManager);
+
+            this.GraphicsDevice.DrawVertexBuffer(
+                4,
+                2,
+                PrimitiveType.TriangleList,
+                this.vertexBuffer,
+                this.indexBuffer);
+        }
+
+        #endregion
+    }
+}

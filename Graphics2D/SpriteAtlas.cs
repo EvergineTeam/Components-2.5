@@ -23,16 +23,10 @@ namespace WaveEngine.Components.Graphics2D
     /// </summary>
     public class SpriteAtlas : Component, IDisposable
     {
-        #region Static Fields
-
         /// <summary>
         ///     Number of instances of this component created.
         /// </summary>
         private static int instances;
-
-        #endregion
-
-        #region Fields
 
         /// <summary>
         ///     Rectangle for the Image of the atlas that will be rendered.
@@ -60,34 +54,7 @@ namespace WaveEngine.Components.Graphics2D
         /// </summary>
         private string textureName;
 
-        #endregion
-
-        #region Constructors and Destructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SpriteAtlas" /> class.
-        /// </summary>
-        /// <param name="atlasPath">The path to the atlas.</param>
-        /// <param name="textureName">Name of the texture from where this atlas is loaded.</param>
-        /// <exception cref="System.ArgumentException">TexturePath can not be null.</exception>
-        public SpriteAtlas(string atlasPath, string textureName)
-            : base("SpriteAtlas" + instances++)
-        {
-            if (string.IsNullOrEmpty(atlasPath))
-            {
-                throw new ArgumentException("TexturePath can not be null.");
-            }
-
-            this.TextureName = textureName;
-            this.Transform2D = null;
-            this.isGlobalAsset = false;
-            this.AtlasPath = atlasPath;
-            this.TintColor = Color.White;
-        }
-
-        #endregion
-
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         ///     Gets or sets the path to the atlas.
@@ -161,8 +128,32 @@ namespace WaveEngine.Components.Graphics2D
 
         #endregion
 
-        #region Public Methods and Operators
+        #region Initialize
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpriteAtlas" /> class.
+        /// </summary>
+        /// <param name="atlasPath">The path to the atlas.</param>
+        /// <param name="textureName">Name of the texture from where this atlas is loaded.</param>
+        /// <exception cref="System.ArgumentException">TexturePath can not be null.</exception>
+        public SpriteAtlas(string atlasPath, string textureName)
+            : base("SpriteAtlas" + instances++)
+        {
+            if (string.IsNullOrEmpty(atlasPath))
+            {
+                throw new ArgumentException("TexturePath can not be null.");
+            }
+
+            this.TextureName = textureName;
+            this.Transform2D = null;
+            this.isGlobalAsset = false;
+            this.AtlasPath = atlasPath;
+            this.TintColor = Color.White;
+        }
+
+        #endregion
+
+        #region Public Methods
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -174,7 +165,7 @@ namespace WaveEngine.Components.Graphics2D
 
         #endregion
 
-        #region Methods
+        #region Private Methods
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources

@@ -70,9 +70,6 @@ namespace WaveEngine.Components.Graphics2D
         }
         #endregion
 
-        #region Public Methods
-        #endregion
-
         #region Private Methods
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
@@ -80,6 +77,10 @@ namespace WaveEngine.Components.Graphics2D
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
+            if (disposing)
+            {
+                this.Sprite.Dispose();
+            }
         }
 
         /// <summary>

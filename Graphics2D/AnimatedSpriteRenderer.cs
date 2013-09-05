@@ -62,10 +62,15 @@ namespace WaveEngine.Components.Graphics2D
         [RequiredComponent]
         public Animation2D Animation2D;
 
-        #region Properties
-        #endregion
-
         #region Initialize
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AnimatedSpriteRenderer" /> class.
+        /// </summary>
+        public AnimatedSpriteRenderer()
+            : this(DefaultLayers.Alpha)
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AnimatedSpriteRenderer" /> class.
         /// </summary>
@@ -80,9 +85,6 @@ namespace WaveEngine.Components.Graphics2D
             this.origin = Vector2.Zero;
             this.Animation2D = null;
         }
-        #endregion
-
-        #region Public Methods
         #endregion
 
         #region Private Methods
@@ -100,17 +102,19 @@ namespace WaveEngine.Components.Graphics2D
                 this.scale.X = this.Transform2D.XScale;
                 this.scale.Y = this.Transform2D.YScale;
 
-                this.origin.X = this.Transform2D.Origin.X * this.Animation2D.CurrentRectangle.Width;
-                this.origin.Y = this.Transform2D.Origin.Y * this.Animation2D.CurrentRectangle.Height;
+                var currentRectangle = this.Animation2D.CurrentRectangle;
 
-                float opacity = this.RenderManager.DebugLines ? this.DebugAlpha : 
+                this.origin.X = this.Transform2D.Origin.X * currentRectangle.Width;
+                this.origin.Y = this.Transform2D.Origin.Y * currentRectangle.Height;
+
+                float opacity = this.RenderManager.DebugLines ? this.DebugAlpha :
                     this.Transform2D.Opacity;
                 Color color = this.Sprite.TintColor * opacity;
 
                 this.spriteBatch.DrawVM(
                     this.Sprite.Texture,
                     this.position,
-                    this.Animation2D.CurrentRectangle,
+                    currentRectangle,
                     color,
                     this.Transform2D.Rotation,
                     this.origin,
@@ -126,6 +130,10 @@ namespace WaveEngine.Components.Graphics2D
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
+            if (disposing)
+            {
+                this.Sprite.Dispose();
+            }
         }
         #endregion
     }

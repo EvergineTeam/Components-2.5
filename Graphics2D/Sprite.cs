@@ -89,7 +89,7 @@ namespace WaveEngine.Components.Graphics2D
         /// <value>
         ///     The texture.
         /// </value>
-        public Texture2D Texture { get; protected set; }
+        public Texture Texture { get; protected set; }
 
         /// <summary>
         /// Gets or sets the color of the tint.
@@ -123,6 +123,26 @@ namespace WaveEngine.Components.Graphics2D
             this.TintColor = Color.White;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Sprite" /> class.
+        /// </summary>
+        /// <param name="texture">The texture.</param>
+        /// <exception cref="System.ArgumentException">Texture can not be null.</exception>
+        public Sprite(Texture texture)
+            : base("Sprite" + instances++)
+        {
+            if (texture == null)
+            {
+                throw new ArgumentException("Texture can not be null.");
+            }
+
+            this.SourceRectangle = null;
+            this.Transform2D = null;
+            this.isGlobalAsset = false;
+            this.Texture = texture;
+            this.TintColor = Color.White;
+        }
+
         #endregion
 
         #region Public Methods
@@ -149,13 +169,16 @@ namespace WaveEngine.Components.Graphics2D
                 throw new ObjectDisposedException("ImageAtlasRenderer");
             }
 
-            if (this.isGlobalAsset)
+            if (this.Texture == null)
             {
-                this.Texture = WaveServices.Assets.Global.LoadAsset<Texture2D>(this.TexturePath);
-            }
-            else
-            {
-                this.Texture = this.Assets.LoadAsset<Texture2D>(this.TexturePath);
+                if (this.isGlobalAsset)
+                {
+                    this.Texture = WaveServices.Assets.Global.LoadAsset<Texture2D>(this.TexturePath);
+                }
+                else
+                {
+                    this.Texture = this.Assets.LoadAsset<Texture2D>(this.TexturePath);
+                }
             }
 
             this.Transform2D.Rectangle.Width = this.Texture.Width;
@@ -174,7 +197,7 @@ namespace WaveEngine.Components.Graphics2D
             {
                 if (disposing)
                 {
-                    if (!this.IsGlobalAsset)
+                    if (!this.IsGlobalAsset && this.TexturePath != null)
                     {
                         this.Assets.UnloadAsset(this.TexturePath);
                     }

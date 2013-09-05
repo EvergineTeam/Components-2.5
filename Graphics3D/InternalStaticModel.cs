@@ -61,6 +61,7 @@ namespace WaveEngine.Components.Graphics3D
         public string AssetPath { get; set; }
 
         /// <summary>
+<<<<<<< HEAD
         /// Gets the length of the model file header.
         /// </summary>
         /// <value>
@@ -69,6 +70,16 @@ namespace WaveEngine.Components.Graphics3D
         public int HeaderLength
         {
             get { return 18; }
+=======
+        /// Gets the reader version.
+        /// </summary>
+        /// <value>
+        /// The reader version.
+        /// </value>
+        public Version ReaderVersion
+        {
+            get { return new Version(1, 0, 0, 0); }
+>>>>>>> Added all files in Component library
         }
         #endregion
 
@@ -164,8 +175,11 @@ namespace WaveEngine.Components.Graphics3D
 
             using (var reader = new BinaryReader(stream))
             {
+<<<<<<< HEAD
                 reader.ReadBytes(this.HeaderLength);
 
+=======
+>>>>>>> Added all files in Component library
                 this.BoundingBox.Min = reader.ReadVector3();
                 this.BoundingBox.Max = reader.ReadVector3();
 
