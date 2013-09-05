@@ -9,6 +9,10 @@
 
 #region Using Statements
 using System;
+<<<<<<< HEAD
+=======
+using WaveEngine.Common.Helpers;
+>>>>>>> Added all files in Component library
 using WaveEngine.Components.Animation.Spine;
 using WaveEngine.Components.Graphics2D;
 using WaveEngine.Framework;
@@ -22,6 +26,14 @@ namespace WaveEngine.Components.Animation
     public class SkeletalAnimation : Behavior
     {
         /// <summary>
+<<<<<<< HEAD
+=======
+        /// Event raised when an animation has finalized.
+        /// </summary>
+        public event EventHandler<StringEventArgs> EndAnimation;
+
+        /// <summary>
+>>>>>>> Added all files in Component library
         /// The skeletal data
         /// </summary>
         [RequiredComponent]
@@ -73,8 +85,31 @@ namespace WaveEngine.Components.Animation
         /// </value>
         public AnimationState State
         {
+<<<<<<< HEAD
             get { return this.state; }
             set { this.state = value; }
+=======
+            get 
+            { 
+                return this.state; 
+            }
+
+            set 
+            {
+                if (this.state != null)
+                {
+                    this.state.EndAnimation -= this.OnEndAnimation;
+                }
+
+                this.state = value;
+
+                if (this.state != null)
+                {
+                    this.state.EndAnimation -= this.OnEndAnimation;
+                    this.state.EndAnimation += this.OnEndAnimation;
+                }
+            }
+>>>>>>> Added all files in Component library
         }
 
         /// <summary>
@@ -118,12 +153,39 @@ namespace WaveEngine.Components.Animation
         #endregion
 
         #region Public Methods
+<<<<<<< HEAD
+=======
+
+>>>>>>> Added all files in Component library
         /// <summary>
         /// Plays this instance.
         /// </summary>
         public void Play()
         {
+<<<<<<< HEAD
             this.state.SetAnimation(this.CurrentAnimation, false);
+=======
+            this.state.SetAnimation(this.CurrentAnimation, false, 0, this.Skeleton);
+        }
+
+        /// <summary>
+        /// Plays this instance.
+        /// </summary>
+        /// <param name="mixDuration">Mix duration.</param>
+        public void Play(float mixDuration)
+        {
+            this.state.SetAnimation(this.CurrentAnimation, false, mixDuration, this.Skeleton);
+        }
+
+        /// <summary>
+        /// Plays the specified loop.
+        /// </summary>
+        /// <param name="loop">if set to <c>true</c> [loop].</param>
+        /// <param name="mixDuration">Mix duration.</param>
+        public void Play(bool loop, float mixDuration)
+        {
+            this.state.SetAnimation(this.CurrentAnimation, loop, mixDuration, this.Skeleton);
+>>>>>>> Added all files in Component library
         }
 
         /// <summary>
@@ -132,7 +194,30 @@ namespace WaveEngine.Components.Animation
         /// <param name="loop">if set to <c>true</c> [loop].</param>
         public void Play(bool loop)
         {
+<<<<<<< HEAD
             this.state.SetAnimation(this.CurrentAnimation, loop);
+=======
+            this.state.SetAnimation(this.CurrentAnimation, loop, 0, this.Skeleton);
+        }
+
+        /// <summary>
+        /// Search if the skeletal animation contains 
+        /// </summary>
+        /// <param name="animation">Animation name</param>
+        /// <returns>Returns true if the skeletal animation contains the animation. False otherwise.</returns>
+        public bool ContainsAnimation(string animation)
+        {
+            return this.state.Data.SkeletonData.FindAnimation(animation) != null;
+        }
+
+        /// <summary>
+        /// Stops the current animation.
+        /// </summary>
+        public void Stop()
+        {
+            this.state.ClearAnimation();
+            this.Skeleton.Update(0);
+>>>>>>> Added all files in Component library
         }
 
         #endregion
@@ -171,6 +256,23 @@ namespace WaveEngine.Components.Animation
 
             AnimationStateData stateData = new AnimationStateData(this.Skeleton.Data);
             this.state = new AnimationState(stateData);
+<<<<<<< HEAD
+=======
+            this.state.EndAnimation += this.OnEndAnimation;
+        }
+
+        /// <summary>
+        /// Event handler of the end animation event.
+        /// </summary>
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Animation name.</param>
+        private void OnEndAnimation(object sender, StringEventArgs e)
+        {
+            if (this.EndAnimation != null)
+            {
+                this.EndAnimation(sender, e);
+            }
+>>>>>>> Added all files in Component library
         }
 
         /// <summary>
@@ -183,7 +285,11 @@ namespace WaveEngine.Components.Animation
         /// </remarks>
         protected override void Update(TimeSpan gameTime)
         {
+<<<<<<< HEAD
             this.state.Update(gameTime.Milliseconds / 1000f * this.Speed);
+=======
+            this.state.Update((float)gameTime.TotalSeconds * this.Speed);
+>>>>>>> Added all files in Component library
             this.state.Apply(this.Skeleton);
             this.Skeleton.UpdateWorldTransform();
         }

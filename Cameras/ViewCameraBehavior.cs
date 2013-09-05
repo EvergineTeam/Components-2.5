@@ -81,6 +81,7 @@ namespace WaveEngine.Components.Cameras
         /// </summary>
         private Vector3 initialPosition;
 
+        #region Initialize
         /// <summary>
         /// Initializes a new instance of the <see cref="ViewCameraBehavior" /> class.
         /// </summary>
@@ -89,7 +90,9 @@ namespace WaveEngine.Components.Cameras
         {
             this.RotationSpeed = 1f;
         }
+        #endregion
 
+        #region Private Methods
         /// <summary>
         /// Performs further custom initialization for this instance.
         /// </summary>
@@ -172,5 +175,7 @@ namespace WaveEngine.Components.Cameras
 
             this.Camera.Position = transformedReference + this.Camera.LookAt;
         }
+        
+        #endregion
     }
 }

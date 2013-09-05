@@ -256,7 +256,11 @@ namespace WaveEngine.Components.UI
         /// Initializes a new instance of the <see cref="TextBlock" /> class.
         /// </summary>
         public TextBlock()
+<<<<<<< HEAD
             : this("TextBlock" + instances++)
+=======
+            : this("TextBlock" + instances++, DefaultLayers.GUI)
+>>>>>>> Added all files in Component library
         {
         }
 
@@ -265,6 +269,19 @@ namespace WaveEngine.Components.UI
         /// </summary>
         /// <param name="name">The name.</param>
         public TextBlock(string name)
+<<<<<<< HEAD
+=======
+            : this(name, DefaultLayers.GUI)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextBlock" /> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="layer">The layer.</param>
+        public TextBlock(string name, Type layer)
+>>>>>>> Added all files in Component library
         {
             this.entity = new Entity(name)
                                 .AddComponent(new Transform2D())
@@ -276,7 +293,11 @@ namespace WaveEngine.Components.UI
                                     {
                                         Text = "TextBlock"
                                     })
+<<<<<<< HEAD
                                     .AddComponent(new TextControlRenderer()));
+=======
+                                    .AddComponent(new TextControlRenderer(layer)));
+>>>>>>> Added all files in Component library
         }
         #endregion
     }

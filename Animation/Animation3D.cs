@@ -26,17 +26,23 @@ namespace WaveEngine.Components.Animation
     /// </remarks>
     public class Animation3D : Behavior
     {
+<<<<<<< HEAD
         #region Static Fields
 
+=======
+>>>>>>> Added all files in Component library
         /// <summary>
         ///     Number of instances of this component created.
         /// </summary>
         private static int instances;
 
+<<<<<<< HEAD
         #endregion
 
         #region Fields
 
+=======
+>>>>>>> Added all files in Component library
         /// <summary>
         /// The animation path.
         /// </summary>
@@ -102,6 +108,7 @@ namespace WaveEngine.Components.Animation
         /// </summary>
         private TimeSpan totalAnimTime;
 
+<<<<<<< HEAD
         #endregion
 
         #region Constructors and Destructors
@@ -148,14 +155,20 @@ namespace WaveEngine.Components.Animation
 
         #region Public Events
 
+=======
+>>>>>>> Added all files in Component library
         /// <summary>
         ///     Raised when a certain frame of an animation is played.
         /// </summary>
         public event EventHandler<StringEventArgs> OnKeyFrameEvent;
 
+<<<<<<< HEAD
         #endregion
 
         #region Public Properties
+=======
+        #region Properties
+>>>>>>> Added all files in Component library
 
         /// <summary>
         /// Gets a value indicating whether the current active animation is played backwards.
@@ -255,7 +268,53 @@ namespace WaveEngine.Components.Animation
 
         #endregion
 
+<<<<<<< HEAD
         #region Public Methods and Operators
+=======
+        #region Initialize
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Animation3D"/> class.
+        /// </summary>
+        /// <param name="animationPath">
+        /// The path to the animation data.
+        /// </param>
+        public Animation3D(string animationPath)
+            : this("Animation3D" + instances, animationPath)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Animation3D"/> class.
+        /// </summary>
+        /// <param name="name">
+        /// The name of this behavior.
+        /// </param>
+        /// <param name="animationPath">
+        /// The path to the animation data.
+        /// </param>
+        public Animation3D(string name, string animationPath)
+            : base(name)
+        {
+            if (string.IsNullOrEmpty(animationPath))
+            {
+                throw new NullReferenceException("AnimationPath cannot be null.");
+            }
+
+            this.keyFrameEvents = new Dictionary<string, Dictionary<int, string>>();
+            this.animationPath = animationPath;
+            this.FramesPerSecond = 30;
+            this.frame = 0;
+            this.lastFrame = 0;
+            this.Loop = true;
+            this.targetFrame = -1;
+            instances++;
+        }
+
+        #endregion
+
+        #region Public Methods
+>>>>>>> Added all files in Component library
 
         /// <summary>
         /// Adds a key frame event to a given animation.
@@ -491,7 +550,11 @@ namespace WaveEngine.Components.Animation
 
         #endregion
 
+<<<<<<< HEAD
         #region Methods
+=======
+        #region Private Methods
+>>>>>>> Added all files in Component library
 
         /// <summary>
         ///     Performs further custom initialization for this instance.

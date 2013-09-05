@@ -44,7 +44,11 @@ namespace WaveEngine.Components.Animation.Spine
         /// <summary>
         /// The pages
         /// </summary>
+<<<<<<< HEAD
         internal List<AtlasPage> Pages = new List<AtlasPage>();
+=======
+        public readonly List<AtlasPage> Pages = new List<AtlasPage>();
+>>>>>>> Added all files in Component library
 
         /// <summary>
         /// The regions

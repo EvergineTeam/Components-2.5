@@ -10,6 +10,10 @@
 #region Using Statements
 using System;
 using WaveEngine.Common.Graphics;
+<<<<<<< HEAD
+=======
+using WaveEngine.Common.Helpers;
+>>>>>>> Added all files in Component library
 using WaveEngine.Components.Gestures;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Animation;
@@ -56,12 +60,17 @@ namespace WaveEngine.Components.UI
         /// <summary>
         /// Occurs when [Checked].
         /// </summary>
+<<<<<<< HEAD
         public event EventHandler Checked;
 
         /// <summary>
         /// Occurs when [unchecked].
         /// </summary>
         public event EventHandler Unchecked;
+=======
+        public event EventHandler<BoolEventArgs> Checked;
+
+>>>>>>> Added all files in Component library
         #endregion
 
         /// <summary>
@@ -403,6 +412,7 @@ namespace WaveEngine.Components.UI
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void CheckBox_CheckedChanged(object sender, EventArgs e)
         {
+<<<<<<< HEAD
             if (this.checkBoxBehavior.IsChecked)
             {
                 if (this.Checked != null)
@@ -416,6 +426,11 @@ namespace WaveEngine.Components.UI
                 {
                     this.Unchecked(this, e);
                 }
+=======
+            if (this.Checked != null)
+            {
+                this.Checked(this, new BoolEventArgs(this.checkBoxBehavior.IsChecked));
+>>>>>>> Added all files in Component library
             }
         }
         #endregion

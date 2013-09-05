@@ -28,7 +28,7 @@ namespace WaveEngine.Components.Animation
     public class Animation2D : Behavior
     {
         /// <summary>
-        ///     Number of instances of this component created.
+        /// Number of instances of this component created.
         /// </summary>
         private static int instances;
 
@@ -39,9 +39,13 @@ namespace WaveEngine.Components.Animation
         public Transform2D Transform2D;
 
         /// <summary>
-        ///     Rectangle of the current active animation.
+        /// Gets the Rectangle of the current active animation.
         /// </summary>
-        internal Rectangle CurrentRectangle;
+        public Rectangle CurrentRectangle
+        {
+            get;
+            internal set;
+        }
 
         /// <summary>
         ///     The animations
@@ -336,11 +340,20 @@ namespace WaveEngine.Components.Animation
         /// <summary>
         ///     Performs further custom initialization for this instance.
         /// </summary>
-        protected override void Initialize()
+        protected override void 
+            Initialize()
         {
             this.Transform2D.Rectangle = new RectangleF();
-            this.Transform2D.Rectangle.Width = this.frameWidth;
-            this.Transform2D.Rectangle.Height = this.frameHeight;
+            if (this.CurrentRectangle != null)
+            {
+                this.Transform2D.Rectangle.Width = this.CurrentRectangle.Width;
+                this.Transform2D.Rectangle.Height = this.CurrentRectangle.Height;
+            }
+            else
+            {
+                this.Transform2D.Rectangle.Width = this.frameWidth;
+                this.Transform2D.Rectangle.Height = this.frameHeight;
+            }
         }
 
         /// <summary>

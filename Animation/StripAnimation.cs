@@ -255,6 +255,11 @@ namespace WaveEngine.Components.Animation
             this.frames = frames;
             this.numFrames = frames.Length;
             this.FramesPerSecond = framesPerSecond;
+            if ((frames != null) && (frames.Length > 0))
+            {
+                this.frameWidth = frames[0].Width;
+                this.frameHeight = frames[0].Height;
+            }
         }
         #endregion
 

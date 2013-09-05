@@ -30,6 +30,11 @@
 #region Using Statements
 using System;
 using System.Collections.Generic;
+<<<<<<< HEAD
+=======
+using System.Diagnostics;
+using WaveEngine.Common.Helpers;
+>>>>>>> Added all files in Component library
 #endregion
 
 namespace WaveEngine.Components.Animation.Spine
@@ -40,6 +45,14 @@ namespace WaveEngine.Components.Animation.Spine
     public class AnimationState
     {
         /// <summary>
+<<<<<<< HEAD
+=======
+        /// Event raised when an animation has finalized.
+        /// </summary>
+        public event EventHandler<StringEventArgs> EndAnimation;
+
+        /// <summary>
+>>>>>>> Added all files in Component library
         /// The previous
         /// </summary>
         private Animation previous;
@@ -124,7 +137,49 @@ namespace WaveEngine.Components.Animation.Spine
         {
             this.Time += delta;
             this.previousTime += delta;
+<<<<<<< HEAD
             this.mixTime += delta;
+=======
+            if (delta > 0)
+            {
+                this.mixTime += delta;
+            }
+            else
+            {
+                this.mixTime -= delta;
+            }
+
+            if (this.Animation != null)
+            {
+                bool sendEvent = false;
+
+                if (this.Time > this.Animation.Duration)
+                {
+                    this.Time = this.Time - this.Animation.Duration;
+                    sendEvent = true;
+                }
+                else if (this.Time < 0)
+                {
+                    this.Time = this.Time + this.Animation.Duration;
+                    sendEvent = true;
+                }
+
+                if (sendEvent && (this.EndAnimation != null))
+                {
+                    this.EndAnimation(this.Animation, new StringEventArgs(this.Animation.Name));
+                }
+            }
+
+            if ((this.previous != null) && (this.previousTime > this.previous.Duration))
+            {
+                this.previousTime = this.previousTime - this.previous.Duration;
+
+                if (this.EndAnimation != null)
+                {
+                    this.EndAnimation(this.previous, new StringEventArgs(this.previous.Name));
+                }
+            }
+>>>>>>> Added all files in Component library
 
             if (this.queue.Count > 0)
             {
@@ -239,8 +294,15 @@ namespace WaveEngine.Components.Animation.Spine
         /// </summary>
         /// <param name="animationName">Name of the animation.</param>
         /// <param name="loop">if set to <c>true</c> [loop].</param>
+<<<<<<< HEAD
         /// <exception cref="System.ArgumentException">Animation not found:  + animationName</exception>
         public void SetAnimation(string animationName, bool loop)
+=======
+        /// <param name="mixDuration">Mix duration</param>
+        /// <param name="skeleton">Animation skeleton</param>
+        /// <exception cref="System.ArgumentException">Animation not found:  + animationName</exception>
+        public void SetAnimation(string animationName, bool loop, float mixDuration, Skeleton skeleton)
+>>>>>>> Added all files in Component library
         {
             Animation animation = this.Data.SkeletonData.FindAnimation(animationName);
             if (animation == null)
@@ -248,7 +310,11 @@ namespace WaveEngine.Components.Animation.Spine
                 throw new ArgumentException("Animation not found: " + animationName);
             }
 
+<<<<<<< HEAD
             this.SetAnimation(animation, loop);
+=======
+            this.SetAnimation(animation, loop, mixDuration, skeleton);
+>>>>>>> Added all files in Component library
         }
 
         /// <summary>
@@ -256,8 +322,26 @@ namespace WaveEngine.Components.Animation.Spine
         /// </summary>
         /// <param name="animation">The animation.</param>
         /// <param name="loop">if set to <c>true</c> [loop].</param>
+<<<<<<< HEAD
         public void SetAnimation(Animation animation, bool loop)
         {
+=======
+        /// <param name="mixDuration">Mix duration</param>
+        /// /// <param name="skeleton">Animation skeleton</param>
+        public void SetAnimation(Animation animation, bool loop, float mixDuration, Skeleton skeleton)
+        {
+            if (this.Animation != null)
+            {
+                if (this.previous != null)
+                {
+                    this.Animation.Mix(skeleton, this.Time, this.Loop, 1);
+                    this.Data.SetMix(this.previous, this.Animation, 0);                    
+                }
+
+                this.Data.SetMix(this.Animation, animation, mixDuration);
+            }
+
+>>>>>>> Added all files in Component library
             this.queue.Clear();
             this.SetAnimationInternal(animation, loop);
         }
