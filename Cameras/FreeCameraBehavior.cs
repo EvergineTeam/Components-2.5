@@ -293,11 +293,6 @@ namespace WaveEngine.Components.Cameras
             this.isMouseConnected = this.input.MouseState.IsConnected;
             this.isTouchPanelConnected = this.input.TouchPanelState.IsConnected;
 
-            if (this.isMouseConnected)
-            {
-                this.isTouchPanelConnected = false;
-            }
-
             if (this.input.KeyboardState.IsConnected || this.isTouchPanelConnected)
             {
                 this.keyboardState = this.input.KeyboardState;
@@ -388,14 +383,11 @@ namespace WaveEngine.Components.Cameras
                             // From touchpad
                             if (this.currentTouchPanelState.IsConnected)
                             {
-                                this.xDifference = this.currentTouchLocation.Position.X
-                                                   - this.lastTouchLocation.Position.X;
-                                this.yDifference = this.currentTouchLocation.Position.Y
-                                                   - this.lastTouchLocation.Position.Y;
+                                this.xDifference = this.currentTouchLocation.Position.X - this.lastTouchLocation.Position.X;
+                                this.yDifference = this.currentTouchLocation.Position.Y - this.lastTouchLocation.Position.Y;
                             }
 
-                            // From mouse
-                            if (this.isMouseConnected)
+                            if (this.isMouseConnected && this.input.TouchPanelState.Count == 0)
                             {
                                 this.xDifference = this.currentMouseState.X - this.lastMouseState.X;
                                 this.yDifference = this.currentMouseState.Y - this.lastMouseState.Y;
