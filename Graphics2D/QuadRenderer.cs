@@ -53,7 +53,7 @@ namespace WaveEngine.Components.Graphics2D
         /// <summary>
         /// The vertex buffer
         /// </summary>
-        private VertexBuffer<byte> vertexBuffer;
+        private VertexBuffer vertexBuffer;
 
         /// <summary>
         /// The index buffer
@@ -122,14 +122,14 @@ namespace WaveEngine.Components.Graphics2D
         private Quaternion orientation;
 
         #endregion
-        
+
         #region Initialize
         /// <summary>
         /// Initializes a new instance of the <see cref="QuadRenderer" /> class.
         /// </summary>
         public QuadRenderer()
             : this(DefaultLayers.Alpha)
-        { 
+        {
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace WaveEngine.Components.Graphics2D
         /// <param name="layerType">Type of the layer.</param>
         public QuadRenderer(Type layerType)
             : this(layerType, null, null)
-        { 
+        {
         }
 
         /// <summary>
@@ -254,54 +254,34 @@ namespace WaveEngine.Components.Graphics2D
 
             float halfWidth = this.Transform2D.Rectangle.Width;
             float halfHeight = this.Transform2D.Rectangle.Height;
+            float opacity = this.Transform2D.Opacity;
+            Color color = new Color(opacity, opacity, opacity, opacity);
 
             VertexPositionColorDualTexture[] vertices = new VertexPositionColorDualTexture[4];
             vertices[0].Position = new Vector3(0f, 0f, 0f);
-            vertices[0].Color = Color.White;
+            vertices[0].Color = color;
             vertices[0].TexCoord = this.texcoord1[0];
             vertices[0].TexCoord2 = this.texcoord2[0];
 
             vertices[1].Position = new Vector3(halfWidth, 0f, 0f);
-            vertices[1].Color = Color.White;
+            vertices[1].Color = color;
             vertices[1].TexCoord = this.texcoord1[1];
             vertices[1].TexCoord2 = this.texcoord2[1];
 
             vertices[2].Position = new Vector3(halfWidth, halfHeight, 0f);
-            vertices[2].Color = Color.White;
+            vertices[2].Color = color;
             vertices[2].TexCoord = this.texcoord1[2];
             vertices[2].TexCoord2 = this.texcoord2[2];
 
             vertices[3].Position = new Vector3(0f, halfHeight, 0f);
-            vertices[3].Color = Color.White;
+            vertices[3].Color = color;
             vertices[3].TexCoord = this.texcoord1[3];
             vertices[3].TexCoord2 = this.texcoord2[3];
 
-            this.vertexBuffer = new VertexBuffer<byte>(VertexPositionColorDualTexture.VertexFormat);
+            this.vertexBuffer = new VertexBuffer(VertexPositionColorDualTexture.VertexFormat);
 
-            int objsize = Marshal.SizeOf(typeof(VertexPositionColorDualTexture));
-            int size = objsize * vertices.Length;
-            using (MemoryStream stream = new MemoryStream(size))
-            {
-                using (BinaryWriter writer = new BinaryWriter(stream))
-                {
-                    for (int i = 0; i < vertices.Length; i++)
-                    {
-                        var vertex = vertices[i];
-                        writer.Write(vertex.Position.X);
-                        writer.Write(vertex.Position.Y);
-                        writer.Write(vertex.Position.Z);
-                        writer.Write(vertex.Color.ToUnsignedInt());
-                        writer.Write(vertex.TexCoord.X);
-                        writer.Write(vertex.TexCoord.Y);
-                        writer.Write(vertex.TexCoord2.X);
-                        writer.Write(vertex.TexCoord2.Y);
-                    }
-                }
-
-                byte[] array = stream.ToArray();
-                this.vertexBuffer.SetData(4, array);
-                this.GraphicsDevice.BindVertexBuffer(this.vertexBuffer);
-            }
+            this.vertexBuffer.SetData(vertices, 4);
+            this.GraphicsDevice.BindVertexBuffer(this.vertexBuffer);
 
             ushort[] indices = new ushort[6];
             indices[0] = 0;

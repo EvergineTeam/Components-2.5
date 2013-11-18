@@ -104,7 +104,7 @@ namespace WaveEngine.Components.Graphics3D
                 {
                     string meshName = reader.ReadString();
 
-                    int meshParts = reader.ReadInt32();
+                    reader.ReadInt32(); // mesh count
 
                     for (int j = 0; j < 1; j++)
                     {
@@ -115,7 +115,7 @@ namespace WaveEngine.Components.Graphics3D
                         int startIndex = reader.ReadInt32();
                         int primitiveCount = reader.ReadInt32();
 
-                        int vertexStride = reader.ReadInt32();
+                        reader.ReadInt32(); // vertex stride
                         int numVertexElements = reader.ReadInt32();
 
                         var properties = new VertexElementProperties[numVertexElements];
@@ -133,7 +133,7 @@ namespace WaveEngine.Components.Graphics3D
                             ////}
                         }
 
-                        int bufferSize = reader.ReadInt32();
+                        reader.ReadInt32(); // bufferSize
 
                         // TODO: this is ugly as hell...
                         ////if (usesTangent)
@@ -235,14 +235,15 @@ namespace WaveEngine.Components.Graphics3D
                             }
 
                             this.internalindices.Add(indices);
+
+                            var newSkinnedBuffer = new SkinnedVertexBuffer(new VertexBufferFormat(properties));
+                            newSkinnedBuffer.SetData(bufferData, numVertices);
                             var mesh = new SkinnedMesh(
                                 vertexOffset,
                                 numVertices,
                                 startIndex,
                                 primitiveCount,
-                                    new SkinnedVertexBuffer<SkinnedVertex>(
-                                        ////numVertices, bufferData, SkinnedVertex.VertexFormat),
-                                        numVertices, bufferData, new VertexBufferFormat(properties)),
+                                newSkinnedBuffer,
                                 new IndexBuffer(indices));
                             mesh.Name = meshName;
 
@@ -286,12 +287,12 @@ namespace WaveEngine.Components.Graphics3D
             for (int i = 0; i < this.Meshes.Count; i++)
             {
                 SkinnedMesh currentMesh = this.Meshes[i];
-                SkinnedVertexBuffer<SkinnedVertex> currentBuffer = currentMesh.VertexBuffer as SkinnedVertexBuffer<SkinnedVertex>;
+                SkinnedVertexBuffer currentBuffer = currentMesh.VertexBuffer as SkinnedVertexBuffer;
                 var newVertices = new SkinnedVertex[currentMesh.NumVertices];
                 Array.Copy(currentBuffer.CpuVertices, newVertices, currentBuffer.CpuVertices.Length);
 
-                var newBuffer = new SkinnedVertexBuffer<SkinnedVertex>(
-                    currentBuffer.VertexCount, newVertices, currentBuffer.VertexBufferFormat);
+                var newBuffer = new SkinnedVertexBuffer(currentBuffer.VertexBufferFormat);
+                newBuffer.SetData(newVertices, currentBuffer.VertexCount);
                 var newIndexBuffer = new IndexBuffer(this.internalindices[i]);
                 var newMesh = new SkinnedMesh(
                         currentMesh.VertexOffset,

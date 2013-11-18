@@ -59,11 +59,6 @@ namespace WaveEngine.Components.Graphics3D
 
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentException("Increment cannot be null.");
-                }
-
                 this.increase = value;
             }
         }

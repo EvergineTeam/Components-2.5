@@ -61,16 +61,6 @@ namespace WaveEngine.Components.Graphics3D
         public string AssetPath { get; set; }
 
         /// <summary>
-<<<<<<< HEAD
-        /// Gets the length of the model file header.
-        /// </summary>
-        /// <value>
-        /// The length of the header.
-        /// </value>
-        public int HeaderLength
-        {
-            get { return 18; }
-=======
         /// Gets the reader version.
         /// </summary>
         /// <value>
@@ -79,7 +69,6 @@ namespace WaveEngine.Components.Graphics3D
         public Version ReaderVersion
         {
             get { return new Version(1, 0, 0, 0); }
->>>>>>> Added all files in Component library
         }
         #endregion
 
@@ -128,8 +117,8 @@ namespace WaveEngine.Components.Graphics3D
             int vertexCount = primitive.Indices.Length;
             int primitiveCount = vertexCount / 3;
 
-            var meshVBuffer = new VertexBuffer<byte>(
-                vertexCount, primitive.ByteVertices, VertexPositionNormalTexture.VertexFormat);
+            var meshVBuffer = new VertexBuffer(VertexPositionNormalTexture.VertexFormat);
+            meshVBuffer.SetData(primitive.ByteVertices, vertexCount);
             var meshIBuffer = new IndexBuffer(primitive.Indices);
 
             var baseMesh = new StaticMesh(0, vertexCount, 0, primitiveCount, meshVBuffer, meshIBuffer, true, collisionVertices.ToArray(), primitive.Indices);
@@ -175,11 +164,6 @@ namespace WaveEngine.Components.Graphics3D
 
             using (var reader = new BinaryReader(stream))
             {
-<<<<<<< HEAD
-                reader.ReadBytes(this.HeaderLength);
-
-=======
->>>>>>> Added all files in Component library
                 this.BoundingBox.Min = reader.ReadVector3();
                 this.BoundingBox.Max = reader.ReadVector3();
 
@@ -225,7 +209,7 @@ namespace WaveEngine.Components.Graphics3D
                         ////int primitiveCount = reader.ReadInt32();
                         int primitiveCount = BitConverter.ToInt32(dataPart, 12);
                         ////int vertexStride = reader.ReadInt32();
-                        int vertexStride = BitConverter.ToInt32(dataPart, 16);
+                        // int vertexStride = BitConverter.ToInt32(dataPart, 16);
                         ////int numVertexElements = reader.ReadInt32();
                         int numVertexElements = BitConverter.ToInt32(dataPart, 20);
 
@@ -283,8 +267,8 @@ namespace WaveEngine.Components.Graphics3D
                             ////indices[k] = reader.ReadUInt16();
                         }
 
-                        var vertexBuffer = new VertexBuffer<byte>(
-                            numVertices, bufferData, new VertexBufferFormat(properties));
+                        var vertexBuffer = new VertexBuffer(new VertexBufferFormat(properties));
+                        vertexBuffer.SetData(bufferData, numVertices);
                         var indexBuffer = new IndexBuffer(indices);
                         var mesh = new StaticMesh(vertexOffset, numVertices, startIndex, primitiveCount, vertexBuffer, indexBuffer, hasCollision, collisionVertices, collisionIndices);
                         mesh.Name = meshName;

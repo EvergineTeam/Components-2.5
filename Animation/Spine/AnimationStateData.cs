@@ -109,15 +109,11 @@ namespace WaveEngine.Components.Animation.Spine
 
             KeyValuePair<Animation, Animation> key = new KeyValuePair<Animation, Animation>(from, to);
             this.animationToMixTime.Remove(key);
-<<<<<<< HEAD
-            this.animationToMixTime.Add(key, duration);
-=======
 
             if (duration > 0)
             {
                 this.animationToMixTime.Add(key, duration);
             }
->>>>>>> Added all files in Component library
         }
 
         /// <summary>

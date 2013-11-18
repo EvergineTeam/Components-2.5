@@ -224,15 +224,9 @@ namespace WaveEngine.Components.Animation.Spine
             float cos = (float)Math.Cos(radians);
             float sin = (float)Math.Sin(radians);
             this.M00 = cos * this.WorldScaleX;
-<<<<<<< HEAD
-            this.M10 = sin * this.WorldScaleX;
-            this.M01 = -sin * this.WorldScaleY;
-            this.M11 = cos * this.WorldScaleY;
-=======
             this.M10 = -sin * this.WorldScaleX;
             this.M01 = -sin * this.WorldScaleY;
             this.M11 = -cos * this.WorldScaleY;
->>>>>>> Added all files in Component library
 
             if (flipX)
             {

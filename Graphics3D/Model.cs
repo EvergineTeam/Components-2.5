@@ -8,6 +8,7 @@
 #endregion
 
 #region Using Statements
+using System;
 using System.Collections.Generic;
 using WaveEngine.Common.Math;
 using WaveEngine.Components.Primitives;
@@ -20,12 +21,17 @@ namespace WaveEngine.Components.Graphics3D
     /// <summary>
     /// A 3D model. To render a model use the <see cref="ModelRenderer"/> class.
     /// </summary>
-    public class Model : BaseModel
+    public class Model : BaseModel, IDisposable
     {
         /// <summary>
         /// Number of instances of this component created.
         /// </summary>
         private static int instances;
+
+        /// <summary>
+        /// The is primitive.
+        /// </summary>
+        private bool isPrimitive;
 
         #region Properties
         /// <summary>
@@ -64,40 +70,24 @@ namespace WaveEngine.Components.Graphics3D
             : base(name)
         {
             this.ModelPath = modelPath;
+            this.isPrimitive = false;
         }
         #endregion
 
         #region Public Methods
 
         /// <summary>
-        /// Creates a 1x1x1 unit cube.
-        /// </summary>
-        /// <returns>A <see cref="Model"/> representing a cube.</returns>
-        public static Model CreateCube()
-        {
-            return CreateCube(1);
-        }
-
-        /// <summary>
         /// Creates the cube.
         /// </summary>
         /// <param name="size">The size (1 by default).</param>
         /// <returns>A <see cref="Model"/> representing a cube.</returns>
-        public static Model CreateCube(float size)
+        public static Model CreateCube(float size = 1.0f)
         {
             Model cube = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
             cube.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Cube(size));
+            cube.isPrimitive = true;
 
             return cube;
-        }
-
-        /// <summary>
-        /// Creates the a 1 unit diameter sphere.
-        /// </summary>
-        /// <returns>A <see cref="Model"/> representing a sphere.</returns>
-        public static Model CreateSphere()
-        {
-            return CreateSphere(1, 8);
         }
 
         /// <summary>
@@ -106,23 +96,13 @@ namespace WaveEngine.Components.Graphics3D
         /// <param name="diameter">The diameter (1 by default).</param>
         /// <param name="tessellation">The tessellation (8 by default).</param>
         /// <returns>A <see cref="Model"/> representing a sphere.</returns>
-        public static Model CreateSphere(float diameter, int tessellation)
+        public static Model CreateSphere(float diameter = 1.0f, int tessellation = 8)
         {
             Model sphere = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
             sphere.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Sphere(diameter, tessellation));
+            sphere.isPrimitive = true;
 
             return sphere;
-        }
-
-        /// <summary>
-        /// Creates a 1x1 unit plane.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="Model" /> representing a plane.
-        /// </returns>
-        public static Model CreatePlane()
-        {
-            return CreatePlane(Vector3.Up, 1);
         }
 
         /// <summary>
@@ -133,21 +113,18 @@ namespace WaveEngine.Components.Graphics3D
         /// <returns>
         /// A <see cref="Model" /> representing a plane.
         /// </returns>
-        public static Model CreatePlane(Vector3 normal, float size)
+        public static Model CreatePlane(Vector3? normal = null, float size = 1.0f)
         {
-            Model sphere = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
-            sphere.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Primitives.Plane(normal, size));
+            if (!normal.HasValue)
+            {
+                normal = Vector3.Up;
+            }
 
-            return sphere;
-        }
+            Model plane = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
+            plane.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Primitives.Plane(normal.Value, size));
+            plane.isPrimitive = true;
 
-        /// <summary>
-        /// Creates a 1 unit pyramid.
-        /// </summary>
-        /// <returns>A <see cref="Model"/> representing a pyramid.</returns>
-        public static Model CreatePyramid()
-        {
-            return CreatePyramid(1);
+            return plane;
         }
 
         /// <summary>
@@ -155,21 +132,13 @@ namespace WaveEngine.Components.Graphics3D
         /// </summary>
         /// <param name="size">The size (1 by default).</param>
         /// <returns>A <see cref="Model"/> representing a pyramid.</returns>
-        public static Model CreatePyramid(float size)
+        public static Model CreatePyramid(float size = 1.0f)
         {
             Model pyramid = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
             pyramid.InternalModel.FromPrimitive(WaveServices.GetService<GraphicsDevice>(), new Pyramid(size));
+            pyramid.isPrimitive = true;
 
             return pyramid;
-        }
-
-        /// <summary>
-        /// Creates a 1 unit diameter torus.
-        /// </summary>
-        /// <returns>A <see cref="Model"/> representing a torus</returns>
-        public static Model CreateTorus()
-        {
-            return CreateTorus(1f, 0.333f, 16);
         }
 
         /// <summary>
@@ -179,21 +148,13 @@ namespace WaveEngine.Components.Graphics3D
         /// <param name="thickness">The thickness (0.333f by default).</param>
         /// <param name="tessellation">The tessellation (16 by default).</param>
         /// <returns>A <see cref="Model"/> representing a torus</returns>
-        public static Model CreateTorus(float diameter, float thickness, int tessellation)
+        public static Model CreateTorus(float diameter = 1.0f, float thickness = 0.333f, int tessellation = 16)
         {
             Model torus = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
             torus.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Torus(diameter, thickness, tessellation));
+            torus.isPrimitive = true;
 
             return torus;
-        }
-
-        /// <summary>
-        /// Creates 1 unit height x 1 unit diameter cylinder.
-        /// </summary>
-        /// <returns>A <see cref="Model"/> representing a cylinder.</returns>
-        public static Model CreateCylinder()
-        {
-            return CreateCylinder(1f, 1f, 16);
         }
 
         /// <summary>
@@ -203,21 +164,13 @@ namespace WaveEngine.Components.Graphics3D
         /// <param name="diameter">The diameter (1 by default).</param>
         /// <param name="tessellation">The tessellation (16 by default).</param>
         /// <returns>A <see cref="Model"/> representing a cylinder.</returns>
-        public static Model CreateCylinder(float height, float diameter, int tessellation)
+        public static Model CreateCylinder(float height = 1.0f, float diameter = 1.0f, int tessellation = 16)
         {
             Model cylinder = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
             cylinder.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Cylinder(height, diameter, tessellation));
+            cylinder.isPrimitive = true;
 
             return cylinder;
-        }
-
-        /// <summary>
-        /// Creates a 1 unit height x 1 unit diameter capsule.
-        /// </summary>
-        /// <returns>A <see cref="Model"/> representing a capsule.</returns>
-        public static Model CreateCapsule()
-        {
-            return CreateCapsule(1f, 0.5f, 16);
         }
 
         /// <summary>
@@ -227,21 +180,13 @@ namespace WaveEngine.Components.Graphics3D
         /// <param name="radius">The radius (0.5f by default).</param>
         /// <param name="tessellation">The tessellation (16 by default).</param>
         /// <returns>A <see cref="Model"/> representing a capsule.</returns>
-        public static Model CreateCapsule(float height, float radius, int tessellation)
+        public static Model CreateCapsule(float height = 1f, float radius = 0.5f, int tessellation = 16)
         {
             Model capsule = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
             capsule.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Capsule(height, radius, tessellation));
+            capsule.isPrimitive = true;
 
             return capsule;
-        }
-
-        /// <summary>
-        /// Creates a 1 unit height x 1 unit diameter cone.
-        /// </summary>
-        /// <returns>A <see cref="Model"/> representing a cone.</returns>
-        public static Model CreateCone()
-        {
-            return CreateCone(1f, 1f, 16);
         }
 
         /// <summary>
@@ -251,21 +196,13 @@ namespace WaveEngine.Components.Graphics3D
         /// <param name="diameter">The diameter (1 by default).</param>
         /// <param name="tessellation">The tessellation (16 by default).</param>
         /// <returns>A <see cref="Model"/> representing a cone.</returns>
-        public static Model CreateCone(float height, float diameter, int tessellation)
+        public static Model CreateCone(float height = 1.0f, float diameter = 1.0f, int tessellation = 16)
         {
             Model cone = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
             cone.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Cone(height, diameter, tessellation));
+            cone.isPrimitive = true;
 
             return cone;
-        }
-
-        /// <summary>
-        /// Creates the teapot.
-        /// </summary>
-        /// <returns>A <see cref="Model"/> representing a teapot.</returns>
-        public static Model CreateTeapot()
-        {
-            return CreateTeapot(1, 8);
         }
 
         /// <summary>
@@ -274,10 +211,11 @@ namespace WaveEngine.Components.Graphics3D
         /// <param name="size">The size.</param>
         /// <param name="tessellation">The tessellation.</param>
         /// <returns>A <see cref="Model"/> representing a teapot.</returns>
-        public static Model CreateTeapot(float size, int tessellation)
+        public static Model CreateTeapot(float size = 1.0f, int tessellation = 8)
         {
             Model teapot = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
             teapot.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Teapot(size, tessellation));
+            teapot.isPrimitive = true;
 
             return teapot;
         }
@@ -330,5 +268,17 @@ namespace WaveEngine.Components.Graphics3D
             }
         }
         #endregion
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (this.isPrimitive && this.InternalModel != null)
+            {
+                this.InternalModel.Unload();
+                this.InternalModel = null;
+            }
+        }
     }
 }

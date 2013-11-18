@@ -248,6 +248,44 @@ namespace WaveEngine.Components.UI
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [rich text enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [rich text enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RichTextEnabled
+        {
+            get
+            {
+                return this.entity.FindChild("TextEntity").FindComponent<TextControl>().RichTextEnabled;
+            }
+
+            set
+            {
+                this.entity.FindChild("TextEntity").FindComponent<TextControl>().RichTextEnabled = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the line spacing.
+        /// </summary>
+        /// <value>
+        ///     The line spacing.
+        /// </value>
+        public float LineSpacing
+        {
+            get
+            {
+                return this.entity.FindChild("TextEntity").FindComponent<TextControl>().LineSpacing;
+            }
+
+            set
+            {
+                this.entity.FindChild("TextEntity").FindComponent<TextControl>().LineSpacing = value;
+            }
+        }
+
         #endregion
 
         #region Initialize
@@ -256,11 +294,7 @@ namespace WaveEngine.Components.UI
         /// Initializes a new instance of the <see cref="TextBlock" /> class.
         /// </summary>
         public TextBlock()
-<<<<<<< HEAD
-            : this("TextBlock" + instances++)
-=======
             : this("TextBlock" + instances++, DefaultLayers.GUI)
->>>>>>> Added all files in Component library
         {
         }
 
@@ -269,8 +303,6 @@ namespace WaveEngine.Components.UI
         /// </summary>
         /// <param name="name">The name.</param>
         public TextBlock(string name)
-<<<<<<< HEAD
-=======
             : this(name, DefaultLayers.GUI)
         {
         }
@@ -281,7 +313,6 @@ namespace WaveEngine.Components.UI
         /// <param name="name">The name.</param>
         /// <param name="layer">The layer.</param>
         public TextBlock(string name, Type layer)
->>>>>>> Added all files in Component library
         {
             this.entity = new Entity(name)
                                 .AddComponent(new Transform2D())
@@ -293,11 +324,7 @@ namespace WaveEngine.Components.UI
                                     {
                                         Text = "TextBlock"
                                     })
-<<<<<<< HEAD
-                                    .AddComponent(new TextControlRenderer()));
-=======
                                     .AddComponent(new TextControlRenderer(layer)));
->>>>>>> Added all files in Component library
         }
         #endregion
     }

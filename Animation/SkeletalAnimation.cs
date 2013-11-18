@@ -9,10 +9,7 @@
 
 #region Using Statements
 using System;
-<<<<<<< HEAD
-=======
 using WaveEngine.Common.Helpers;
->>>>>>> Added all files in Component library
 using WaveEngine.Components.Animation.Spine;
 using WaveEngine.Components.Graphics2D;
 using WaveEngine.Framework;
@@ -26,14 +23,11 @@ namespace WaveEngine.Components.Animation
     public class SkeletalAnimation : Behavior
     {
         /// <summary>
-<<<<<<< HEAD
-=======
         /// Event raised when an animation has finalized.
         /// </summary>
         public event EventHandler<StringEventArgs> EndAnimation;
 
         /// <summary>
->>>>>>> Added all files in Component library
         /// The skeletal data
         /// </summary>
         [RequiredComponent]
@@ -85,10 +79,6 @@ namespace WaveEngine.Components.Animation
         /// </value>
         public AnimationState State
         {
-<<<<<<< HEAD
-            get { return this.state; }
-            set { this.state = value; }
-=======
             get 
             { 
                 return this.state; 
@@ -109,7 +99,6 @@ namespace WaveEngine.Components.Animation
                     this.state.EndAnimation += this.OnEndAnimation;
                 }
             }
->>>>>>> Added all files in Component library
         }
 
         /// <summary>
@@ -153,18 +142,12 @@ namespace WaveEngine.Components.Animation
         #endregion
 
         #region Public Methods
-<<<<<<< HEAD
-=======
 
->>>>>>> Added all files in Component library
         /// <summary>
         /// Plays this instance.
         /// </summary>
         public void Play()
         {
-<<<<<<< HEAD
-            this.state.SetAnimation(this.CurrentAnimation, false);
-=======
             this.state.SetAnimation(this.CurrentAnimation, false, 0, this.Skeleton);
         }
 
@@ -185,7 +168,6 @@ namespace WaveEngine.Components.Animation
         public void Play(bool loop, float mixDuration)
         {
             this.state.SetAnimation(this.CurrentAnimation, loop, mixDuration, this.Skeleton);
->>>>>>> Added all files in Component library
         }
 
         /// <summary>
@@ -194,9 +176,6 @@ namespace WaveEngine.Components.Animation
         /// <param name="loop">if set to <c>true</c> [loop].</param>
         public void Play(bool loop)
         {
-<<<<<<< HEAD
-            this.state.SetAnimation(this.CurrentAnimation, loop);
-=======
             this.state.SetAnimation(this.CurrentAnimation, loop, 0, this.Skeleton);
         }
 
@@ -217,7 +196,6 @@ namespace WaveEngine.Components.Animation
         {
             this.state.ClearAnimation();
             this.Skeleton.Update(0);
->>>>>>> Added all files in Component library
         }
 
         #endregion
@@ -256,8 +234,6 @@ namespace WaveEngine.Components.Animation
 
             AnimationStateData stateData = new AnimationStateData(this.Skeleton.Data);
             this.state = new AnimationState(stateData);
-<<<<<<< HEAD
-=======
             this.state.EndAnimation += this.OnEndAnimation;
         }
 
@@ -272,7 +248,6 @@ namespace WaveEngine.Components.Animation
             {
                 this.EndAnimation(sender, e);
             }
->>>>>>> Added all files in Component library
         }
 
         /// <summary>
@@ -285,11 +260,7 @@ namespace WaveEngine.Components.Animation
         /// </remarks>
         protected override void Update(TimeSpan gameTime)
         {
-<<<<<<< HEAD
-            this.state.Update(gameTime.Milliseconds / 1000f * this.Speed);
-=======
             this.state.Update((float)gameTime.TotalSeconds * this.Speed);
->>>>>>> Added all files in Component library
             this.state.Apply(this.Skeleton);
             this.Skeleton.UpdateWorldTransform();
         }

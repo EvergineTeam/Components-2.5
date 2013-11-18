@@ -157,7 +157,7 @@ namespace WaveEngine.Components.Graphics2D
         /// <summary>
         /// The vertex buffer
         /// </summary>
-        private DynamicVertexBuffer<VertexPositionColorTexture> vertexBuffer;
+        private DynamicVertexBuffer vertexBuffer;
 
         /// <summary>
         /// The settings
@@ -654,8 +654,8 @@ namespace WaveEngine.Components.Graphics2D
                 this.vertices[i].TexCoord = TEXCOORD4;
             }
 
-            this.vertexBuffer = new DynamicVertexBuffer<VertexPositionColorTexture>(VertexPositionColorTexture.VertexFormat);
-            this.vertexBuffer.SetData(this.numVertices, this.vertices);
+            this.vertexBuffer = new DynamicVertexBuffer(VertexPositionColorTexture.VertexFormat);
+            this.vertexBuffer.SetData(this.vertices, this.numVertices);
             this.GraphicsDevice.BindVertexBuffer(this.vertexBuffer);
         }
 
@@ -918,7 +918,7 @@ namespace WaveEngine.Components.Graphics2D
             {
                 this.Material.Material.Apply(this.RenderManager);
 
-                this.vertexBuffer.SetData(this.numVertices, this.vertices);
+                this.vertexBuffer.SetData(this.vertices, this.numVertices);
                 this.GraphicsDevice.BindVertexBuffer(this.vertexBuffer);
                 this.GraphicsDevice.DrawVertexBuffer(
                                           this.numVertices,

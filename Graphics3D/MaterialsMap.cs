@@ -44,11 +44,14 @@ namespace WaveEngine.Components.Graphics3D
 #if METRO
         private readonly string defaultTextureResourcePath = "WaveEngineMetro.Components.Resources.DefaultTexture.wpk";
 #endif
-#if ANDROID
+#if OUYA
+        private readonly string defaultTextureResourcePath = "WaveEngineOUYA.Components.Resources.DefaultTexture.wpk";
+#elif ANDROID
         private readonly string defaultTextureResourcePath = "WaveEngineAndroid.Components.Resources.DefaultTexture.wpk";
-#endif
-#if IOS
+#elif IOS
         private readonly string defaultTextureResourcePath = "WaveEngineiOS.Components.Resources.DefaultTexture.wpk";
+#elif MAC
+		private readonly string defaultTextureResourcePath = "WaveEngineMac.Components.Resources.DefaultTexture.wpk";
 #endif
 
         /// <summary>

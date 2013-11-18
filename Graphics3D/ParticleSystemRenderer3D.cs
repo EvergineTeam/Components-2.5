@@ -115,7 +115,7 @@ namespace WaveEngine.Components.Graphics3D
         /// <summary>
         /// The vertex buffer
         /// </summary>
-        private DynamicVertexBuffer<VertexPositionColorTexture> vertexBuffer;
+        private DynamicVertexBuffer vertexBuffer;
 
         /// <summary>
         /// The settings
@@ -654,8 +654,8 @@ namespace WaveEngine.Components.Graphics3D
             }
 
             this.vertices = new VertexPositionColorTexture[this.numVertices];
-            this.vertexBuffer = new DynamicVertexBuffer<VertexPositionColorTexture>(VertexPositionColorTexture.VertexFormat);
-            this.vertexBuffer.SetData(this.numVertices, this.vertices);
+            this.vertexBuffer = new DynamicVertexBuffer(VertexPositionColorTexture.VertexFormat);
+            this.vertexBuffer.SetData(this.vertices, this.numVertices);
             this.GraphicsDevice.BindVertexBuffer(this.vertexBuffer);
         }
 
@@ -839,7 +839,7 @@ namespace WaveEngine.Components.Graphics3D
 
                 p.Color = p.CurrentColor;
 
-                Matrix.CreateFromYawPitchRoll(this.Transform.Rotation.X, this.Transform.Rotation.Y, this.Transform.Rotation.Z, out this.rotationMatrix);
+                Matrix.CreateFromYawPitchRoll(this.Transform.Rotation.Y, this.Transform.Rotation.X, this.Transform.Rotation.Z, out this.rotationMatrix);
             }
         }
 
@@ -942,7 +942,7 @@ namespace WaveEngine.Components.Graphics3D
                 this.MaterialMap.DefaultMaterial.Matrices.World = Matrix.Identity;
                 this.MaterialMap.DefaultMaterial.Apply(this.RenderManager);
 
-                this.vertexBuffer.SetData(this.numVertices, this.vertices);
+                this.vertexBuffer.SetData(this.vertices, this.numVertices);
                 this.GraphicsDevice.BindVertexBuffer(this.vertexBuffer);
                 this.GraphicsDevice.DrawVertexBuffer(
                                           this.numVertices,

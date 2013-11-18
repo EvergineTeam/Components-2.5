@@ -25,6 +25,11 @@ namespace WaveEngine.Components.Cameras
     public class FreeCameraBehavior : Behavior
     {
         /// <summary>
+        /// Stick threshold
+        /// </summary>
+        private const float StickThreshold = 0.1f;
+
+        /// <summary>
         /// The camera to move.
         /// </summary>
         [RequiredComponent]
@@ -146,6 +151,11 @@ namespace WaveEngine.Components.Cameras
         private float rotationSpeed = .16f;
 
         /// <summary>
+        /// GamePad speed movement
+        /// </summary>
+        private float gamepadRotationSpeed = .75f;
+
+        /// <summary>
         ///     Speed of the movement
         /// </summary>
         private float speed = 20f;
@@ -198,6 +208,25 @@ namespace WaveEngine.Components.Cameras
             set
             {
                 this.rotationSpeed = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the gamepad rotation speed.
+        /// </summary>
+        /// <value>
+        /// The rotation speed.
+        /// </value>
+        public float GamepadRotationSpeed
+        {
+            get
+            {
+                return this.gamepadRotationSpeed;
+            }
+
+            set
+            {
+                this.gamepadRotationSpeed = value;
             }
         }
 
@@ -468,6 +497,127 @@ namespace WaveEngine.Components.Cameras
                 {
                     this.isDragging = false;
                 }
+            }
+
+            if (this.input.GamePadState.IsConnected && this.input.MouseState.IsConnected)
+            {
+                /////////////////////////////////////////////
+                // Position Camera
+                /////////////////////////////////////////////
+                GamePadState gamePadState = this.input.GamePadState;
+
+                Vector2 leftStick = gamePadState.ThumbStricks.Left;
+
+                float threshold = 0.1f;
+
+                if (leftStick.Y > threshold)
+                {
+                    // Manual inline: position += speed * forward;
+                    this.position.X = this.position.X + (amount * this.speed * this.forward.X * leftStick.Y);
+                    this.position.Y = this.position.Y + (amount * this.speed * this.forward.Y * leftStick.Y);
+                    this.position.Z = this.position.Z + (amount * this.speed * this.forward.Z * leftStick.Y);
+                    this.UpdateCameraPosition();
+                }
+                else if (leftStick.Y < -threshold)
+                {
+                    // Manual inline: position -= speed * forward;
+                    this.position.X = this.position.X + (amount * this.speed * this.forward.X * leftStick.Y);
+                    this.position.Y = this.position.Y + (amount * this.speed * this.forward.Y * leftStick.Y);
+                    this.position.Z = this.position.Z + (amount * this.speed * this.forward.Z * leftStick.Y);
+                    this.UpdateCameraPosition();
+                }
+
+                if (leftStick.X > threshold)
+                {
+                    // Manual inline: position -= speed * right;
+                    this.position.X = this.position.X + (amount * this.speed * this.right.X * leftStick.X);
+                    this.position.Y = this.position.Y + (amount * this.speed * this.right.Y * leftStick.X);
+                    this.position.Z = this.position.Z + (amount * this.speed * this.right.Z * leftStick.X);
+                    this.UpdateCameraPosition();
+                }
+                else if (leftStick.X < -threshold)
+                {
+                    // Manual inline: position += speed * right;
+                    this.position.X = this.position.X + (amount * this.speed * this.right.X * leftStick.X);
+                    this.position.Y = this.position.Y + (amount * this.speed * this.right.Y * leftStick.X);
+                    this.position.Z = this.position.Z + (amount * this.speed * this.right.Z * leftStick.X);
+                    this.UpdateCameraPosition();
+                }
+
+                /////////////////////////////////////////////
+                // LookAT
+                /////////////////////////////////////////////
+                Vector2 rightStick = gamePadState.ThumbStricks.Right;
+                this.xDifference = rightStick.X;
+                this.yDifference = -rightStick.Y;
+
+                // Calculated yaw and pitch
+                this.yaw = this.yaw - (this.xDifference * amount * this.gamepadRotationSpeed);
+                this.pitch = this.pitch - (this.yDifference * amount * this.gamepadRotationSpeed);
+
+                // Manual inline: forwardNormalizedVector = cameraRotation.Forward;
+                this.forwardNormalizedVector.X = this.cameraMatrixRotation.Forward.X;
+                this.forwardNormalizedVector.Y = this.cameraMatrixRotation.Forward.Y;
+                this.forwardNormalizedVector.Z = this.cameraMatrixRotation.Forward.Z;
+                this.forwardNormalizedVector.Normalize();
+
+                // Manual inline: rightNormalizedVector = cameraRotation.Right;
+                this.rightNormalizedVector.X = this.cameraMatrixRotation.Right.X;
+                this.rightNormalizedVector.Y = this.cameraMatrixRotation.Right.Y;
+                this.rightNormalizedVector.Z = this.cameraMatrixRotation.Right.Z;
+                this.rightNormalizedVector.Normalize();
+
+                // Manual inline: upNormalizedVector = cameraMatrixRotation.Up;
+                this.upNormalizedVector.X = this.cameraMatrixRotation.Up.X;
+                this.upNormalizedVector.Y = this.cameraMatrixRotation.Up.Y;
+                this.upNormalizedVector.Z = this.cameraMatrixRotation.Up.Z;
+                this.upNormalizedVector.Normalize();
+
+                // Calculate the new camera matrix angle with the normalized vectors
+                Matrix.CreateFromAxisAngle(
+                    ref this.rightNormalizedVector, this.pitch, out this.tempRotationMatrix);
+                Matrix.Multiply(
+                    ref this.cameraMatrixRotation,
+                    ref this.tempRotationMatrix,
+                    out this.cameraMatrixRotation);
+
+                Matrix.CreateFromAxisAngle(
+                    ref this.upNormalizedVector, this.yaw, out this.tempRotationMatrix);
+                Matrix.Multiply(
+                    ref this.cameraMatrixRotation,
+                    ref this.tempRotationMatrix,
+                    out this.cameraMatrixRotation);
+
+                Matrix.CreateFromAxisAngle(
+                    ref this.forwardNormalizedVector, 0f, out this.tempRotationMatrix);
+                Matrix.Multiply(
+                    ref this.cameraMatrixRotation,
+                    ref this.tempRotationMatrix,
+                    out this.cameraMatrixRotation);
+
+                // Restore the yaw and pitch
+                this.yaw = 0.0f;
+                this.pitch = 0.0f;
+
+                // Manual inline: forward = cameraRotation.Forward;
+                this.forward.X = this.cameraMatrixRotation.Forward.X;
+                this.forward.Y = this.cameraMatrixRotation.Forward.Y;
+                this.forward.Z = this.cameraMatrixRotation.Forward.Z;
+
+                // Manual inline: right = cameraRotation.Right;
+                this.right.X = this.cameraMatrixRotation.Right.X;
+                this.right.Y = this.cameraMatrixRotation.Right.Y;
+                this.right.Z = this.cameraMatrixRotation.Right.Z;
+
+                // Update the current look at
+                this.UpdateLookAt();
+
+                // Restore the current matrix rotation
+                this.cameraMatrixRotation =
+                    Matrix.Invert(
+                        Matrix.CreateLookAt(this.Camera.Position, this.Camera.LookAt, this.Camera.UpVector));
+
+                this.lastMouseState = this.currentMouseState;
             }
         }
 

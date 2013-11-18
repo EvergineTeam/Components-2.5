@@ -9,7 +9,11 @@
 #region Using Statements
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Linq;
 using WaveEngine.Common.Graphics;
 using WaveEngine.Common.Math;
 using WaveEngine.Components.Resources;
@@ -221,6 +225,18 @@ namespace WaveEngine.Components.UI
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [rich text enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [rich text enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RichTextEnabled
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the width of the line.
         /// </summary>
         /// <value>
@@ -404,65 +420,233 @@ namespace WaveEngine.Components.UI
             {
                 this.FontHeight = this.SpriteFont.MeasureString("A").Y;
 
-                if (this.textWrapping)
+                if (!this.RichTextEnabled)
                 {
-                    // Filters
-                    this.text = this.text.Replace("\r\n", " /n ");
-                    this.text = this.text.Replace("\n", " /n ");
-                    this.text = this.text.Replace("/n", " /n ");
-                    
-                    string[] words = this.text.Split(' ');
-                    var stringBuilder = new StringBuilder();
-
-                    int i = 0;
-                    while (i < words.Length)
+                    if (this.textWrapping)
                     {
-                        do
+                        // Filters
+                        this.text = this.text.Replace("\r\n", " /n ");
+                        this.text = this.text.Replace("\n", " /n ");
+                        this.text = this.text.Replace("/n", " /n ");
+
+                        string[] words = this.text.Split(' ');
+                        var stringBuilder = new StringBuilder();
+
+                        int i = 0;
+                        while (i < words.Length)
                         {
-                            if (words[i].Equals("/n"))
+                            do
                             {
+                                if (words[i].Equals("/n"))
+                                {
+                                    i++;
+                                    break;
+                                }
+
+                                string nextString = string.Format("{0}{1} ", stringBuilder, words[i]);
+                                float lineSize = this.SpriteFont.MeasureString(nextString).X;
+                                if (stringBuilder.Length != 0 && lineSize > this.Width)
+                                {
+                                    break;
+                                }
+
+                                stringBuilder.Append(words[i]);
+                                stringBuilder.Append(" ");
                                 i++;
-                                break;
                             }
+                            while (i < words.Length);
 
-                            string nextString = string.Format("{0}{1} ", stringBuilder, words[i]);
-                            float lineSize = this.SpriteFont.MeasureString(nextString).X;
-                            if (stringBuilder.Length != 0 && lineSize > this.Width)
-                            {
-                                break;
-                            }
-
-                            stringBuilder.Append(words[i]);
-                            stringBuilder.Append(" ");
-                            i++;
+                            string text = stringBuilder.ToString();
+                            Vector2 size = this.SpriteFont.MeasureString(text);
+                            float offsetX = this.CalculateAlignmentOffset(size);
+                            this.LinesInfo.Add(new LineInfo(text, this.Foreground, size, offsetX));
+                            stringBuilder.Length = 0;
                         }
-                        while (i < words.Length);
 
-                        string text = stringBuilder.ToString();
-                        Vector2 size = this.SpriteFont.MeasureString(text);
-                        float offsetX = this.CalculateAlignmentOffset(size);
-                        this.LinesInfo.Add(new LineInfo(text, size, offsetX));
-                        stringBuilder.Length = 0;
-                    }
-
-                    this.Height = this.LinesInfo.Count * (this.FontHeight + this.lineSpacing);
-                }
-                else
-                {
-                    Vector2 size = this.SpriteFont.MeasureString(this.text);
-                    float offsetX = this.CalculateAlignmentOffset(size);
-                    this.LinesInfo.Add(new LineInfo(this.text, size, offsetX));
-
-                    if (this.lineWidth != -1)
-                    {
-                        this.Width = this.lineWidth;
+                        this.Height = this.LinesInfo.Count * (this.FontHeight + this.lineSpacing);
                     }
                     else
                     {
-                        this.Width = size.X;
+                        Vector2 size = this.SpriteFont.MeasureString(this.text);
+                        float offsetX = this.CalculateAlignmentOffset(size);
+                        this.LinesInfo.Add(new LineInfo(this.text, this.Foreground, size, offsetX));
+
+                        if (this.lineWidth != -1)
+                        {
+                            this.Width = this.lineWidth;
+                        }
+                        else
+                        {
+                            this.Width = size.X;
+                        }
+
+                        this.Height = size.Y;
+                    }
+                }
+                else
+                {
+                    if (this.textWrapping)
+                    {
+                        // Filters
+                        this.text = this.text.Replace("\r\n", " /n ");
+                        this.text = this.text.Replace("\n", " /n ");
+                        this.text = this.text.Replace("/n", " /n ");
+                    }
+                    else
+                    {
+                        this.Width = 0;
                     }
 
-                    this.Height = size.Y;
+                    XDocument document = XDocument.Parse("<p>" + this.text + "</p>");
+
+                    float acumulatedSize = 0;
+                    int lineInfoId = 0;
+                    this.LinesInfo.Add(new LineInfo(0));
+
+                    XNode child = document.Root.FirstNode;
+                    while (child != null)
+                    {
+                        Vector2 size;
+                        Color color;
+                        string textValue;
+
+                        switch (child.NodeType)
+                        {
+                            case XmlNodeType.Element:
+                                XElement element = child as XElement;
+                                if (element.Name == "rtf" && element.Attribute("Foreground") != null)
+                                {
+                                    // Sets foreground 
+                                    var colorAttribute = element.Attribute("Foreground");
+                                    color = new Color(colorAttribute.Value);
+                                }
+                                else
+                                {
+                                    color = this.Foreground;
+                                }
+
+                                textValue = element.Value;
+                                break;
+
+                            case XmlNodeType.Text:
+                                color = this.Foreground;
+                                XText xText = child as XText;
+                                textValue = xText.Value;
+                                break;
+
+                            default:
+                                color = this.Foreground;
+                                textValue = string.Empty;
+                                break;
+                        }
+
+                        string[] textFragments;                        
+
+                        if (!this.textWrapping)
+                        {
+                            textFragments = textValue.Split('\n');
+                        }
+                        else
+                        {
+                            textFragments = textValue.Split(' ');
+                        }
+
+                        var stringBuilder = new StringBuilder();
+
+                        int i = 0;
+                        while (i < textFragments.Length)
+                        {
+                            if (this.textWrapping)
+                            {
+                                stringBuilder.Clear();
+                                do
+                                {
+                                    if (textFragments[i].Equals("/n"))
+                                    {
+                                        i++;
+                                        break;
+                                    }
+
+                                    string currentFragment = textFragments[i].Trim();
+
+                                    if (currentFragment == string.Empty)
+                                    {
+                                        i++;
+                                        continue;
+                                    }
+
+                                    string nextString = string.Format("{0}{1} ", stringBuilder, currentFragment);
+                                    float lineSize = this.SpriteFont.MeasureString(nextString).X + acumulatedSize;
+                                    if (stringBuilder.Length != 0 && lineSize > this.Width)
+                                    {
+                                        break;
+                                    }
+
+                                    stringBuilder.Append(currentFragment);
+                                    i++;
+
+                                   stringBuilder.Append(" ");
+                                }
+                                while (i < textFragments.Length);
+                            }
+                            else
+                            {
+                                stringBuilder.Clear();
+                                stringBuilder.Append(textFragments[i]);
+                                i++;
+                            }
+
+                            size = this.SpriteFont.MeasureString(stringBuilder.ToString());
+                            
+                            LineInfo lineInfo = this.LinesInfo[lineInfoId];
+                            lineInfo.AddText(stringBuilder.ToString(), color, size);
+                            this.LinesInfo[lineInfoId] = lineInfo;
+
+                            acumulatedSize += size.X;
+
+                            if (!this.textWrapping)
+                            {
+                                this.Width = MathHelper.Max(acumulatedSize, this.Width);
+                            }
+
+                            if (textFragments.Length > 1 && i < textFragments.Length)
+                            {
+                                this.LinesInfo.Add(new LineInfo(0));
+                                lineInfoId++;
+
+                                acumulatedSize = 0;
+                            }
+                        }
+
+                        child = child.NextNode;
+                    }
+
+                    ////Debug.WriteLine("{");
+                    float height = 0;
+                    for (int i = 0; i < this.LinesInfo.Count; i++)
+                    {
+                        LineInfo info = this.LinesInfo[i];
+                        info.AlignmentOffsetX = this.CalculateAlignmentOffset(info.Size);
+                        this.LinesInfo[i] = info;
+
+                        height += info.Size.Y;
+                        
+                        ////Debug.WriteLine(string.Format("\tLineInfo [Size: {0} Offset: {1}]", info.Size, info.AlignmentOffsetX));
+
+                        ////foreach (var fragment in info.SubTextList)
+                        ////{
+                        ////    Debug.WriteLine(string.Format("\t\tFragment [Size: {0} Text: \"{1}\"]", fragment.Size, fragment.Text));
+                        ////}
+                    }
+
+                    Debug.WriteLine("}");
+
+                    this.Height = height + (this.LineSpacing * this.LinesInfo.Count);
+
+                    if (this.Owner != null && this.Owner.Parent != null)
+                    {
+                        this.Arrange(this.Owner.Parent.FindComponent<Transform2D>().Rectangle);
+                    }
                 }
             }
         }
@@ -498,6 +682,7 @@ namespace WaveEngine.Components.UI
                     break;
             }
 
+            // REVIEW: Currently we take the floor of the offset. It is just a workaround to avoid letter cutting
             return offsetX;
         }
 

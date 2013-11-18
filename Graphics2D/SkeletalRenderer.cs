@@ -54,11 +54,7 @@ namespace WaveEngine.Components.Graphics2D
         /// <summary>
         /// The material
         /// </summary>
-<<<<<<< HEAD
-        private SpineMaterial material;
-=======
         private BasicMaterial2D material;
->>>>>>> Added all files in Component library
 
         /// <summary>
         /// The draw order
@@ -93,7 +89,7 @@ namespace WaveEngine.Components.Graphics2D
         /// <summary>
         /// The vertex buffer
         /// </summary>
-        private DynamicVertexBuffer<VertexPositionColorTexture> vertexBuffer;
+        private DynamicVertexBuffer vertexBuffer;
 
         #region Cached fields
         /// <summary>
@@ -216,11 +212,7 @@ namespace WaveEngine.Components.Graphics2D
             : base("SkeletalRenderer" + instances++, layerType)
         {
             this.Transform2D = null;
-<<<<<<< HEAD
-            this.material = new SpineMaterial();
-=======
             this.material = new BasicMaterial2D();
->>>>>>> Added all files in Component library
             this.position = new Vector2();
             this.scale = new Vector2(1);
             this.ActualDebugMode = DebugMode.Bones;
@@ -298,8 +290,8 @@ namespace WaveEngine.Components.Graphics2D
             this.GraphicsDevice.BindIndexBuffer(this.indexBuffer);
 
             this.vertices = new VertexPositionColorTexture[this.numVertices];
-            this.vertexBuffer = new DynamicVertexBuffer<VertexPositionColorTexture>(VertexPositionColorTexture.VertexFormat);
-            this.vertexBuffer.SetData(this.numVertices, this.vertices);
+            this.vertexBuffer = new DynamicVertexBuffer(VertexPositionColorTexture.VertexFormat);
+            this.vertexBuffer.SetData(this.vertices, this.numVertices);
             this.GraphicsDevice.BindVertexBuffer(this.vertexBuffer);
         }
 
@@ -400,7 +392,7 @@ namespace WaveEngine.Components.Graphics2D
             this.numPrimitives = j * 2;
             this.numVertices = j * 4;
 
-            this.vertexBuffer.SetData(this.numVertices, this.vertices);
+            this.vertexBuffer.SetData(this.vertices, this.numVertices);
             this.GraphicsDevice.BindVertexBuffer(this.vertexBuffer);
             this.GraphicsDevice.DrawVertexBuffer(
                                       this.numVertices,
@@ -442,12 +434,6 @@ namespace WaveEngine.Components.Graphics2D
                         Vector2.Transform(ref start, ref this.localWorld, out start);
                         Vector2.Transform(ref end, ref this.localWorld, out end);
 
-<<<<<<< HEAD
-                        start.Y = platform.ScreenHeight - start.Y;
-                        end.Y = platform.ScreenHeight - end.Y;
-
-=======
->>>>>>> Added all files in Component library
                         RenderManager.LineBatch2D.DrawLine(ref start, ref end, ref color);
                     }
                 }
@@ -474,12 +460,6 @@ namespace WaveEngine.Components.Graphics2D
                         Vector2.Transform(ref start, ref this.localWorld, out start);
                         Vector2.Transform(ref end, ref this.localWorld, out end);
 
-<<<<<<< HEAD
-                        start.Y = platform.ScreenHeight - start.Y;
-                        end.Y = platform.ScreenHeight - end.Y;
-
-=======
->>>>>>> Added all files in Component library
                         RenderManager.LineBatch2D.DrawLine(ref start, ref end, ref color);
 
                         // Edge2
@@ -491,12 +471,6 @@ namespace WaveEngine.Components.Graphics2D
                         Vector2.Transform(ref start, ref this.localWorld, out start);
                         Vector2.Transform(ref end, ref this.localWorld, out end);
 
-<<<<<<< HEAD
-                        start.Y = platform.ScreenHeight - start.Y;
-                        end.Y = platform.ScreenHeight - end.Y;
-
-=======
->>>>>>> Added all files in Component library
                         RenderManager.LineBatch2D.DrawLine(ref start, ref end, ref color);
 
                         // Edge3
@@ -508,12 +482,6 @@ namespace WaveEngine.Components.Graphics2D
                         Vector2.Transform(ref start, ref this.localWorld, out start);
                         Vector2.Transform(ref end, ref this.localWorld, out end);
 
-<<<<<<< HEAD
-                        start.Y = platform.ScreenHeight - start.Y;
-                        end.Y = platform.ScreenHeight - end.Y;
-
-=======
->>>>>>> Added all files in Component library
                         RenderManager.LineBatch2D.DrawLine(ref start, ref end, ref color);
 
                         // Edge4
@@ -525,12 +493,6 @@ namespace WaveEngine.Components.Graphics2D
                         Vector2.Transform(ref start, ref this.localWorld, out start);
                         Vector2.Transform(ref end, ref this.localWorld, out end);
 
-<<<<<<< HEAD
-                        start.Y = platform.ScreenHeight - start.Y;
-                        end.Y = platform.ScreenHeight - end.Y;
-
-=======
->>>>>>> Added all files in Component library
                         RenderManager.LineBatch2D.DrawLine(ref start, ref end, ref color);
                     }
                 }

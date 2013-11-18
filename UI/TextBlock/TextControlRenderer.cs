@@ -54,11 +54,6 @@ namespace WaveEngine.Components.UI
         /// </summary>
         private Vector2 origin;
 
-        /// <summary>
-        /// The color
-        /// </summary>
-        private Color color;
-
         #region Initialize
 
         /// <summary>
@@ -120,25 +115,27 @@ namespace WaveEngine.Components.UI
                 this.origin.X = transformOrigin.X * this.TextBlock.Width;
                 this.origin.Y = transformOrigin.Y * this.TextBlock.Height;
 
-                float opacity = this.RenderManager.DebugLines ? this.DebugAlpha : this.Transform2D.Opacity;
-                this.color = this.TextBlock.Foreground * opacity;
-
                 Vector2 aux;
                 for (int i = 0; i < this.TextBlock.LinesInfo.Count; i++)
                 {
                     aux = this.position;
-                    aux.X += this.TextBlock.LinesInfo[i].AlignmentOffsetX * this.Transform2D.XScale;
+                    aux.X = this.position.X + (this.TextBlock.LinesInfo[i].AlignmentOffsetX * this.Transform2D.XScale);
 
-                    this.spriteBatch.DrawStringVM(
-                        this.TextBlock.SpriteFont,
-                        this.TextBlock.LinesInfo[i].Text,
-                        aux,
-                        this.color,
-                        this.Transform2D.Rotation,
-                        this.origin,
-                        this.scale,
-                        this.Transform2D.Effect,
-                        this.Transform2D.DrawOrder);
+                    for (int j = 0; j < this.TextBlock.LinesInfo[i].SubTextList.Count; j++)
+                    {
+                        this.spriteBatch.DrawStringVM(
+                            this.TextBlock.SpriteFont,
+                            this.TextBlock.LinesInfo[i].SubTextList[j].Text,
+                            aux,
+                            this.TextBlock.LinesInfo[i].SubTextList[j].Color,
+                            this.Transform2D.Rotation,
+                            this.origin,
+                            this.scale,
+                            this.Transform2D.Effect,
+                            this.Transform2D.DrawOrder);
+
+                        aux.X = aux.X + this.TextBlock.LinesInfo[i].SubTextList[j].Size.X;
+                    }
 
                     this.position.Y = this.position.Y + ((this.TextBlock.FontHeight + this.TextBlock.LineSpacing) * this.Transform2D.YScale);
                 }

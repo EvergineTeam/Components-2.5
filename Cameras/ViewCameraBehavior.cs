@@ -72,11 +72,6 @@ namespace WaveEngine.Components.Cameras
         private float phi;
 
         /// <summary>
-        /// The radious
-        /// </summary>
-        private float radious;
-
-        /// <summary>
         /// The initial position.
         /// </summary>
         private Vector3 initialPosition;
@@ -104,7 +99,6 @@ namespace WaveEngine.Components.Cameras
             base.Initialize();
             this.theta = 0;
             this.phi = 0;
-            this.radious = Vector3.Distance(this.Camera.Position, this.Camera.LookAt);
             this.initialPosition = this.Camera.Position - this.Camera.LookAt;
         }
 

@@ -314,7 +314,33 @@ namespace WaveEngine.Components.Gestures
         {
             base.ResolveDependencies();
 
-            if (this.Owner != null)
+            this.UpdateTouchOrder();
+
+            this.Owner.FindComponent<Transform2D>().PropertyChanged += this.DrawOrderPropertyChanged;
+
+            this.touchManager = WaveServices.TouchPanel;
+            this.touchManager.Subscribe(this);
+        }
+
+        /// <summary>
+        /// Draws the order property changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
+        private void DrawOrderPropertyChanged(object sender, ref DependencyPropertyChangedEventArgs e)
+        {
+            if (e.Property == WaveEngine.Framework.Graphics.Transform2D.DrawOrderProperty)
+            {
+                this.UpdateTouchOrder();
+            }
+        }
+
+        /// <summary>
+        /// Updates the touch order.
+        /// </summary>
+        public void UpdateTouchOrder()
+        {
+            if (!this.ManualTouchOrder && this.Owner != null)
             {
                 int order = 0;
                 int numberOfLevels = 100;
@@ -338,9 +364,6 @@ namespace WaveEngine.Components.Gestures
 
                 this.TouchOrder = order;
             }
-
-            this.touchManager = WaveServices.TouchPanel;
-            this.touchManager.Subscribe(this);
         }
 
         /// <summary>
@@ -470,8 +493,7 @@ namespace WaveEngine.Components.Gestures
                             this.Transform2D.Y += this.gestureSample.DeltaTranslation.Y;
                         }
 
-                        this.gestureSample.Type = GestureType.Drag;
-                        int v = (int)this.gestureSample.Type;
+                        this.gestureSample.Type = GestureType.Drag;                        
 
                         // Lanzamos el evento si alguien está subscrito.
                         this.InvokeEvent(this.TouchMoved, this.gestureSample);
@@ -718,5 +740,17 @@ namespace WaveEngine.Components.Gestures
             }
         }
         #endregion
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [manual touch order].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [manual touch order]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ManualTouchOrder
+        {
+            get;
+            set;
+        }
     }
 }

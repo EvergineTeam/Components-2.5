@@ -58,16 +58,6 @@ namespace WaveEngine.Components.Animation
         private string currentAnimation;
 
         /// <summary>
-        ///     The frame height
-        /// </summary>
-        private int frameHeight;
-
-        /// <summary>
-        ///     The frame width
-        /// </summary>
-        private int frameWidth;
-
-        /// <summary>
         ///     The state
         /// </summary>
         private AnimationState state;
@@ -86,11 +76,6 @@ namespace WaveEngine.Components.Animation
         /// Sprite sheet loader.
         /// </summary>
         private ISpriteSheetLoader spriteSheetLoader;
-        
-        /// <summary>
-        /// Content-relative path to sprite sheet data.
-        /// </summary>
-        private string path;
         
         /// <summary>
         /// Internal frames calc for further dispatching on Add() calls.
@@ -128,17 +113,9 @@ namespace WaveEngine.Components.Animation
                 this.currentAnimation = value;
                 this.animations[this.currentAnimation].CurrentFrameIndex = 0;
 
-                if (this.Transform2D == null)
-                {
-                    this.frameWidth = this.animations[this.currentAnimation].FrameWidth;
-                    this.frameHeight = this.animations[this.currentAnimation].FrameHeight;
-                }
-                else
-                {
-                    this.Transform2D.Rectangle = new RectangleF();
-                    this.Transform2D.Rectangle.Width = this.animations[this.currentAnimation].FrameWidth;
-                    this.Transform2D.Rectangle.Height = this.animations[this.currentAnimation].FrameHeight;
-                }
+                this.Transform2D.Rectangle = new RectangleF();
+                this.Transform2D.Rectangle.Width = this.animations[this.currentAnimation].FrameWidth;
+                this.Transform2D.Rectangle.Height = this.animations[this.currentAnimation].FrameHeight;
             }
         }
 
@@ -185,7 +162,6 @@ namespace WaveEngine.Components.Animation
                 throw new ArgumentException("Sprite sheet loader cannot be null.", "loader");
             }
 
-            this.path = path;
             this.spriteSheetLoader = loader;
             this.frames = this.spriteSheetLoader.Parse(path);
         }
@@ -344,16 +320,8 @@ namespace WaveEngine.Components.Animation
             Initialize()
         {
             this.Transform2D.Rectangle = new RectangleF();
-            if (this.CurrentRectangle != null)
-            {
-                this.Transform2D.Rectangle.Width = this.CurrentRectangle.Width;
-                this.Transform2D.Rectangle.Height = this.CurrentRectangle.Height;
-            }
-            else
-            {
-                this.Transform2D.Rectangle.Width = this.frameWidth;
-                this.Transform2D.Rectangle.Height = this.frameHeight;
-            }
+            this.Transform2D.Rectangle.Width = this.CurrentRectangle.Width;
+            this.Transform2D.Rectangle.Height = this.CurrentRectangle.Height;
         }
 
         /// <summary>

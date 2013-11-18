@@ -40,11 +40,14 @@ namespace WaveEngine.Components.Resources
 #if METRO
         private static readonly string defaultFontResourcePath = "WaveEngineMetro.Components.Resources.DefaultFont.wpk";
 #endif
-#if ANDROID
+#if OUYA
+        private static readonly string defaultFontResourcePath = "WaveEngineOUYA.Components.Resources.DefaultFont.wpk";
+#elif ANDROID
         private static readonly string defaultFontResourcePath = "WaveEngineAndroid.Components.Resources.DefaultFont.wpk";
-#endif
-#if IOS
+#elif IOS
         private static readonly string defaultFontResourcePath = "WaveEngineiOS.Components.Resources.DefaultFont.wpk";
+#elif MAC
+		private static readonly string defaultFontResourcePath = "WaveEngineMac.Components.Resources.DefaultFont.wpk";
 #endif
 
         /// <summary>

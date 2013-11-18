@@ -241,7 +241,7 @@ namespace WaveEngine.Components.UI
                     posX = lineInfo.AlignmentOffsetX;
                     float maxOffsetX = lineInfo.AlignmentOffsetX + lineInfo.Size.X;
                     int characterIndex = 0;
-                    string currentLineText = lineInfo.Text;
+                    string currentLineText = lineInfo.SubTextList[0].Text;
                     float characterOffset = this.textControl.SpriteFont.MeasureString(currentLineText[characterIndex].ToString()).X;
                     while (posX <= maxOffsetX &&
                            posX + (characterOffset / 2) < clickX)
@@ -263,7 +263,7 @@ namespace WaveEngine.Components.UI
                     this.textBeforeCursor = string.Empty;
                     for (int i = 0; i < lineIndex; i++)
                     {
-                        this.textBeforeCursor += this.textControl.LinesInfo[i].Text;
+                        this.textBeforeCursor += this.textControl.LinesInfo[i].SubTextList[0].Text;
                     }
 
                     this.textBeforeCursor += currentLineText.Substring(0, characterIndex);
@@ -272,7 +272,7 @@ namespace WaveEngine.Components.UI
                     this.textAfterCursor = currentLineText.Substring(characterIndex);
                     for (int i = lineIndex + 1; i < this.textControl.LinesInfo.Count; i++)
                     {
-                        this.textAfterCursor += this.textControl.LinesInfo[i].Text;
+                        this.textAfterCursor += this.textControl.LinesInfo[i].SubTextList[0].Text;
                     }
                 }
             }
@@ -297,7 +297,57 @@ namespace WaveEngine.Components.UI
 
             if (this.inputService.KeyboardState.IsConnected && !this.isReadOnly && this.IsFocus)
             {
-                if (this.inputService.KeyboardState.A == ButtonState.Pressed &&
+                if (this.inputService.KeyboardState.D1 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.D1 != ButtonState.Pressed)
+                {
+                    this.AppendCharacter('1');
+                }
+                else if (this.inputService.KeyboardState.D2 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.D2 != ButtonState.Pressed)
+                {
+                    this.AppendCharacter('2');
+                }
+                else if (this.inputService.KeyboardState.D3 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.D3 != ButtonState.Pressed)
+                {
+                    this.AppendCharacter('3');
+                }
+                else if (this.inputService.KeyboardState.D4 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.D4 != ButtonState.Pressed)
+                {
+                    this.AppendCharacter('4');
+                }
+                else if (this.inputService.KeyboardState.D5 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.D5 != ButtonState.Pressed)
+                {
+                    this.AppendCharacter('5');
+                }
+                else if (this.inputService.KeyboardState.D6 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.D6 != ButtonState.Pressed)
+                {
+                    this.AppendCharacter('6');
+                }
+                else if (this.inputService.KeyboardState.D7 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.D7 != ButtonState.Pressed)
+                {
+                    this.AppendCharacter('7');
+                }
+                else if (this.inputService.KeyboardState.D8 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.D8 != ButtonState.Pressed)
+                {
+                    this.AppendCharacter('8');
+                }
+                else if (this.inputService.KeyboardState.D9 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.D9 != ButtonState.Pressed)
+                {
+                    this.AppendCharacter('9');
+                }
+                else if (this.inputService.KeyboardState.D0 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.D0 != ButtonState.Pressed)
+                {
+                    this.AppendCharacter('0');
+                }
+                else if (this.inputService.KeyboardState.A == ButtonState.Pressed &&
                     this.beforeKeyboardState.A != ButtonState.Pressed)
                 {
                     this.AppendCharacter('a');
