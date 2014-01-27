@@ -156,10 +156,12 @@ namespace WaveEngine.Components.Primitives
             for (int i = 0; i <= tessellation; i++)
             {
                 float ti = (float)i / tessellation;
+                float uCoord = ti;
 
                 for (int j = 0; j <= tessellation; j++)
                 {
                     float tj = (float)j / tessellation;
+                    float vCoord = tj;
 
                     // Perform four horizontal bezier interpolations
                     // between the control points of this patch.
@@ -208,8 +210,13 @@ namespace WaveEngine.Components.Primitives
                         }
                     }
 
+                    if (isMirrored)
+                    {
+                        vCoord = -vCoord;
+                    }
+
                     // Create the vertex.
-                    this.AddVertex(position, normal, this.GetSphericalTexCoord(normal));
+                    this.AddVertex(position, normal, new Vector2(uCoord, vCoord));
                 }
             }
         }

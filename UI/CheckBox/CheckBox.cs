@@ -26,12 +26,13 @@ namespace WaveEngine.Components.UI
     /// </summary>
     public class CheckBox : UIBase
     {
+        #region Constants
+
         /// <summary>
         /// The instances
         /// </summary>
         private static int instances;
 
-        #region Constants
         /// <summary>
         /// The default margin
         /// </summary>
@@ -61,10 +62,32 @@ namespace WaveEngine.Components.UI
 
         #endregion
 
+        #region Variables
         /// <summary>
         /// The check box behavior
         /// </summary>
         private CheckBoxBehavior checkBoxBehavior;
+
+        /// <summary>
+        /// The grid panel
+        /// </summary>
+        private GridControl gridPanel;
+
+        /// <summary>
+        /// The text control
+        /// </summary>
+        private TextControl textControl;
+
+        /// <summary>
+        /// The image checked
+        /// </summary>
+        private ImageControl imageChecked;
+
+        /// <summary>
+        /// The image unchecked
+        /// </summary>
+        private ImageControl imageUnchecked;
+        #endregion
 
         #region Properties
 
@@ -318,10 +341,10 @@ namespace WaveEngine.Components.UI
                            .AddComponent(new GridControl(150, 42))
                            .AddComponent(new GridRenderer());
 
-            GridControl gridPanel = this.entity.FindComponent<GridControl>();
-            gridPanel.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Proportional) });
-            gridPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
-            gridPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Proportional) });
+            this.gridPanel = this.entity.FindComponent<GridControl>();
+            this.gridPanel.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Proportional) });
+            this.gridPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+            this.gridPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Proportional) });
 
             // Image Unchecked
             Entity imageUnCheckedEntity = new Entity("ImageUncheckedEntity")
@@ -336,9 +359,9 @@ namespace WaveEngine.Components.UI
                                     })
                                     .AddComponent(new ImageControlRenderer());
 
-            ImageControl imageUnchecked = imageUnCheckedEntity.FindComponent<ImageControl>();
-            imageUnchecked.SetValue(GridControl.RowProperty, 0);
-            imageUnchecked.SetValue(GridControl.ColumnProperty, 0);
+            this.imageUnchecked = imageUnCheckedEntity.FindComponent<ImageControl>();
+            this.imageUnchecked.SetValue(GridControl.RowProperty, 0);
+            this.imageUnchecked.SetValue(GridControl.ColumnProperty, 0);
 
             this.entity.AddChild(imageUnCheckedEntity);
 
@@ -357,9 +380,9 @@ namespace WaveEngine.Components.UI
                                     })
                                     .AddComponent(new ImageControlRenderer());
 
-            ImageControl imageChecked = imageCheckedEntity.FindComponent<ImageControl>();
-            imageChecked.SetValue(GridControl.RowProperty, 0);
-            imageChecked.SetValue(GridControl.ColumnProperty, 0);
+            this.imageChecked = imageCheckedEntity.FindComponent<ImageControl>();
+            this.imageChecked.SetValue(GridControl.RowProperty, 0);
+            this.imageChecked.SetValue(GridControl.ColumnProperty, 0);
 
             this.entity.AddChild(imageCheckedEntity);
 
@@ -376,9 +399,10 @@ namespace WaveEngine.Components.UI
                                     })
                                     .AddComponent(new TextControlRenderer());
 
-            TextControl textControl = textEntity.FindComponent<TextControl>();
-            textControl.SetValue(GridControl.RowProperty, 0);
-            textControl.SetValue(GridControl.ColumnProperty, 1);
+            this.textControl = textEntity.FindComponent<TextControl>();
+            this.textControl.SetValue(GridControl.RowProperty, 0);
+            this.textControl.SetValue(GridControl.ColumnProperty, 1);
+            this.textControl.OnWidthChanged += this.TextControl_OnWidthChanged;
 
             this.entity.AddChild(textEntity);
 
@@ -405,6 +429,32 @@ namespace WaveEngine.Components.UI
                 this.Checked(this, new BoolEventArgs(this.checkBoxBehavior.IsChecked));
             }
         }
+
+        /// <summary>
+        /// Texts the control_ on width changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="newWidth">The new width.</param>
+        private void TextControl_OnWidthChanged(object sender, float newWidth)
+        {
+            float totalSize;
+            float checkSize;
+            if (this.IsChecked)
+            {
+                checkSize = this.imageChecked.Width + this.imageChecked.Margin.Left + this.imageChecked.Margin.Right;
+            }
+            else
+            {
+                checkSize = this.imageUnchecked.Width + this.imageUnchecked.Margin.Left + this.imageUnchecked.Margin.Right;
+            }
+
+            float textSize = this.textControl.Width + this.textControl.Margin.Left + this.textControl.Margin.Right;
+
+            totalSize = checkSize + textSize;
+
+            this.gridPanel.Width = totalSize;
+        }
+
         #endregion
     }
 }

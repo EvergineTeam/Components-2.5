@@ -115,6 +115,8 @@ namespace WaveEngine.Components.UI
                 this.origin.X = transformOrigin.X * this.TextBlock.Width;
                 this.origin.Y = transformOrigin.Y * this.TextBlock.Height;
 
+                float opacity = this.RenderManager.DebugLines ? this.DebugAlpha : this.Transform2D.Opacity;
+
                 Vector2 aux;
                 for (int i = 0; i < this.TextBlock.LinesInfo.Count; i++)
                 {
@@ -127,7 +129,7 @@ namespace WaveEngine.Components.UI
                             this.TextBlock.SpriteFont,
                             this.TextBlock.LinesInfo[i].SubTextList[j].Text,
                             aux,
-                            this.TextBlock.LinesInfo[i].SubTextList[j].Color,
+                            this.TextBlock.LinesInfo[i].SubTextList[j].Color * opacity,
                             this.Transform2D.Rotation,
                             this.origin,
                             this.scale,

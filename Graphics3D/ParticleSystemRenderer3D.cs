@@ -22,7 +22,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using WaveRandom = WaveEngine.Framework.Services.Random;
 
-#if WINDOWS_PHONE7
+#if WINDOWS_PHONE
 using WaveEngine.Common.Helpers;
 #endif
 #endregion
@@ -555,7 +555,7 @@ namespace WaveEngine.Components.Graphics3D
 
             Layer layer = this.RenderManager.FindLayer(this.MaterialMap.DefaultMaterial.LayerType);
 
-            layer.AddDrawable(0, this);
+            layer.AddDrawable(0, this, this.SortId);
         }
         #endregion
 

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -6,14 +7,18 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 #if WINDOWS
 [assembly: AssemblyTitle("WaveEngine.Components")]
+#elif OUYA
+[assembly: AssemblyTitle("WaveEngineOUYA.Components")]
 #elif ANDROID
 [assembly: AssemblyTitle("WaveEngineAndroid.Components")]
 #elif IOS
 [assembly: AssemblyTitle("WaveEngineiOS.Components")]
 #elif METRO
 [assembly: AssemblyTitle("WaveEngineMetro.Components")]
-#elif WINDOWS_PHONE7
+#elif WINDOWS_PHONE
 [assembly: AssemblyTitle("WaveEngineWP.Components")]
+#elif MAC
+[assembly: AssemblyTitle("WaveEngineMac.Components")]
 #endif
 
 [assembly: AssemblyDescription("")]
@@ -41,4 +46,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.3.0.0")]

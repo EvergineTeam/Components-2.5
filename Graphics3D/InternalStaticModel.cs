@@ -190,27 +190,17 @@ namespace WaveEngine.Components.Graphics3D
 
                     byte[] dataHeader = reader.ReadBytes(8);
 
-                    // int parentBone = reader.ReadInt32();
                     int parentBone = BitConverter.ToInt32(dataHeader, 0);
-
-                    // int meshParts = reader.ReadInt32();
                     int meshParts = BitConverter.ToInt32(dataHeader, 4);
 
                     for (int j = 0; j < meshParts; j++)
                     {
                         byte[] dataPart = reader.ReadBytes(24);
 
-                        ////int vertexOffset = reader.ReadInt32();
                         int vertexOffset = BitConverter.ToInt32(dataPart, 0);
-                        ////int numVertices = reader.ReadInt32();
                         int numVertices = BitConverter.ToInt32(dataPart, 4);
-                        ////int startIndex = reader.ReadInt32();
                         int startIndex = BitConverter.ToInt32(dataPart, 8);
-                        ////int primitiveCount = reader.ReadInt32();
                         int primitiveCount = BitConverter.ToInt32(dataPart, 12);
-                        ////int vertexStride = reader.ReadInt32();
-                        // int vertexStride = BitConverter.ToInt32(dataPart, 16);
-                        ////int numVertexElements = reader.ReadInt32();
                         int numVertexElements = BitConverter.ToInt32(dataPart, 20);
 
                         var properties = new VertexElementProperties[numVertexElements];
@@ -220,13 +210,9 @@ namespace WaveEngine.Components.Graphics3D
                         {
                             VertexElementProperties item = properties[k];
 
-                            ////item.Offset = reader.ReadInt32();
                             item.Offset = BitConverter.ToInt32(data, 0 + (k * 16));
-                            ////item.Format = (VertexElementFormat)reader.ReadInt32();
                             item.Format = (VertexElementFormat)BitConverter.ToInt32(data, 4 + (k * 16));
-                            ////item.Usage = (VertexElementUsage)reader.ReadInt32();
                             item.Usage = (VertexElementUsage)BitConverter.ToInt32(data, 8 + (k * 16));
-                            ////item.UsageIndex = reader.ReadInt32();
                             item.UsageIndex = BitConverter.ToInt32(data, 12 + (k * 16));
 
                             properties[k] = item;
@@ -264,7 +250,6 @@ namespace WaveEngine.Components.Graphics3D
                         for (int k = 0; k < indexSize; k++)
                         {
                             indices[k] = BitConverter.ToUInt16(dataIndices, k * 2);
-                            ////indices[k] = reader.ReadUInt16();
                         }
 
                         var vertexBuffer = new VertexBuffer(new VertexBufferFormat(properties));

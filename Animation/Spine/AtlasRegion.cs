@@ -49,24 +49,64 @@ namespace WaveEngine.Components.Animation.Spine
         public string Name;
 
         /// <summary>
-        /// The rectabgke
+        /// The rectangle
         /// </summary>
-        public int X, Y, Width, Height;
+        public int X;
+
+        /// <summary>
+        /// The y.
+        /// </summary>
+        public int Y;
+
+        /// <summary>
+        /// The width.
+        /// </summary>
+        public int Width;
+
+        /// <summary>
+        /// The height.
+        /// </summary>
+        public int Height;
 
         /// <summary>
         /// The texcoord
         /// </summary>
-        public float U, V, U2, V2;
+        public float U;
 
         /// <summary>
-        /// The offsets
+        /// The v.
         /// </summary>
-        public float OffsetX, OffsetY;
+        public float V;
 
         /// <summary>
-        /// The original width and original height
+        /// The u2.
         /// </summary>
-        public int OriginalWidth, OriginalHeight;
+        public float U2;
+
+        /// <summary>
+        /// The v2.
+        /// </summary>
+        public float V2;
+
+        /// <summary>
+        /// The offset x.
+        /// </summary>
+        public float OffsetX;
+
+        /// <summary>
+        /// The offset y.
+        /// </summary>
+        public float OffsetY;
+
+        /// <summary>
+        /// The original width
+        /// </summary>
+        public int OriginalWidth;
+
+        /// <summary>
+        /// The original height.
+        /// </summary>
+        public int OriginalHeight;
 
         /// <summary>
         /// The index

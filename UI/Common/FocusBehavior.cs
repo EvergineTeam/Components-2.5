@@ -18,12 +18,12 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// Focused behavior
     /// </summary>
-    public class FocusBehavior : Behavior
+    public class FocusBehavior : Behavior, IDisposable
     {
         /// <summary>
         /// The current focus behavior
         /// </summary>
-        protected static FocusBehavior currentFocus;
+        public static FocusBehavior CurrentFocus;
 
         #region Events
 
@@ -52,7 +52,7 @@ namespace WaveEngine.Components.UI
             get
             {
                 bool result = false;
-                if (currentFocus == this)
+                if (CurrentFocus == this)
                 {
                     result = true;
                 }
@@ -62,15 +62,15 @@ namespace WaveEngine.Components.UI
 
             set
             {
-                if (currentFocus != null)
+                if (CurrentFocus != null)
                 {
-                    if (currentFocus.LostFocus != null)
+                    if (CurrentFocus.LostFocus != null)
                     {
-                        currentFocus.LostFocus(this, new EventArgs());
+                        CurrentFocus.LostFocus(this, new EventArgs());
                     }
                 }
 
-                currentFocus = this;
+                CurrentFocus = this;
 
                 if (this.GotFocus != null)
                 {
@@ -94,6 +94,18 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            // If this component was disposed. Remove the static reference to avoid unnecessary memory withholding 
+            if (CurrentFocus == this)
+            {
+                CurrentFocus = null;
+            }
+        }
         #endregion
 
         #region Private Methods

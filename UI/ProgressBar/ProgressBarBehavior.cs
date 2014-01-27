@@ -121,7 +121,11 @@ namespace WaveEngine.Components.UI
             set
             {
                 this.maximum = value;
-                this.UpdateDifference();
+
+                if (this.isInitialized)
+                {
+                    this.UpdateDifference();
+                }
             }
         }
 
@@ -141,7 +145,11 @@ namespace WaveEngine.Components.UI
             set
             {
                 this.minimum = value;
-                this.UpdateDifference();
+
+                if (this.isInitialized)
+                {
+                    this.UpdateDifference();
+                }
             }
         }
 
@@ -165,30 +173,60 @@ namespace WaveEngine.Components.UI
                     throw new ArgumentOutOfRangeException("the value must be between minimun:" + this.minimum + " and maximun:" + this.maximum);
                 }
 
-                if (this.value != value)
+                if (this.isInitialized)
                 {
-                    int oldValue = this.value;
+                    this.UpdateValue(value);
+                }
+                else
+                {
                     this.value = value;
+                }
+            }
+        }
 
-                    // Event
-                    if (this.ValueChanged != null)
-                    {
-                        this.ValueChanged(this, new ChangedEventArgs(oldValue, value));
-                    }
+        /// <summary>
+        /// Initializes the value.
+        /// </summary>
+        private void InitializeValue()
+        {
+            int oldValue = this.value;            
 
-                    // Update
-                    if (this.animation != null)
-                    {
-                        // UpdateUI with animation
-                        float convertionValue = this.Panel.Width * (value - this.minimum) / this.difference;
-                        this.move = new SingleAnimation(this.foregroundTransform.XScale, convertionValue, this.duration);
-                        this.animation.BeginAnimation(Transform2D.XScaleProperty, this.move);
-                    }
-                    else if (this.foregroundTransform != null)
-                    {
-                        // UpdateUI without animation
-                        this.foregroundTransform.XScale = this.Panel.Width * (value - this.minimum) / this.difference;
-                    }
+            if (this.foregroundTransform != null)
+            {
+                // UpdateUI without animation
+                this.foregroundTransform.XScale = this.Panel.Width * (this.value - this.minimum) / this.difference;
+            }
+        }
+
+        /// <summary>
+        /// Updates the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        private void UpdateValue(int value)
+        {
+            if (this.value != value)
+            {
+                int oldValue = this.value;
+                this.value = value;
+
+                // Event
+                if (this.ValueChanged != null)
+                {
+                    this.ValueChanged(this, new ChangedEventArgs(oldValue, value));
+                }
+
+                // Update
+                if (this.animation != null)
+                {
+                    // UpdateUI with animation
+                    float convertionValue = this.Panel.Width * (value - this.minimum) / this.difference;
+                    this.move = new SingleAnimation(this.foregroundTransform.XScale, convertionValue, this.duration);
+                    this.animation.BeginAnimation(Transform2D.XScaleProperty, this.move);
+                }
+                else if (this.foregroundTransform != null)
+                {
+                    // UpdateUI without animation
+                    this.foregroundTransform.XScale = this.Panel.Width * (value - this.minimum) / this.difference;
                 }
             }
         }
@@ -238,7 +276,6 @@ namespace WaveEngine.Components.UI
         {
             this.maximum = 100;
             this.minimum = 0;
-            this.difference = this.maximum - this.minimum;
             this.value = this.minimum;
 
             this.duration = new Duration(TimeSpan.FromSeconds(.4f));
@@ -251,6 +288,20 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Private Methods
+
+        /// <summary>
+        /// Performs further custom initialization for this instance.
+        /// </summary>
+        /// <remarks>
+        /// By default this method does nothing.
+        /// </remarks>
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            this.UpdateDifference();
+            this.InitializeValue();
+        }
 
         /// <summary>
         /// Resolves the dependencies needed for this instance to work.
@@ -280,6 +331,11 @@ namespace WaveEngine.Components.UI
         /// </summary>
         private void UpdateDifference()
         {
+            if (this.maximum < this.minimum)
+            {
+                throw new ArgumentException(string.Format("Minimum: {0} can not be greather than Maximum: {1}", this.minimum, this.maximum));
+            }
+
             this.difference = this.maximum - this.minimum;
         }
 

@@ -186,7 +186,7 @@ namespace WaveEngine.Components.Graphics3D
                 {
                     var layer = this.RenderManager.FindLayer(currentMaterial.LayerType);
 
-                    layer.AddDrawable(i, this);
+                    layer.AddDrawable(i, this, currentMaterial.GetHashCode());
                 }
             }
         }

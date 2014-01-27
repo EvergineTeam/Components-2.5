@@ -39,6 +39,18 @@ namespace WaveEngine.Components.UI
 
         #endregion
 
+        /// <summary>
+        /// Width changed Event Handler delegate
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="newWidth">The new width.</param>
+        public delegate void WidthChangedEventHandler(object sender, float newWidth);
+
+        /// <summary>
+        /// Occurs when Width Change.
+        /// </summary>
+        public event WidthChangedEventHandler OnWidthChanged;
+                        
         #region Fields
 
         /// <summary>
@@ -292,7 +304,11 @@ namespace WaveEngine.Components.UI
 
             protected set
             {
-                base.Width = value;
+                if (this.width != value)
+                {
+                    base.Width = value;
+                    this.UpdateSize();
+                }
             }
         }
 
@@ -473,11 +489,11 @@ namespace WaveEngine.Components.UI
 
                         if (this.lineWidth != -1)
                         {
-                            this.Width = this.lineWidth;
+                            base.Width = this.lineWidth;
                         }
                         else
                         {
-                            this.Width = size.X;
+                            base.Width = size.X;
                         }
 
                         this.Height = size.Y;
@@ -494,7 +510,7 @@ namespace WaveEngine.Components.UI
                     }
                     else
                     {
-                        this.Width = 0;
+                        base.Width = 0;
                     }
 
                     XDocument document = XDocument.Parse("<p>" + this.text + "</p>");
@@ -540,7 +556,7 @@ namespace WaveEngine.Components.UI
                                 break;
                         }
 
-                        string[] textFragments;                        
+                        string[] textFragments;
 
                         if (!this.textWrapping)
                         {
@@ -585,7 +601,7 @@ namespace WaveEngine.Components.UI
                                     stringBuilder.Append(currentFragment);
                                     i++;
 
-                                   stringBuilder.Append(" ");
+                                    stringBuilder.Append(" ");
                                 }
                                 while (i < textFragments.Length);
                             }
@@ -597,7 +613,7 @@ namespace WaveEngine.Components.UI
                             }
 
                             size = this.SpriteFont.MeasureString(stringBuilder.ToString());
-                            
+
                             LineInfo lineInfo = this.LinesInfo[lineInfoId];
                             lineInfo.AddText(stringBuilder.ToString(), color, size);
                             this.LinesInfo[lineInfoId] = lineInfo;
@@ -606,7 +622,7 @@ namespace WaveEngine.Components.UI
 
                             if (!this.textWrapping)
                             {
-                                this.Width = MathHelper.Max(acumulatedSize, this.Width);
+                                base.Width = MathHelper.Max(acumulatedSize, this.Width);
                             }
 
                             if (textFragments.Length > 1 && i < textFragments.Length)
@@ -630,7 +646,7 @@ namespace WaveEngine.Components.UI
                         this.LinesInfo[i] = info;
 
                         height += info.Size.Y;
-                        
+
                         ////Debug.WriteLine(string.Format("\tLineInfo [Size: {0} Offset: {1}]", info.Size, info.AlignmentOffsetX));
 
                         ////foreach (var fragment in info.SubTextList)
@@ -639,7 +655,7 @@ namespace WaveEngine.Components.UI
                         ////}
                     }
 
-                    Debug.WriteLine("}");
+                    ////Debug.WriteLine("}");
 
                     this.Height = height + (this.LineSpacing * this.LinesInfo.Count);
 
@@ -648,7 +664,13 @@ namespace WaveEngine.Components.UI
                         this.Arrange(this.Owner.Parent.FindComponent<Transform2D>().Rectangle);
                     }
                 }
-            }
+                
+                // Event
+                if (this.OnWidthChanged != null)
+                {
+                    this.OnWidthChanged(this, this.Width);
+                }
+            }           
         }
 
         /// <summary>

@@ -31,9 +31,6 @@ namespace WaveEngine.Components.Resources
 #if WINDOWS
         private static readonly string defaultFontResourcePath = "WaveEngine.Components.Resources.DefaultFont.wpk";
 #endif
-#if WINDOWS_PHONE7
-        private static readonly string defaultFontResourcePath = "WaveEngineWP7.Components.Resources.DefaultFont.wpk";
-#endif
 #if WINDOWS_PHONE
         private static readonly string defaultFontResourcePath = "WaveEngineWP.Components.Resources.DefaultFont.wpk";
 #endif

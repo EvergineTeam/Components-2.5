@@ -35,9 +35,6 @@ namespace WaveEngine.Components.Graphics3D
 #if WINDOWS
         private readonly string defaultTextureResourcePath = "WaveEngine.Components.Resources.DefaultTexture.wpk";
 #endif
-#if WINDOWS_PHONE7
-        private readonly string defaultTextureResourcePath = "WaveEngineWP7.Components.Resources.DefaultTexture.wpk";
-#endif
 #if WINDOWS_PHONE
         private readonly string defaultTextureResourcePath = "WaveEngineWP.Components.Resources.DefaultTexture.wpk";
 #endif

@@ -128,27 +128,17 @@ namespace WaveEngine.Components.Graphics2D
         /// Initializes a new instance of the <see cref="QuadRenderer" /> class.
         /// </summary>
         public QuadRenderer()
-            : this(DefaultLayers.Alpha)
+            : this(null, null)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QuadRenderer" /> class.
         /// </summary>
-        /// <param name="layerType">Type of the layer.</param>
-        public QuadRenderer(Type layerType)
-            : this(layerType, null, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="QuadRenderer" /> class.
-        /// </summary>
-        /// <param name="layerType">Type of the layer.</param>
         /// <param name="texcoord1">The texcoord1.</param>
         /// <param name="texcoord2">The texcoord2.</param>
-        public QuadRenderer(Type layerType, Vector2[] texcoord1, Vector2[] texcoord2)
-            : base("QuadRenderer" + instances, layerType)
+        public QuadRenderer(Vector2[] texcoord1, Vector2[] texcoord2)
+            : base("QuadRenderer" + instances, null)
         {
             instances++;
 
@@ -188,7 +178,8 @@ namespace WaveEngine.Components.Graphics2D
         /// </remarks>
         public override void Draw(TimeSpan gameTime)
         {
-            base.Draw(gameTime);
+            Layer layer = RenderManager.FindLayer(this.Material.Material.LayerType);
+            layer.AddDrawable(0, this, this.SortId);
 
             this.position.X = this.Transform2D.X;
             this.position.Y = this.Transform2D.Y;
@@ -258,22 +249,22 @@ namespace WaveEngine.Components.Graphics2D
             Color color = new Color(opacity, opacity, opacity, opacity);
 
             VertexPositionColorDualTexture[] vertices = new VertexPositionColorDualTexture[4];
-            vertices[0].Position = new Vector3(0f, 0f, 0f);
+            vertices[0].Position = new Vector3(0f, 0f, this.Transform2D.DrawOrder);
             vertices[0].Color = color;
             vertices[0].TexCoord = this.texcoord1[0];
             vertices[0].TexCoord2 = this.texcoord2[0];
 
-            vertices[1].Position = new Vector3(halfWidth, 0f, 0f);
+            vertices[1].Position = new Vector3(halfWidth, 0f, this.Transform2D.DrawOrder);
             vertices[1].Color = color;
             vertices[1].TexCoord = this.texcoord1[1];
             vertices[1].TexCoord2 = this.texcoord2[1];
 
-            vertices[2].Position = new Vector3(halfWidth, halfHeight, 0f);
+            vertices[2].Position = new Vector3(halfWidth, halfHeight, this.Transform2D.DrawOrder);
             vertices[2].Color = color;
             vertices[2].TexCoord = this.texcoord1[2];
             vertices[2].TexCoord2 = this.texcoord2[2];
 
-            vertices[3].Position = new Vector3(0f, halfHeight, 0f);
+            vertices[3].Position = new Vector3(0f, halfHeight, this.Transform2D.DrawOrder);
             vertices[3].Color = color;
             vertices[3].TexCoord = this.texcoord1[3];
             vertices[3].TexCoord2 = this.texcoord2[3];

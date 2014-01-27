@@ -39,25 +39,29 @@ namespace WaveEngine.Components.Primitives
             float radius = diameter / 2;
 
             // Create a ring of triangles around the outside of the cylinder.
-            for (int i = 0; i < tessellation; i++)
+            for (int i = 0; i <= tessellation; i++)
             {
-                float angle = i * MathHelper.TwoPi / tessellation;
+                float percent = i / (float)tessellation;
+                float angle = percent * MathHelper.TwoPi;
 
                 float dx = (float)Math.Cos(angle);
                 float dz = (float)Math.Sin(angle);
 
                 Vector3 normal = new Vector3(dx, 0, dz);
 
-                this.AddVertex(Vector3.Up * height, Vector3.Up, new Vector2(0.5f, 0.5f));
-                this.AddVertex((normal * radius) + (Vector3.Down * height), normal, new Vector2(0.5f, 0.5f));
+                this.AddVertex(Vector3.Up * height, Vector3.Up, new Vector2(percent, 0));
+                this.AddVertex((normal * radius) + (Vector3.Down * height), normal, new Vector2(percent, 1));
 
-                this.AddIndex(i * 2);
-                this.AddIndex((i * 2) + 1);
-                this.AddIndex(((i * 2) + 2) % (tessellation * 2));
+                if (i < tessellation)
+                {
+                    this.AddIndex(i * 2);
+                    this.AddIndex((i * 2) + 1);
+                    this.AddIndex(((i * 2) + 2) % ((tessellation + 1) * 2));
 
-                this.AddIndex((i * 2) + 1);
-                this.AddIndex(((i * 2) + 3) % (tessellation * 2));
-                this.AddIndex(((i * 2) + 2) % (tessellation * 2));
+                    this.AddIndex((i * 2) + 1);
+                    this.AddIndex(((i * 2) + 3) % ((tessellation + 1) * 2));
+                    this.AddIndex(((i * 2) + 2) % ((tessellation + 1) * 2));
+                }
             }
 
             // Create flat triangle fan caps to seal the top and bottom.
@@ -101,7 +105,7 @@ namespace WaveEngine.Components.Primitives
                 Vector3 iniPosition = new Vector3(dx, 0, dz);
                 Vector3 position = (iniPosition * radius) + (normal * height);
 
-                this.AddVertex(position, normal, new Vector2(angle, angle));
+                this.AddVertex(position, normal, new Vector2(dx, dz));
             }
         }
         #endregion

@@ -306,7 +306,7 @@ namespace WaveEngine.Components.Cameras
         /// </param>
         protected override void Update(TimeSpan gameTime)
         {
-            this.timeDifference = (float)gameTime.TotalMilliseconds / 1000.0f;
+            this.timeDifference = (float)gameTime.TotalSeconds;
             this.HandleInput(this.timeDifference);
         }
 

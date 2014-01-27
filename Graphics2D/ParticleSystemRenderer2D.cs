@@ -24,7 +24,7 @@ using System.Diagnostics;
 
 using WaveRandom = WaveEngine.Framework.Services.Random;
 
-#if WINDOWS_PHONE7
+#if WINDOWS_PHONE
 using WaveEngine.Common.Helpers;
 #endif
 #endregion

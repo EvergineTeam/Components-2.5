@@ -34,10 +34,13 @@ namespace WaveEngine.Components.Primitives
                 throw new ArgumentOutOfRangeException("tessellation");
             }
 
+            int tessellationPlus = tessellation + 1;
+
             // First we loop around the main ring of the torus.
-            for (int i = 0; i < tessellation; i++)
+            for (int i = 0; i <= tessellation; i++)
             {
-                float outerAngle = i * MathHelper.TwoPi / tessellation;
+                float outerPercent = i / (float)tessellation;
+                float outerAngle = outerPercent * MathHelper.TwoPi;
 
                 // Create a transform matrix that will align geometry to
                 // slice perpendicularly though the current ring position.
@@ -45,9 +48,10 @@ namespace WaveEngine.Components.Primitives
                                    Matrix.CreateRotationY(outerAngle);
 
                 // Now we loop along the other axis, around the side of the tube.
-                for (int j = 0; j < tessellation; j++)
+                for (int j = 0; j <= tessellation; j++)
                 {
-                    float innerAngle = j * MathHelper.TwoPi / tessellation;
+                    float innerPercent = j / (float)tessellation;
+                    float innerAngle = MathHelper.TwoPi * innerPercent;
 
                     float dx = (float)Math.Cos(innerAngle);
                     float dy = (float)Math.Sin(innerAngle);
@@ -59,19 +63,22 @@ namespace WaveEngine.Components.Primitives
                     position = Vector3.Transform(position, transform);
                     normal = Vector3.TransformNormal(normal, transform);
 
-                    this.AddVertex(position, normal, this.GetSphericalTexCoord(normal));
+                    this.AddVertex(position, normal, new Vector2(outerPercent, innerPercent));
 
                     // And create indices for two triangles.
-                    int nextI = (i + 1) % tessellation;
-                    int nextJ = (j + 1) % tessellation;
+                    int nextI = (i + 1) % tessellationPlus;
+                    int nextJ = (j + 1) % tessellationPlus;
 
-                    this.AddIndex((i * tessellation) + j);
-                    this.AddIndex((i * tessellation) + nextJ);
-                    this.AddIndex((nextI * tessellation) + j);
+                    if ((j < tessellation) && (i < tessellation))
+                    {
+                        this.AddIndex((i * tessellationPlus) + j);
+                        this.AddIndex((i * tessellationPlus) + nextJ);
+                        this.AddIndex((nextI * tessellationPlus) + j);
 
-                    this.AddIndex((i * tessellation) + nextJ);
-                    this.AddIndex((nextI * tessellation) + nextJ);
-                    this.AddIndex((nextI * tessellation) + j);
+                        this.AddIndex((i * tessellationPlus) + nextJ);
+                        this.AddIndex((nextI * tessellationPlus) + nextJ);
+                        this.AddIndex((nextI * tessellationPlus) + j);
+                    }
                 }
             }
         }

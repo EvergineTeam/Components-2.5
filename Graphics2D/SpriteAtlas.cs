@@ -179,7 +179,7 @@ namespace WaveEngine.Components.Graphics2D
             {
                 if (disposing)
                 {
-                    if (!this.IsGlobalAsset)
+                    if (!this.IsGlobalAsset && this.isInitialized)
                     {
                         Assets.UnloadAsset(this.AtlasPath);
                     }

@@ -125,7 +125,7 @@ namespace WaveEngine.Components.Cameras
                     this.currentPosition = this.touchState[0].Position;
                     this.delta = (this.currentPosition - this.prevPosition) * ((float)Math.PI / 180);
                     this.prevPosition = this.currentPosition;
-                    this.phi += this.delta.X * this.RotationSpeed;
+                    this.phi -= this.delta.X * this.RotationSpeed;
                     this.theta -= this.delta.Y * this.RotationSpeed;
 
                     if (this.theta <= -MathHelper.TwoPi)

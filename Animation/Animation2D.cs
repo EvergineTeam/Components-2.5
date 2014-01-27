@@ -113,9 +113,12 @@ namespace WaveEngine.Components.Animation
                 this.currentAnimation = value;
                 this.animations[this.currentAnimation].CurrentFrameIndex = 0;
 
-                this.Transform2D.Rectangle = new RectangleF();
-                this.Transform2D.Rectangle.Width = this.animations[this.currentAnimation].FrameWidth;
-                this.Transform2D.Rectangle.Height = this.animations[this.currentAnimation].FrameHeight;
+                if (this.Transform2D != null)
+                {
+                    this.Transform2D.Rectangle = new RectangleF();
+                    this.Transform2D.Rectangle.Width = this.animations[this.currentAnimation].FrameWidth;
+                    this.Transform2D.Rectangle.Height = this.animations[this.currentAnimation].FrameHeight;
+                }
             }
         }
 
