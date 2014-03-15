@@ -48,6 +48,26 @@ namespace WaveEngine.Components.UI
         #endregion
 
         /// <summary>
+        /// Path to the background image showed when the button is being pressed.
+        /// </summary>
+        private string pressedBackgroundImage;
+
+        /// <summary>
+        /// Path to the default background image.
+        /// </summary>
+        private string backgroundImage;
+
+        /// <summary>
+        /// Indicates whether back to render the default background image on the released event.
+        /// </summary>
+        private bool backToBackgroundImage;
+
+        /// <summary>
+        /// The size define by user
+        /// </summary>
+        private bool sizeDefineByUser;
+
+        /// <summary>
         /// Occurs when [click].
         /// </summary>
         public event EventHandler Click;
@@ -157,6 +177,7 @@ namespace WaveEngine.Components.UI
             set
             {
                 this.entity.FindComponent<PanelControl>().Width = value;
+                this.sizeDefineByUser = true;
             }
         }
 
@@ -176,6 +197,7 @@ namespace WaveEngine.Components.UI
             set
             {
                 this.entity.FindComponent<PanelControl>().Height = value;
+                this.sizeDefineByUser = true;
             }
         }
 
@@ -265,35 +287,22 @@ namespace WaveEngine.Components.UI
         {
             set
             {
-                Entity imageEntity = this.entity.FindChild("ImageEntity");
+                this.backgroundImage = value;
+                this.ChangeBackgroundImage(value);
+            }
+        }
 
-                if (imageEntity != null)
-                {
-                    // If imageEntity exist
-                    imageEntity.RemoveComponent<ImageControl>();
-                    imageEntity.AddComponent(new ImageControl(value)
-                    {
-                        Stretch = Stretch.Fill
-                    });
-
-                    imageEntity.RefreshDependencies();
-                }
-                else
-                {
-                    // If imageEntity doesn't exist
-                    this.entity.AddChild(new Entity("ImageEntity")
-                                    .AddComponent(new Transform2D()
-                                    {
-                                        DrawOrder = 0.5f
-                                    })
-                                    .AddComponent(new ImageControl(value)
-                                    {
-                                        Stretch = Stretch.Fill
-                                    })
-                                    .AddComponent(new ImageControlRenderer()));
-
-                    this.entity.RefreshDependencies();
-                }
+        /// <summary>
+        /// Sets the pressed background image.
+        /// </summary>
+        /// <value>
+        /// The pressed background image.
+        /// </value>
+        public string PressedBackgroundImage
+        {
+            set
+            {
+                this.pressedBackgroundImage = value;
             }
         }
 
@@ -375,7 +384,30 @@ namespace WaveEngine.Components.UI
                                 .AddComponent(new TextControlRenderer()));
 
             // Event
-            this.entity.FindComponent<TouchGestures>().TouchReleased += this.Button_TouchReleased;
+            TouchGestures touch = this.entity.FindComponent<TouchGestures>();
+            touch.TouchReleased += this.TouchGestures_TouchReleased;
+            touch.TouchPressed += this.TouchGestures_TouchPressed;
+
+            this.entity.EntityInitialized += this.Entity_EntityInitialized;
+        }
+
+        /// <summary>
+        /// Handles the EntityInitialized event of the entity control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
+        private void Entity_EntityInitialized(object sender, EventArgs e)
+        {
+            Entity imageEntity = this.entity.FindChild("ImageEntity");
+
+            if (imageEntity != null && !this.sizeDefineByUser)
+            {
+                ImageControl ic = imageEntity.FindComponent<ImageControl>();
+                PanelControl panel = this.entity.FindComponent<PanelControl>();
+
+                panel.Width = ic.Width;
+                panel.Height = ic.Height;
+            }
         }
         #endregion
 
@@ -385,11 +417,67 @@ namespace WaveEngine.Components.UI
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="GestureEventArgs" /> instance containing the event data.</param>
-        private void Button_TouchReleased(object sender, GestureEventArgs e)
+        private void TouchGestures_TouchReleased(object sender, GestureEventArgs e)
         {
+            if (!string.IsNullOrWhiteSpace(this.pressedBackgroundImage) && this.backToBackgroundImage)
+            {
+                this.backToBackgroundImage = false;
+                this.ChangeBackgroundImage(this.backgroundImage);
+            }
+
             if (this.Click != null)
             {
                 this.Click(this, e);
+            }
+        }
+
+        /// <summary>
+        /// If a pressed background image is set, it draws this last one instead of background image,
+        /// just up to the released event is catched.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="GestureEventArgs" /> instance containing the event data.</param>
+        private void TouchGestures_TouchPressed(object sender, GestureEventArgs e)
+        {
+            // Asking for !this.backToBackgroundImage avoids to execute the if when has been done once before
+            if (!string.IsNullOrWhiteSpace(this.pressedBackgroundImage) && !this.backToBackgroundImage)
+            {
+                this.ChangeBackgroundImage(this.pressedBackgroundImage);
+                this.backToBackgroundImage = true;
+            }
+        }
+
+        /// <summary>
+        /// Modifies the background image with the new asset path.
+        /// </summary>
+        /// <param name="imagePath">Path to the background image</param>
+        private void ChangeBackgroundImage(string imagePath)
+        {
+            Entity imageEntity = this.entity.FindChild("ImageEntity");
+            ImageControl newImageControl = new ImageControl(imagePath)
+            {
+                Stretch = Stretch.Fill
+            };
+
+            if (imageEntity != null)
+            {
+                // If imageEntity exist
+                imageEntity.RemoveComponent<ImageControl>();
+                imageEntity.AddComponent(newImageControl);
+                imageEntity.RefreshDependencies();
+            }
+            else
+            {
+                // If imageEntity doesn't exist
+                this.entity.AddChild(new Entity("ImageEntity")
+                    .AddComponent(new Transform2D()
+                    {
+                        DrawOrder = 0.5f
+                    })
+                    .AddComponent(newImageControl)
+                    .AddComponent(new ImageControlRenderer()));
+
+                this.entity.RefreshDependencies();
             }
         }
         #endregion

@@ -14,12 +14,13 @@ using System;
 namespace WaveEngine.Components.Gestures
 {
     /// <summary>
-    /// Information when a gesture event is raised.
+    /// Provides information about a gesture event when such is raised.
     /// </summary>
     public class GestureEventArgs : EventArgs
     {
         /// <summary>
-        /// The gesture that was performed.
+        /// Relevant information about the gesture performed.
+        /// See <see cref="GestureSample"/> for more information.
         /// </summary>
         public GestureSample GestureSample;
 

@@ -512,7 +512,11 @@ namespace WaveEngine.Components.Graphics2D
                     if (this.settings.AlphaEnabled && p.TimeLife.Distinct(0))
                     {
                         double age = p.Life / p.TimeLife;
-                        p.Color.A = (byte)(255 * Math.Pow(age, 0.333333f));
+                        double alpha = Math.Pow(age, 0.333333);
+                        p.Color.A = (byte)(255 * age);
+                        p.Color.R = (byte)(p.Color.R * age);
+                        p.Color.G = (byte)(p.Color.G * age);
+                        p.Color.B = (byte)(p.Color.B * age);
                     }
                 }
 
@@ -865,7 +869,7 @@ namespace WaveEngine.Components.Graphics2D
             float scaleSin = scale * sin;
 
             Matrix matrix;
-            
+
             if (!this.viewportEnabled)
             {
                 matrix.M11 = scaleCos;

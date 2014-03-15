@@ -34,5 +34,13 @@ namespace WaveEngine.Components.Animation
         /// Gets or sets the dessired frames per second.
         /// </summary>
         public int FramesPerSecond { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpriteSheetAnimationSequence" /> class.
+        /// </summary>
+        public SpriteSheetAnimationSequence()
+        {
+            this.FramesPerSecond = 30; // Default value
+        }
     }
 }

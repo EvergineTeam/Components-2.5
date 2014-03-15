@@ -49,6 +49,8 @@ namespace WaveEngine.Components.Graphics3D
         private readonly string defaultTextureResourcePath = "WaveEngineiOS.Components.Resources.DefaultTexture.wpk";
 #elif MAC
 		private readonly string defaultTextureResourcePath = "WaveEngineMac.Components.Resources.DefaultTexture.wpk";
+#elif LINUX
+		private readonly string defaultTextureResourcePath = "WaveEngineLinux.Components.Resources.DefaultTexture.wpk";
 #endif
 
         /// <summary>

@@ -189,8 +189,6 @@ namespace WaveEngine.Components.UI
         /// </summary>
         private void InitializeValue()
         {
-            int oldValue = this.value;            
-
             if (this.foregroundTransform != null)
             {
                 // UpdateUI without animation

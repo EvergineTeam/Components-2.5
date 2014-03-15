@@ -30,6 +30,11 @@ namespace WaveEngine.Components.UI
         /// </summary>
         private static int instances;
 
+        /// <summary>
+        /// The size define by user
+        /// </summary>
+        private bool sizeDefineByUser;
+
         #region Properties
 
         /// <summary>
@@ -67,6 +72,7 @@ namespace WaveEngine.Components.UI
             set
             {
                 this.entity.FindComponent<PanelControl>().Width = value;
+                this.sizeDefineByUser = true;
             }
         }
 
@@ -86,6 +92,7 @@ namespace WaveEngine.Components.UI
             set
             {
                 this.entity.FindComponent<PanelControl>().Height = value;
+                this.sizeDefineByUser = true;
             }
         }
 
@@ -217,6 +224,25 @@ namespace WaveEngine.Components.UI
                                         VerticalAlignment = VerticalAlignment.Center
                                     })
                                     .AddComponent(new ImageControlRenderer()));
+
+            this.entity.EntityInitialized += this.Entity_EntityInitialized;
+        }
+
+        /// <summary>
+        /// Handles the EntityInitialized event of the entity control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
+        private void Entity_EntityInitialized(object sender, EventArgs e)
+        {
+            if (!this.sizeDefineByUser)
+            {
+                ImageControl ic = this.entity.FindChild("ImageControlEntity").FindComponent<ImageControl>();
+                PanelControl panel = this.entity.FindComponent<PanelControl>();
+
+                panel.Width = ic.Width;
+                panel.Height = ic.Height;
+            }
         }
 
         /// <summary>

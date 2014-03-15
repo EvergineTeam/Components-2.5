@@ -252,6 +252,7 @@ namespace WaveEngine.Components.Animation
         /// <param name="backwards">Whether the animation goes backwards.</param>
         public void Play(bool loop, bool backwards)
         {
+            this.SetFrame(0);
             this.loop = loop;
             this.state = AnimationState.Playing;
             this.animations[this.currentAnimation].Backwards = backwards;
@@ -265,6 +266,7 @@ namespace WaveEngine.Components.Animation
         /// </param>
         public void PlayToFrame(int targetFrame)
         {
+            this.SetFrame(0);
             this.targetFrame = targetFrame;
             this.state = AnimationState.Playing;
         }

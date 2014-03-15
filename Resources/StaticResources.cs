@@ -45,6 +45,8 @@ namespace WaveEngine.Components.Resources
         private static readonly string defaultFontResourcePath = "WaveEngineiOS.Components.Resources.DefaultFont.wpk";
 #elif MAC
 		private static readonly string defaultFontResourcePath = "WaveEngineMac.Components.Resources.DefaultFont.wpk";
+#elif LINUX
+		private static readonly string defaultFontResourcePath = "WaveEngineLinux.Components.Resources.DefaultFont.wpk";
 #endif
 
         /// <summary>

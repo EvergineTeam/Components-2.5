@@ -499,7 +499,7 @@ namespace WaveEngine.Components.Cameras
                 }
             }
 
-            if (this.input.GamePadState.IsConnected && this.input.MouseState.IsConnected)
+            if (this.input.GamePadState.IsConnected)
             {
                 /////////////////////////////////////////////
                 // Position Camera
@@ -615,9 +615,7 @@ namespace WaveEngine.Components.Cameras
                 // Restore the current matrix rotation
                 this.cameraMatrixRotation =
                     Matrix.Invert(
-                        Matrix.CreateLookAt(this.Camera.Position, this.Camera.LookAt, this.Camera.UpVector));
-
-                this.lastMouseState = this.currentMouseState;
+                        Matrix.CreateLookAt(this.Camera.Position, this.Camera.LookAt, this.Camera.UpVector));               
             }
         }
 

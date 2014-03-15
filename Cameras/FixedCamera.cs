@@ -10,6 +10,7 @@
 #region Using Statements
 using System;
 using System.Collections.Generic;
+using WaveEngine.Common.Graphics;
 using WaveEngine.Common.Math;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Graphics;
@@ -100,6 +101,77 @@ namespace WaveEngine.Components.Cameras
             }
         }
 
+        /// <summary>
+        /// Gets or sets the RenderTarget associated to the camera.
+        /// </summary>
+        /// <value>
+        /// The render target.
+        /// </value>
+        public RenderTarget RenderTarget
+        {
+            get
+            {
+                return this.entity.FindComponent<Camera>().RenderTarget;
+            }
+
+            set
+            {
+                this.entity.FindComponent<Camera>().RenderTarget = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets Clear flags used for clean FrameBuffer, stencilbuffer and Zbuffer.
+        /// </summary>
+        /// <value>
+        /// The clear flags.
+        /// </value>
+        /// <exception cref="System.ObjectDisposedException">RenderManager has been disposed.</exception>
+        public ClearFlags ClearFlags
+        {
+            get
+            {
+                return this.entity.FindComponent<Camera>().ClearFlags;
+            }
+
+            set
+            {
+                this.entity.FindComponent<Camera>().ClearFlags = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the color of the background.
+        /// </summary>
+        /// <value>
+        /// The background color of the camera if it was setted, or the RenderManager default background color.
+        /// </value>
+        public Color BackgroundColor
+        {
+            get
+            {
+                return this.entity.FindComponent<Camera>().BackgroundColor;
+            }
+
+            set
+            {
+                this.entity.FindComponent<Camera>().BackgroundColor = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the layer mask.
+        /// </summary>
+        /// <value>
+        /// The layer mask.
+        /// </value>
+        public IDictionary<Type, bool> LayerMask
+        {
+            get
+            {
+                return this.entity.FindComponent<Camera>().VisibleLayers;
+            }
+        }
         #endregion
 
         #region Initialize

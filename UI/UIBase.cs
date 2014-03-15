@@ -188,5 +188,22 @@ namespace WaveEngine.Components.UI
 
             return result;
         }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
+        {
+            FocusBehavior focusBehavior = this.entity.FindComponentOfType<FocusBehavior>();
+            if (focusBehavior != null)
+            {
+                if (FocusBehavior.CurrentFocus == focusBehavior)
+                {
+                    FocusBehavior.CurrentFocus = null;
+                }
+            }
+
+            base.Dispose();
+        }
     }
 }

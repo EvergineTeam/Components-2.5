@@ -22,7 +22,7 @@ using WaveEngine.Materials;
 namespace WaveEngine.Components.Graphics3D
 {
     /// <summary>
-    ///     Renders an animated model.
+    /// Renders an animated model.
     /// </summary>
     public class SkinnedModelRenderer : Drawable3D
     {
@@ -64,6 +64,16 @@ namespace WaveEngine.Components.Graphics3D
         /// The bone names.
         /// </summary>
         private readonly Dictionary<string, int> boneNames;
+
+        /// <summary>
+        /// The last mesh id
+        /// </summary>
+        private int lastModelId;
+
+        /// <summary>
+        /// The mesh materials
+        /// </summary>
+        private Material[] meshMaterials;
 
         /// <summary>
         /// The alpha.
@@ -136,9 +146,19 @@ namespace WaveEngine.Components.Graphics3D
         private bool updateLod;
 
         /// <summary>
+        /// need to update vertex buffer
+        /// </summary>
+        private bool[] updateVertexBuffer;
+
+        /// <summary>
         /// The world transforms.
         /// </summary>
         private Matrix[] worldTransforms;
+
+        /// <summary>
+        /// The last game time
+        /// </summary>
+        private TimeSpan lastGameTime;
 
         #region Properties
 
@@ -290,7 +310,7 @@ namespace WaveEngine.Components.Graphics3D
         public SkinnedModelRenderer()
             : this("SkinnedModelRenderer" + instances)
         {
-            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkinnedModelRenderer"/> class.
@@ -300,7 +320,7 @@ namespace WaveEngine.Components.Graphics3D
         /// </param>
         public SkinnedModelRenderer(string name)
             : base(name)
-            {
+        {
             this.LODMinDistance = 600;
             this.LODMaxDistance = 2000;
             this.LODEnabled = true;
@@ -310,7 +330,7 @@ namespace WaveEngine.Components.Graphics3D
             instances++;
             this.updateLod = true;
             this.lineColor = Color.Yellow;
-            }
+        }
 
         #endregion
 
@@ -339,6 +359,13 @@ namespace WaveEngine.Components.Graphics3D
         /// </remarks>
         public override void Draw(TimeSpan gameTime)
         {
+            if (this.lastModelId != this.skinnedModel.GetHashCode())
+            {
+                this.meshMaterials = new Material[this.skinnedModel.Meshes.Count];
+                this.updateVertexBuffer = new bool[this.skinnedModel.Meshes.Count];
+                this.lastModelId = this.skinnedModel.GetHashCode();
+            }
+
             if (!this.isHidef && this.LODEnabled)
             {
                 this.passUpdate--;
@@ -365,9 +392,10 @@ namespace WaveEngine.Components.Graphics3D
                 }
             }
 
-            bool calculate = this.isHidef
-                             || (!LowPerformance && this.lastKeyFrame != this.Animation.Frame && this.updateLod);
-            if (calculate)
+            bool needsUpdate  = (this.isHidef || (!LowPerformance && this.lastKeyFrame != this.Animation.Frame && this.updateLod)) && this.lastGameTime != gameTime;            
+            this.lastGameTime = gameTime;
+
+            if (needsUpdate)
             {
                 this.UpdateTransforms();
             }
@@ -376,7 +404,7 @@ namespace WaveEngine.Components.Graphics3D
             {
                 Material currentMaterial;
                 SkinnedMesh currentMesh = this.skinnedModel.Meshes[i];
-                ////bool skinNormals = false;
+                this.updateVertexBuffer[i] |= needsUpdate;
 
                 if (this.MaterialMap.Materials.ContainsKey(currentMesh.Name))
                 {
@@ -387,8 +415,13 @@ namespace WaveEngine.Components.Graphics3D
                     currentMaterial = this.MaterialMap.DefaultMaterial;
                 }
 
-                var layer = this.RenderManager.FindLayer(currentMaterial.LayerType);
-                layer.AddDrawable(i, this, currentMaterial.GetHashCode());
+                this.meshMaterials[i] = currentMaterial;
+
+                if (currentMaterial != null)
+                {
+                    var layer = this.RenderManager.FindLayer(currentMaterial.LayerType);
+                    layer.AddDrawable(i, this, currentMaterial.GetHashCode());
+                }
             }
 
             if (this.isHidef || this.LODEnabled)
@@ -479,8 +512,8 @@ namespace WaveEngine.Components.Graphics3D
 
                     this.disposed = true;
                 }
-                }
             }
+        }
 
         /// <summary>
         /// The draw basic unit.
@@ -491,40 +524,27 @@ namespace WaveEngine.Components.Graphics3D
         protected override void DrawBasicUnit(int parameter)
         {
             SkinnedMesh currentMesh = this.Model.InternalModel.Meshes[parameter];
-            Material currentMaterial;
-            bool skinNormals = false;
-
-            if (currentMesh.Name != null && this.MaterialMap.Materials.ContainsKey(currentMesh.Name))
-            {
-                currentMaterial = this.MaterialMap.Materials[currentMesh.Name];
-            }
-            else
-            {
-                currentMaterial = this.MaterialMap.DefaultMaterial;
-            }
+            Material currentMaterial = this.meshMaterials[parameter];
 
             if (currentMaterial != null)
             {
-                skinNormals = true;
-
-                bool calculate = this.isHidef
-                                 || (!LowPerformance && this.lastKeyFrame != this.Animation.Frame && this.updateLod);
-
-                if (calculate)
-                {
-                    currentMesh.SetBones(this.skinTransforms, skinNormals);
-                }
-
-                this.GraphicsDevice.BindVertexBuffer(currentMesh.VertexBuffer);
-                this.GraphicsDevice.UnsetBuffers();
-
                 currentMaterial.Matrices.World = this.Transform.LocalWorld;
                 currentMaterial.Apply(this.RenderManager);
+
+                if (this.updateVertexBuffer[parameter])
+                {
+                    currentMesh.SetBones(this.skinTransforms, true);
+                    (currentMesh.VertexBuffer as SkinnedVertexBuffer).SkinVertices(this.skinTransforms, true);
+                    this.GraphicsDevice.BindVertexBuffer(currentMesh.VertexBuffer);
+                    this.updateVertexBuffer[parameter] = false;
+                }
+
+                this.GraphicsDevice.UnsetBuffers();
 
                 this.GraphicsDevice.DrawVertexBuffer(
                     currentMesh.NumVertices,
                     currentMesh.PrimitiveCount,
-                                                PrimitiveType.TriangleList,
+                    PrimitiveType.TriangleList,
                     currentMesh.VertexBuffer,
                     currentMesh.IndexBuffer);
                 this.GraphicsDevice.UnsetBuffers();
@@ -553,8 +573,8 @@ namespace WaveEngine.Components.Graphics3D
 
                     this.RenderManager.LineBatch3D.DrawLine(ref start, ref end, ref this.lineColor);
                 }
-                }
             }
+        }
 
         /// <summary>
         /// Performs further custom initialization for this instance.
@@ -568,7 +588,7 @@ namespace WaveEngine.Components.Graphics3D
             this.worldTransforms = new Matrix[this.Animation.InternalAnimation.BindPose.Count];
             this.skinTransforms = new Matrix[this.Animation.InternalAnimation.BindPose.Count];
 
-            this.skinnedModel = this.Model.InternalModel.Clone();
+            this.skinnedModel = this.Model.InternalModel.Clone();            
         }
 
         /// <summary>

@@ -22,7 +22,10 @@ using WaveEngine.Framework.UI;
 namespace WaveEngine.Components.Gestures
 {
     /// <summary>
-    /// Allows a control to receive touch input.
+    /// Enables an <see cref="Entity"/> to support touchs.
+    /// It requires a <see cref="Collider2D"/> (usually, <see cref="RectangleCollider"/>) 
+    /// and a <see cref="Transform2D"/>.
+    /// Common events on touch scenarios are provided: pressed, released, etc.
     /// </summary>
     public class TouchGestures : Behavior, ITouchable
     {
@@ -40,18 +43,6 @@ namespace WaveEngine.Components.Gestures
         /// Valid gestures that will be recognized by this behavior.
         /// </summary>
         private SupportedGesture enabledGestures;
-
-        /// <summary>
-        /// Handle to collider2D.
-        /// </summary>
-        [RequiredComponent(false)]
-        public Collider2D Collider;
-
-        /// <summary>
-        /// The transform2D
-        /// </summary>
-        [RequiredComponent]
-        public Transform2D Transform2D;
 
         /// <summary>
         /// Current toches list.
@@ -119,6 +110,41 @@ namespace WaveEngine.Components.Gestures
         private Vector2 startTapPosition;
 
         /// <summary>
+        /// The minimun scale
+        /// </summary>
+        private float minScale;
+
+        /// <summary>
+        /// The maximun scale
+        /// </summary>
+        private float maxScale;
+
+        /// <summary>
+        /// The touch order
+        /// </summary>
+        private int touchOrder;
+
+        #region Public fields
+
+        /// <summary>
+        /// Required <see cref="Collider2D"/>.
+        /// It provides a way to detect whether a touch hits the dessired area.
+        /// </summary>
+        [RequiredComponent(false)]
+        public Collider2D Collider;
+
+        /// <summary>
+        /// Required <see cref="Transform2D"/>.
+        /// It provides position information to generate touch events data.
+        /// </summary>
+        [RequiredComponent]
+        public Transform2D Transform2D;
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
         /// Occurs when there is a tap gesture.
         /// </summary>
         public event EventHandler<GestureEventArgs> TouchTap;
@@ -139,36 +165,24 @@ namespace WaveEngine.Components.Gestures
         public event EventHandler<GestureEventArgs> TouchMoved;
 
         /// <summary>
-        /// The minimun scale
-        /// </summary>
-        private float minScale;
-
-        /// <summary>
-        /// The maximun scale
-        /// </summary>
-        private float maxScale;
-
-        /// <summary>
-        /// The touch order
-        /// </summary>
-        private int touchOrder;
-
-        /// <summary>
-        /// Occurs when [touch orden changed].
+        /// Occurs when touch order is changed.
         /// </summary>
         public event EventHandler TouchOrdenChanged;
+
+        #endregion
 
         #region Properties
 
         /// <summary>
         /// Gets or sets the touch order.
+        /// Value within [0, Int32.MaxValue] where 0 means the farthest (i.e., the last to receive the touch gesture) 
+        /// and bigger values come near increasing the chance to receive the input.
+        /// NOTE: It is required to have set <see cref="ManualTouchOrder"/> to <c>true</c> in order the engine not to override
+        /// this value. See <see cref="ManualTouchOrder"/> for a more detailed information.
         /// </summary>
         /// <value>
         /// The touch order.
         /// </value>
-        /// <remarks>
-        /// "0" is Back and "> 0" Near
-        /// </remarks>
         public int TouchOrder
         {
             get
@@ -187,7 +201,10 @@ namespace WaveEngine.Components.Gestures
         }
 
         /// <summary>
-        /// Gets or sets the min scale.
+        /// Gets or sets the minimun scale.
+        /// Value within [0, float.MaxValue] which is understood as the minimun scale applicable to required 
+        /// <see cref="Transform2D"/> when <see cref="SupportedGesture.Scale"/> is enabled through 
+        /// <see cref="TouchGestures.EnabledGestures"/>.
         /// </summary>
         /// <value>
         /// The minimun scale.
@@ -206,7 +223,10 @@ namespace WaveEngine.Components.Gestures
         }
 
         /// <summary>
-        /// Gets or sets the max scale.
+        /// Gets or sets the maximun scale.
+        /// Value within [0, float.MaxValue] which is understood as the maximun scale applicable to required 
+        /// <see cref="Transform2D"/> when <see cref="SupportedGesture.Scale"/> is enabled through 
+        /// <see cref="TouchGestures.EnabledGestures"/>.
         /// </summary>
         /// <value>
         /// The maximun scale.
@@ -226,11 +246,13 @@ namespace WaveEngine.Components.Gestures
 
         /// <summary>
         /// Gets or sets which gestures are enabled.
+        /// See <see cref="SupportedGesture"/> for available options.
+        /// Such values can be set through bit masks, enabling more than once at the same time, for example:
+        /// EnabledGestures = SupportedGestures.Translation | SupportedGestures.Rotation
         /// </summary>
         /// <value>
         /// The enabled gestures.
         /// </value>
-        /// <exception cref="System.ArgumentException">If value is set to SupportedGesture.None.</exception>
         public SupportedGesture EnabledGestures
         {
             get
@@ -249,11 +271,30 @@ namespace WaveEngine.Components.Gestures
                 this.enabledGestures = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether using <see cref="TouchOrder"/>,
+        /// or a different order gathered using both the <see pref="Transform2D.DrawOrder"/> and
+        /// the <see cref="Layer"/> used. Such calcs are performed during the call to 
+        /// <see cref="UpdateTouchOrder"/>.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if using <see cref="TouchOrder"/>; otherwise, <c>false</c>.
+        /// </value>
+        public bool ManualTouchOrder
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TouchGestures"/> class.
+        /// By default, scale is within [0.1, 5], the delta scale is set to 1 and there is no 
+        /// supported gesture.
         /// </summary>
         public TouchGestures()
             : base("TouchGestures" + instances++)
@@ -264,15 +305,17 @@ namespace WaveEngine.Components.Gestures
             this.gestureSample = new GestureSample { DeltaScale = 1 };
             this.enabledGestures = SupportedGesture.None;
         }
+
         #endregion
 
         #region Public Methods
+
         /// <summary>
-        /// Determines whether [contains] [the specified point].
+        /// Determines whether the required <see cref="Collider2D"/> contains the passed point.
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns>
-        ///   <c>true</c> if [contains] [the specified point]; otherwise, <c>false</c>.
+        ///   <c>true</c> if the point is contained; otherwise, <c>false</c>.
         /// </returns>
         public bool Contains(Vector2 point)
         {
@@ -285,10 +328,10 @@ namespace WaveEngine.Components.Gestures
         }
 
         /// <summary>
-        /// Adds a touch location to the current active touches.
+        /// Adds a <see cref="TouchLocation"/> to the current active touches.
         /// </summary>
         /// <param name="touch">The touch location.</param>
-        /// <param name="isNew">if set to <c>true</c> [is new].</param>
+        /// <param name="isNew">Whether such touch must be considered as new.</param>
         public void AddTouch(TouchLocation touch, bool isNew)
         {
             touch.IsNew = isNew;
@@ -296,13 +339,47 @@ namespace WaveEngine.Components.Gestures
         }
 
         /// <summary>
-        /// Gets the current gesture.
+        /// Gets the current <see cref="GestureSample"/>.
         /// </summary>
-        /// <returns>The current gesture</returns>
+        /// <returns>The current <see cref="GestureSample"/></returns>
         public GestureSample ReadGesture()
         {
             return this.gestureSample;
         }
+
+        /// <summary>
+        /// If and only if <see cref="ManualTouchOrder"/> is set to <c>false</c> (by default it is)
+        /// the touch order is calculated based on both <see pref="Transform2D.DrawOrder"/> and
+        /// the <see cref="Layer"/> used.
+        /// </summary>
+        public void UpdateTouchOrder()
+        {
+            if (!this.ManualTouchOrder && this.Owner != null)
+            {
+                int order = 0;
+                int numberOfLevels = 100;
+
+                Drawable2D drawable2D = this.Owner.FindComponentOfType<Drawable2D>();
+                if (drawable2D != null)
+                {
+                    Type layer = drawable2D.LayerType;
+                    int index = RenderManager.GetLayerIndex(layer);
+
+                    if (index != -1)
+                    {
+                        order = index * numberOfLevels;
+                    }
+                }
+
+                if (this.Transform2D != null)
+                {
+                    order += (int)((1 - this.Transform2D.DrawOrder) * numberOfLevels);
+                }
+
+                this.TouchOrder = order;
+            }
+        }
+
         #endregion
 
         #region Private Methods
@@ -332,37 +409,6 @@ namespace WaveEngine.Components.Gestures
             if (e.Property == WaveEngine.Framework.Graphics.Transform2D.DrawOrderProperty)
             {
                 this.UpdateTouchOrder();
-            }
-        }
-
-        /// <summary>
-        /// Updates the touch order.
-        /// </summary>
-        public void UpdateTouchOrder()
-        {
-            if (!this.ManualTouchOrder && this.Owner != null)
-            {
-                int order = 0;
-                int numberOfLevels = 100;
-
-                Drawable2D drawable2D = this.Owner.FindComponentOfType<Drawable2D>();
-                if (drawable2D != null)
-                {
-                    Type layer = drawable2D.LayerType;
-                    int index = RenderManager.GetLayerIndex(layer);
-
-                    if (index != -1)
-                    {
-                        order = index * numberOfLevels;
-                    }
-                }
-
-                if (this.Transform2D != null)
-                {
-                    order += (int)((1 - this.Transform2D.DrawOrder) * numberOfLevels);
-                }
-
-                this.TouchOrder = order;
             }
         }
 
@@ -739,18 +785,7 @@ namespace WaveEngine.Components.Gestures
                 }
             }
         }
-        #endregion
 
-        /// <summary>
-        /// Gets or sets a value indicating whether [manual touch order].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [manual touch order]; otherwise, <c>false</c>.
-        /// </value>
-        public bool ManualTouchOrder
-        {
-            get;
-            set;
-        }
+        #endregion
     }
 }

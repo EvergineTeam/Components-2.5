@@ -18,7 +18,8 @@ using WaveEngine.Framework.Graphics;
 namespace WaveEngine.Components.Graphics2D
 {
     /// <summary>
-    /// Renders a Sprite on the screen.
+    /// Renders a <see cref="Sprite"/> on the screen.
+    /// The owner <see cref="Entity"/> must contain the <see cref="Sprite"/> to be drawn, plus a <see cref="Transform2D"/>.
     /// </summary>
     public class SpriteRenderer : Drawable2D
     {
@@ -28,13 +29,15 @@ namespace WaveEngine.Components.Graphics2D
         private static int instances;
 
         /// <summary>
-        /// Transform of the <see cref="Graphics2D.Sprite"/>.
+        /// Required <see cref="Transform2D"/>.
+        /// It provides where to draw the <see cref="Sprite"/>, which rotation to apply and which scale.
         /// </summary>
         [RequiredComponent]
         public Transform2D Transform2D;
 
         /// <summary>
-        /// <see cref="Graphics2D.Sprite"/> to render.
+        /// Required <see cref="Sprite"/>.
+        /// It provides the in memory representation for a visual asset.
         /// </summary>
         [RequiredComponent(false)]
         public Sprite Sprite;
@@ -58,7 +61,10 @@ namespace WaveEngine.Components.Graphics2D
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteRenderer" /> class.
         /// </summary>
-        /// <param name="layerType">Type of the layer.</param>
+        /// <param name="layerType">
+        /// Layer type (available at <see cref="DefaultLayers"/>).
+        /// Example: new SpriteRenderer(DefaultLayers.Alpha)
+        /// </param>
         public SpriteRenderer(Type layerType)
             : base("SpriteRenderer" + instances++, layerType)
         {

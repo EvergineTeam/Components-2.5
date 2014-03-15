@@ -19,19 +19,30 @@ using WaveEngine.Framework.Services;
 namespace WaveEngine.Components.Graphics2D
 {
     /// <summary>
-    /// Represents a 2D Image.
+    /// Represents a 2D image. Such image is loaded from a content file (.wpk),
+    /// which is generated from a main PNG or JPEG file format.
     /// </summary>
     public class Sprite : Component
     {
         /// <summary>
-        ///     Number of instances of this component created.
+        /// Sprite texture path
+        /// </summary>
+        protected string texturePath;
+
+        /// <summary>
+        /// The sprite texture
+        /// </summary>
+        protected Texture texture;
+
+        /// <summary>
+        /// Number of instances of this component created.
         /// </summary>
         private static int instances;
 
         /// <summary>
         /// The is global asset.
         /// </summary>
-        private bool isGlobalAsset;
+        private bool isGlobalAsset;        
 
         /// <summary>
         /// The disposed
@@ -39,13 +50,17 @@ namespace WaveEngine.Components.Graphics2D
         protected bool disposed;
 
         /// <summary>
-        /// Transform of the Image.
+        /// Required 2D transform.
+        /// See <see cref="Transform2D"/> for more information.
         /// </summary>
         [RequiredComponent]
         public Transform2D Transform2D;
 
         /// <summary>
-        /// Rectangle that represents this Sprite in case it is part of a bigger Image.
+        /// Rectangle that represents this sprite in case it is part of a bigger image.
+        /// Most of the cases this field will be null, which means the entire texture is used.
+        /// On the other side, if a value is provided, will mean the rectangle (inside the original
+        /// texture's rectangle) to be drawn.
         /// </summary>
         public Rectangle? SourceRectangle;
 
@@ -53,6 +68,8 @@ namespace WaveEngine.Components.Graphics2D
 
         /// <summary>
         /// Gets or sets a value indicating whether this asset is global.
+        /// By "global" it is meant this asset will be consumed anywhere else. It implies 
+        /// once this component is disposed, the asset it-self will not be unload from memory.
         /// </summary>
         /// <value>
         ///     <c>true</c> if this asset is global; otherwise, <c>false</c>.
@@ -76,26 +93,38 @@ namespace WaveEngine.Components.Graphics2D
         }
 
         /// <summary>
-        /// Gets or sets the texture path.
+        /// Gets the texture path.
+        /// Such path is platform agnostic, and will always start with "Content/".
+        /// Example: "Content/Characters/Tim.wpk"
         /// </summary>
         /// <value>
         ///     The texture path.
         /// </value>
-        public string TexturePath { get; protected set; }
+        public string TexturePath
+        {
+            get { return this.texturePath; } 
+        }
 
         /// <summary>
-        ///     Gets or sets the texture.
+        ///     Gets the texture.
+        ///     Such is the in-memory representation for the given asset.
+        ///     See <see cref="Texture"/> for more information.
         /// </summary>
         /// <value>
         ///     The texture.
         /// </value>
-        public Texture Texture { get; protected set; }
+        public Texture Texture 
+        {
+            get { return this.texture; } 
+        }
 
         /// <summary>
-        /// Gets or sets the color of the tint.
+        /// Gets or sets the tint color.
+        /// Each pixel of the sprite will be multiplied by such color during the drawing.
+        /// By default, it is white.
         /// </summary>
         /// <value>
-        /// The color of the tint.
+        /// The tint color.
         /// </value>
         public Color TintColor { get; set; }
 
@@ -104,9 +133,10 @@ namespace WaveEngine.Components.Graphics2D
         #region Initialize
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Sprite" /> class.
+        /// Initializes a new instance of the <see cref="Sprite" /> class
+        /// based on a content file.
         /// </summary>
-        /// <param name="texturePath">The texture path.</param>
+        /// <param name="texturePath">The texture path to the content file.</param>
         /// <exception cref="System.ArgumentException">TexturePath can not be null.</exception>
         public Sprite(string texturePath)
             : base("Sprite" + instances++)
@@ -119,12 +149,14 @@ namespace WaveEngine.Components.Graphics2D
             this.SourceRectangle = null;
             this.Transform2D = null;
             this.isGlobalAsset = false;
-            this.TexturePath = texturePath;
+            this.texturePath = texturePath;
             this.TintColor = Color.White;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Sprite" /> class.
+        /// Initializes a new instance of the <see cref="Sprite" /> class
+        /// based on a texture.
+        /// See <see cref="Texture"/> for more information.
         /// </summary>
         /// <param name="texture">The texture.</param>
         /// <exception cref="System.ArgumentException">Texture can not be null.</exception>
@@ -139,7 +171,7 @@ namespace WaveEngine.Components.Graphics2D
             this.SourceRectangle = null;
             this.Transform2D = null;
             this.isGlobalAsset = false;
-            this.Texture = texture;
+            this.texture = texture;
             this.TintColor = Color.White;
         }
 
@@ -160,7 +192,7 @@ namespace WaveEngine.Components.Graphics2D
         #region Private Methods
 
         /// <summary>
-        ///     Performs further custom initialization for this instance.
+        /// Performs further custom initialization for this instance.
         /// </summary>
         protected override void Initialize()
         {
@@ -169,15 +201,15 @@ namespace WaveEngine.Components.Graphics2D
                 throw new ObjectDisposedException("ImageAtlasRenderer");
             }
 
-            if (this.Texture == null)
+            if (this.texture == null)
             {
                 if (this.isGlobalAsset)
                 {
-                    this.Texture = WaveServices.Assets.Global.LoadAsset<Texture2D>(this.TexturePath);
+                    this.texture = WaveServices.Assets.Global.LoadAsset<Texture2D>(this.TexturePath);
                 }
                 else
                 {
-                    this.Texture = this.Assets.LoadAsset<Texture2D>(this.TexturePath);
+                    this.texture = this.Assets.LoadAsset<Texture2D>(this.TexturePath);
                 }
             }
 

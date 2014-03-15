@@ -64,6 +64,16 @@ namespace WaveEngine.Components.Graphics3D
         private readonly Dictionary<string, int> boneNames;
 
         /// <summary>
+        /// The last mesh id
+        /// </summary>
+        private int lastModelId;
+
+        /// <summary>
+        /// The mesh materials
+        /// </summary>
+        private Material[] meshMaterials;
+
+        /// <summary>
         /// Wether this instance has been disposed.
         /// </summary>
         private bool disposed;
@@ -168,6 +178,12 @@ namespace WaveEngine.Components.Graphics3D
         /// <param name="gameTime">The elapsed game time.</param>
         public override void Draw(TimeSpan gameTime)
         {
+            if (this.lastModelId != this.Model.GetHashCode())
+            {
+                this.meshMaterials = new Material[this.Model.InternalModel.Meshes.Count];
+                this.lastModelId = this.Model.GetHashCode();
+            }
+
             for (int i = 0; i < this.Model.InternalModel.Meshes.Count; i++)
             {
                 StaticMesh currentMesh = this.Model.InternalModel.Meshes[i];
@@ -181,6 +197,8 @@ namespace WaveEngine.Components.Graphics3D
                 {
                     currentMaterial = this.MaterialMap.DefaultMaterial;
                 }
+
+                this.meshMaterials[i] = currentMaterial;
 
                 if (currentMaterial != null)
                 {
@@ -236,25 +254,16 @@ namespace WaveEngine.Components.Graphics3D
         /// <summary>
         /// The draw basic unit.
         /// </summary>
-        /// <param name="i">The i.</param>
-        protected override void DrawBasicUnit(int i)
+        /// <param name="parameter">The mesh index.</param>
+        protected override void DrawBasicUnit(int parameter)
         {
-            StaticMesh currentMesh = this.Model.InternalModel.Meshes[i];
-            Material currentMaterial;
-
-            if (currentMesh.Name != null && this.MaterialMap.Materials.ContainsKey(currentMesh.Name))
-            {
-                currentMaterial = this.MaterialMap.Materials[currentMesh.Name];
-            }
-            else
-            {
-                currentMaterial = this.MaterialMap.DefaultMaterial;
-            }
+            StaticMesh currentMesh = this.Model.InternalModel.Meshes[parameter];
+            Material currentMaterial = this.meshMaterials[parameter];
 
             if (currentMaterial != null)
             {
                 InternalStaticModel internalModel = this.Model.InternalModel;
-                int index = internalModel.MeshBonePairs[i];
+                int index = internalModel.MeshBonePairs[parameter];
                 Matrix absoluteTransform = internalModel.Bones[index].AbsoluteTransform;
                 Matrix.Multiply(ref absoluteTransform, ref this.Transform.LocalWorld, out currentMaterial.Matrices.World);
 
