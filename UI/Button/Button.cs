@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // Button
 //
-// Copyright © 2010 - 2013 Wave Coorporation. All rights reserved.
+// Copyright © 2014 Wave Corporation
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -10,6 +10,7 @@
 #region Using Statements
 using System;
 using WaveEngine.Common.Graphics;
+using WaveEngine.Common.Math;
 using WaveEngine.Components.Gestures;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Animation;
@@ -456,15 +457,20 @@ namespace WaveEngine.Components.UI
             Entity imageEntity = this.entity.FindChild("ImageEntity");
             ImageControl newImageControl = new ImageControl(imagePath)
             {
-                Stretch = Stretch.Fill
+                Stretch = Stretch.Fill,
             };
 
             if (imageEntity != null)
             {
-                // If imageEntity exist
+                Transform2D transform = imageEntity.FindComponent<Transform2D>();
+                RectangleF rectangle = transform.Rectangle;
+                                
+                // If imageEntity exist                
                 imageEntity.RemoveComponent<ImageControl>();
                 imageEntity.AddComponent(newImageControl);
                 imageEntity.RefreshDependencies();
+
+                newImageControl.Arrange(rectangle);
             }
             else
             {

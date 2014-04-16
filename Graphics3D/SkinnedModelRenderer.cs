@@ -1,7 +1,7 @@
 ﻿#region File Description
 //-----------------------------------------------------------------------------
 // SkinnedModelRenderer
-// Copyright © 2010 - 2013 Wave Coorporation. All rights reserved.
+// Copyright © 2014 Wave Corporation
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -534,7 +534,6 @@ namespace WaveEngine.Components.Graphics3D
                 if (this.updateVertexBuffer[parameter])
                 {
                     currentMesh.SetBones(this.skinTransforms, true);
-                    (currentMesh.VertexBuffer as SkinnedVertexBuffer).SkinVertices(this.skinTransforms, true);
                     this.GraphicsDevice.BindVertexBuffer(currentMesh.VertexBuffer);
                     this.updateVertexBuffer[parameter] = false;
                 }

@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // TouchGestures
 //
-// Copyright © 2010 - 2013 Wave Coorporation. All rights reserved.
+// Copyright © 2014 Wave Corporation
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -359,7 +359,7 @@ namespace WaveEngine.Components.Gestures
                 int order = 0;
                 int numberOfLevels = 100;
 
-                Drawable2D drawable2D = this.Owner.FindComponentOfType<Drawable2D>();
+                Drawable2D drawable2D = this.Owner.FindComponent<Drawable2D>(false);
                 if (drawable2D != null)
                 {
                     Type layer = drawable2D.LayerType;

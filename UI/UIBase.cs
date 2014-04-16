@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // UIBase
 //
-// Copyright © 2010 - 2013 Wave Coorporation. All rights reserved.
+// Copyright © 2014 Wave Corporation
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -164,7 +164,7 @@ namespace WaveEngine.Components.UI
         /// <param name="value">The value.</param>
         public void SetValue(DependencyProperty dp, object value)
         {
-            Control control = this.entity.FindComponentOfType<Control>();
+            Control control = this.entity.FindComponent<Control>(false);
             if (control != null)
             {
                 control.SetValue(dp, value);
@@ -180,7 +180,7 @@ namespace WaveEngine.Components.UI
         {
             object result = null;
 
-            Control control = this.entity.FindComponentOfType<Control>();
+            Control control = this.entity.FindComponent<Control>(false);
             if (control != null)
             {
                 result = control.GetValue(dp);
@@ -194,7 +194,7 @@ namespace WaveEngine.Components.UI
         /// </summary>
         public override void Dispose()
         {
-            FocusBehavior focusBehavior = this.entity.FindComponentOfType<FocusBehavior>();
+            FocusBehavior focusBehavior = this.entity.FindComponent<FocusBehavior>();
             if (focusBehavior != null)
             {
                 if (FocusBehavior.CurrentFocus == focusBehavior)

@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // WrapPanelControl
 //
-// Copyright © 2010 - 2013 Wave Coorporation. All rights reserved.
+// Copyright © 2014 Wave Corporation
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -133,7 +133,7 @@ namespace WaveEngine.Components.UI
 
             foreach (Entity entity in Owner.ChildEntities)
             {
-                Control control = entity.FindComponentOfType<Control>();
+                Control control = entity.FindComponent<Control>(false);
 
                 if (control != null)
                 {
@@ -207,7 +207,7 @@ namespace WaveEngine.Components.UI
 
             foreach (Entity entity in Owner.ChildEntities)
             {
-                Control control = entity.FindComponentOfType<Control>();
+                Control control = entity.FindComponent<Control>(false);
 
                 if (control != null)
                 {

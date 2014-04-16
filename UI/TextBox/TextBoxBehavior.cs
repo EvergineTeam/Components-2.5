@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // TextBoxBehavior
 //
-// Copyright © 2010 - 2013 Wave Coorporation. All rights reserved.
+// Copyright © 2014 Wave Corporation
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -84,6 +84,11 @@ namespace WaveEngine.Components.UI
         private bool uppercase;
 
         /// <summary>
+        /// The alt-case actived
+        /// </summary>
+        private bool altcase;
+
+        /// <summary>
         /// The accepts return
         /// </summary>
         private bool acceptsReturn;
@@ -149,6 +154,7 @@ namespace WaveEngine.Components.UI
             : base("TextBoxBehavior")
         {
             this.uppercase = false;
+            this.altcase = false;
             this.acceptsReturn = false;
             this.isReadOnly = false;
 
@@ -477,6 +483,11 @@ namespace WaveEngine.Components.UI
                 {
                     this.AppendCharacter('z');
                 }
+                else if (this.inputService.KeyboardState.Grave == ButtonState.Pressed &&
+                    this.beforeKeyboardState.Grave != ButtonState.Pressed)
+                {
+                    this.AppendCharacter('º');
+                }
                 else if (this.inputService.KeyboardState.Space == ButtonState.Pressed &&
                    this.beforeKeyboardState.Space != ButtonState.Pressed)
                 {
@@ -515,6 +526,16 @@ namespace WaveEngine.Components.UI
                 {
                     this.uppercase = false;
                 }
+
+                // Combinate Alt
+                if (this.inputService.KeyboardState.RightAlt == ButtonState.Pressed && this.beforeKeyboardState.RightAlt != ButtonState.Pressed)
+                {
+                    this.altcase = true;
+                }
+                else if (this.inputService.KeyboardState.RightAlt == ButtonState.Release)
+                {
+                    this.altcase = false;
+                }
             }
 
             this.beforeKeyboardState = this.inputService.KeyboardState;
@@ -529,7 +550,86 @@ namespace WaveEngine.Components.UI
             char character = c;
             if (this.uppercase)
             {
-                character = char.ToUpper(c);
+                if (c == 'º')
+                {
+                    character = 'ª';
+                }
+                else if (c == '1') 
+                { 
+                    character = '!'; 
+                }
+                else if (c == '2') 
+                {
+                    character = '"'; 
+                }
+                else if (c == '3') 
+                { 
+                    character = '·'; 
+                }
+                else if (c == '4') 
+                { 
+                    character = '$'; 
+                }
+                else if (c == '5') 
+                { 
+                    character = '%'; 
+                }
+                else if (c == '6') 
+                { 
+                    character = '&'; 
+                }
+                else if (c == '7') 
+                { 
+                    character = '/'; 
+                }
+                else if (c == '8') 
+                { 
+                    character = '('; 
+                }
+                else if (c == '9') 
+                { 
+                    character = ')'; 
+                }
+                else if (c == '0') 
+                { 
+                    character = '='; 
+                }
+                else 
+                { 
+                    character = char.ToUpper(c); 
+                }
+            }
+
+            if (this.altcase)
+            {
+                if (c == 'º')
+                {
+                    character = '\\';
+                }
+                else if (c == '1')
+                {
+                    character = '|';
+                }
+                else if (c == '2')
+                {
+                    character = '@';
+                }
+                else if (c == '3')
+                {
+                    character = '#';
+                }
+                else if (c == '4')
+                {
+                    character = '~';
+                }
+                else if (c == '5')
+                {
+                    character = '€';
+                }
+                else if (c == '6')
+                {
+                    character = '¬';
+                }                
             }
 
             this.textControl.Text = this.textBeforeCursor + character + this.textAfterCursor;

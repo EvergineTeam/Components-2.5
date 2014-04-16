@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // TextBlock
 //
-// Copyright © 2010 - 2013 Wave Coorporation. All rights reserved.
+// Copyright © 2014 Wave Corporation
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion

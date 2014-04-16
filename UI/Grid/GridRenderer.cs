@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // GridRenderer
 //
-// Copyright © $year$ Weekend Game Studio. All rights reserved.
+// Copyright © 2014 Wave Corporation
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
