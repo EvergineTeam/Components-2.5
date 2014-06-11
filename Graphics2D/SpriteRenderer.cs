@@ -76,6 +76,65 @@ namespace WaveEngine.Components.Graphics2D
         }
         #endregion
 
+        #region Public Methods
+        /// <summary>
+        /// Allows to perform custom drawing.
+        /// </summary>
+        /// <param name="gameTime">The elapsed game time.</param>
+        /// <remarks>
+        /// This method will only be called if all the following points are true:
+        /// <list type="bullet">
+        /// <item>
+        /// <description>The parent of the owner <see cref="Entity" /> of the <see cref="Drawable" /> cascades its visibility to its children and it is visible.</description>
+        /// </item>
+        /// <item>
+        /// <description>The <see cref="Drawable" /> is active.</description>
+        /// </item>
+        /// <item>
+        /// <description>The owner <see cref="Entity" /> of the <see cref="Drawable" /> is active and visible.</description>
+        /// </item>
+        /// </list>
+        /// </remarks>
+        public override void Draw(TimeSpan gameTime)
+        {
+            if (this.Transform2D.Opacity > this.Delta)
+            {
+                this.position.X = this.Transform2D.Rectangle.X + this.Transform2D.X;
+                this.position.Y = this.Transform2D.Rectangle.Y + this.Transform2D.Y;
+
+                if (this.Sprite.SourceRectangle.HasValue)
+                {
+                    var rect = this.Sprite.SourceRectangle.Value;
+                    this.scale.X = (this.Transform2D.Rectangle.Width / rect.Width) * this.Transform2D.XScale;
+                    this.scale.Y = (this.Transform2D.Rectangle.Height / rect.Height) * this.Transform2D.YScale;
+                }
+                else
+                {
+                    this.scale.X = (this.Transform2D.Rectangle.Width / this.Sprite.Texture.Width) * this.Transform2D.XScale;
+                    this.scale.Y = (this.Transform2D.Rectangle.Height / this.Sprite.Texture.Height) * this.Transform2D.YScale;
+                }
+
+                Vector2 transformOrigin = this.Transform2D.Origin;
+                this.origin.X = transformOrigin.X * this.Transform2D.Rectangle.Width;
+                this.origin.Y = transformOrigin.Y * this.Transform2D.Rectangle.Height;
+
+                float opacity = this.RenderManager.DebugLines ? this.DebugAlpha : this.Transform2D.Opacity;
+                Color color = this.Sprite.TintColor * opacity;
+
+                this.layer.SpriteBatch.DrawVM(
+                    this.Sprite.Texture,
+                    this.position,
+                    this.Sprite.SourceRectangle,
+                    color,
+                    this.Transform2D.Rotation,
+                    this.origin,
+                    this.scale,
+                    this.Transform2D.Effect,
+                    this.Transform2D.DrawOrder);
+            }
+        }
+        #endregion
+
         #region Private Methods
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
@@ -89,48 +148,6 @@ namespace WaveEngine.Components.Graphics2D
             }
         }
 
-        /// <summary>
-        /// Draws the basic unit.
-        /// </summary>
-        /// <param name="parameter">The parameter.</param>
-        protected override void DrawBasicUnit(int parameter)
-        {
-            if (this.Transform2D.Opacity > this.Delta)
-            {
-                this.position.X = this.Transform2D.Rectangle.X + this.Transform2D.X;
-                this.position.Y = this.Transform2D.Rectangle.Y + this.Transform2D.Y;
-
-                this.scale.X = (this.Transform2D.Rectangle.Width / this.Sprite.Texture.Width) * this.Transform2D.XScale;
-                this.scale.Y = (this.Transform2D.Rectangle.Height / this.Sprite.Texture.Height)
-                               * this.Transform2D.YScale;
-
-                Vector2 transformOrigin = this.Transform2D.Origin;
-                if (this.Sprite.SourceRectangle.HasValue)
-                {
-                    this.origin.X = transformOrigin.X * this.Sprite.SourceRectangle.Value.Width;
-                    this.origin.Y = transformOrigin.Y * this.Sprite.SourceRectangle.Value.Height;
-                }
-                else
-                {
-                    this.origin.X = transformOrigin.X * this.Sprite.Texture.Width;
-                    this.origin.Y = transformOrigin.Y * this.Sprite.Texture.Height;
-                }
-
-                float opacity = this.RenderManager.DebugLines ? this.DebugAlpha : this.Transform2D.Opacity;
-                Color color = this.Sprite.TintColor * opacity;
-
-                this.spriteBatch.DrawVM(
-                    this.Sprite.Texture,
-                    this.position,
-                    this.Sprite.SourceRectangle,
-                    color,
-                    this.Transform2D.Rotation,
-                    this.origin,
-                    this.scale,
-                    this.Transform2D.Effect,
-                    this.Transform2D.DrawOrder);
-            }
-        }
         #endregion
     }
 }

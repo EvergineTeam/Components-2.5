@@ -67,6 +67,30 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Allows to perform custom drawing.
+        /// </summary>
+        /// <param name="gameTime">The elapsed game time.</param>
+        /// <remarks>
+        /// This method will only be called if all the following points are true:
+        /// <list type="bullet">
+        /// <item>
+        /// <description>The entity passes the culling test.</description>
+        /// </item>
+        /// <item>
+        /// <description>The parent of the owner <see cref="Entity" /> of the <see cref="Drawable" /> cascades its visibility to its children and it is visible.</description>
+        /// </item>
+        /// <item>
+        /// <description>The <see cref="Drawable" /> is active.</description>
+        /// </item>
+        /// <item>
+        /// <description>The owner <see cref="Entity" /> of the <see cref="Drawable" /> is active and visible.</description>
+        /// </item>
+        /// </list>
+        /// </remarks>
+        public override void Draw(TimeSpan gameTime)
+        {
+        }
         #endregion
 
         #region Private Methods
@@ -80,14 +104,6 @@ namespace WaveEngine.Components.UI
         }
 
         /// <summary>
-        /// Draws the basic unit.
-        /// </summary>
-        /// <param name="parameter">The parameter.</param>
-        protected override void DrawBasicUnit(int parameter)
-        {
-        }
-
-         /// <summary>
         /// Helper method that draws debug lines.
         /// </summary>
         /// <remarks>

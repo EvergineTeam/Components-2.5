@@ -126,137 +126,68 @@ namespace WaveEngine.Components.Graphics3D
                             properties[k].Format = (VertexElementFormat)reader.ReadInt32();
                             properties[k].Usage = (VertexElementUsage)reader.ReadInt32();
                             properties[k].UsageIndex = reader.ReadInt32();
-
-                            ////if (properties[k].Usage == VertexElementUsage.Tangent)
-                            ////{
-                            ////    usesTangent = true;
-                            ////}
                         }
 
                         reader.ReadInt32(); // bufferSize
+              
+                        var bufferData = new SkinnedVertex[numVertices];
 
-                        // TODO: this is ugly as hell...
-                        ////if (usesTangent)
-                        ////{
-                        ////    var bufferData = new SkinnedNormalMappedVertex[numVertices];
-
-                        ////    for (int k = 0; k < numVertices; k++)
-                        ////    {
-                        ////        foreach (VertexElementProperties property in properties)
-                        ////        {
-                        ////            switch (property.Usage)
-                        ////            {
-                        ////                case VertexElementUsage.Position:
-                        ////                    bufferData[k].Position = reader.ReadVector3();
-                        ////                    break;
-                        ////                case VertexElementUsage.TextureCoordinate:
-                        ////                    bufferData[k].TexCoord = reader.ReadVector2();
-                        ////                    break;
-                        ////                case VertexElementUsage.Normal:
-                        ////                    bufferData[k].Normal = reader.ReadVector3();
-                        ////                    break;
-                        ////                case VertexElementUsage.BlendIndices:
-                        ////                    bufferData[k].BlendIndices = reader.ReadByte4();
-                        ////                    break;
-                        ////                case VertexElementUsage.BlendWeight:
-                        ////                    bufferData[k].BlendWeights = reader.ReadVector2();
-                        ////                    break;
-                        ////                case VertexElementUsage.Tangent:
-                        ////                    bufferData[k].Tangent = reader.ReadVector3();
-                        ////                    break;
-                        ////                case VertexElementUsage.Binormal:
-                        ////                    bufferData[k].Binormal = reader.ReadVector3();
-                        ////                    break;
-                        ////            }
-                        ////        }
-                        ////    }
-
-                        ////    int indexSize = reader.ReadInt32();
-                        ////    var indices = new ushort[indexSize];
-                        ////    for (int k = 0; k < indexSize; k++)
-                        ////    {
-                        ////        indices[k] = reader.ReadUInt16();
-                        ////    }
-
-                        ////    this.internalindices.Add(indices);
-                        ////    var mesh = new SkinnedNormalMappedMesh(
-                        ////        vertexOffset,
-                        ////        numVertices,
-                        ////        startIndex,
-                        ////        primitiveCount,
-                        ////            new SkinnedVertexBuffer<SkinnedNormalMappedVertex>(
-                        ////                numVertices, bufferData, SkinnedNormalMappedVertex.VertexFormat),
-                        ////        new IndexBuffer(indices));
-                        ////    mesh.Name = meshName;
-
-                        ////    this.Meshes.Add(mesh);
-                        ////}
-                        ////else
-                        ////{
-                            var bufferData = new SkinnedVertex[numVertices];
-
-                            for (int k = 0; k < numVertices; k++)
+                        for (int k = 0; k < numVertices; k++)
+                        {
+                            foreach (VertexElementProperties property in properties)
                             {
-                                foreach (VertexElementProperties property in properties)
+                                switch (property.Usage)
                                 {
-                                    switch (property.Usage)
-                                    {
-                                        case VertexElementUsage.Position:
-                                            bufferData[k].Position = reader.ReadVector3();
-                                            break;
-                                        case VertexElementUsage.TextureCoordinate:
-                                            bufferData[k].TexCoord = reader.ReadVector2();
-                                            break;
-                                        case VertexElementUsage.Normal:
-                                            bufferData[k].Normal = reader.ReadVector3();
-                                            break;
-                                        case VertexElementUsage.BlendIndices:
-                                            bufferData[k].BlendIndices = reader.ReadByte4();
-                                            break;
-                                        case VertexElementUsage.BlendWeight:
-                                            bufferData[k].BlendWeights = reader.ReadVector2();
-                                            break;
+                                    case VertexElementUsage.Position:
+                                        bufferData[k].Position = reader.ReadVector3();
+                                        break;
+                                    case VertexElementUsage.TextureCoordinate:
+                                        bufferData[k].TexCoord = reader.ReadVector2();
+                                        break;
+                                    case VertexElementUsage.Normal:
+                                        bufferData[k].Normal = reader.ReadVector3();
+                                        break;
+                                    case VertexElementUsage.BlendIndices:
+                                        bufferData[k].BlendIndices = reader.ReadByte4();
+                                        break;
+                                    case VertexElementUsage.BlendWeight:
+                                        bufferData[k].BlendWeights = reader.ReadVector2();
+                                        break;
 
-                                        case VertexElementUsage.Tangent:
-                                            bufferData[k].Tangent = reader.ReadVector3();
-                                            break;
-                                        case VertexElementUsage.Binormal:
-                                            bufferData[k].Binormal = reader.ReadVector3();
-                                            break;
-                                    }
+                                    case VertexElementUsage.Tangent:
+                                        bufferData[k].Tangent = reader.ReadVector3();
+                                        break;
+                                    case VertexElementUsage.Binormal:
+                                        bufferData[k].Binormal = reader.ReadVector3();
+                                        break;
                                 }
                             }
+                        }
 
-                            int indexSize = reader.ReadInt32();
-                            var indices = new ushort[indexSize];
-                            for (int k = 0; k < indexSize; k++)
-                            {
-                                indices[k] = reader.ReadUInt16();
-                            }
+                        int indexSize = reader.ReadInt32();
+                        var indices = new ushort[indexSize];
+                        for (int k = 0; k < indexSize; k++)
+                        {
+                            indices[k] = reader.ReadUInt16();
+                        }
 
-                            this.internalindices.Add(indices);
+                        this.internalindices.Add(indices);
 
-                            var newSkinnedBuffer = new SkinnedVertexBuffer(new VertexBufferFormat(properties));
-                            newSkinnedBuffer.SetData(bufferData, numVertices);
-                            var mesh = new SkinnedMesh(
-                                vertexOffset,
-                                numVertices,
-                                startIndex,
-                                primitiveCount,
-                                newSkinnedBuffer,
-                                new IndexBuffer(indices));
-                            mesh.Name = meshName;
+                        var newSkinnedBuffer = new SkinnedVertexBuffer(new VertexBufferFormat(properties));
+                        newSkinnedBuffer.SetData(bufferData, numVertices);
+                        var mesh = new SkinnedMesh(
+                            vertexOffset,
+                            numVertices,
+                            startIndex,
+                            primitiveCount,
+                            newSkinnedBuffer,
+                            new IndexBuffer(indices),
+                            PrimitiveType.TriangleList);
+                        mesh.Name = meshName;
 
-                            this.Meshes.Add(mesh);
-                        ////}
+                        this.Meshes.Add(mesh);
                     }
                 }
-            }
-
-            for (int i = 0; i < this.Meshes.Count; i++)
-            {
-                this.graphics.BindIndexBuffer(this.Meshes[i].IndexBuffer);
-                this.graphics.BindVertexBuffer(this.Meshes[i].VertexBuffer);
             }
         }
 
@@ -297,10 +228,11 @@ namespace WaveEngine.Components.Graphics3D
                 var newMesh = new SkinnedMesh(
                         currentMesh.VertexOffset,
                         currentMesh.NumVertices,
-                        currentMesh.StartIndex,
-                        currentMesh.PrimitiveCount,
+                        currentMesh.IndexOffset,
+                        currentMesh.NumPrimitives,
                         newBuffer,
-                        newIndexBuffer);
+                        newIndexBuffer,
+                        PrimitiveType.TriangleList);
                 newMesh.Name = currentMesh.Name;
 
                 newModel.Meshes.Add(newMesh);

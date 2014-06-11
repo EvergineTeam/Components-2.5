@@ -69,6 +69,11 @@ namespace WaveEngine.Components.UI
         private bool sizeDefineByUser;
 
         /// <summary>
+        /// The button background is a color, not an image
+        /// </summary>
+        private bool backgroundIsColor;
+
+        /// <summary>
         /// Occurs when [click].
         /// </summary>
         public event EventHandler Click;
@@ -323,6 +328,7 @@ namespace WaveEngine.Components.UI
                 {
                     // If imageEntity exist
                     imageEntity.FindComponent<ImageControl>().TintColor = value;
+                    this.backgroundIsColor = false;
                 }
                 else
                 {
@@ -337,7 +343,7 @@ namespace WaveEngine.Components.UI
                                         Stretch = Stretch.Fill
                                     })
                                     .AddComponent(new ImageControlRenderer()));
-
+                    this.backgroundIsColor = true;
                     this.entity.RefreshDependencies();
                 }
             }
@@ -401,7 +407,7 @@ namespace WaveEngine.Components.UI
         {
             Entity imageEntity = this.entity.FindChild("ImageEntity");
 
-            if (imageEntity != null && !this.sizeDefineByUser)
+            if (imageEntity != null && !this.sizeDefineByUser && !this.backgroundIsColor)
             {
                 ImageControl ic = imageEntity.FindComponent<ImageControl>();
                 PanelControl panel = this.entity.FindComponent<PanelControl>();
@@ -464,6 +470,8 @@ namespace WaveEngine.Components.UI
             {
                 Transform2D transform = imageEntity.FindComponent<Transform2D>();
                 RectangleF rectangle = transform.Rectangle;
+
+                rectangle.Offset(-rectangle.Width * transform.Origin.X, -rectangle.Height * transform.Origin.Y);
                                 
                 // If imageEntity exist                
                 imageEntity.RemoveComponent<ImageControl>();

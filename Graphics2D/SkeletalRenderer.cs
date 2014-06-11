@@ -62,34 +62,19 @@ namespace WaveEngine.Components.Graphics2D
         private List<Slot> drawOrder;
 
         /// <summary>
-        /// The num vertices
-        /// </summary>
-        private int numVertices;
-
-        /// <summary>
-        /// The num indices
-        /// </summary>
-        private int numIndices;
-
-        /// <summary>
-        /// The num primitives
-        /// </summary>
-        private int numPrimitives;
-
-        /// <summary>
         /// The vertices
         /// </summary>
         private VertexPositionColorTexture[] vertices;
 
         /// <summary>
-        /// The index buffer
+        /// Temporal vertice used to set values to vertex array
         /// </summary>
-        private IndexBuffer indexBuffer;
+        private VertexPositionColorTexture tempVertice;
 
         /// <summary>
-        /// The vertex buffer
+        /// The mesh
         /// </summary>
-        private DynamicVertexBuffer vertexBuffer;
+        private Mesh spineMesh;
 
         #region Cached fields
         /// <summary>
@@ -154,7 +139,7 @@ namespace WaveEngine.Components.Graphics2D
             /// The none
             /// </summary>
             None = 1,
-            
+
             /// <summary>
             /// The bones
             /// </summary>
@@ -212,7 +197,7 @@ namespace WaveEngine.Components.Graphics2D
             : base("SkeletalRenderer" + instances++, layerType)
         {
             this.Transform2D = null;
-            this.material = new BasicMaterial2D();
+            this.material = new BasicMaterial2D() { LayerType = layerType };
             this.position = new Vector2();
             this.scale = new Vector2(1);
             this.ActualDebugMode = DebugMode.Bones;
@@ -226,8 +211,6 @@ namespace WaveEngine.Components.Graphics2D
         /// <param name="gameTime">The elapsed game time.</param>
         public override void Draw(TimeSpan gameTime)
         {
-            base.Draw(gameTime);
-
             this.position.X = this.Transform2D.X;
             this.position.Y = this.Transform2D.Y;
             this.scale.X = this.Transform2D.XScale;
@@ -252,57 +235,7 @@ namespace WaveEngine.Components.Graphics2D
             Matrix.Multiply(ref this.scaleMatrix, ref this.quaternionMatrix, out this.localWorld);
             Matrix.Multiply(ref this.localWorld, ref this.translationMatrix, out this.localWorld);
 
-            this.material.Matrices.World = this.localWorld;
-        }
-
-        #endregion
-
-        #region Private Methods
-        /// <summary>
-        /// Performs further custom initialization for this instance.
-        /// </summary>
-        protected override void Initialize()
-        {
-            base.Initialize();
-
-            this.viewportManager = WaveServices.ViewportManager;
-            this.drawOrder = this.SkeletalAnimation.Skeleton.DrawOrder;
-
-            this.numIndices = this.drawOrder.Count * 6;
-            this.numPrimitives = this.drawOrder.Count * 2;
-            this.numVertices = this.drawOrder.Count * 4;
-
-            // Create Indexbuffer
-            ushort[] indices = new ushort[this.numIndices];
-
-            for (int i = 0; i < this.drawOrder.Count; i++)
-            {
-                indices[(i * 6) + 0] = (ushort)((i * 4) + 0);
-                indices[(i * 6) + 1] = (ushort)((i * 4) + 2);
-                indices[(i * 6) + 2] = (ushort)((i * 4) + 1);
-
-                indices[(i * 6) + 3] = (ushort)((i * 4) + 0);
-                indices[(i * 6) + 4] = (ushort)((i * 4) + 3);
-                indices[(i * 6) + 5] = (ushort)((i * 4) + 2);
-            }
-
-            this.indexBuffer = new IndexBuffer(indices);
-            this.GraphicsDevice.BindIndexBuffer(this.indexBuffer);
-
-            this.vertices = new VertexPositionColorTexture[this.numVertices];
-            this.vertexBuffer = new DynamicVertexBuffer(VertexPositionColorTexture.VertexFormat);
-            this.vertexBuffer.SetData(this.vertices, this.numVertices);
-            this.GraphicsDevice.BindVertexBuffer(this.vertexBuffer);
-        }
-
-        /// <summary>
-        /// Draws the basic unit.
-        /// </summary>
-        /// <param name="parameter">The parameter.</param>
-        protected override void DrawBasicUnit(int parameter)
-        {
-            float screenHeight = WaveServices.Platform.ScreenHeight;
-
+            // Process Mesh
             int j = 0;
             for (int i = 0; i < this.drawOrder.Count; i++)
             {
@@ -324,59 +257,58 @@ namespace WaveEngine.Components.Graphics2D
 
                     // Vertex TL
                     int index = j * 4;
-                    var vertexTL = this.vertices[index];
-                    vertexTL.Position.X = spineVertices[RegionAttachment.X1];
-                    vertexTL.Position.Y = spineVertices[RegionAttachment.Y1];
-                    vertexTL.Position.Z = 0;
-                    vertexTL.Color.R = r;
-                    vertexTL.Color.G = g;
-                    vertexTL.Color.B = b;
-                    vertexTL.Color.A = a;
-                    vertexTL.TexCoord.X = uvs[RegionAttachment.X1];
-                    vertexTL.TexCoord.Y = uvs[RegionAttachment.Y1];
-                    this.vertices[index] = vertexTL;
+                    this.tempVertice.Position.X = spineVertices[RegionAttachment.X1];
+                    this.tempVertice.Position.Y = spineVertices[RegionAttachment.Y1];
+                    this.tempVertice.Position.Z = 0;
+                    this.tempVertice.Color.R = r;
+                    this.tempVertice.Color.G = g;
+                    this.tempVertice.Color.B = b;
+                    this.tempVertice.Color.A = a;
+                    this.tempVertice.TexCoord.X = uvs[RegionAttachment.X1];
+                    this.tempVertice.TexCoord.Y = uvs[RegionAttachment.Y1];
+                    this.vertices[index] = this.tempVertice;
 
                     // Vertex TR
                     index++;
-                    var vertexTR = this.vertices[index];
-                    vertexTR.Position.X = spineVertices[RegionAttachment.X4];
-                    vertexTR.Position.Y = spineVertices[RegionAttachment.Y4];
-                    vertexTR.Position.Z = 0;
-                    vertexTR.Color.R = r;
-                    vertexTR.Color.G = g;
-                    vertexTR.Color.B = b;
-                    vertexTR.Color.A = a;
-                    vertexTR.TexCoord.X = uvs[RegionAttachment.X4];
-                    vertexTR.TexCoord.Y = uvs[RegionAttachment.Y4];
-                    this.vertices[index] = vertexTR;
+                    this.tempVertice = this.vertices[index];
+                    this.tempVertice.Position.X = spineVertices[RegionAttachment.X4];
+                    this.tempVertice.Position.Y = spineVertices[RegionAttachment.Y4];
+                    this.tempVertice.Position.Z = 0;
+                    this.tempVertice.Color.R = r;
+                    this.tempVertice.Color.G = g;
+                    this.tempVertice.Color.B = b;
+                    this.tempVertice.Color.A = a;
+                    this.tempVertice.TexCoord.X = uvs[RegionAttachment.X4];
+                    this.tempVertice.TexCoord.Y = uvs[RegionAttachment.Y4];
+                    this.vertices[index] = this.tempVertice;
 
                     // Vertex BR
                     index++;
-                    var vertexBR = this.vertices[index];
-                    vertexBR.Position.X = spineVertices[RegionAttachment.X3];
-                    vertexBR.Position.Y = spineVertices[RegionAttachment.Y3];
-                    vertexBR.Position.Z = 0;
-                    vertexBR.Color.R = r;
-                    vertexBR.Color.G = g;
-                    vertexBR.Color.B = b;
-                    vertexBR.Color.A = a;
-                    vertexBR.TexCoord.X = uvs[RegionAttachment.X3];
-                    vertexBR.TexCoord.Y = uvs[RegionAttachment.Y3];
-                    this.vertices[index] = vertexBR;
+                    this.tempVertice = this.vertices[index];
+                    this.tempVertice.Position.X = spineVertices[RegionAttachment.X3];
+                    this.tempVertice.Position.Y = spineVertices[RegionAttachment.Y3];
+                    this.tempVertice.Position.Z = 0;
+                    this.tempVertice.Color.R = r;
+                    this.tempVertice.Color.G = g;
+                    this.tempVertice.Color.B = b;
+                    this.tempVertice.Color.A = a;
+                    this.tempVertice.TexCoord.X = uvs[RegionAttachment.X3];
+                    this.tempVertice.TexCoord.Y = uvs[RegionAttachment.Y3];
+                    this.vertices[index] = this.tempVertice;
 
                     // Vertex BL
                     index++;
-                    var vertexBL = this.vertices[index];
-                    vertexBL.Position.X = spineVertices[RegionAttachment.X2];
-                    vertexBL.Position.Y = spineVertices[RegionAttachment.Y2];
-                    vertexBL.Position.Z = 0;
-                    vertexBL.Color.R = r;
-                    vertexBL.Color.G = g;
-                    vertexBL.Color.B = b;
-                    vertexBL.Color.A = a;
-                    vertexBL.TexCoord.X = uvs[RegionAttachment.X2];
-                    vertexBL.TexCoord.Y = uvs[RegionAttachment.Y2];
-                    this.vertices[index] = vertexBL;
+                    this.tempVertice = this.vertices[index];
+                    this.tempVertice.Position.X = spineVertices[RegionAttachment.X2];
+                    this.tempVertice.Position.Y = spineVertices[RegionAttachment.Y2];
+                    this.tempVertice.Position.Z = 0;
+                    this.tempVertice.Color.R = r;
+                    this.tempVertice.Color.G = g;
+                    this.tempVertice.Color.B = b;
+                    this.tempVertice.Color.A = a;
+                    this.tempVertice.TexCoord.X = uvs[RegionAttachment.X2];
+                    this.tempVertice.TexCoord.Y = uvs[RegionAttachment.Y2];
+                    this.vertices[index] = this.tempVertice;
 
                     j++;
                 }
@@ -387,19 +319,55 @@ namespace WaveEngine.Components.Graphics2D
                 this.material.Texture = this.SkeletalData.Atlas.Pages[0].Texture as Texture2D;
             }
 
-            this.material.Apply(this.RenderManager);
+            this.spineMesh.NumPrimitives = j * 2;
+            this.spineMesh.NumVertices = j * 4;
+            this.spineMesh.VertexBuffer.SetData(this.vertices);
+            this.GraphicsDevice.BindVertexBuffer(this.spineMesh.VertexBuffer);
 
-            this.numPrimitives = j * 2;
-            this.numVertices = j * 4;
+            this.RenderManager.DrawMesh(this.spineMesh, this.material, ref this.localWorld, false);
+        }
 
-            this.vertexBuffer.SetData(this.vertices, this.numVertices);
-            this.GraphicsDevice.BindVertexBuffer(this.vertexBuffer);
-            this.GraphicsDevice.DrawVertexBuffer(
-                                      this.numVertices,
-                                      this.numPrimitives,
-                                      PrimitiveType.TriangleList,
-                                      this.vertexBuffer,
-                                      this.indexBuffer);
+        #endregion
+
+        #region Private Methods
+        /// <summary>
+        /// Performs further custom initialization for this instance.
+        /// </summary>
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            this.viewportManager = WaveServices.ViewportManager;
+            this.drawOrder = this.SkeletalAnimation.Skeleton.DrawOrder;
+
+            int numIndices = this.drawOrder.Count * 6;
+            int numPrimitives = this.drawOrder.Count * 2;
+            int numVertices = this.drawOrder.Count * 4;
+
+            // Create Indexbuffer
+            ushort[] indices = new ushort[numIndices];
+
+            for (int i = 0; i < this.drawOrder.Count; i++)
+            {
+                indices[(i * 6) + 0] = (ushort)((i * 4) + 0);
+                indices[(i * 6) + 1] = (ushort)((i * 4) + 2);
+                indices[(i * 6) + 2] = (ushort)((i * 4) + 1);
+
+                indices[(i * 6) + 3] = (ushort)((i * 4) + 0);
+                indices[(i * 6) + 4] = (ushort)((i * 4) + 3);
+                indices[(i * 6) + 5] = (ushort)((i * 4) + 2);
+            }
+
+            this.spineMesh = new Mesh(
+                0,
+                numVertices,
+                0,
+                numPrimitives,
+                new DynamicVertexBuffer(VertexPositionColorTexture.VertexFormat),
+                new IndexBuffer(indices),
+                PrimitiveType.TriangleList);
+
+            this.vertices = new VertexPositionColorTexture[numVertices];
         }
 
         /// <summary>
@@ -418,7 +386,7 @@ namespace WaveEngine.Components.Graphics2D
             Vector2 start = new Vector2();
             Vector2 end = new Vector2();
             Color color = Color.Red;
-            
+
             // Draw bones
             if ((this.ActualDebugMode & DebugMode.Bones) == DebugMode.Bones)
             {
@@ -507,8 +475,8 @@ namespace WaveEngine.Components.Graphics2D
         {
             if (disposing)
             {
-                this.GraphicsDevice.DestroyIndexBuffer(this.indexBuffer);
-                this.GraphicsDevice.DestroyVertexBuffer(this.vertexBuffer);
+                this.GraphicsDevice.DestroyIndexBuffer(this.spineMesh.IndexBuffer);
+                this.GraphicsDevice.DestroyVertexBuffer(this.spineMesh.VertexBuffer);
             }
         }
         #endregion

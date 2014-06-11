@@ -10,7 +10,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using WaveEngine.Common.Helpers;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Animation;
@@ -152,6 +151,17 @@ namespace WaveEngine.Components.Animation
             get
             {
                 return this.frame;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the current animation time.
+        /// </summary>
+        public TimeSpan TotalAnimTime
+        {
+            get
+            {
+                return this.totalAnimTime;
             }
         }
 

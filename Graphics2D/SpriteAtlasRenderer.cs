@@ -70,24 +70,26 @@ namespace WaveEngine.Components.Graphics2D
         }
         #endregion
 
-        #region Private Methods
+        #region Public Methods
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
+        /// Allows to perform custom drawing.
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && this.Sprite != null)
-            {
-                this.Sprite.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// Draws the basic unit.
-        /// </summary>
-        /// <param name="parameter">The parameter.</param>
-        protected override void DrawBasicUnit(int parameter)
+        /// <param name="gameTime">The elapsed game time.</param>
+        /// <remarks>
+        /// This method will only be called if all the following points are true:
+        /// <list type="bullet">
+        /// <item>
+        /// <description>The parent of the owner <see cref="Entity" /> of the <see cref="Drawable" /> cascades its visibility to its children and it is visible.</description>
+        /// </item>
+        /// <item>
+        /// <description>The <see cref="Drawable" /> is active.</description>
+        /// </item>
+        /// <item>
+        /// <description>The owner <see cref="Entity" /> of the <see cref="Drawable" /> is active and visible.</description>
+        /// </item>
+        /// </list>
+        /// </remarks>
+        public override void Draw(TimeSpan gameTime)
         {
             if (this.Transform2D.Opacity > this.Delta)
             {
@@ -106,7 +108,7 @@ namespace WaveEngine.Components.Graphics2D
                 float opacity = this.RenderManager.DebugLines ? this.DebugAlpha : this.Transform2D.Opacity;
                 Color color = this.Sprite.TintColor * opacity;
 
-                this.spriteBatch.DrawVM(
+                this.layer.SpriteBatch.DrawVM(
                     this.Sprite.TextureAtlas.Texture,
                     this.position,
                     this.Sprite.SourceRectangle,
@@ -118,6 +120,21 @@ namespace WaveEngine.Components.Graphics2D
                     this.Transform2D.DrawOrder);
             }
         }
+        #endregion
+
+        #region Private Methods
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && this.Sprite != null)
+            {
+                this.Sprite.Dispose();
+            }
+        }
+
         #endregion
     }
 }

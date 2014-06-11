@@ -184,7 +184,6 @@ namespace WaveEngine.Components.Transitions
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
 
-            this.spriteBatch.Begin(BlendMode.AlphaBlend, DepthMode.None);
             int wSegment = this.targetRenderTarget.Width / this.segments;
             int hSegment = this.targetRenderTarget.Height / this.segments;
 
@@ -239,7 +238,7 @@ namespace WaveEngine.Components.Transitions
                 }
             }
 
-            this.spriteBatch.End();
+            this.spriteBatch.Render();
         }
 
         /// <summary>

@@ -88,7 +88,6 @@ namespace WaveEngine.Components.Transitions
 
             float rotation = MathHelper.PiOver2 * this.Lerp;
 
-            this.spriteBatch.Begin(BlendMode.AlphaBlend, DepthMode.None);
             this.spriteBatch.Draw(this.sourceRenderTarget,
                                     Vector2.Zero,
                                     null,
@@ -111,7 +110,7 @@ namespace WaveEngine.Components.Transitions
                                     SpriteEffects.None,
                                     0.5f);
 
-            this.spriteBatch.End();
+            this.spriteBatch.Render();
         }
 
         /// <summary>

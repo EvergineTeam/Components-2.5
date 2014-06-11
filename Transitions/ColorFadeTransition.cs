@@ -118,10 +118,9 @@ namespace WaveEngine.Components.Transitions
 
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
 
-            this.spriteBatch.Begin(BlendMode.AlphaBlend, DepthMode.None);
             this.spriteBatch.Draw(this.renderTarget, new Rectangle(0, 0, this.renderTarget.Width, this.renderTarget.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
             this.spriteBatch.Draw(this.transitionColorTexture, new Rectangle(0, 0, this.renderTarget.Width, this.renderTarget.Height), null, blendColor, 0, Vector2.Zero, SpriteEffects.None, 0);
-            this.spriteBatch.End();
+            this.spriteBatch.Render();
         }
 
         /// <summary>

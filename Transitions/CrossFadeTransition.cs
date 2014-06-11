@@ -94,10 +94,9 @@ namespace WaveEngine.Components.Transitions
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
 
-            this.spriteBatch.Begin(BlendMode.AlphaBlend, DepthMode.None);
             this.spriteBatch.Draw(this.sourceRenderTarget, new Rectangle(0, 0, this.sourceRenderTarget.Width, this.sourceRenderTarget.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
             this.spriteBatch.Draw(this.targetRenderTarget, new Rectangle(0, 0, this.sourceRenderTarget.Width, this.sourceRenderTarget.Height), null, blendColor, 0, Vector2.Zero, SpriteEffects.None, 0);
-            this.spriteBatch.End();
+            this.spriteBatch.Render();
         }
 
         /// <summary>

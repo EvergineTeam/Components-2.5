@@ -45,6 +45,11 @@ namespace WaveEngine.Components.Graphics3D
         private const short InitTimeMultipler = 10;
 
         /// <summary>
+        /// The renderer local world
+        /// </summary>
+        private static Matrix localWorld = Matrix.Identity;
+
+        /// <summary>
         /// Number of instances of this component created.
         /// </summary>
         private static int instances;
@@ -108,14 +113,9 @@ namespace WaveEngine.Components.Graphics3D
         private VertexPositionColorTexture[] vertices;
 
         /// <summary>
-        /// The index buffer
+        /// Particle mesh
         /// </summary>
-        private IndexBuffer indexBuffer;
-
-        /// <summary>
-        /// The vertex buffer
-        /// </summary>
-        private DynamicVertexBuffer vertexBuffer;
+        private Mesh mesh;
 
         /// <summary>
         /// The settings
@@ -553,9 +553,13 @@ namespace WaveEngine.Components.Graphics3D
 
             this.internalEnabled = this.aliveParticles > 0;
 
-            Layer layer = this.RenderManager.FindLayer(this.MaterialMap.DefaultMaterial.LayerType);
+            if (this.internalEnabled)
+            {
+                this.mesh.VertexBuffer.SetData(this.vertices, this.numVertices);
+                this.GraphicsDevice.BindVertexBuffer(this.mesh.VertexBuffer);
 
-            layer.AddDrawable(0, this, this.SortId);
+                this.RenderManager.DrawMesh(this.mesh, this.MaterialMap.DefaultMaterial, ref localWorld, false);
+            }
         }
         #endregion
 
@@ -595,8 +599,8 @@ namespace WaveEngine.Components.Graphics3D
             {
                 if (disposing)
                 {
-                    this.GraphicsDevice.DestroyIndexBuffer(this.indexBuffer);
-                    this.GraphicsDevice.DestroyVertexBuffer(this.vertexBuffer);
+                    this.GraphicsDevice.DestroyIndexBuffer(this.mesh.IndexBuffer);
+                    this.GraphicsDevice.DestroyVertexBuffer(this.mesh.VertexBuffer);
                     this.disposed = true;
                 }
             }
@@ -609,14 +613,19 @@ namespace WaveEngine.Components.Graphics3D
         {
             this.random = WaveServices.Random;
 
-            if (this.indexBuffer != null)
+            if (this.mesh != null)
             {
-                this.GraphicsDevice.DestroyIndexBuffer(this.indexBuffer);
-            }
+                if (this.mesh.IndexBuffer != null)
+                {
+                    this.GraphicsDevice.DestroyIndexBuffer(this.mesh.IndexBuffer);
+                }
 
-            if (this.vertexBuffer != null)
-            {
-                this.GraphicsDevice.DestroyVertexBuffer(this.vertexBuffer);
+                if (this.mesh.VertexBuffer != null)
+                {
+                    this.GraphicsDevice.DestroyVertexBuffer(this.mesh.VertexBuffer);
+                }
+
+                this.mesh = null;
             }
 
             this.settings = this.System;
@@ -640,8 +649,7 @@ namespace WaveEngine.Components.Graphics3D
                 indices[(i * 6) + 5] = (ushort)((i * 4) + 2);
             }
 
-            this.indexBuffer = new IndexBuffer(indices);
-            this.GraphicsDevice.BindIndexBuffer(this.indexBuffer);
+            IndexBuffer indexBuffer = new IndexBuffer(indices);            
 
             // Initialize Particles
             for (int i = 0; i < this.numParticles; i++)
@@ -654,9 +662,10 @@ namespace WaveEngine.Components.Graphics3D
             }
 
             this.vertices = new VertexPositionColorTexture[this.numVertices];
-            this.vertexBuffer = new DynamicVertexBuffer(VertexPositionColorTexture.VertexFormat);
-            this.vertexBuffer.SetData(this.vertices, this.numVertices);
-            this.GraphicsDevice.BindVertexBuffer(this.vertexBuffer);
+            DynamicVertexBuffer vertexBuffer = new DynamicVertexBuffer(VertexPositionColorTexture.VertexFormat);
+            vertexBuffer.SetData(this.vertices, this.numVertices);
+
+            this.mesh = new Mesh(0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3, vertexBuffer, indexBuffer, PrimitiveType.TriangleList);
         }
 
         /// <summary>
@@ -931,27 +940,6 @@ namespace WaveEngine.Components.Graphics3D
             return matrix;
         }
 
-        /// <summary>
-        /// Draws the basic unit.
-        /// </summary>
-        /// <param name="parameter">The parameter.</param>
-        protected override void DrawBasicUnit(int parameter)
-        {
-            if (this.internalEnabled)
-            {
-                this.MaterialMap.DefaultMaterial.Matrices.World = Matrix.Identity;
-                this.MaterialMap.DefaultMaterial.Apply(this.RenderManager);
-
-                this.vertexBuffer.SetData(this.vertices, this.numVertices);
-                this.GraphicsDevice.BindVertexBuffer(this.vertexBuffer);
-                this.GraphicsDevice.DrawVertexBuffer(
-                                          this.numVertices,
-                                          this.numPrimitives,
-                                          PrimitiveType.TriangleList,
-                                          this.vertexBuffer,
-                                          this.indexBuffer);
-            }
-        }
         #endregion
     }
 }

@@ -148,7 +148,7 @@ namespace WaveEngine.Components.Cameras
         /// <summary>
         ///     Mouse speed movement
         /// </summary>
-        private float rotationSpeed = .16f;
+        private float rotationSpeed = .004f;
 
         /// <summary>
         /// GamePad speed movement
@@ -423,8 +423,8 @@ namespace WaveEngine.Components.Cameras
                             }
 
                             // Calculated yaw and pitch
-                            this.yaw = this.yaw - (this.xDifference * amount * this.rotationSpeed);
-                            this.pitch = this.pitch - (this.yDifference * amount * this.rotationSpeed);
+                            this.yaw = this.yaw - (this.xDifference * this.rotationSpeed);
+                            this.pitch = this.pitch - (this.yDifference * this.rotationSpeed);
 
                             // Manual inline: forwardNormalizedVector = cameraRotation.Forward;
                             this.forwardNormalizedVector.X = this.cameraMatrixRotation.Forward.X;

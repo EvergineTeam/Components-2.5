@@ -121,7 +121,7 @@ namespace WaveEngine.Components.Graphics3D
             meshVBuffer.SetData(primitive.ByteVertices, vertexCount);
             var meshIBuffer = new IndexBuffer(primitive.Indices);
 
-            var baseMesh = new StaticMesh(0, vertexCount, 0, primitiveCount, meshVBuffer, meshIBuffer, true, collisionVertices.ToArray(), primitive.Indices);
+            var baseMesh = new StaticMesh(0, vertexCount, 0, primitiveCount, meshVBuffer, meshIBuffer, true, collisionVertices.ToArray(), primitive.Indices, PrimitiveType.TriangleList);
             this.Meshes.Add(baseMesh);
 
             var rootBone = new Bone(0, -1, "Root", Matrix.Identity);
@@ -255,7 +255,7 @@ namespace WaveEngine.Components.Graphics3D
                         var vertexBuffer = new VertexBuffer(new VertexBufferFormat(properties));
                         vertexBuffer.SetData(bufferData, numVertices);
                         var indexBuffer = new IndexBuffer(indices);
-                        var mesh = new StaticMesh(vertexOffset, numVertices, startIndex, primitiveCount, vertexBuffer, indexBuffer, hasCollision, collisionVertices, collisionIndices);
+                        var mesh = new StaticMesh(vertexOffset, numVertices, startIndex, primitiveCount, vertexBuffer, indexBuffer, hasCollision, collisionVertices, collisionIndices, PrimitiveType.TriangleList);
                         mesh.Name = meshName;
 
                         this.Meshes.Add(mesh);
@@ -276,13 +276,6 @@ namespace WaveEngine.Components.Graphics3D
                     this.Bones[i].AbsoluteTransform = bone.LocalTransform
                                                       * this.Bones[bone.ParentIndex].AbsoluteTransform;
                 }
-            }
-
-            for (int i = 0; i < this.Meshes.Count; i++)
-            {
-                StaticMesh m = this.Meshes[i];
-                this.graphics.BindIndexBuffer(m.IndexBuffer);
-                this.graphics.BindVertexBuffer(m.VertexBuffer);
             }
         }
 

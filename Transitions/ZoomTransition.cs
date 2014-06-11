@@ -87,7 +87,6 @@ namespace WaveEngine.Components.Transitions
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
             Vector2 center = new Vector2(this.sourceRenderTarget.Width / 2, this.sourceRenderTarget.Height / 2);
 
-            this.spriteBatch.Begin(BlendMode.AlphaBlend, DepthMode.None);
             this.spriteBatch.Draw(this.sourceRenderTarget,
                                     center,
                                     null, 
@@ -108,7 +107,7 @@ namespace WaveEngine.Components.Transitions
                                     SpriteEffects.None,
                                     0f);
 
-            this.spriteBatch.End();
+            this.spriteBatch.Render();
         }
 
         /// <summary>

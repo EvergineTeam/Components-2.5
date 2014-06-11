@@ -49,17 +49,7 @@ namespace WaveEngine.Components.Graphics2D
         /// The disposed
         /// </summary>
         protected bool disposed;
-
-        /// <summary>
-        /// The vertex buffer
-        /// </summary>
-        private VertexBuffer vertexBuffer;
-
-        /// <summary>
-        /// The index buffer
-        /// </summary>
-        private IndexBuffer indexBuffer;
-
+    
         /// <summary>
         /// The texcoord1
         /// </summary>
@@ -69,6 +59,11 @@ namespace WaveEngine.Components.Graphics2D
         /// The texcoord2
         /// </summary>
         private Vector2[] texcoord2;
+
+        /// <summary>
+        /// The quad mesh.
+        /// </summary>
+        private Mesh quadMesh;
 
         #region Cached fields
         /// <summary>
@@ -153,7 +148,7 @@ namespace WaveEngine.Components.Graphics2D
             }
 
             this.position = new Vector2();
-            this.scale = new Vector2(1);
+            this.scale = new Vector2(1);            
         }
         #endregion
 
@@ -178,9 +173,6 @@ namespace WaveEngine.Components.Graphics2D
         /// </remarks>
         public override void Draw(TimeSpan gameTime)
         {
-            Layer layer = RenderManager.FindLayer(this.Material.Material.LayerType);
-            layer.AddDrawable(0, this, this.SortId);
-
             this.position.X = this.Transform2D.X;
             this.position.Y = this.Transform2D.Y;
             this.scale.X = this.Transform2D.XScale;
@@ -206,7 +198,8 @@ namespace WaveEngine.Components.Graphics2D
             Matrix.Multiply(ref this.scaleMatrix, ref this.quaternionMatrix, out this.localWorld);
             Matrix.Multiply(ref this.localWorld, ref this.translationMatrix, out this.localWorld);
 
-            this.Material.Material.Matrices.World = this.localWorld;
+            // Draw mesh
+            this.RenderManager.DrawMesh(this.quadMesh, this.Material.Material, ref this.localWorld, false);
         }
 
         #endregion
@@ -269,10 +262,8 @@ namespace WaveEngine.Components.Graphics2D
             vertices[3].TexCoord = this.texcoord1[3];
             vertices[3].TexCoord2 = this.texcoord2[3];
 
-            this.vertexBuffer = new VertexBuffer(VertexPositionColorDualTexture.VertexFormat);
-
-            this.vertexBuffer.SetData(vertices, 4);
-            this.GraphicsDevice.BindVertexBuffer(this.vertexBuffer);
+            VertexBuffer vertexBuffer = new VertexBuffer(VertexPositionColorDualTexture.VertexFormat);
+            vertexBuffer.SetData(vertices, 4);
 
             ushort[] indices = new ushort[6];
             indices[0] = 0;
@@ -282,8 +273,10 @@ namespace WaveEngine.Components.Graphics2D
             indices[4] = 3;
             indices[5] = 0;
 
-            this.indexBuffer = new IndexBuffer(indices);
-            this.GraphicsDevice.BindIndexBuffer(this.indexBuffer);
+            IndexBuffer indexBuffer = new IndexBuffer(indices);           
+            
+            // create the quad
+            this.quadMesh = new Mesh(0, 4, 0, 2, vertexBuffer, indexBuffer, PrimitiveType.TriangleList);
         }
 
         /// <summary>
@@ -300,22 +293,6 @@ namespace WaveEngine.Components.Graphics2D
                     this.disposed = true;
                 }
             }
-        }
-
-        /// <summary>
-        /// Draws the basic unit.
-        /// </summary>
-        /// <param name="parameter">The parameter.</param>
-        protected override void DrawBasicUnit(int parameter)
-        {
-            this.Material.Material.Apply(this.RenderManager);
-
-            this.GraphicsDevice.DrawVertexBuffer(
-                4,
-                2,
-                PrimitiveType.TriangleList,
-                this.vertexBuffer,
-                this.indexBuffer);
         }
 
         #endregion

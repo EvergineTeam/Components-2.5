@@ -156,9 +156,9 @@ namespace WaveEngine.Components.Graphics3D
         private Matrix[] worldTransforms;
 
         /// <summary>
-        /// The last game time
+        /// The last animation time
         /// </summary>
-        private TimeSpan lastGameTime;
+        private TimeSpan lastAnimTime;
 
         #region Properties
 
@@ -392,8 +392,8 @@ namespace WaveEngine.Components.Graphics3D
                 }
             }
 
-            bool needsUpdate  = (this.isHidef || (!LowPerformance && this.lastKeyFrame != this.Animation.Frame && this.updateLod)) && this.lastGameTime != gameTime;            
-            this.lastGameTime = gameTime;
+            bool needsUpdate = (this.isHidef || (!LowPerformance && this.lastKeyFrame != this.Animation.Frame && this.updateLod)) && this.lastAnimTime != this.Animation.TotalAnimTime;
+            this.lastAnimTime = this.Animation.TotalAnimTime;
 
             if (needsUpdate)
             {
@@ -419,8 +419,16 @@ namespace WaveEngine.Components.Graphics3D
 
                 if (currentMaterial != null)
                 {
-                    var layer = this.RenderManager.FindLayer(currentMaterial.LayerType);
-                    layer.AddDrawable(i, this, currentMaterial.GetHashCode());
+                    if (this.updateVertexBuffer[i])
+                    {
+                        currentMesh.SetBones(this.skinTransforms, true);
+                        this.GraphicsDevice.BindVertexBuffer(currentMesh.VertexBuffer);
+                        this.updateVertexBuffer[i] = false;
+                    }
+
+                    this.GraphicsDevice.UnsetBuffers();                    
+                    this.RenderManager.DrawMesh(currentMesh, currentMaterial, ref this.Transform.LocalWorld, false);     
+                    this.GraphicsDevice.UnsetBuffers();
                 }
             }
 
@@ -516,41 +524,6 @@ namespace WaveEngine.Components.Graphics3D
         }
 
         /// <summary>
-        /// The draw basic unit.
-        /// </summary>
-        /// <param name="parameter">
-        /// The parameter.
-        /// </param>
-        protected override void DrawBasicUnit(int parameter)
-        {
-            SkinnedMesh currentMesh = this.Model.InternalModel.Meshes[parameter];
-            Material currentMaterial = this.meshMaterials[parameter];
-
-            if (currentMaterial != null)
-            {
-                currentMaterial.Matrices.World = this.Transform.LocalWorld;
-                currentMaterial.Apply(this.RenderManager);
-
-                if (this.updateVertexBuffer[parameter])
-                {
-                    currentMesh.SetBones(this.skinTransforms, true);
-                    this.GraphicsDevice.BindVertexBuffer(currentMesh.VertexBuffer);
-                    this.updateVertexBuffer[parameter] = false;
-                }
-
-                this.GraphicsDevice.UnsetBuffers();
-
-                this.GraphicsDevice.DrawVertexBuffer(
-                    currentMesh.NumVertices,
-                    currentMesh.PrimitiveCount,
-                    PrimitiveType.TriangleList,
-                    currentMesh.VertexBuffer,
-                    currentMesh.IndexBuffer);
-                this.GraphicsDevice.UnsetBuffers();
-            }
-        }
-
-        /// <summary>
         /// The draw debug lines.
         /// </summary>
         protected override void DrawDebugLines()
@@ -631,8 +604,8 @@ namespace WaveEngine.Components.Graphics3D
                     bbIndex = 0;
                 }
 
-                this.Model.BoundingBox.Min = Vector3.Transform(this.Animation.InternalAnimation.Animations[this.Animation.CurrentAnimation].BoundingBox.Min, this.skinTransforms[bbIndex]);
-                this.Model.BoundingBox.Max = Vector3.Transform(this.Animation.InternalAnimation.Animations[this.Animation.CurrentAnimation].BoundingBox.Max, this.skinTransforms[bbIndex]);
+                ////this.Model.BoundingBox.Min = Vector3.Transform(this.Animation.InternalAnimation.Animations[this.Animation.CurrentAnimation].BoundingBox.Min, this.skinTransforms[bbIndex]);
+                ////this.Model.BoundingBox.Max = Vector3.Transform(this.Animation.InternalAnimation.Animations[this.Animation.CurrentAnimation].BoundingBox.Max, this.skinTransforms[bbIndex]);
                 this.Animation.BoundingBoxRefreshed = false;
                 this.Model.BoundingBoxRefreshed = true;
             }

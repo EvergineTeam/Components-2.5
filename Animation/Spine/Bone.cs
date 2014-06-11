@@ -85,6 +85,14 @@ namespace WaveEngine.Components.Animation.Spine
         public float Rotation { get; set; }
 
         /// <summary>
+        /// Gets or sets the offset rotation. This rotation is added to the animation rotation.
+        /// </summary>
+        /// <value>
+        /// The offset rotation.
+        /// </value>
+        public float OffsetRotation { get; set; }
+
+        /// <summary>
         /// Gets or sets the scale X.
         /// </summary>
         /// <value>
@@ -190,6 +198,7 @@ namespace WaveEngine.Components.Animation.Spine
             this.Data = data;
             this.Parent = parent;
             this.SetToBindPose();
+            this.OffsetRotation = 0;
         }
 
         #endregion
@@ -209,7 +218,7 @@ namespace WaveEngine.Components.Animation.Spine
                 this.WorldY = (this.X * parent.M10) + (this.Y * parent.M11) + parent.WorldY;
                 this.WorldScaleX = parent.WorldScaleX * this.ScaleX;
                 this.WorldScaleY = parent.WorldScaleY * this.ScaleY;
-                this.WorldRotation = parent.WorldRotation + this.Rotation;
+                this.WorldRotation = parent.WorldRotation + this.Rotation + this.OffsetRotation;
             }
             else
             {
@@ -217,7 +226,7 @@ namespace WaveEngine.Components.Animation.Spine
                 this.WorldY = this.Y;
                 this.WorldScaleX = this.ScaleX;
                 this.WorldScaleY = this.ScaleY;
-                this.WorldRotation = this.Rotation;
+                this.WorldRotation = this.Rotation + this.OffsetRotation;
             }
 
             float radians = this.WorldRotation * (float)Math.PI / 180;

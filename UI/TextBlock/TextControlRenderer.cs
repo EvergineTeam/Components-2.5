@@ -87,22 +87,25 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Public Methods
-        #endregion
-
-        #region Private Methods
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
+        /// Allows to perform custom drawing.
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void Dispose(bool disposing)
-        {
-        }
-
-        /// <summary>
-        /// Draws the basic unit.
-        /// </summary>
-        /// <param name="parameter">The parameter.</param>
-        protected override void DrawBasicUnit(int parameter)
+        /// <param name="gameTime">The elapsed game time.</param>
+        /// <remarks>
+        /// This method will only be called if all the following points are true:
+        /// <list type="bullet">
+        /// <item>
+        /// <description>The parent of the owner <see cref="Entity" /> of the <see cref="Drawable" /> cascades its visibility to its children and it is visible.</description>
+        /// </item>
+        /// <item>
+        /// <description>The <see cref="Drawable" /> is active.</description>
+        /// </item>
+        /// <item>
+        /// <description>The owner <see cref="Entity" /> of the <see cref="Drawable" /> is active and visible.</description>
+        /// </item>
+        /// </list>
+        /// </remarks>
+        public override void Draw(TimeSpan gameTime)
         {
             if (this.Transform2D.Opacity > this.Delta)
             {
@@ -125,7 +128,7 @@ namespace WaveEngine.Components.UI
 
                     for (int j = 0; j < this.TextBlock.LinesInfo[i].SubTextList.Count; j++)
                     {
-                        this.spriteBatch.DrawStringVM(
+                        this.layer.SpriteBatch.DrawStringVM(
                             this.TextBlock.SpriteFont,
                             this.TextBlock.LinesInfo[i].SubTextList[j].Text,
                             aux,
@@ -142,6 +145,16 @@ namespace WaveEngine.Components.UI
                     this.position.Y = this.position.Y + ((this.TextBlock.FontHeight + this.TextBlock.LineSpacing) * this.Transform2D.YScale);
                 }
             }
+        }
+        #endregion
+
+        #region Private Methods
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
+        {
         }
 
         /// <summary>

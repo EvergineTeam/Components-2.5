@@ -8,6 +8,7 @@
 
 #region Using Statements
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using WaveEngine.Common.Graphics;
 using WaveEngine.Common.Math;
@@ -126,9 +127,43 @@ namespace WaveEngine.Components.Graphics2D
             }
         }
 
+        /// <summary>
+        /// Gets the texture names.
+        /// </summary>
+        /// <value>
+        /// The texture names.
+        /// </value>
+        public IEnumerable<string> TextureNames
+        {
+            get
+            {
+                return this.TextureAtlas.SpriteRectangles
+                                        .Keys
+                                        .AsEnumerable<string>();
+            }
+        }
+
         #endregion
 
         #region Initialize
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpriteAtlas" /> class.
+        /// </summary>
+        /// <param name="atlasPath">The path to the atlas.</param>
+        /// <exception cref="System.ArgumentException">TexturePath can not be null.</exception>
+        public SpriteAtlas(string atlasPath)
+            : base("SpriteAtlas" + instances++)
+        {
+            if (string.IsNullOrEmpty(atlasPath))
+            {
+                throw new ArgumentException("AtlasPath can not be null.");
+            }
+
+            this.Transform2D = null;
+            this.isGlobalAsset = false;
+            this.AtlasPath = atlasPath;
+            this.TintColor = Color.White;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteAtlas" /> class.
@@ -137,18 +172,14 @@ namespace WaveEngine.Components.Graphics2D
         /// <param name="textureName">Name of the texture from where this atlas is loaded.</param>
         /// <exception cref="System.ArgumentException">TexturePath can not be null.</exception>
         public SpriteAtlas(string atlasPath, string textureName)
-            : base("SpriteAtlas" + instances++)
+            : this(atlasPath)
         {
-            if (string.IsNullOrEmpty(atlasPath))
+            if (string.IsNullOrEmpty(textureName))
             {
-                throw new ArgumentException("TexturePath can not be null.");
+                throw new ArgumentException("TextureName can not be null.");
             }
 
             this.TextureName = textureName;
-            this.Transform2D = null;
-            this.isGlobalAsset = false;
-            this.AtlasPath = atlasPath;
-            this.TintColor = Color.White;
         }
 
         #endregion
@@ -206,6 +237,11 @@ namespace WaveEngine.Components.Graphics2D
             else
             {
                 this.TextureAtlas = Assets.LoadAsset<TextureAtlas>(this.AtlasPath);
+            }
+
+            if (this.TextureName == null)
+            {
+                this.TextureName = this.TextureNames.First();
             }
 
             this.UpdateSourceRectangle();

@@ -42,7 +42,7 @@ namespace WaveEngine.Components.Graphics2D
         /// <summary>
         /// The is global asset.
         /// </summary>
-        private bool isGlobalAsset;        
+        private bool isGlobalAsset;
 
         /// <summary>
         /// The disposed
@@ -62,7 +62,7 @@ namespace WaveEngine.Components.Graphics2D
         /// On the other side, if a value is provided, will mean the rectangle (inside the original
         /// texture's rectangle) to be drawn.
         /// </summary>
-        public Rectangle? SourceRectangle;
+        private Rectangle? sourceRectangle;
 
         #region Properties
 
@@ -93,6 +93,26 @@ namespace WaveEngine.Components.Graphics2D
         }
 
         /// <summary>
+        /// Gets or sets the Rectangle that represents this sprite in case it is part of a bigger image.
+        /// Most of the cases this field will be null, which means the entire texture is used.
+        /// On the other side, if a value is provided, will mean the rectangle (inside the original
+        /// texture's rectangle) to be drawn.
+        /// </summary>
+        public Rectangle? SourceRectangle 
+        {
+            get 
+            { 
+                return this.sourceRectangle; 
+            }
+            
+            set 
+            {
+                this.sourceRectangle = value;
+                this.UpdateSourceRectangle();
+            }
+        }
+
+        /// <summary>
         /// Gets the texture path.
         /// Such path is platform agnostic, and will always start with "Content/".
         /// Example: "Content/Characters/Tim.wpk"
@@ -102,7 +122,7 @@ namespace WaveEngine.Components.Graphics2D
         /// </value>
         public string TexturePath
         {
-            get { return this.texturePath; } 
+            get { return this.texturePath; }
         }
 
         /// <summary>
@@ -113,9 +133,9 @@ namespace WaveEngine.Components.Graphics2D
         /// <value>
         ///     The texture.
         /// </value>
-        public Texture Texture 
+        public Texture Texture
         {
-            get { return this.texture; } 
+            get { return this.texture; }
         }
 
         /// <summary>
@@ -213,8 +233,7 @@ namespace WaveEngine.Components.Graphics2D
                 }
             }
 
-            this.Transform2D.Rectangle.Width = this.Texture.Width;
-            this.Transform2D.Rectangle.Height = this.Texture.Height;
+            this.UpdateSourceRectangle();
         }
 
         /// <summary>
@@ -239,6 +258,35 @@ namespace WaveEngine.Components.Graphics2D
             }
         }
 
+        #endregion
+
+        #region Private Methods
+        /// <summary>
+        /// The update source rectangle.
+        /// </summary>
+        /// <exception cref="System.ObjectDisposedException">Sprite has been disposed.</exception>
+        protected void UpdateSourceRectangle()
+        {
+            if (this.disposed)
+            {
+                throw new ObjectDisposedException("ImageAtlasRenderer");
+            }
+
+            if (this.texture != null)
+            {
+                if (this.sourceRectangle.HasValue)
+                {
+                    Rectangle rect = this.sourceRectangle.Value;
+                    this.Transform2D.Rectangle.Width = rect.Width;
+                    this.Transform2D.Rectangle.Height = rect.Height;
+                }
+                else
+                {
+                    this.Transform2D.Rectangle.Width = this.texture.Width;
+                    this.Transform2D.Rectangle.Height = this.texture.Height;
+                }
+            }
+        }
         #endregion
     }
 }

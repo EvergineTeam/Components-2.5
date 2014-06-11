@@ -88,7 +88,6 @@ namespace WaveEngine.Components.Transitions
             Vector2 center = new Vector2(this.sourceRenderTarget.Width / 2, this.sourceRenderTarget.Height / 2);
             float inverse = 1 - this.Lerp;
 
-            this.spriteBatch.Begin(BlendMode.AlphaBlend, DepthMode.None);
             this.spriteBatch.Draw(this.targetRenderTarget,
                                     center,
                                     null, 
@@ -125,7 +124,7 @@ namespace WaveEngine.Components.Transitions
                                     SpriteEffects.None,
                                     0f);
 
-            this.spriteBatch.End();
+            this.spriteBatch.Render();
         }
 
         /// <summary>

@@ -78,6 +78,11 @@ namespace WaveEngine.Components.Graphics3D
         /// </summary>
         private bool disposed;
 
+        /// <summary>
+        /// Meshes world matrix for static entities
+        /// </summary>
+        private Matrix[] cachedWorlds;
+
         #region Properties
         /// <summary>
         /// Gets or sets the diffuse color used when rendering the model.
@@ -173,6 +178,28 @@ namespace WaveEngine.Components.Graphics3D
 
         #region Public Methods
         /// <summary>
+        /// Initialize model renderer
+        /// </summary>
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            // For static entities create a world cache
+            if (this.Owner.IsStatic)
+            {
+                this.cachedWorlds = new Matrix[this.Model.MeshCount];
+
+                for (int i = 0; i < this.cachedWorlds.Length; i++)
+                {
+                    InternalStaticModel internalModel = this.Model.InternalModel;
+                    int index = internalModel.MeshBonePairs[i];
+                    Matrix absoluteTransform = internalModel.Bones[index].AbsoluteTransform;
+                    Matrix.Multiply(ref absoluteTransform, ref this.Transform.LocalWorld, out this.cachedWorlds[i]);
+                }
+            }
+        }
+
+        /// <summary>
         /// Draws the model.
         /// </summary>
         /// <param name="gameTime">The elapsed game time.</param>
@@ -202,9 +229,24 @@ namespace WaveEngine.Components.Graphics3D
 
                 if (currentMaterial != null)
                 {
-                    var layer = this.RenderManager.FindLayer(currentMaterial.LayerType);
+                    Matrix world;
+                                        
+                    if (!this.Owner.IsStatic)
+                    {
+                        // Obtain world matrix from scrach
+                        InternalStaticModel internalModel = this.Model.InternalModel;
+                        int index = internalModel.MeshBonePairs[i];
+                        Matrix absoluteTransform = internalModel.Bones[index].AbsoluteTransform;
+                        Matrix.Multiply(ref absoluteTransform, ref this.Transform.LocalWorld, out world);
+                    }
+                    else
+                    {
+                        // obtain world from cached array
+                        world = this.cachedWorlds[i];
+                    }
 
-                    layer.AddDrawable(i, this, currentMaterial.GetHashCode());
+                    // Draw mesh
+                    this.RenderManager.DrawMesh(currentMesh, currentMaterial, ref world, this.Owner.IsStatic);
                 }
             }
         }
@@ -250,33 +292,6 @@ namespace WaveEngine.Components.Graphics3D
         #endregion
 
         #region Private Methods
-
-        /// <summary>
-        /// The draw basic unit.
-        /// </summary>
-        /// <param name="parameter">The mesh index.</param>
-        protected override void DrawBasicUnit(int parameter)
-        {
-            StaticMesh currentMesh = this.Model.InternalModel.Meshes[parameter];
-            Material currentMaterial = this.meshMaterials[parameter];
-
-            if (currentMaterial != null)
-            {
-                InternalStaticModel internalModel = this.Model.InternalModel;
-                int index = internalModel.MeshBonePairs[parameter];
-                Matrix absoluteTransform = internalModel.Bones[index].AbsoluteTransform;
-                Matrix.Multiply(ref absoluteTransform, ref this.Transform.LocalWorld, out currentMaterial.Matrices.World);
-
-                currentMaterial.Apply(this.RenderManager);
-
-                this.GraphicsDevice.DrawVertexBuffer(
-                                          currentMesh.NumVertices,
-                                          currentMesh.PrimitiveCount,
-                                          PrimitiveType.TriangleList,
-                                          currentMesh.VertexBuffer,
-                                          currentMesh.IndexBuffer);
-            }
-        }
 
         /// <summary>
         /// Resolves the dependencies.
