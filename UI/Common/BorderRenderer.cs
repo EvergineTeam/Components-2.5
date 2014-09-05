@@ -22,7 +22,7 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// Draw a simple border over controls
     /// </summary>
-    public class BorderRenderer : Drawable2D
+    public class BorderRenderer : DrawableGUI
     {
         /// <summary>
         /// The transform2D
@@ -98,7 +98,7 @@ namespace WaveEngine.Components.UI
         /// </remarks>
         public override void Draw(TimeSpan gameTime)
         {
-            RenderManager.LineBatch2D.DrawRectangleVM(this.Transform2D.Rectangle, this.Color);
+            this.layer.LineBatch2D.DrawRectangleVM(this.Transform2D.Rectangle, this.Color, this.Transform2D.DrawOrder);
         }
         #endregion
 

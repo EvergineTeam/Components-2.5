@@ -123,12 +123,6 @@ namespace WaveEngine.Components.Transitions
             this.segments = 5;
             this.spriteBatch = new SpriteBatch(this.graphicsDevice);
             this.effectOption = effect;
-            this.sourceRenderTarget = this.graphicsDevice.RenderTargets.CreateRenderTarget(
-                WaveServices.Platform.ScreenWidth,
-                WaveServices.Platform.ScreenHeight);
-            this.targetRenderTarget = this.graphicsDevice.RenderTargets.CreateRenderTarget(
-                WaveServices.Platform.ScreenWidth,
-                WaveServices.Platform.ScreenHeight);
         }
 
         /// <summary>
@@ -139,10 +133,10 @@ namespace WaveEngine.Components.Transitions
             switch (this.effectOption)
             {
                 case EffectOptions.Horizontal:
-                    this.initialPosition = new Vector2(WaveServices.Platform.ScreenWidth, 0);
+                    this.initialPosition = new Vector2(this.platform.ScreenWidth, 0);
                     break;
                 case EffectOptions.Vertical:
-                    this.initialPosition = new Vector2(0, -WaveServices.Platform.ScreenHeight);
+                    this.initialPosition = new Vector2(0, -this.platform.ScreenHeight);
                     break;
             }
 
@@ -158,8 +152,8 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Update(TimeSpan gameTime)
         {
-            this.UpdateSources(gameTime, this.sourceRenderTarget);
-            this.UpdateTarget(gameTime, this.targetRenderTarget);
+            this.UpdateSources(gameTime);
+            this.UpdateTarget(gameTime);
 
             this.position1 = (this.targetPosition - this.initialPosition) * this.Lerp;
             this.position2 = (this.initialPosition - this.targetPosition) * this.Lerp;
@@ -171,6 +165,13 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Draw(TimeSpan gameTime)
         {
+            this.sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
+                this.platform.ScreenWidth,
+                this.platform.ScreenHeight);
+            this.targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
+                this.platform.ScreenWidth,
+                this.platform.ScreenHeight);
+
             if (this.Sources != null)
             {
                 for (int i = 0; i < this.Sources.Length; i++)
@@ -181,6 +182,7 @@ namespace WaveEngine.Components.Transitions
 
             this.Target.TakeSnapshot(this.targetRenderTarget, gameTime);
 
+            this.SetRenderState();
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
 
@@ -199,18 +201,18 @@ namespace WaveEngine.Components.Transitions
                     if ((i % 2) == 0)
                     {
                         destination.X = (int)this.position1.X;
-                        this.spriteBatch.Draw(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+                        this.spriteBatch.DrawVM(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
 
                         destination.X = (int)this.position1.X + (int)this.initialPosition.X;
-                        this.spriteBatch.Draw(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                        this.spriteBatch.DrawVM(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                     }
                     else
                     {
                         destination.X = (int)this.position2.X;
-                        this.spriteBatch.Draw(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+                        this.spriteBatch.DrawVM(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
 
                         destination.X = (int)this.position2.X - (int)this.initialPosition.X;
-                        this.spriteBatch.Draw(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                        this.spriteBatch.DrawVM(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                     }
                 }
                 else
@@ -222,23 +224,26 @@ namespace WaveEngine.Components.Transitions
                     if ((i % 2) == 0)
                     {
                         destination.Y = (int)this.position1.Y;
-                        this.spriteBatch.Draw(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+                        this.spriteBatch.DrawVM(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
 
                         destination.Y = (int)this.position1.Y + (int)this.initialPosition.Y;
-                        this.spriteBatch.Draw(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                        this.spriteBatch.DrawVM(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                     }
                     else
                     {
                         destination.Y = (int)this.position2.Y;
-                        this.spriteBatch.Draw(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+                        this.spriteBatch.DrawVM(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
 
                         destination.Y = (int)this.position2.Y - (int)this.initialPosition.Y;
-                        this.spriteBatch.Draw(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                        this.spriteBatch.DrawVM(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                     }
                 }
             }
 
             this.spriteBatch.Render();
+
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.sourceRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.targetRenderTarget);
         }
 
         /// <summary>
@@ -252,8 +257,6 @@ namespace WaveEngine.Components.Transitions
                 if (disposing)
                 {
                     this.spriteBatch.Dispose();
-                    this.graphicsDevice.RenderTargets.DestroyRenderTarget(this.sourceRenderTarget);
-                    this.graphicsDevice.RenderTargets.DestroyRenderTarget(this.targetRenderTarget);
                 }
 
                 this.disposed = true;

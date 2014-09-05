@@ -49,12 +49,6 @@ namespace WaveEngine.Components.Transitions
             : base(duration)
         {
             this.spriteBatch = new SpriteBatch(this.graphicsDevice);
-            this.sourceRenderTarget = this.graphicsDevice.RenderTargets.CreateRenderTarget(
-                WaveServices.Platform.ScreenWidth,
-                WaveServices.Platform.ScreenHeight);
-            this.targetRenderTarget = this.graphicsDevice.RenderTargets.CreateRenderTarget(
-                WaveServices.Platform.ScreenWidth,
-                WaveServices.Platform.ScreenHeight);
         }
 
         /// <summary>
@@ -70,8 +64,8 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Update(TimeSpan gameTime)
         {
-            this.UpdateSources(gameTime, this.sourceRenderTarget);
-            this.UpdateTarget(gameTime, this.targetRenderTarget);
+            this.UpdateSources(gameTime);
+            this.UpdateTarget(gameTime);
         }
 
         /// <summary>
@@ -80,15 +74,23 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Draw(TimeSpan gameTime)
         {
+            this.sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
+                this.platform.ScreenWidth,
+                this.platform.ScreenHeight);
+            this.targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
+                this.platform.ScreenWidth,
+                this.platform.ScreenHeight);
+
             this.DrawSources(gameTime, this.sourceRenderTarget);
             this.DrawTarget(gameTime, this.targetRenderTarget);
 
+            this.SetRenderState();
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
             Vector2 center = new Vector2(this.sourceRenderTarget.Width / 2, this.sourceRenderTarget.Height / 2);
             float inverse = 1 - this.Lerp;
 
-            this.spriteBatch.Draw(this.targetRenderTarget,
+            this.spriteBatch.DrawVM(this.targetRenderTarget,
                                     center,
                                     null, 
                                     Color.White * this.Lerp, 
@@ -103,7 +105,7 @@ namespace WaveEngine.Components.Transitions
             int middle = width / 2;
             Rectangle rect = new Rectangle(0, 0, middle, height);
 
-            this.spriteBatch.Draw(this.sourceRenderTarget,
+            this.spriteBatch.DrawVM(this.sourceRenderTarget,
                                     new Vector2(-middle * this.Lerp, rect.Y),
                                     rect,
                                     Color.White * inverse,
@@ -114,7 +116,7 @@ namespace WaveEngine.Components.Transitions
                                     0f);
 
             rect.X = middle;
-            this.spriteBatch.Draw(this.sourceRenderTarget,
+            this.spriteBatch.DrawVM(this.sourceRenderTarget,
                                     new Vector2(middle + (middle * this.Lerp), 0),
                                     rect,
                                     Color.White * inverse,
@@ -125,6 +127,9 @@ namespace WaveEngine.Components.Transitions
                                     0f);
 
             this.spriteBatch.Render();
+
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.sourceRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.targetRenderTarget);
         }
 
         /// <summary>
@@ -138,8 +143,6 @@ namespace WaveEngine.Components.Transitions
                 if (disposing)
                 {
                     this.spriteBatch.Dispose();
-                    this.graphicsDevice.RenderTargets.DestroyRenderTarget(this.sourceRenderTarget);
-                    this.graphicsDevice.RenderTargets.DestroyRenderTarget(this.targetRenderTarget);
                 }
 
                 this.disposed = true;

@@ -328,7 +328,7 @@ namespace WaveEngine.Components.UI
                                 .AddComponent(new Transform2D())
                                 .AddComponent(new TextBoxBehavior())
                                 .AddComponent(new RectangleCollider())
-                                .AddComponent(new TouchGestures())
+                                .AddComponent(new TouchGestures(false))
                                 .AddComponent(new PanelControl(100, 30))
                                 .AddComponent(new PanelControlRenderer())
                                 .AddChild(new Entity("ImageEntity")

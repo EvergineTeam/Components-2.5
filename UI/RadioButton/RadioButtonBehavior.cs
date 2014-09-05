@@ -250,7 +250,7 @@ namespace WaveEngine.Components.UI
             this.IsFocus = true;
 
             if (!this.isChecked)
-            {            
+            {
                 this.Animation.BeginAnimation(Transform2D.OpacityProperty, this.fadeIn);
                 this.IsChecked = true;                
             }            

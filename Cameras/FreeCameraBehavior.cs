@@ -33,7 +33,7 @@ namespace WaveEngine.Components.Cameras
         /// The camera to move.
         /// </summary>
         [RequiredComponent]
-        public Camera Camera;
+        public Camera3D Camera;
 
         /// <summary>
         /// Camera rotation calculation.
@@ -627,9 +627,7 @@ namespace WaveEngine.Components.Cameras
             this.UpdateLookAt();
 
             // Manual inline: camera.Position = position;
-            this.Camera.Position.X = this.position.X;
-            this.Camera.Position.Y = this.position.Y;
-            this.Camera.Position.Z = this.position.Z;
+            this.Camera.Position = this.position;
         }
 
         /// <summary>
@@ -637,15 +635,8 @@ namespace WaveEngine.Components.Cameras
         /// </summary>
         private void UpdateLookAt()
         {
-            // Manual inline: camera.LookAt = target;
-            this.Camera.LookAt.X = this.position.X + this.forward.X;
-            this.Camera.LookAt.Y = this.position.Y + this.forward.Y;
-            this.Camera.LookAt.Z = this.position.Z + this.forward.Z;
-
-            // Manual inline: camera.UpVector = Vector3.Up;
-            this.Camera.UpVector.X = Vector3.Up.X;
-            this.Camera.UpVector.Y = Vector3.Up.Y;
-            this.Camera.UpVector.Z = Vector3.Up.Z;
+            this.Camera.LookAt = this.position + this.forward;
+            this.Camera.UpVector = Vector3.Up;
         }
 
         #endregion

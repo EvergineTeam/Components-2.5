@@ -194,7 +194,8 @@ namespace WaveEngine.Components.Graphics3D
                     InternalStaticModel internalModel = this.Model.InternalModel;
                     int index = internalModel.MeshBonePairs[i];
                     Matrix absoluteTransform = internalModel.Bones[index].AbsoluteTransform;
-                    Matrix.Multiply(ref absoluteTransform, ref this.Transform.LocalWorld, out this.cachedWorlds[i]);
+                    Matrix world = this.Transform.WorldTransform;
+                    Matrix.Multiply(ref absoluteTransform, ref world, out this.cachedWorlds[i]);
                 }
             }
         }
@@ -210,6 +211,8 @@ namespace WaveEngine.Components.Graphics3D
                 this.meshMaterials = new Material[this.Model.InternalModel.Meshes.Count];
                 this.lastModelId = this.Model.GetHashCode();
             }
+
+            float zOrder = Vector3.DistanceSquared(this.RenderManager.CurrentDrawingCamera3D.Position, this.Transform.Position);
 
             for (int i = 0; i < this.Model.InternalModel.Meshes.Count; i++)
             {
@@ -237,13 +240,16 @@ namespace WaveEngine.Components.Graphics3D
                         InternalStaticModel internalModel = this.Model.InternalModel;
                         int index = internalModel.MeshBonePairs[i];
                         Matrix absoluteTransform = internalModel.Bones[index].AbsoluteTransform;
-                        Matrix.Multiply(ref absoluteTransform, ref this.Transform.LocalWorld, out world);
+                        Matrix worldTransform = this.Transform.WorldTransform;
+                        Matrix.Multiply(ref absoluteTransform, ref worldTransform, out world);
                     }
                     else
                     {
                         // obtain world from cached array
                         world = this.cachedWorlds[i];
                     }
+
+                    currentMesh.ZOrder = zOrder;
 
                     // Draw mesh
                     this.RenderManager.DrawMesh(currentMesh, currentMaterial, ref world, this.Owner.IsStatic);

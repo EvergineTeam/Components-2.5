@@ -147,10 +147,7 @@ namespace WaveEngine.Components.Graphics3D
             this.angle.Y = this.angle.Y + (this.increase.Y * totalSeconds);
             this.angle.Z = this.angle.Z + (this.increase.Z * totalSeconds);
 
-            // transform.Rotation = angle;
-            this.Transform.Rotation.X = this.angle.X;
-            this.Transform.Rotation.Y = this.angle.Y;
-            this.Transform.Rotation.Z = this.angle.Z;
+            this.Transform.LocalRotation = this.angle;            
         }
         #endregion
     }

@@ -555,6 +555,9 @@ namespace WaveEngine.Components.Graphics3D
 
             if (this.internalEnabled)
             {
+                float zOrder = Vector3.DistanceSquared(this.RenderManager.CurrentDrawingCamera3D.Position, this.Transform.Position);
+
+                this.mesh.ZOrder = zOrder;
                 this.mesh.VertexBuffer.SetData(this.vertices, this.numVertices);
                 this.GraphicsDevice.BindVertexBuffer(this.mesh.VertexBuffer);
 
@@ -727,7 +730,7 @@ namespace WaveEngine.Components.Graphics3D
                     p.Velocity = this.settings.LocalVelocity;
                 }
 
-                p.Position = this.Transform.LocalWorld.Translation;
+                p.Position = this.Transform.LocalTransform.Translation;
 
                 if (this.settings.EmitterSize != Vector2.Zero)
                 {
@@ -890,7 +893,7 @@ namespace WaveEngine.Components.Graphics3D
             float sinscale = sin * scale;
             float negsinscale = -sin * scale;
 
-            Vector3 cameraPosition = this.RenderManager.Camera.Position;
+            Vector3 cameraPosition = this.RenderManager.CurrentDrawingCamera3D.Position;
             Vector3 vector;
             Vector3 vector2;
             Vector3 vector3;

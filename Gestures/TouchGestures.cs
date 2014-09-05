@@ -10,6 +10,7 @@
 #region Using Statements
 using System;
 using System.Collections.Generic;
+using WaveEngine.Common.Graphics;
 using WaveEngine.Common.Input;
 using WaveEngine.Common.Math;
 using WaveEngine.Framework;
@@ -29,6 +30,20 @@ namespace WaveEngine.Components.Gestures
     /// </summary>
     public class TouchGestures : Behavior, ITouchable
     {
+        /// <summary>
+        /// Required <see cref="Collider2D"/>.
+        /// It provides a way to detect whether a touch hits the dessired area.
+        /// </summary>
+        [RequiredComponent(false)]
+        public Collider2D Collider;
+
+        /// <summary>
+        /// Required <see cref="Transform2D"/>.
+        /// It provides position information to generate touch events data.
+        /// </summary>
+        [RequiredComponent]
+        public Transform2D Transform2D;
+
         /// <summary>
         /// The tap threshold
         /// </summary>
@@ -100,11 +115,6 @@ namespace WaveEngine.Components.Gestures
         private GestureType state;
 
         /// <summary>
-        /// The touch manager
-        /// </summary>
-        private TouchPanel touchManager;
-
-        /// <summary>
         /// The start tap position
         /// </summary>
         private Vector2 startTapPosition;
@@ -124,25 +134,10 @@ namespace WaveEngine.Components.Gestures
         /// </summary>
         private int touchOrder;
 
-        #region Public fields
-
         /// <summary>
-        /// Required <see cref="Collider2D"/>.
-        /// It provides a way to detect whether a touch hits the dessired area.
+        /// Touches must be projected using Camera2D
         /// </summary>
-        [RequiredComponent(false)]
-        public Collider2D Collider;
-
-        /// <summary>
-        /// Required <see cref="Transform2D"/>.
-        /// It provides position information to generate touch events data.
-        /// </summary>
-        [RequiredComponent]
-        public Transform2D Transform2D;
-
-        #endregion
-
-        #region Events
+        private bool projectCamera;
 
         /// <summary>
         /// Occurs when there is a tap gesture.
@@ -168,8 +163,6 @@ namespace WaveEngine.Components.Gestures
         /// Occurs when touch order is changed.
         /// </summary>
         public event EventHandler TouchOrdenChanged;
-
-        #endregion
 
         #region Properties
 
@@ -262,12 +255,6 @@ namespace WaveEngine.Components.Gestures
 
             set
             {
-                // Commented as I (Marcos) don't understand the reason to not allow None
-                ////if (value == SupportedGesture.None)
-                ////{
-                ////    throw new ArgumentException("EnablesGestures can not be None");
-                ////}
-
                 this.enabledGestures = value;
             }
         }
@@ -296,7 +283,8 @@ namespace WaveEngine.Components.Gestures
         /// By default, scale is within [0.1, 5], the delta scale is set to 1 and there is no 
         /// supported gesture.
         /// </summary>
-        public TouchGestures()
+        /// <param name="projectCamera">Indicates if the touches will be processed using Cameras</param>
+        public TouchGestures(bool projectCamera = true)
             : base("TouchGestures" + instances++)
         {
             this.currentTouches = new List<TouchLocation>();
@@ -304,6 +292,7 @@ namespace WaveEngine.Components.Gestures
             this.maxScale = 5f;
             this.gestureSample = new GestureSample { DeltaScale = 1 };
             this.enabledGestures = SupportedGesture.None;
+            this.projectCamera = projectCamera;
         }
 
         #endregion
@@ -324,7 +313,26 @@ namespace WaveEngine.Components.Gestures
                 return false;
             }
 
-            return this.Collider.Contain(point);
+            if (!this.projectCamera)
+            {
+                return this.Collider.Contain(point);
+            }
+            else
+            {
+                Ray ray;
+
+                foreach (Camera2D camera in this.RenderManager.Camera2DList)
+                {
+                    camera.CalculateRay(ref point, out ray);
+
+                    if (this.Collider.Intersects(ref ray))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
         }
 
         /// <summary>
@@ -335,7 +343,27 @@ namespace WaveEngine.Components.Gestures
         public void AddTouch(TouchLocation touch, bool isNew)
         {
             touch.IsNew = isNew;
-            this.currentTouches.Add(touch);
+
+            if (!this.projectCamera)
+            {
+                this.currentTouches.Add(touch);
+            }
+            else
+            {
+                float drawOrder = this.Transform2D.DrawOrder;
+                Ray ray;
+                Vector3 pointWorld;
+                Vector2 worldPoint2D;
+
+                foreach (Camera2D camera in this.RenderManager.Camera2DList)
+                {
+                    camera.CalculateRay(ref touch.Position, out ray);
+                    ray.IntersectionZPlane(drawOrder, out pointWorld);
+                    pointWorld.ToVector2(out worldPoint2D);
+                    touch.Position = worldPoint2D;
+                    this.currentTouches.Add(touch);
+                }
+            }
         }
 
         /// <summary>
@@ -395,8 +423,11 @@ namespace WaveEngine.Components.Gestures
 
             this.Owner.FindComponent<Transform2D>().PropertyChanged += this.DrawOrderPropertyChanged;
 
-            this.touchManager = WaveServices.TouchPanel;
-            this.touchManager.Subscribe(this);
+            if (this.Owner.Scene.IsInitialized)
+            {
+                var touchManager = WaveServices.TouchPanel;
+                touchManager.Subscribe(this);
+            }
         }
 
         /// <summary>
@@ -406,10 +437,10 @@ namespace WaveEngine.Components.Gestures
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private void DrawOrderPropertyChanged(object sender, ref DependencyPropertyChangedEventArgs e)
         {
-            if (e.Property == WaveEngine.Framework.Graphics.Transform2D.DrawOrderProperty)
-            {
-                this.UpdateTouchOrder();
-            }
+            ////    if (e.Property == WaveEngine.Framework.Graphics.Transform2D.DrawOrderProperty)
+            ////    {
+            ////        this.UpdateTouchOrder();
+            ////    }
         }
 
         /// <summary>
@@ -539,7 +570,7 @@ namespace WaveEngine.Components.Gestures
                             this.Transform2D.Y += this.gestureSample.DeltaTranslation.Y;
                         }
 
-                        this.gestureSample.Type = GestureType.Drag;                        
+                        this.gestureSample.Type = GestureType.Drag;
 
                         // Lanzamos el evento si alguien está subscrito.
                         this.InvokeEvent(this.TouchMoved, this.gestureSample);

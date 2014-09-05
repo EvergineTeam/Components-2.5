@@ -30,16 +30,6 @@ namespace WaveEngine.Components.Transitions
         /// The sprite batch
         /// </summary>
         private SpriteBatch spriteBatch;
-
-        /// <summary>
-        /// Source transition renderTarget
-        /// </summary>
-        private RenderTarget sourceRenderTarget;
-
-        /// <summary>
-        /// Target transition renderTarget
-        /// </summary>
-        private RenderTarget targetRenderTarget;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="CrossFadeTransition" /> class.
@@ -49,8 +39,6 @@ namespace WaveEngine.Components.Transitions
             : base(duration)
         {
             this.spriteBatch = new SpriteBatch(this.graphicsDevice);
-            this.sourceRenderTarget = this.graphicsDevice.RenderTargets.CreateRenderTarget(WaveServices.Platform.ScreenWidth, WaveServices.Platform.ScreenHeight);
-            this.targetRenderTarget = this.graphicsDevice.RenderTargets.CreateRenderTarget(WaveServices.Platform.ScreenWidth, WaveServices.Platform.ScreenHeight);
         }
 
         /// <summary>
@@ -66,8 +54,8 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Update(TimeSpan gameTime)
         {
-            this.UpdateSources(gameTime, this.sourceRenderTarget);
-            this.UpdateTarget(gameTime, this.targetRenderTarget);        
+            this.UpdateSources(gameTime);
+            this.UpdateTarget(gameTime);        
         }
 
         /// <summary>
@@ -76,17 +64,20 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Draw(TimeSpan gameTime)
         {
+            RenderTarget sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
+            RenderTarget targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
+
             if (this.Sources != null)
             {
                 for (int i = 0; i < this.Sources.Length; i++)
                 {
-                    this.Sources[i].TakeSnapshot(this.sourceRenderTarget, gameTime);
+                    this.Sources[i].TakeSnapshot(sourceRenderTarget, gameTime);
                 }
             }
 
             if (this.Target != null)
             {
-                this.Target.TakeSnapshot(this.targetRenderTarget, gameTime);
+                this.Target.TakeSnapshot(targetRenderTarget, gameTime);
             }
 
             Color blendColor = Color.White * this.Lerp;
@@ -94,9 +85,13 @@ namespace WaveEngine.Components.Transitions
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
 
-            this.spriteBatch.Draw(this.sourceRenderTarget, new Rectangle(0, 0, this.sourceRenderTarget.Width, this.sourceRenderTarget.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
-            this.spriteBatch.Draw(this.targetRenderTarget, new Rectangle(0, 0, this.sourceRenderTarget.Width, this.sourceRenderTarget.Height), null, blendColor, 0, Vector2.Zero, SpriteEffects.None, 0);
+            this.SetRenderState();
+            this.spriteBatch.DrawVM(sourceRenderTarget, new Rectangle(0, 0, sourceRenderTarget.Width, sourceRenderTarget.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+            this.spriteBatch.DrawVM(targetRenderTarget, new Rectangle(0, 0, sourceRenderTarget.Width, sourceRenderTarget.Height), null, blendColor, 0, Vector2.Zero, SpriteEffects.None, 0);
             this.spriteBatch.Render();
+
+            this.graphicsDevice.RenderTargets.DestroyRenderTarget(sourceRenderTarget);
+            this.graphicsDevice.RenderTargets.DestroyRenderTarget(targetRenderTarget);
         }
 
         /// <summary>
@@ -109,8 +104,6 @@ namespace WaveEngine.Components.Transitions
             {
                 if (disposing)
                 {
-                    this.graphicsDevice.RenderTargets.DestroyRenderTarget(this.sourceRenderTarget);
-                    this.graphicsDevice.RenderTargets.DestroyRenderTarget(this.targetRenderTarget);
                     this.spriteBatch.Dispose();
                 }
 

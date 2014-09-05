@@ -29,7 +29,7 @@ namespace WaveEngine.Components.Cameras
         /// The camera to move.
         /// </summary>
         [RequiredComponent]
-        public Camera Camera;
+        public Camera3D Camera;
 
         /// <summary>
         /// The speed.

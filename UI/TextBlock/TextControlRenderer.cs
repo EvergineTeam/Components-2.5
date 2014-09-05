@@ -20,7 +20,7 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The text block renderer component.
     /// </summary>
-    public class TextControlRenderer : Drawable2D
+    public class TextControlRenderer : DrawableGUI
     {
         /// <summary>
         /// Total number of instances.
@@ -107,7 +107,7 @@ namespace WaveEngine.Components.UI
         /// </remarks>
         public override void Draw(TimeSpan gameTime)
         {
-            if (this.Transform2D.Opacity > this.Delta)
+            if (this.Transform2D.GlobalOpacity > this.Delta)
             {
                 this.position.X = this.Transform2D.Rectangle.X + this.Transform2D.X;
                 this.position.Y = this.Transform2D.Rectangle.Y + this.Transform2D.Y;
@@ -118,7 +118,7 @@ namespace WaveEngine.Components.UI
                 this.origin.X = transformOrigin.X * this.TextBlock.Width;
                 this.origin.Y = transformOrigin.Y * this.TextBlock.Height;
 
-                float opacity = this.RenderManager.DebugLines ? this.DebugAlpha : this.Transform2D.Opacity;
+                float opacity = this.RenderManager.DebugLines ? this.DebugAlpha : this.Transform2D.GlobalOpacity;
 
                 Vector2 aux;
                 for (int i = 0; i < this.TextBlock.LinesInfo.Count; i++)
@@ -169,10 +169,10 @@ namespace WaveEngine.Components.UI
             base.DrawDebugLines();
 
             // Rectangle Layout pass
-            RenderManager.LineBatch2D.DrawRectangleVM(this.Transform2D.Rectangle, Color.Blue);
+            RenderManager.LineBatch2D.DrawRectangleVM(this.Transform2D.Rectangle, Color.Blue, this.Transform2D.DrawOrder);
 
             // Origin
-            RenderManager.LineBatch2D.DrawPointVM(this.Transform2D.Rectangle.Location + this.Transform2D.Origin, 10f, Color.Red);
+            RenderManager.LineBatch2D.DrawPointVM(this.Transform2D.Rectangle.Location + this.Transform2D.Origin, 10f, Color.Red, this.Transform2D.DrawOrder);
         }
         #endregion
     }

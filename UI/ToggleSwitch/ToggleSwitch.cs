@@ -325,7 +325,7 @@ namespace WaveEngine.Components.UI
             this.entity = new Entity(name)
                            .AddComponent(new Transform2D())
                            .AddComponent(new RectangleCollider())
-                           .AddComponent(new TouchGestures())
+                           .AddComponent(new TouchGestures(false))
                            .AddComponent(new GridControl(100, 42))
                            .AddComponent(new GridRenderer())
                            .AddComponent(new ToggleSwitchBehavior());

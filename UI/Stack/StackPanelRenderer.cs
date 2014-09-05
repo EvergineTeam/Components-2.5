@@ -20,7 +20,7 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The StackPanel Renderer
     /// </summary>
-    public class StackPanelRenderer : Drawable2D
+    public class StackPanelRenderer : DrawableGUI
     {
         /// <summary>
         /// Total number of instances
@@ -115,10 +115,10 @@ namespace WaveEngine.Components.UI
             base.DrawDebugLines();
 
             // Rectangle
-            RenderManager.LineBatch2D.DrawRectangleVM(this.Transform2D.Rectangle, Color.Orange);
+            RenderManager.LineBatch2D.DrawRectangleVM(this.Transform2D.Rectangle, Color.Orange, this.Transform2D.DrawOrder);
 
             // Origin
-            RenderManager.LineBatch2D.DrawPointVM(this.Transform2D.Rectangle.Location + this.Transform2D.Origin, 10f, Color.Red);            
+            RenderManager.LineBatch2D.DrawPointVM(this.Transform2D.Rectangle.Location + this.Transform2D.Origin, 10f, Color.Red, this.Transform2D.DrawOrder);            
         }
 
         #endregion        

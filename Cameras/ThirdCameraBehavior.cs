@@ -40,7 +40,7 @@ namespace WaveEngine.Components.Cameras
         /// The camera to move.
         /// </summary>
         [RequiredComponent]
-        public Camera Camera;
+        public Camera3D Camera;
 
         /// <summary>
         /// The current camera position.
@@ -146,7 +146,8 @@ namespace WaveEngine.Components.Cameras
         {
             this.TargetPosition = this.targetTransform.Position;
 
-            Vector3.TransformNormal(ref this.cameraDistance, ref this.targetTransform.LocalWorld, out this.calculatedOffsetVector);
+            Matrix trasnform = this.targetTransform.WorldTransform;
+            Vector3.TransformNormal(ref this.cameraDistance, ref trasnform, out this.calculatedOffsetVector);
 
             // Manual inline: pivotPlayer = PlayerPosition - calculatedOffsetVector;
             this.pivotPlayer.X = this.TargetPosition.X - this.calculatedOffsetVector.X;
@@ -159,14 +160,10 @@ namespace WaveEngine.Components.Cameras
             this.cameraPosition.Z = this.Camera.Position.Z - ((this.Camera.Position.Z - this.pivotPlayer.Z) / this.PivotDelay);
 
             // Manual inline: camera.Position = cameraPosition;
-            this.Camera.Position.X = this.cameraPosition.X;
-            this.Camera.Position.Y = this.cameraPosition.Y;
-            this.Camera.Position.Z = this.cameraPosition.Z;
+            this.Camera.Position = this.cameraPosition;
 
             // Manual inline: camera.LookAt = PlayerPosition;
-            this.Camera.LookAt.X = this.TargetPosition.X;
-            this.Camera.LookAt.Y = this.TargetPosition.Y;
-            this.Camera.LookAt.Z = this.TargetPosition.Z;
+            this.Camera.LookAt = this.TargetPosition;
         }
         #endregion
     }

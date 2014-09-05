@@ -30,7 +30,7 @@ namespace WaveEngine.Components.Transitions
         /// Gets or sets the segments.
         /// </summary>
         private int segments;
-        
+
         /// <summary>
         /// The sprite batch
         /// </summary>
@@ -50,7 +50,7 @@ namespace WaveEngine.Components.Transitions
         /// Gets or sets the segments.
         /// </summary>
         /// <exception cref="System.ArgumentException">Out of range, segments >= 4</exception>
-        public int Segments 
+        public int Segments
         {
             get
             {
@@ -77,12 +77,6 @@ namespace WaveEngine.Components.Transitions
         {
             this.segments = 8;
             this.spriteBatch = new SpriteBatch(this.graphicsDevice);
-            this.sourceRenderTarget = this.graphicsDevice.RenderTargets.CreateRenderTarget(
-                WaveServices.Platform.ScreenWidth,
-                WaveServices.Platform.ScreenHeight);
-            this.targetRenderTarget = this.graphicsDevice.RenderTargets.CreateRenderTarget(
-                WaveServices.Platform.ScreenWidth,
-                WaveServices.Platform.ScreenHeight);
         }
 
         /// <summary>
@@ -98,8 +92,8 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Update(TimeSpan gameTime)
         {
-            this.UpdateSources(gameTime, this.sourceRenderTarget);
-            this.UpdateTarget(gameTime, this.targetRenderTarget);
+            this.UpdateSources(gameTime);
+            this.UpdateTarget(gameTime);
         }
 
         /// <summary>
@@ -109,6 +103,9 @@ namespace WaveEngine.Components.Transitions
         protected override void Draw(TimeSpan gameTime)
         {
             System.Random random = new System.Random(23);
+
+            this.sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
+            this.targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
 
             if (this.Sources != null)
             {
@@ -120,10 +117,11 @@ namespace WaveEngine.Components.Transitions
 
             this.Target.TakeSnapshot(this.targetRenderTarget, gameTime);
 
+            this.SetRenderState();
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
 
-            this.spriteBatch.Draw(this.targetRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
+            this.spriteBatch.DrawVM(this.targetRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
 
             int width = this.targetRenderTarget.Width;
             int height = this.targetRenderTarget.Height;
@@ -140,12 +138,15 @@ namespace WaveEngine.Components.Transitions
                             width / this.segments,
                             height / this.segments);
 
-                        this.spriteBatch.Draw(this.sourceRenderTarget, rect, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                        this.spriteBatch.DrawVM(this.sourceRenderTarget, rect, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                     }
                 }
             }
 
             this.spriteBatch.Render();
+
+            this.graphicsDevice.RenderTargets.DestroyRenderTarget(this.sourceRenderTarget);
+            this.graphicsDevice.RenderTargets.DestroyRenderTarget(this.targetRenderTarget);
         }
 
         /// <summary>
@@ -159,8 +160,6 @@ namespace WaveEngine.Components.Transitions
                 if (disposing)
                 {
                     this.spriteBatch.Dispose();
-                    this.graphicsDevice.RenderTargets.DestroyRenderTarget(this.sourceRenderTarget);
-                    this.graphicsDevice.RenderTargets.DestroyRenderTarget(this.targetRenderTarget);
                 }
 
                 this.disposed = true;

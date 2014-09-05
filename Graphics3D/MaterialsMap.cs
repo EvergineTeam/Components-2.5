@@ -12,8 +12,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using WaveEngine.Common.Graphics;
+using WaveEngine.Common.IO;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Graphics;
+using WaveEngine.Framework.Resources;
 using WaveEngine.Materials;
 #endregion
 
@@ -28,30 +30,6 @@ namespace WaveEngine.Components.Graphics3D
         /// Number of instances of this component created.
         /// </summary>
         private static int instances;
-
-        /// <summary>
-        /// Internal path for the default texture resource.
-        /// </summary>
-#if WINDOWS
-        private readonly string defaultTextureResourcePath = "WaveEngine.Components.Resources.DefaultTexture.wpk";
-#endif
-#if WINDOWS_PHONE
-        private readonly string defaultTextureResourcePath = "WaveEngineWP.Components.Resources.DefaultTexture.wpk";
-#endif
-#if METRO
-        private readonly string defaultTextureResourcePath = "WaveEngineMetro.Components.Resources.DefaultTexture.wpk";
-#endif
-#if OUYA
-        private readonly string defaultTextureResourcePath = "WaveEngineOUYA.Components.Resources.DefaultTexture.wpk";
-#elif ANDROID
-        private readonly string defaultTextureResourcePath = "WaveEngineAndroid.Components.Resources.DefaultTexture.wpk";
-#elif IOS
-        private readonly string defaultTextureResourcePath = "WaveEngineiOS.Components.Resources.DefaultTexture.wpk";
-#elif MAC
-		private readonly string defaultTextureResourcePath = "WaveEngineMac.Components.Resources.DefaultTexture.wpk";
-#elif LINUX
-		private readonly string defaultTextureResourcePath = "WaveEngineLinux.Components.Resources.DefaultTexture.wpk";
-#endif
 
         /// <summary>
         /// Default texture in case we don't specify any materials.
@@ -115,16 +93,7 @@ namespace WaveEngine.Components.Graphics3D
             instances++;
             this.Materials = materials;
 
-            Stream textureStream;
-#if METRO || PSSuite
-            Assembly assembly = this.GetType().GetTypeInfo().Assembly;
-            textureStream = assembly.GetManifestResourceStream(defaultTextureResourcePath);
-#else
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            textureStream = assembly.GetManifestResourceStream(this.defaultTextureResourcePath);
-#endif
-            this.defaultTexture = Framework.Services.WaveServices.Assets.Global.LoadAsset<Texture2D>(this.defaultTextureResourcePath, textureStream);
-
+            this.defaultTexture = StaticResources.DefaultTexture;
             this.DefaultMaterial = new BasicMaterial(this.defaultTexture);
         }
         #endregion

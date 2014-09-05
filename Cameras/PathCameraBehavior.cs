@@ -56,7 +56,7 @@ namespace WaveEngine.Components.Cameras
         ///     The camera to move.
         /// </summary>
         [RequiredComponent]
-        public Camera Camera;
+        public Camera3D Camera;
 
         /// <summary>
         ///     The path component.
@@ -153,20 +153,9 @@ namespace WaveEngine.Components.Cameras
                 {
                     this.currentCameraPoint = this.path.CurrentPoint;
 
-                    // Manual inline: camera.Position = currentPoint.Position;
-                    this.Camera.Position.X = this.currentCameraPoint.Position.X;
-                    this.Camera.Position.Y = this.currentCameraPoint.Position.Y;
-                    this.Camera.Position.Z = this.currentCameraPoint.Position.Z;
-
-                    // Manual inline: camera.LookAt = currentPoint.LookAt;
-                    this.Camera.LookAt.X = this.currentCameraPoint.LookAt.X;
-                    this.Camera.LookAt.Y = this.currentCameraPoint.LookAt.Y;
-                    this.Camera.LookAt.Z = this.currentCameraPoint.LookAt.Z;
-
-                    // Manual inline: camera.UpVector = currentPoint.Up;
-                    this.Camera.UpVector.X = this.currentCameraPoint.Up.X;
-                    this.Camera.UpVector.Y = this.currentCameraPoint.Up.Y;
-                    this.Camera.UpVector.Z = this.currentCameraPoint.Up.Z;
+                    this.Camera.Position = this.currentCameraPoint.Position;
+                    this.Camera.LookAt = this.currentCameraPoint.LookAt;
+                    this.Camera.UpVector = this.currentCameraPoint.Up;
                 }
                 else
                 {

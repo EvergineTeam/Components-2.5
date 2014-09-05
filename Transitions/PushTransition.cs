@@ -103,13 +103,6 @@ namespace WaveEngine.Components.Transitions
         {
             this.spriteBatch = new SpriteBatch(this.graphicsDevice);
             this.effectOption = effect;
-
-            this.sourceRenderTarget = this.graphicsDevice.RenderTargets.CreateRenderTarget(
-                WaveServices.Platform.ScreenWidth,
-                WaveServices.Platform.ScreenHeight);
-            this.targetRenderTarget = this.graphicsDevice.RenderTargets.CreateRenderTarget(
-                WaveServices.Platform.ScreenWidth,
-                WaveServices.Platform.ScreenHeight);
         }
 
         /// <summary>
@@ -120,16 +113,16 @@ namespace WaveEngine.Components.Transitions
             switch (this.effectOption)
             {
                 case EffectOptions.FromRight:
-                    this.initialPosition = new Vector2(WaveServices.Platform.ScreenWidth, 0);
+                    this.initialPosition = new Vector2(this.platform.ScreenWidth, 0);
                     break;
                 case EffectOptions.FromTop:
-                    this.initialPosition = new Vector2(0, -WaveServices.Platform.ScreenHeight);
+                    this.initialPosition = new Vector2(0, -this.platform.ScreenHeight);
                     break;
                 case EffectOptions.FromLeft:
-                    this.initialPosition = new Vector2(-WaveServices.Platform.ScreenWidth, 0);
+                    this.initialPosition = new Vector2(-this.platform.ScreenWidth, 0);
                     break;
                 case EffectOptions.FromBotton:
-                    this.initialPosition = new Vector2(0, WaveServices.Platform.ScreenHeight);
+                    this.initialPosition = new Vector2(0, this.platform.ScreenHeight);
                     break;
             }
 
@@ -143,8 +136,8 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Update(TimeSpan gameTime)
         {
-            this.UpdateSources(gameTime, this.sourceRenderTarget);
-            this.UpdateTarget(gameTime, this.targetRenderTarget);
+            this.UpdateSources(gameTime);
+            this.UpdateTarget(gameTime);
         }
 
         /// <summary>
@@ -153,9 +146,17 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Draw(TimeSpan gameTime)
         {
+            this.sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
+                this.platform.ScreenWidth,
+                this.platform.ScreenHeight);
+            this.targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
+                this.platform.ScreenWidth,
+                this.platform.ScreenHeight);
+
             this.DrawSources(gameTime, this.sourceRenderTarget);
             this.DrawTarget(gameTime, this.targetRenderTarget);
 
+            this.SetRenderState();
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
 
@@ -163,9 +164,12 @@ namespace WaveEngine.Components.Transitions
             this.position2 += pos - this.position1;
             this.position1 = pos;
 
-            this.spriteBatch.Draw(this.sourceRenderTarget, this.position2, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
-            this.spriteBatch.Draw(this.targetRenderTarget, this.position1, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            this.spriteBatch.DrawVM(this.sourceRenderTarget, this.position2, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
+            this.spriteBatch.DrawVM(this.targetRenderTarget, this.position1, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
             this.spriteBatch.Render();
+
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.sourceRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.targetRenderTarget);
         }
 
         /// <summary>
@@ -179,8 +183,6 @@ namespace WaveEngine.Components.Transitions
                 if (disposing)
                 {
                     this.spriteBatch.Dispose();
-                    this.graphicsDevice.RenderTargets.DestroyRenderTarget(this.sourceRenderTarget);
-                    this.graphicsDevice.RenderTargets.DestroyRenderTarget(this.targetRenderTarget);
                 }
 
                 this.disposed = true;

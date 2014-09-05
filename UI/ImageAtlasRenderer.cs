@@ -21,7 +21,7 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The Image atlas renderer.
     /// </summary>
-    public class ImageAtlasRenderer : Drawable2D
+    public class ImageAtlasRenderer : DrawableGUI
     {
         /// <summary>
         /// Total number of instances.
@@ -102,7 +102,7 @@ namespace WaveEngine.Components.UI
         /// </remarks>
         public override void Draw(TimeSpan gameTime)
         {
-            if (this.Transform2D.Opacity > this.Delta)
+            if (this.Transform2D.GlobalOpacity > this.Delta)
             {
                 this.position.X = this.Transform2D.Rectangle.X + this.Transform2D.X;
                 this.position.Y = this.Transform2D.Rectangle.Y + this.Transform2D.Y;
@@ -116,7 +116,7 @@ namespace WaveEngine.Components.UI
                 this.origin.X = transformOrigin.X * this.Transform2D.Rectangle.Width;
                 this.origin.Y = transformOrigin.Y * this.Transform2D.Rectangle.Height;
 
-                float opacity = this.RenderManager.DebugLines ? this.DebugAlpha : this.Transform2D.Opacity;
+                float opacity = this.RenderManager.DebugLines ? this.DebugAlpha : this.Transform2D.GlobalOpacity;
                 Color color = this.Image.TintColor * opacity;
 
                 this.layer.SpriteBatch.DrawVM(
@@ -154,10 +154,10 @@ namespace WaveEngine.Components.UI
             base.DrawDebugLines();
 
             // Rectangle
-            RenderManager.LineBatch2D.DrawRectangleVM(this.Transform2D.Rectangle, Color.Blue);
+            RenderManager.LineBatch2D.DrawRectangleVM(this.Transform2D.Rectangle, Color.Blue, this.Transform2D.DrawOrder);
 
             // Origin
-            RenderManager.LineBatch2D.DrawPointVM(this.Transform2D.Rectangle.Location + this.Transform2D.Origin, 10f, Color.Red);
+            RenderManager.LineBatch2D.DrawPointVM(this.Transform2D.Rectangle.Location + this.Transform2D.Origin, 10f, Color.Red, this.Transform2D.DrawOrder);
         }
         #endregion
     }

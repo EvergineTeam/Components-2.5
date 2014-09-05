@@ -49,7 +49,7 @@ namespace WaveEngine.Components.Graphics2D
         /// The disposed
         /// </summary>
         protected bool disposed;
-    
+
         /// <summary>
         /// The texcoord1
         /// </summary>
@@ -64,59 +64,6 @@ namespace WaveEngine.Components.Graphics2D
         /// The quad mesh.
         /// </summary>
         private Mesh quadMesh;
-
-        #region Cached fields
-        /// <summary>
-        /// The viewport manager cached
-        /// </summary>
-        private ViewportManager viewportManager;
-
-        /// <summary>
-        /// The position cached
-        /// </summary>
-        private Vector2 position;
-
-        /// <summary>
-        /// The scale cached
-        /// </summary>
-        private Vector2 scale;
-
-        /// <summary>
-        /// The internal position cached
-        /// </summary>
-        private Vector3 internalPosition;
-
-        /// <summary>
-        /// The internal scale cached
-        /// </summary>
-        private Vector3 internalScale;
-
-        /// <summary>
-        /// The local world
-        /// </summary>
-        private Matrix localWorld;
-
-        /// <summary>
-        /// The quaternion matrix
-        /// </summary>
-        private Matrix quaternionMatrix;
-
-        /// <summary>
-        /// The translation matrix
-        /// </summary>
-        private Matrix translationMatrix;
-
-        /// <summary>
-        /// The scale matrix
-        /// </summary>
-        private Matrix scaleMatrix;
-
-        /// <summary>
-        /// The orientation
-        /// </summary>
-        private Quaternion orientation;
-
-        #endregion
 
         #region Initialize
         /// <summary>
@@ -146,9 +93,6 @@ namespace WaveEngine.Components.Graphics2D
             {
                 this.texcoord2 = texcoord2;
             }
-
-            this.position = new Vector2();
-            this.scale = new Vector2(1);            
         }
         #endregion
 
@@ -173,33 +117,11 @@ namespace WaveEngine.Components.Graphics2D
         /// </remarks>
         public override void Draw(TimeSpan gameTime)
         {
-            this.position.X = this.Transform2D.X;
-            this.position.Y = this.Transform2D.Y;
-            this.scale.X = this.Transform2D.XScale;
-            this.scale.Y = this.Transform2D.YScale;
-
-            if (this.viewportManager.IsActivated)
-            {
-                this.viewportManager.Translate(ref this.position, ref this.scale);
-            }
-
-            Quaternion.CreateFromYawPitchRoll(0, 0, this.Transform2D.Rotation, out this.orientation);
-            Matrix.CreateFromQuaternion(ref this.orientation, out this.quaternionMatrix);
-
-            this.internalScale.X = this.scale.X;
-            this.internalScale.Y = this.scale.Y;
-            Matrix.CreateScale(ref this.internalScale, out this.scaleMatrix);
-
-            this.internalPosition.X = this.position.X - (this.Transform2D.Origin.X * this.Transform2D.Rectangle.Width);
-            this.internalPosition.Y = this.position.Y - (this.Transform2D.Origin.Y * this.Transform2D.Rectangle.Height);
-            this.internalPosition.Z = this.Transform2D.DrawOrder;
-            Matrix.CreateTranslation(ref this.internalPosition, out this.translationMatrix);
-
-            Matrix.Multiply(ref this.scaleMatrix, ref this.quaternionMatrix, out this.localWorld);
-            Matrix.Multiply(ref this.localWorld, ref this.translationMatrix, out this.localWorld);
+            this.quadMesh.ZOrder = this.Transform2D.DrawOrder;
+            Matrix worldTransform = this.Transform2D.WorldTransform;
 
             // Draw mesh
-            this.RenderManager.DrawMesh(this.quadMesh, this.Material.Material, ref this.localWorld, false);
+            this.RenderManager.DrawMesh(this.quadMesh, this.Material.Material, ref worldTransform, false);
         }
 
         #endregion
@@ -211,8 +133,6 @@ namespace WaveEngine.Components.Graphics2D
         protected override void Initialize()
         {
             base.Initialize();
-
-            this.viewportManager = WaveServices.ViewportManager;
 
             if (this.texcoord1 == null)
             {
@@ -236,28 +156,32 @@ namespace WaveEngine.Components.Graphics2D
                 };
             }
 
+            Vector2 origin = this.Transform2D.Origin;
             float halfWidth = this.Transform2D.Rectangle.Width;
             float halfHeight = this.Transform2D.Rectangle.Height;
-            float opacity = this.Transform2D.Opacity;
+            float originCorrectionWidth = origin.X * halfWidth;
+            float originCorrectionHeight = origin.Y * halfHeight;
+
+            float opacity = this.Transform2D.GlobalOpacity;
             Color color = new Color(opacity, opacity, opacity, opacity);
 
             VertexPositionColorDualTexture[] vertices = new VertexPositionColorDualTexture[4];
-            vertices[0].Position = new Vector3(0f, 0f, this.Transform2D.DrawOrder);
+            vertices[0].Position = new Vector3(-originCorrectionWidth, -originCorrectionHeight, 0);
             vertices[0].Color = color;
             vertices[0].TexCoord = this.texcoord1[0];
             vertices[0].TexCoord2 = this.texcoord2[0];
 
-            vertices[1].Position = new Vector3(halfWidth, 0f, this.Transform2D.DrawOrder);
+            vertices[1].Position = new Vector3(halfWidth - originCorrectionWidth, -originCorrectionHeight, 0);
             vertices[1].Color = color;
             vertices[1].TexCoord = this.texcoord1[1];
             vertices[1].TexCoord2 = this.texcoord2[1];
 
-            vertices[2].Position = new Vector3(halfWidth, halfHeight, this.Transform2D.DrawOrder);
+            vertices[2].Position = new Vector3(halfWidth - originCorrectionWidth, halfHeight - originCorrectionHeight, 0);
             vertices[2].Color = color;
             vertices[2].TexCoord = this.texcoord1[2];
             vertices[2].TexCoord2 = this.texcoord2[2];
 
-            vertices[3].Position = new Vector3(0f, halfHeight, this.Transform2D.DrawOrder);
+            vertices[3].Position = new Vector3(-originCorrectionWidth, halfHeight - originCorrectionHeight, 0);
             vertices[3].Color = color;
             vertices[3].TexCoord = this.texcoord1[3];
             vertices[3].TexCoord2 = this.texcoord2[3];
@@ -273,8 +197,8 @@ namespace WaveEngine.Components.Graphics2D
             indices[4] = 3;
             indices[5] = 0;
 
-            IndexBuffer indexBuffer = new IndexBuffer(indices);           
-            
+            IndexBuffer indexBuffer = new IndexBuffer(indices);
+
             // create the quad
             this.quadMesh = new Mesh(0, 4, 0, 2, vertexBuffer, indexBuffer, PrimitiveType.TriangleList);
         }
@@ -289,7 +213,12 @@ namespace WaveEngine.Components.Graphics2D
             {
                 if (disposing)
                 {
-                    // ToDo
+                    if (this.quadMesh != null)
+                    {
+                        GraphicsDevice.DestroyIndexBuffer(this.quadMesh.IndexBuffer);
+                        GraphicsDevice.DestroyVertexBuffer(this.quadMesh.VertexBuffer);
+                    }
+
                     this.disposed = true;
                 }
             }

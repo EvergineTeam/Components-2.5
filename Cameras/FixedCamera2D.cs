@@ -1,6 +1,6 @@
 ﻿#region File Description
 //-----------------------------------------------------------------------------
-// FixedCamera
+// FixedCamera2D
 //
 // Copyright © 2014 Wave Corporation
 // Use is subject to license terms.
@@ -19,9 +19,9 @@ using WaveEngine.Framework.Graphics;
 namespace WaveEngine.Components.Cameras
 {
     /// <summary>
-    /// FixedCamera decorate class
+    /// FixedCamera 2D decorate class
     /// </summary>
-    public class FixedCamera : BaseDecorator
+    public class FixedCamera2D : BaseDecorator
     {
         #region Properties
 
@@ -35,31 +35,31 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().FieldOfView;
+                return this.entity.FindComponent<Camera2D>().FieldOfView;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().FieldOfView = value;
+                this.entity.FindComponent<Camera2D>().FieldOfView = value;
             }
         }
 
         /// <summary>
-        /// Gets or sets the aspect ratio.
+        /// Gets or sets the vanishing point of the Camera 2D. It indicates the point of the screen where the perspective is focused. 
+        /// Its values are included in [0, 1] where (0, 0) indicates the top left corner.
+        /// Such values are percentages where 1 means the 100% of the rectangle's width/height.
         /// </summary>
-        /// <value>
-        /// The aspect ratio.
-        /// </value>
-        public float AspectRatio
+        /// <remarks>The default value is [0.5f, 0.5f]</remarks>
+        public Vector2 VanishingPoint
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().AspectRatio;
+                return this.entity.FindComponent<Camera2D>().VanishingPoint;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().AspectRatio = value;
+                this.entity.FindComponent<Camera2D>().VanishingPoint = value;
             }
         }
 
@@ -73,12 +73,12 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().FarPlane;
+                return this.entity.FindComponent<Camera2D>().FarPlane;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().FarPlane = value;
+                this.entity.FindComponent<Camera2D>().FarPlane = value;
             }
         }
 
@@ -92,12 +92,12 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().NearPlane;
+                return this.entity.FindComponent<Camera2D>().NearPlane;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().NearPlane = value;
+                this.entity.FindComponent<Camera2D>().NearPlane = value;
             }
         }
 
@@ -111,12 +111,12 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().RenderTarget;
+                return this.entity.FindComponent<Camera2D>().RenderTarget;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().RenderTarget = value;
+                this.entity.FindComponent<Camera2D>().RenderTarget = value;
             }
         }
 
@@ -131,12 +131,12 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().ClearFlags;
+                return this.entity.FindComponent<Camera2D>().ClearFlags;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().ClearFlags = value;
+                this.entity.FindComponent<Camera2D>().ClearFlags = value;
             }
         }
 
@@ -150,12 +150,12 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().BackgroundColor;
+                return this.entity.FindComponent<Camera2D>().BackgroundColor;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().BackgroundColor = value;
+                this.entity.FindComponent<Camera2D>().BackgroundColor = value;
             }
         }
 
@@ -169,12 +169,12 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().IsActive;
+                return this.entity.FindComponent<Camera2D>().IsActive;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().IsActive = value;
+                this.entity.FindComponent<Camera2D>().IsActive = value;
             }
         }
 
@@ -188,27 +188,35 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().LayerMask;
+                return this.entity.FindComponent<Camera2D>().LayerMask;
             }
         }
         #endregion
 
         #region Initialize
 
-         /// <summary>
-        /// Initializes a new instance of the <see cref="FixedCamera" /> class.
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FixedCamera2D" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <param name="position">The position.</param>
-        /// <param name="lookAt">The look at.</param>
-        public FixedCamera(string name, Vector3 position, Vector3 lookAt)
+        public FixedCamera2D(string name)
         {
             this.entity = new Entity(name)
-                        .AddComponent(new Camera3D()
-                        {
-                            Position = position,
-                            LookAt = lookAt,
-                        });
+            .AddComponent(new Camera2D());
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FixedCamera2D" /> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="position">The camera position</param>
+        public FixedCamera2D(string name, Vector2 position)
+        {
+            this.entity = new Entity(name)
+            .AddComponent(new Camera2D()
+            {
+                Position = position.ToVector3(0),                
+            });
         }
       
         #endregion

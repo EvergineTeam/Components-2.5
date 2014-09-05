@@ -84,7 +84,7 @@ namespace WaveEngine.Components.Particles
         /// <summary>
         ///     Size of emiter.
         /// </summary>
-        public Vector2 EmitterSize = Vector2.Zero;
+        public Vector3 EmitterSize = Vector3.Zero;
 
         /// <summary>
         /// The end delta scale.
@@ -124,7 +124,17 @@ namespace WaveEngine.Components.Particles
             /// <summary>
             ///     Fill circle shape.
             /// </summary>
-            FillCircle
+            FillCircle,
+
+            /// <summary>
+            ///     Box shape.
+            /// </summary>
+            Box,
+
+            /// <summary>
+            ///     Fill box shape.
+            /// </summary>
+            FillBox,
         }
 
         /// <summary>

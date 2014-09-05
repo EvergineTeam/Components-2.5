@@ -42,19 +42,9 @@ namespace WaveEngine.Components.Graphics2D
         public Sprite Sprite;
 
         /// <summary>
-        /// The position
+        /// The sampler mode.
         /// </summary>
-        private Vector2 position;
-
-        /// <summary>
-        /// The scale
-        /// </summary>
-        private Vector2 scale;
-
-        /// <summary>
-        /// The origin
-        /// </summary>
-        private Vector2 origin;
+        private AddressMode samplerMode;
 
         /// <summary>
         /// The animation behavior
@@ -75,15 +65,14 @@ namespace WaveEngine.Components.Graphics2D
         /// Initializes a new instance of the <see cref="AnimatedSpriteRenderer" /> class.
         /// </summary>
         /// <param name="layer">Layer type.</param>
-        public AnimatedSpriteRenderer(Type layer)
+        /// <param name="samplerMode">The sampler mode.</param>
+        public AnimatedSpriteRenderer(Type layer, AddressMode samplerMode = AddressMode.LinearClamp)
             : base("AnimatedSpriteRenderer" + instances++, layer)
         {
             this.Transform2D = null;
-            this.Sprite = null;
-            this.scale = Vector2.Zero;
-            this.position = Vector2.Zero;
-            this.origin = Vector2.Zero;
+            this.Sprite = null;            
             this.Animation2D = null;
+            this.samplerMode = samplerMode;
         }
         #endregion
 
@@ -108,33 +97,23 @@ namespace WaveEngine.Components.Graphics2D
         /// </remarks>
         public override void Draw(TimeSpan gameTime)
         {
-            if (this.Transform2D.Opacity > this.Delta)
+            if (this.Transform2D.GlobalOpacity > this.Delta)
             {
-                this.position.X = this.Transform2D.Rectangle.X + this.Transform2D.X;
-                this.position.Y = this.Transform2D.Rectangle.Y + this.Transform2D.Y;
-
-                this.scale.X = this.Transform2D.XScale;
-                this.scale.Y = this.Transform2D.YScale;
-
                 var currentRectangle = this.Animation2D.CurrentRectangle;
 
-                this.origin.X = this.Transform2D.Origin.X * currentRectangle.Width;
-                this.origin.Y = this.Transform2D.Origin.Y * currentRectangle.Height;
-
-                float opacity = this.RenderManager.DebugLines ? this.DebugAlpha :
-                    this.Transform2D.Opacity;
+                float opacity = this.RenderManager.DebugLines ? this.DebugAlpha : this.Transform2D.GlobalOpacity;
                 Color color = this.Sprite.TintColor * opacity;
 
+                Matrix spriteMatrix = this.Transform2D.WorldTransform;
                 this.layer.SpriteBatch.DrawVM(
-                    this.Sprite.Texture,
-                    this.position,
-                    currentRectangle,
-                    color,
-                    this.Transform2D.Rotation,
-                    this.origin,
-                    this.scale,
+                    this.Sprite.Texture, 
+                    currentRectangle, 
+                    ref color, 
+                    ref this.Transform2D.Origin, 
                     this.Transform2D.Effect,
-                    this.Transform2D.DrawOrder);
+                    ref spriteMatrix,
+                    this.Transform2D.DrawOrder, 
+                    this.samplerMode);
             }
         }
         #endregion

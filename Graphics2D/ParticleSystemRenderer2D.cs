@@ -292,8 +292,10 @@ namespace WaveEngine.Components.Graphics2D
                 this.emitRemainder = particlesToCreateF - particlesToCreate;
             }
 
+            int nVertices = 0;
+
             // Recorremos todas las partículas
-            for (int i = 0, j = 0; i < this.numParticles; i++)
+            for (int i = 0; i < this.numParticles; i++)
             {
                 Particle p = this.particles[i];
 
@@ -476,68 +478,61 @@ namespace WaveEngine.Components.Graphics2D
                     p.Angle = p.Angle + (timeFactor * p.VelocityRotation);
 
                     // Color
-                    if (this.settings.LinearColorEnabled && p.TimeLife != 0 && this.settings.InterpolationColors != null && this.settings.InterpolationColors.Count > 0)
+                    if (this.settings.LinearColorEnabled && p.TimeLife != 0 && this.settings.InterpolationColors != null && this.settings.InterpolationColors.Count > 1)
                     {
                         // Num destiny colors
-                        short count = (short)this.settings.InterpolationColors.Count;
+                        int count = this.settings.InterpolationColors.Count;
+
+                        // Current lerp
+                        double lerp = 1 - (p.Life / p.TimeLife);
 
                         // Life time of one color
-                        double timeColorAge = p.TimeLife / count;
+                        double colorPeriod = 1 / (count - 1.0);
 
                         // destiny Color
-                        short destinyIndex = (short)(p.Life / timeColorAge);
+                        int sourceIndex = (int)(lerp / colorPeriod);
 
-                        // Age between 1 and 0 for current color
-                        double currentColorAge = (p.Life - (timeColorAge * destinyIndex)) / timeColorAge;
+                        sourceIndex = Math.Max(0, Math.Min(count - 2, sourceIndex));
 
-                        // Iterpolation color
-                        if (currentColorAge > 0)
-                        {
-                            float amount = 1 - (float)currentColorAge;
+                        double currentLerp = (lerp - (sourceIndex * colorPeriod)) / colorPeriod;
 
-                            short index = (short)((count - 1) - destinyIndex);
-                            if (index != p.CurrentIndex)
-                            {
-                                p.CurrentColor = p.Color;
-                                p.CurrentIndex = index;
-                            }
+                        Color sourceColor = this.settings.InterpolationColors[sourceIndex];
+                        Color destinyColor = this.settings.InterpolationColors[sourceIndex + 1];
 
-                            Color destinyColor = this.settings.InterpolationColors[p.CurrentIndex];
-
-                            p.Color = Color.Lerp(ref p.CurrentColor, ref destinyColor, amount);
-                        }
+                        p.Color = Color.Lerp(ref sourceColor, ref destinyColor, (float)currentLerp);
                     }
 
                     if (this.settings.AlphaEnabled && p.TimeLife.Distinct(0))
                     {
                         double age = p.Life / p.TimeLife;
-                        double alpha = Math.Pow(age, 0.333333);
                         p.Color.A = (byte)(255 * age);
                         p.Color.R = (byte)(p.Color.R * age);
                         p.Color.G = (byte)(p.Color.G * age);
                         p.Color.B = (byte)(p.Color.B * age);
                     }
-                }
 
-                // Update Vertex Buffer
-                Matrix world = this.CalculateLocalWorld(ref p);
+                    p.Color *= this.Transform.GlobalOpacity;
 
-                Vector3.Transform(ref this.vertex1, ref world, out this.vertices[j].Position);
-                this.vertices[j++].Color = p.Color;
+                    // Update Vertex Buffer
+                    Matrix world = this.CalculateLocalWorld(ref p);
 
-                Vector3.Transform(ref this.vertex2, ref world, out this.vertices[j].Position);
-                this.vertices[j++].Color = p.Color;
+                    Vector3.Transform(ref this.vertex1, ref world, out this.vertices[nVertices].Position);
+                    this.vertices[nVertices++].Color = p.Color;
 
-                Vector3.Transform(ref this.vertex3, ref world, out this.vertices[j].Position);
-                this.vertices[j++].Color = p.Color;
+                    Vector3.Transform(ref this.vertex2, ref world, out this.vertices[nVertices].Position);
+                    this.vertices[nVertices++].Color = p.Color;
 
-                Vector3.Transform(ref this.vertex4, ref world, out this.vertices[j].Position);
-                this.vertices[j++].Color = p.Color;
+                    Vector3.Transform(ref this.vertex3, ref world, out this.vertices[nVertices].Position);
+                    this.vertices[nVertices++].Color = p.Color;
 
-                // Si la partícula está viva la contamos
-                if (p.Alive)
-                {
-                    this.aliveParticles++;
+                    Vector3.Transform(ref this.vertex4, ref world, out this.vertices[nVertices].Position);
+                    this.vertices[nVertices++].Color = p.Color;
+
+                    // Si la partícula está viva la contamos
+                    if (p.Alive)
+                    {
+                        this.aliveParticles++;
+                    }
                 }
             }
 
@@ -545,6 +540,9 @@ namespace WaveEngine.Components.Graphics2D
 
             if (this.internalEnabled)
             {
+                this.mesh.NumVertices = nVertices;
+                this.mesh.NumPrimitives = nVertices / 2;
+                this.mesh.ZOrder = this.Transform.DrawOrder;
                 this.mesh.VertexBuffer.SetData(this.vertices, this.numVertices);
                 this.GraphicsDevice.BindVertexBuffer(this.mesh.VertexBuffer);
 
@@ -716,12 +714,11 @@ namespace WaveEngine.Components.Graphics2D
                 p.Velocity.Y = this.settings.LocalVelocity.Y;
             }
 
-            p.Position.X = this.Transform.X;
-            p.Position.Y = this.Transform.Y;
+            p.Position = (this.Transform as Transform3D).Position;
 
             p.StartTime = DateTime.Now.Ticks;
 
-            if (this.settings.EmitterSize != Vector2.Zero)
+            if (this.settings.EmitterSize != Vector3.Zero)
             {
                 switch (this.settings.EmitterShape)
                 {
@@ -794,6 +791,18 @@ namespace WaveEngine.Components.Graphics2D
                             break;
                         }
 
+                    case ParticleSystem2D.Shape.FillBox:
+                        {
+                            float rnd0 = ((float)this.random.NextDouble() * 2) - 1;
+                            float rnd1 = ((float)this.random.NextDouble() * 2) - 1;
+                            float rnd2 = ((float)this.random.NextDouble() * 2) - 1;
+
+                            p.Position.X = p.Position.X + ((this.settings.EmitterSize.X / 2) * rnd0);
+                            p.Position.Y = p.Position.Y + ((this.settings.EmitterSize.Y / 2) * rnd1);
+                            p.Position.Z = p.Position.Z + ((this.settings.EmitterSize.Z / 2) * rnd1);
+                            break;
+                        }
+
                     default:
                         {
                             throw new ArgumentException("Invalid particleSystem shape");
@@ -839,6 +848,7 @@ namespace WaveEngine.Components.Graphics2D
             }
 
             p.Color = p.CurrentColor;
+            p.CurrentIndex = -1;
 
             Matrix.CreateFromYawPitchRoll(0, 0, this.Transform.Rotation, out this.rotationMatrix);
         }
@@ -855,10 +865,6 @@ namespace WaveEngine.Components.Graphics2D
             {
                 throw new ObjectDisposedException("ParticleSystemRenderer");
             }
-
-            ////Matrix matrix = Matrix.CreateRotationZ(p.Angle)
-            ////                * Matrix.CreateScale(p.Size)
-            ////                * Matrix.CreateTranslation(p.Position);
 
             float cos = (float)Math.Cos(p.Angle);
             float sin = (float)Math.Sin(p.Angle);
@@ -879,45 +885,22 @@ namespace WaveEngine.Components.Graphics2D
             float scaleSin = scale * sin;
 
             Matrix matrix;
-
-            if (!this.viewportEnabled)
-            {
-                matrix.M11 = scaleCos;
-                matrix.M12 = scaleSin;
-                matrix.M13 = 0;
-                matrix.M14 = 0;
-                matrix.M21 = -scaleSin;
-                matrix.M22 = scaleCos;
-                matrix.M23 = 0;
-                matrix.M24 = 0;
-                matrix.M31 = 0f;
-                matrix.M32 = 0f;
-                matrix.M33 = 1f;
-                matrix.M34 = 0f;
-                matrix.M41 = p.Position.X;
-                matrix.M42 = p.Position.Y;
-                matrix.M43 = 0;
-                matrix.M44 = 1f;
-            }
-            else
-            {
-                matrix.M11 = scaleCos * this.viewportScale.X;
-                matrix.M12 = scaleSin * this.viewportScale.Y;
-                matrix.M13 = 0;
-                matrix.M14 = 0;
-                matrix.M21 = -scaleSin * this.viewportScale.X;
-                matrix.M22 = scaleCos * this.viewportScale.Y;
-                matrix.M23 = 0;
-                matrix.M24 = 0;
-                matrix.M31 = 0f;
-                matrix.M32 = 0f;
-                matrix.M33 = 1f;
-                matrix.M34 = 0f;
-                matrix.M41 = (p.Position.X * this.viewportScale.X) + this.viewportTranslate.X;
-                matrix.M42 = (p.Position.Y * this.viewportScale.Y) + this.viewportTranslate.Y;
-                matrix.M43 = 0;
-                matrix.M44 = 1f;
-            }
+            matrix.M11 = scaleCos;
+            matrix.M12 = scaleSin;
+            matrix.M13 = 0;
+            matrix.M14 = 0;
+            matrix.M21 = -scaleSin;
+            matrix.M22 = scaleCos;
+            matrix.M23 = 0;
+            matrix.M24 = 0;
+            matrix.M31 = 0f;
+            matrix.M32 = 0f;
+            matrix.M33 = 1f;
+            matrix.M34 = 0f;
+            matrix.M41 = p.Position.X;
+            matrix.M42 = p.Position.Y;
+            matrix.M43 = p.Position.Z;
+            matrix.M44 = 1f;
 
             return matrix;
         }

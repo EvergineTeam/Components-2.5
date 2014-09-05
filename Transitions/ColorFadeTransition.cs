@@ -57,7 +57,6 @@ namespace WaveEngine.Components.Transitions
         {           
             this.transitionColor = transitionColor;
             this.spriteBatch = new SpriteBatch(this.graphicsDevice);
-            this.renderTarget = this.graphicsDevice.RenderTargets.CreateRenderTarget(WaveServices.Platform.ScreenWidth, WaveServices.Platform.ScreenHeight);
 
             this.transitionColorTexture = new Texture2D()
             {
@@ -84,11 +83,11 @@ namespace WaveEngine.Components.Transitions
         {            
             if (this.Lerp <= 0.5f)
             {
-                this.UpdateSources(gameTime, this.renderTarget);
+                this.UpdateSources(gameTime);
             }
             else
             {
-                this.UpdateTarget(gameTime, this.renderTarget);
+                this.UpdateTarget(gameTime);
             }
         }
 
@@ -98,6 +97,8 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Draw(TimeSpan gameTime)
         {
+            this.renderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
+
             if (this.Lerp <= 0.5f)
             {
                 if (this.Sources != null)
@@ -116,11 +117,14 @@ namespace WaveEngine.Components.Transitions
             float factor = (this.Lerp <= 0.5f) ? 2 * this.Lerp : 1 - (2 * (this.Lerp - 0.5f));
             Color blendColor = this.transitionColor * factor;
 
+            this.SetRenderState();
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
 
-            this.spriteBatch.Draw(this.renderTarget, new Rectangle(0, 0, this.renderTarget.Width, this.renderTarget.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
-            this.spriteBatch.Draw(this.transitionColorTexture, new Rectangle(0, 0, this.renderTarget.Width, this.renderTarget.Height), null, blendColor, 0, Vector2.Zero, SpriteEffects.None, 0);
+            this.spriteBatch.DrawVM(this.renderTarget, new Rectangle(0, 0, this.renderTarget.Width, this.renderTarget.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+            this.spriteBatch.DrawVM(this.transitionColorTexture, new Rectangle(0, 0, this.renderTarget.Width, this.renderTarget.Height), null, blendColor, 0, Vector2.Zero, SpriteEffects.None, 0);
             this.spriteBatch.Render();
+
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.renderTarget);
         }
 
         /// <summary>
@@ -135,7 +139,6 @@ namespace WaveEngine.Components.Transitions
                 {
                     this.spriteBatch.Dispose();
                     this.graphicsDevice.Textures.DestroyTexture(this.transitionColorTexture);
-                    this.graphicsDevice.RenderTargets.DestroyRenderTarget(this.renderTarget);
                 }
 
                 this.disposed = true;

@@ -323,7 +323,7 @@ namespace WaveEngine.Components.UI
             this.entity = new Entity(name)
                            .AddComponent(new Transform2D())
                            .AddComponent(new RectangleCollider())
-                           .AddComponent(new TouchGestures())
+                           .AddComponent(new TouchGestures(false))
                            .AddComponent(new PanelControl(100, 20))
                            .AddComponent(new PanelControlRenderer())
                            .AddComponent(new SliderBehavior())

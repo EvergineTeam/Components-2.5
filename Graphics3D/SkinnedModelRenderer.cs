@@ -96,11 +96,6 @@ namespace WaveEngine.Components.Graphics3D
         private bool disposed;
 
         /// <summary>
-        /// The is hidef.
-        /// </summary>
-        private bool isHidef;
-
-        /// <summary>
         /// The last key frame.
         /// </summary>
         private int lastKeyFrame = -1;
@@ -366,15 +361,12 @@ namespace WaveEngine.Components.Graphics3D
                 this.lastModelId = this.skinnedModel.GetHashCode();
             }
 
-            if (!this.isHidef && this.LODEnabled)
+            if (this.LODEnabled)
             {
                 this.passUpdate--;
                 if (this.passUpdate <= 0)
                 {
-                    float distanceToCamera = 0;
-                    Vector3.Distance(
-                        ref this.Transform.Position, ref this.RenderManager.Camera.Position, out distanceToCamera);
-
+                    float distanceToCamera = Vector3.Distance(this.Transform.Position, this.RenderManager.CurrentDrawingCamera3D.Position);
                     float amount = (distanceToCamera - this.lodMinDistance) / this.lodDiffDistance;
                     if (amount > 1)
                     {
@@ -392,8 +384,9 @@ namespace WaveEngine.Components.Graphics3D
                 }
             }
 
-            bool needsUpdate = (this.isHidef || (!LowPerformance && this.lastKeyFrame != this.Animation.Frame && this.updateLod)) && this.lastAnimTime != this.Animation.TotalAnimTime;
-            this.lastAnimTime = this.Animation.TotalAnimTime;
+            float zOrder = Vector3.DistanceSquared(this.RenderManager.CurrentDrawingCamera3D.Position, this.Transform.Position);
+            bool needsUpdate = (!LowPerformance && this.lastKeyFrame != this.Animation.Frame && this.updateLod) && this.lastAnimTime != this.Animation.TotalAnimTime;
+            this.lastAnimTime = this.Animation.TotalAnimTime;            
 
             if (needsUpdate)
             {
@@ -426,13 +419,16 @@ namespace WaveEngine.Components.Graphics3D
                         this.updateVertexBuffer[i] = false;
                     }
 
-                    this.GraphicsDevice.UnsetBuffers();                    
-                    this.RenderManager.DrawMesh(currentMesh, currentMaterial, ref this.Transform.LocalWorld, false);     
+                    currentMesh.ZOrder = zOrder;
+
+                    this.GraphicsDevice.UnsetBuffers();
+                    Matrix transform = this.Transform.WorldTransform;
+                    this.RenderManager.DrawMesh(currentMesh, currentMaterial, ref transform, false);     
                     this.GraphicsDevice.UnsetBuffers();
                 }
             }
 
-            if (this.isHidef || this.LODEnabled)
+            if (this.LODEnabled)
             {
                 this.updateLod = false;
             }
@@ -536,12 +532,14 @@ namespace WaveEngine.Components.Graphics3D
                 {
                     Vector3 start;
                     Vector3 sourceTranslation = this.worldTransforms[i].Translation;
-                    Vector3.Transform(ref sourceTranslation, ref this.Transform.LocalWorld, out start);
+                    Matrix world = this.Transform.WorldTransform;
+
+                    Vector3.Transform(ref sourceTranslation, ref world, out start);
 
                     Vector3 end;
                     Vector3 endTranslation =
                         this.worldTransforms[this.Animation.InternalAnimation.SkeletonHierarchy[i]].Translation;
-                    Vector3.Transform(ref endTranslation, ref this.Transform.LocalWorld, out end);
+                    Vector3.Transform(ref endTranslation, ref world, out end);
 
                     this.RenderManager.LineBatch3D.DrawLine(ref start, ref end, ref this.lineColor);
                 }
@@ -555,7 +553,6 @@ namespace WaveEngine.Components.Graphics3D
         {
             base.Initialize();
 
-            this.isHidef = WaveServices.Platform.PlatformProfile == Platform.Profile.HiDef;
             this.boneTransforms = new Matrix[this.Animation.InternalAnimation.BindPose.Count];
             this.worldTransforms = new Matrix[this.Animation.InternalAnimation.BindPose.Count];
             this.skinTransforms = new Matrix[this.Animation.InternalAnimation.BindPose.Count];
