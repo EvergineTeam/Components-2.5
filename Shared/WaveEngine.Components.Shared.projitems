@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="SharedProjectFile_SccProperties">
+    <SharedProjectFile_ProjectGuid>{2dddc631-35e3-44f5-aad1-67e52c65544b}</SharedProjectFile_ProjectGuid>
+    <SharedProjectFile_SccProjectName>SAK</SharedProjectFile_SccProjectName>
+    <SharedProjectFile_SccAuxPath>SAK</SharedProjectFile_SccAuxPath>
+    <SharedProjectFile_SccLocalPath>SAK</SharedProjectFile_SccLocalPath>
+    <SharedProjectFile_SccProvider>SAK</SharedProjectFile_SccProvider>
+  </PropertyGroup>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>be5d7272-060f-4da5-8445-1687167ab12e</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>WaveEngine.Components</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Animation\Animation2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Animation\Animation3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Animation\AnimationBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cameras\CameraPoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cameras\FixedCamera3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cameras\FixedCamera2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cameras\FreeCamera3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cameras\FreeCamera2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cameras\FreeCamera2DBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cameras\FreeCamera3DBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cameras\ViewCamera3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cameras\ViewCamera3DBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Catalog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameActions\GameAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameActions\PlayVideoGameAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameActions\PlayMusicGameAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameActions\TapGameAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameActions\ActionGameAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameActions\GameActionFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameActions\BasicGameAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameActions\WaitCountGameAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameActions\GameActionNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameActions\GameActionSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameActions\IGameActionSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameActions\ActiveWaitConditionGameAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameActions\WaitGameAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameActions\PlaySoundGameAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameActions\SingleAnimationGameAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gestures\GestureEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gestures\GestureSample.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gestures\GestureType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gestures\SupportedGesture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gestures\TouchGestures.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics2D\Material2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics2D\ParticleSystemRenderer2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics2D\QuadRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics2D\Sprite.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics2D\SpriteAtlas.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics2D\SpriteAtlasRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics2D\SpriteRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\Billboard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\BillboardRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\InternalSkinnedModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\InternalStaticModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\MaterialsMap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\ModelRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\ParticleSystemRenderer3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\SkinnedModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\SkinnedModelRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\Skybox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\Spinner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Particles\Particle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Particles\ParticleSystem2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Particles\ParticleSystem3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\Capsule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\Cone.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\Cube.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\Cylinder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\Geometric.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\Plane.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\Pyramid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\Sphere.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\Teapot.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\Torus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\ChequeredAppearTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\ColorFadeTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\CombTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\CoverTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\CrossFadeTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\CurtainsTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\DefaultTransitions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\DoorwayTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\FallingLinesTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\FanTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\PushTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\RotateTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\ScaleTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\ShrinkAndSpinTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\SpinningSquaresTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\UncoverTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transitions\ZoomTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Button\Button.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Button\ButtonBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CheckBox\CheckBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CheckBox\CheckBoxBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Common\BorderRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Common\FocusBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Common\Orientation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Grid\ColumnDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Grid\Grid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Grid\GridControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Grid\GridLength.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Grid\GridRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Grid\GridUnitType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Grid\RowDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\ImageAtlas.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\ImageAtlasRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Image\Image.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Image\ImageControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Image\ImageControlRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Image\Stretch.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Panel\PanelControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Panel\PanelControlRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\ProgressBar\ProgressBar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\ProgressBar\ProgressBarBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\RadioButton\RadioButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\RadioButton\RadioButtonBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Slider\ChangedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Slider\Slider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Slider\SliderBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Stack\StackPanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Stack\StackPanelControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Stack\StackPanelRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\TextBlock\LineInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\TextBlock\TextAlignment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\TextBlock\TextBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\TextBlock\TextControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\TextBlock\TextControlRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\TextBox\TextBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\TextBox\TextBoxBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\ToggleSwitch\ToggleSwitch.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\ToggleSwitch\ToggleSwitchBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\UIBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Wrap\WrapPanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Wrap\WrapPanelControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Wrap\WrapPanelRenderer.cs" />
+  </ItemGroup>
+</Project>

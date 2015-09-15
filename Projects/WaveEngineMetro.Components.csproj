@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0BEE41E4-EDC2-485F-92EB-E23D267CDE66}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WaveEngine.Components</RootNamespace>
+    <AssemblyName>WaveEngine.Components</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
+    <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
+    <TargetFrameworkVersion />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Metro\AnyCPU\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;METRO</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Metro\AnyCPU\Debug\WaveEngine.Components.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Metro\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;METRO</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Metro\Release\WaveEngine.Components.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfoExt.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="WaveEngineKeyMetro.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\WaveEngine.Common\Projects\WaveEngineMetro.Common.csproj">
+      <Project>{9f0c77c4-45a5-4a46-983c-ed527c433ac5}</Project>
+      <Name>WaveEngineMetro.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WaveEngine.Framework\Projects\WaveEngineMetro.Framework.csproj">
+      <Project>{1cf795ba-e559-46ac-8a63-b29272210673}</Project>
+      <Name>WaveEngineMetro.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WaveEngine.Materials\Projects\WaveEngineMetro.Materials.csproj">
+      <Project>{9c490067-5785-41e3-b911-c3a10aad4410}</Project>
+      <Name>WaveEngineMetro.Materials</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>WaveEngineKeyMetro.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <Import Project="..\Shared\WaveEngine.Components.Shared.projitems" Label="Shared" Condition="Exists('..\Shared\WaveEngine.Components.Shared.projitems')" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v12.0\8.1\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <Import Project="..\..\..\Resources\PostBuildTargets\Metro.targets" />
+</Project>
