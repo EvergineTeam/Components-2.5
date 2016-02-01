@@ -102,6 +102,7 @@ namespace WaveEngine.Components.Graphics2D
         /// <value>
         ///     The texture path.
         /// </value>
+        [DataMember]
         [RenderPropertyAsAsset(AssetType.Texture)]
         public string TexturePath
         {

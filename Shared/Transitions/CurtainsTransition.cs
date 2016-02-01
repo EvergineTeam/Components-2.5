@@ -96,13 +96,13 @@ namespace WaveEngine.Components.Transitions
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
             Vector2 center = new Vector2(this.sourceRenderTarget.Width / 2, this.sourceRenderTarget.Height / 2);
 
-            this.spriteBatch.DrawVM(this.targetRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
+            this.spriteBatch.Draw(this.targetRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
 
             int wMiddle = (int)(this.sourceRenderTarget.Width / 2f);
             float inverse = 1 - this.Lerp;
             int w = (int)(wMiddle * inverse * inverse);
 
-            this.spriteBatch.DrawVM(
+            this.spriteBatch.Draw(
                 this.sourceRenderTarget,
                 new Rectangle(0, 0, w, this.sourceRenderTarget.Height),
                 new Rectangle(0, 0, wMiddle, this.sourceRenderTarget.Height),
@@ -112,7 +112,7 @@ namespace WaveEngine.Components.Transitions
                 SpriteEffects.None,
                 0);
 
-            this.spriteBatch.DrawVM(
+            this.spriteBatch.Draw(
                 this.sourceRenderTarget,
                 new Rectangle(this.sourceRenderTarget.Width - w, 0, w, this.sourceRenderTarget.Height),
                 new Rectangle(wMiddle, 0, wMiddle, this.sourceRenderTarget.Height),

@@ -90,7 +90,7 @@ namespace WaveEngine.Components.Transitions
 
             float rotation = MathHelper.PiOver2 * this.Lerp;
 
-            this.spriteBatch.DrawVM(this.sourceRenderTarget,
+            this.spriteBatch.Draw(this.sourceRenderTarget,
                                     Vector2.Zero,
                                     null,
                                     Color.White, 
@@ -102,7 +102,7 @@ namespace WaveEngine.Components.Transitions
 
             rotation -= MathHelper.PiOver2;
 
-            this.spriteBatch.DrawVM(this.targetRenderTarget,
+            this.spriteBatch.Draw(this.targetRenderTarget,
                                     Vector2.Zero,
                                     null,
                                     Color.White,

@@ -486,7 +486,7 @@ namespace WaveEngine.Components.Animation
         /// </summary>
         private void RefreshAnimationAsset()
         {
-            if (this.internalAnimation != null && string.IsNullOrEmpty(this.internalAnimation.AssetPath))
+            if (this.internalAnimation != null && !string.IsNullOrEmpty(this.internalAnimation.AssetPath))
             {
                 this.Assets.UnloadAsset(this.internalAnimation.AssetPath);
                 this.internalAnimation = null;

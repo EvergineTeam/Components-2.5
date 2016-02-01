@@ -121,7 +121,7 @@ namespace WaveEngine.Components.UI
                 float opacity = this.RenderManager.DebugLines ? DebugAlpha : this.Transform2D.GlobalOpacity;
                 Color color = this.Image.TintColor * opacity;
 
-                this.layer.SpriteBatch.DrawVM(
+                this.layer.SpriteBatch.Draw(
                     this.Image.SpriteSheet.Texture,
                     this.position,
                     this.Image.SourceRectangle,
@@ -156,10 +156,10 @@ namespace WaveEngine.Components.UI
             base.DrawDebugLines();
 
             // Rectangle
-            RenderManager.LineBatch2D.DrawRectangleVM(this.Transform2D.Rectangle, Color.Blue, this.Transform2D.DrawOrder);
+            RenderManager.LineBatch2D.DrawRectangle(this.Transform2D.Rectangle, Color.Blue, this.Transform2D.DrawOrder);
 
             // Origin
-            RenderManager.LineBatch2D.DrawPointVM(this.Transform2D.Rectangle.Location + this.Transform2D.Origin, 10f, Color.Red, this.Transform2D.DrawOrder);
+            RenderManager.LineBatch2D.DrawPoint(this.Transform2D.Rectangle.Location + this.Transform2D.Origin, 10f, Color.Red, this.Transform2D.DrawOrder);
         }
         #endregion
     }

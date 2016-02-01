@@ -121,7 +121,7 @@ namespace WaveEngine.Components.Transitions
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
 
-            this.spriteBatch.DrawVM(this.targetRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
+            this.spriteBatch.Draw(this.targetRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
 
             int width = this.sourceRenderTarget.Width;
             int height = this.sourceRenderTarget.Height;
@@ -135,7 +135,7 @@ namespace WaveEngine.Components.Transitions
 
                 pos.Y += height * (float)Math.Pow(this.Lerp, random.NextDouble() * 10);
 
-                this.spriteBatch.DrawVM(this.sourceRenderTarget, pos, rect, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+                this.spriteBatch.Draw(this.sourceRenderTarget, pos, rect, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
             }
 
             this.spriteBatch.Render();

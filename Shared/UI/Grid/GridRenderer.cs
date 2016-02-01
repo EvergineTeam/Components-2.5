@@ -123,10 +123,10 @@ namespace WaveEngine.Components.UI
             base.DrawDebugLines();
 
             // Rectangle
-            RenderManager.LineBatch2D.DrawRectangleVM(this.Transform2D.Rectangle, Color.Orange, this.Transform2D.DrawOrder);
+            RenderManager.LineBatch2D.DrawRectangle(this.Transform2D.Rectangle, Color.Orange, this.Transform2D.DrawOrder);
 
             // Origin
-            RenderManager.LineBatch2D.DrawPointVM(this.Transform2D.Rectangle.Location + this.Transform2D.Origin, 10f, Color.Red, this.Transform2D.DrawOrder);
+            RenderManager.LineBatch2D.DrawPoint(this.Transform2D.Rectangle.Location + this.Transform2D.Origin, 10f, Color.Red, this.Transform2D.DrawOrder);
 
             // Rows and Columns
             float totalRow = 0;
@@ -138,7 +138,7 @@ namespace WaveEngine.Components.UI
                 Vector2 start = new Vector2(this.Transform2D.Rectangle.X, currentY + totalRow);
                 Vector2 end = new Vector2(this.Transform2D.Rectangle.X + this.Transform2D.Rectangle.Width, currentY + totalRow);
 
-                RenderManager.LineBatch2D.DrawLineVM(start, end, Color.Green, this.Transform2D.DrawOrder);
+                RenderManager.LineBatch2D.DrawLine(start, end, Color.Green, this.Transform2D.DrawOrder);
 
                 totalRow += row.ActualHeight;
             }
@@ -152,7 +152,7 @@ namespace WaveEngine.Components.UI
                 Vector2 start = new Vector2(currentX + totalColumn, this.Transform2D.Rectangle.Y);
                 Vector2 end = new Vector2(currentX + totalColumn, this.Transform2D.Rectangle.Y + this.Transform2D.Rectangle.Height);
 
-                RenderManager.LineBatch2D.DrawLineVM(start, end, Color.Green, this.Transform2D.DrawOrder);
+                RenderManager.LineBatch2D.DrawLine(start, end, Color.Green, this.Transform2D.DrawOrder);
 
                 totalColumn += column.ActualWidth;
             }

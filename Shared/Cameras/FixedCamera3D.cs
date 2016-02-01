@@ -38,12 +38,12 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().FieldOfView;
+                return this.entity.FindComponent<Camera3D>(false).FieldOfView;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().FieldOfView = value;
+                this.entity.FindComponent<Camera3D>(false).FieldOfView = value;
             }
         }
 
@@ -57,12 +57,12 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().AspectRatio;
+                return this.entity.FindComponent<Camera3D>(false).AspectRatio;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().AspectRatio = value;
+                this.entity.FindComponent<Camera3D>(false).AspectRatio = value;
             }
         }
 
@@ -76,12 +76,12 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().FarPlane;
+                return this.entity.FindComponent<Camera3D>(false).FarPlane;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().FarPlane = value;
+                this.entity.FindComponent<Camera3D>(false).FarPlane = value;
             }
         }
 
@@ -95,12 +95,12 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().NearPlane;
+                return this.entity.FindComponent<Camera3D>(false).NearPlane;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().NearPlane = value;
+                this.entity.FindComponent<Camera3D>(false).NearPlane = value;
             }
         }
 
@@ -114,12 +114,12 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().RenderTarget;
+                return this.entity.FindComponent<Camera3D>(false).RenderTarget;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().RenderTarget = value;
+                this.entity.FindComponent<Camera3D>(false).RenderTarget = value;
             }
         }
 
@@ -134,12 +134,12 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().ClearFlags;
+                return this.entity.FindComponent<Camera3D>(false).ClearFlags;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().ClearFlags = value;
+                this.entity.FindComponent<Camera3D>(false).ClearFlags = value;
             }
         }
 
@@ -153,12 +153,12 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().BackgroundColor;
+                return this.entity.FindComponent<Camera3D>(false).BackgroundColor;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().BackgroundColor = value;
+                this.entity.FindComponent<Camera3D>(false).BackgroundColor = value;
             }
         }
 
@@ -172,12 +172,12 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().IsActive;
+                return this.entity.FindComponent<Camera3D>(false).IsActive;
             }
 
             set
             {
-                this.entity.FindComponent<Camera3D>().IsActive = value;
+                this.entity.FindComponent<Camera3D>(false).IsActive = value;
             }
         }
 
@@ -191,7 +191,7 @@ namespace WaveEngine.Components.Cameras
         {
             get
             {
-                return this.entity.FindComponent<Camera3D>().LayerMask;
+                return this.entity.FindComponent<Camera3D>(false).LayerMask;
             }
         }
         #endregion

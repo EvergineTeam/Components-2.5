@@ -35,13 +35,7 @@ namespace WaveEngine.Components.Cameras
         /// Max pitch value of the camera
         /// </summary>
         private const float MaxPitch = MathHelper.PiOver2 * 0.95f;
-
-        /// <summary>
-        /// The camera to move.
-        /// </summary>
-        [RequiredComponent]
-        public Camera3D Camera = null;
-
+        
         /// <summary>
         /// The transform.
         /// </summary>
@@ -124,11 +118,6 @@ namespace WaveEngine.Components.Cameras
         private bool moveWithTouchPanel;
 
         /// <summary>
-        /// The position.
-        /// </summary>
-        private Vector3 position;
-
-        /// <summary>
         ///     Mouse speed movement
         /// </summary>
         private float rotationSpeed = .004f;
@@ -142,12 +131,12 @@ namespace WaveEngine.Components.Cameras
         ///     Speed of the movement
         /// </summary>
         private float speed = 20f;
-        
+
         /// <summary>
         /// The time difference.
         /// </summary>
         private float timeDifference;
-        
+
         /// <summary>
         /// The x difference.
         /// </summary>
@@ -247,7 +236,6 @@ namespace WaveEngine.Components.Cameras
             this.xDifference = 0f;
             this.yDifference = 0f;
             this.isDragging = false;
-            this.position = this.Camera.Position;            
         }
 
         /// <summary>
@@ -292,7 +280,7 @@ namespace WaveEngine.Components.Cameras
                 this.moveLeft = this.keyboardState.A == ButtonState.Pressed;
                 this.moveRight = this.keyboardState.D == ButtonState.Pressed;
                 this.UpdateCameraPosition(amount);
-                
+
                 this.moveWithTouchPanel = false;
             }
 
@@ -308,14 +296,17 @@ namespace WaveEngine.Components.Cameras
                     this.currentMouseState = this.input.MouseState;
                 }
 
+                // If there's a touch or right mouse button is pressed...
                 if ((this.isTouchPanelConnected && this.currentTouchPanelState.Count == 1)
                     || (this.isMouseConnected && this.currentMouseState.RightButton == ButtonState.Pressed))
                 {
+                    // If there's a touch, capture its touch properties
                     if (this.isTouchPanelConnected && this.currentTouchPanelState.Count == 1)
                     {
                         this.currentTouchLocation = this.currentTouchPanelState.First();
                     }
 
+                    // If current touch is pressed or moved
                     if ((this.isTouchPanelConnected
                          && (this.currentTouchLocation.State == TouchLocationState.Pressed
                              || this.currentTouchLocation.State == TouchLocationState.Moved))
@@ -323,6 +314,7 @@ namespace WaveEngine.Components.Cameras
                     {
                         if (this.isDragging == false)
                         {
+                            // Set drag flag to true
                             this.isDragging = true;
                         }
                         else
@@ -335,16 +327,18 @@ namespace WaveEngine.Components.Cameras
                                 this.yDifference = this.currentTouchLocation.Position.Y - this.lastTouchLocation.Position.Y;
                             }
 
-                            if (this.isMouseConnected && this.input.TouchPanelState.Count == 0)
+                            if (this.isMouseConnected
+                                && (this.input.TouchPanelState.Count == 0
+                                    || (this.currentTouchLocation.Position.X == this.currentMouseState.Position.X && this.currentTouchLocation.Position.Y == this.currentMouseState.Position.Y)))
                             {
                                 this.xDifference = this.currentMouseState.X - this.lastMouseState.X;
                                 this.yDifference = this.currentMouseState.Y - this.lastMouseState.Y;
                             }
 
                             // Calculated yaw and pitch
-                            float yaw   = -this.xDifference * this.rotationSpeed;
+                            float yaw = -this.xDifference * this.rotationSpeed;
                             float pitch = -this.yDifference * this.rotationSpeed;
-                            
+
                             this.UpdateOrientation(yaw, pitch);
                         }
                     }
@@ -375,7 +369,7 @@ namespace WaveEngine.Components.Cameras
                 this.moveLeft = leftStick.X < -threshold;
 
                 this.UpdateCameraPosition(amount);
-                
+
                 /////////////////////////////////////////////////
                 ////// LookAT
                 /////////////////////////////////////////////////
@@ -397,23 +391,24 @@ namespace WaveEngine.Components.Cameras
         /// <param name="amount">The amount of movement</param>
         private void UpdateCameraPosition(float amount)
         {
+            Vector3 displacement = Vector3.Zero;
             if (this.moveForward)
             {
                 Vector3 forward = this.Transform.WorldTransform.Forward;
 
                 // Manual inline: position += speed * forward;
-                this.position.X = this.position.X + (amount * this.speed * forward.X);
-                this.position.Y = this.position.Y + (amount * this.speed * forward.Y);
-                this.position.Z = this.position.Z + (amount * this.speed * forward.Z);
+                displacement.X = displacement.X + (amount * this.speed * forward.X);
+                displacement.Y = displacement.Y + (amount * this.speed * forward.Y);
+                displacement.Z = displacement.Z + (amount * this.speed * forward.Z);
             }
             else if (this.moveBack)
             {
                 Vector3 backward = this.Transform.WorldTransform.Backward;
 
                 // Manual inline: position -= speed * forward;
-                this.position.X = this.position.X + (amount * this.speed * backward.X);
-                this.position.Y = this.position.Y + (amount * this.speed * backward.Y);
-                this.position.Z = this.position.Z + (amount * this.speed * backward.Z);
+                displacement.X = displacement.X + (amount * this.speed * backward.X);
+                displacement.Y = displacement.Y + (amount * this.speed * backward.Y);
+                displacement.Z = displacement.Z + (amount * this.speed * backward.Z);
             }
 
             if (this.moveLeft)
@@ -421,22 +416,22 @@ namespace WaveEngine.Components.Cameras
                 Vector3 left = this.Transform.WorldTransform.Left;
 
                 // Manual inline: position -= speed * right;
-                this.position.X = this.position.X + (amount * this.speed * left.X);
-                this.position.Y = this.position.Y + (amount * this.speed * left.Y);
-                this.position.Z = this.position.Z + (amount * this.speed * left.Z);
+                displacement.X = displacement.X + (amount * this.speed * left.X);
+                displacement.Y = displacement.Y + (amount * this.speed * left.Y);
+                displacement.Z = displacement.Z + (amount * this.speed * left.Z);
             }
             else if (this.moveRight)
             {
                 Vector3 right = this.Transform.WorldTransform.Right;
 
                 // Manual inline: position += speed * right;
-                this.position.X = this.position.X + (amount * this.speed * right.X);
-                this.position.Y = this.position.Y + (amount * this.speed * right.Y);
-                this.position.Z = this.position.Z + (amount * this.speed * right.Z);
+                displacement.X = displacement.X + (amount * this.speed * right.X);
+                displacement.Y = displacement.Y + (amount * this.speed * right.Y);
+                displacement.Z = displacement.Z + (amount * this.speed * right.Z);
             }
 
             // Manual inline: camera.Position = position;
-            this.Camera.Transform.Position = this.position;
+            this.Transform.Position += displacement;
         }
 
         /// <summary>

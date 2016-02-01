@@ -117,7 +117,7 @@ namespace WaveEngine.Components.Transitions
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
             Vector2 center = new Vector2(this.sourceRenderTarget.Width / 2, this.sourceRenderTarget.Height / 2);
 
-            this.spriteBatch.DrawVM(this.targetRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
+            this.spriteBatch.Draw(this.targetRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
 
             System.Random random = new System.Random(23);
 
@@ -142,7 +142,7 @@ namespace WaveEngine.Components.Transitions
                     pos.X += (float)(random.NextDouble() - 0.5) * this.Lerp * (this.targetRenderTarget.Width / 2);
                     pos.Y += (float)(random.NextDouble() - 0.5) * this.Lerp * (this.targetRenderTarget.Height / 2);
 
-                    this.spriteBatch.DrawVM(this.sourceRenderTarget, pos, rect, Color.White * inverse, rotation, origin, scale, 0, 0);
+                    this.spriteBatch.Draw(this.sourceRenderTarget, pos, rect, Color.White * inverse, rotation, origin, scale, 0, 0);
                 }
             }
 

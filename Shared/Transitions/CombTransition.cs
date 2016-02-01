@@ -201,18 +201,18 @@ namespace WaveEngine.Components.Transitions
                     if ((i % 2) == 0)
                     {
                         destination.X = (int)this.position1.X;
-                        this.spriteBatch.DrawVM(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+                        this.spriteBatch.Draw(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
 
                         destination.X = (int)this.position1.X + (int)this.initialPosition.X;
-                        this.spriteBatch.DrawVM(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                        this.spriteBatch.Draw(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                     }
                     else
                     {
                         destination.X = (int)this.position2.X;
-                        this.spriteBatch.DrawVM(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+                        this.spriteBatch.Draw(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
 
                         destination.X = (int)this.position2.X - (int)this.initialPosition.X;
-                        this.spriteBatch.DrawVM(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                        this.spriteBatch.Draw(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                     }
                 }
                 else
@@ -224,18 +224,18 @@ namespace WaveEngine.Components.Transitions
                     if ((i % 2) == 0)
                     {
                         destination.Y = (int)this.position1.Y;
-                        this.spriteBatch.DrawVM(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+                        this.spriteBatch.Draw(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
 
                         destination.Y = (int)this.position1.Y + (int)this.initialPosition.Y;
-                        this.spriteBatch.DrawVM(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                        this.spriteBatch.Draw(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                     }
                     else
                     {
                         destination.Y = (int)this.position2.Y;
-                        this.spriteBatch.DrawVM(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+                        this.spriteBatch.Draw(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
 
                         destination.Y = (int)this.position2.Y - (int)this.initialPosition.Y;
-                        this.spriteBatch.DrawVM(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                        this.spriteBatch.Draw(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                     }
                 }
             }

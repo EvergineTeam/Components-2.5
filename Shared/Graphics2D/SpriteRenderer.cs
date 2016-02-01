@@ -56,7 +56,7 @@ namespace WaveEngine.Components.Graphics2D
         /// </summary>
         public SpriteRenderer()
             : this(DefaultLayers.Alpha)
-        { 
+        {
         }
 
         /// <summary>
@@ -115,11 +115,21 @@ namespace WaveEngine.Components.Graphics2D
                 Color color = this.Sprite.TintColor * opacity;
 
                 Matrix spriteMatrix = this.Transform2D.WorldTransform;
+
+                ////if ((this.Transform2D.TranformMode == Framework.Graphics.Transform2D.TransformMode.Screen) && (this.RenderManager.CurrentDrawingCamera2D != null))
+                ////{
+                ////    spriteMatrix = Matrix.Multiply(this.Transform2D.WorldTransform, this.RenderManager.CurrentDrawingCamera2D.ViewProjectionInverse);
+                ////}
+                ////else
+                ////{
+                ////    spriteMatrix = this.Transform2D.WorldTransform;
+                ////}
+
                 Vector2 origin = this.Transform2D.Origin;
 
                 if (this.Sprite.Material == null)
                 {
-                    this.layer.SpriteBatch.DrawVM(
+                    this.layer.SpriteBatch.Draw(
                         this.Sprite.Texture,
                         this.Sprite.SourceRectangle,
                         ref color,
@@ -132,7 +142,7 @@ namespace WaveEngine.Components.Graphics2D
                 else
                 {
                     var rectangle = this.Transform2D.Rectangle;
-                    this.layer.SpriteBatch.DrawVM(
+                    this.layer.SpriteBatch.Draw(
                         this.Sprite.Material,
                         rectangle,
                         this.Sprite.SourceRectangle,

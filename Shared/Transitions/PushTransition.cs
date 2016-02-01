@@ -164,8 +164,8 @@ namespace WaveEngine.Components.Transitions
             this.position2 += pos - this.position1;
             this.position1 = pos;
 
-            this.spriteBatch.DrawVM(this.sourceRenderTarget, this.position2, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
-            this.spriteBatch.DrawVM(this.targetRenderTarget, this.position1, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            this.spriteBatch.Draw(this.sourceRenderTarget, this.position2, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
+            this.spriteBatch.Draw(this.targetRenderTarget, this.position1, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
             this.spriteBatch.Render();
 
             this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.sourceRenderTarget);

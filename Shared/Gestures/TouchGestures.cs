@@ -16,6 +16,7 @@ using WaveEngine.Common.Input;
 using WaveEngine.Common.Math;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Graphics;
+using WaveEngine.Framework.Managers;
 using WaveEngine.Framework.Physics2D;
 using WaveEngine.Framework.Services;
 using WaveEngine.Framework.UI;
@@ -292,8 +293,9 @@ namespace WaveEngine.Components.Gestures
         /// <summary>
         /// Initializes a new instance of the <see cref="TouchGestures"/> class.
         /// </summary>
-        public TouchGestures() : this(true)
-        {            
+        public TouchGestures()
+            : this(true)
+        {
         }
 
         /// <summary>
@@ -343,6 +345,13 @@ namespace WaveEngine.Components.Gestures
 
             if (!this.ProjectCamera)
             {
+                var vM = this.RenderManager.Scene.VirtualScreenManager;
+
+                if (vM != null)
+                {
+                    vM.ToVirtualPosition(ref point);
+                }
+
                 return this.Collider.Contain(point);
             }
             else
@@ -351,7 +360,14 @@ namespace WaveEngine.Components.Gestures
 
                 foreach (Camera2D camera in this.RenderManager.Camera2DList)
                 {
-                    camera.CalculateRay(ref point, out ray);
+                    var vM = camera.UsedVirtualScreen;
+                    var projectedPoint = point;
+                    ////if (vM != null)
+                    ////{
+                    ////    vM.ToVirtualPosition(ref projectedPoint);
+                    ////}
+
+                    camera.CalculateRay(ref projectedPoint, out ray);
 
                     if (this.Collider.Intersects(ref ray))
                     {
@@ -702,7 +718,7 @@ namespace WaveEngine.Components.Gestures
                         // Calcula el delta rotation
                         if (this.IsGestureSupported(SupportedGesture.Rotation))
                         {
-                            float angle = Vector2.ComputeAngle(ref currentVector, ref previousVector);
+                            float angle = Vector2.Angle(ref currentVector, ref previousVector);
 
                             if (angle != 0 && !float.IsNaN(angle) && !float.IsInfinity(angle))
                             {

@@ -90,7 +90,7 @@ namespace WaveEngine.Components.Transitions
             Vector2 center = new Vector2(this.sourceRenderTarget.Width / 2, this.sourceRenderTarget.Height / 2);
             float inverse = 1 - this.Lerp;
 
-            this.spriteBatch.DrawVM(this.targetRenderTarget,
+            this.spriteBatch.Draw(this.targetRenderTarget,
                                     center,
                                     null, 
                                     Color.White * this.Lerp, 
@@ -105,7 +105,7 @@ namespace WaveEngine.Components.Transitions
             int middle = width / 2;
             Rectangle rect = new Rectangle(0, 0, middle, height);
 
-            this.spriteBatch.DrawVM(this.sourceRenderTarget,
+            this.spriteBatch.Draw(this.sourceRenderTarget,
                                     new Vector2(-middle * this.Lerp, rect.Y),
                                     rect,
                                     Color.White * inverse,
@@ -116,7 +116,7 @@ namespace WaveEngine.Components.Transitions
                                     0f);
 
             rect.X = middle;
-            this.spriteBatch.DrawVM(this.sourceRenderTarget,
+            this.spriteBatch.Draw(this.sourceRenderTarget,
                                     new Vector2(middle + (middle * this.Lerp), 0),
                                     rect,
                                     Color.White * inverse,

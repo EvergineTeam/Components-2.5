@@ -55,6 +55,18 @@ namespace WaveEngine.Components.GameActions
         }
 
         /// <summary>
+        /// Continue with another an action function
+        /// </summary>
+        /// <param name="parent">The parent action.</param>        
+        /// <param name="action">The next action.</param>
+        /// <returns>An action that continue with the next action when the parent is completed</returns>
+        /// <exception cref="System.NotSupportedException">It is not possible to continue with, aborted or finised task. Defer the run command to a posterior stage.</exception>
+        public static IGameAction ContinueWithAction(this IGameAction parent, Action action)
+        {
+            return new GameActionNode(parent, CreateGameActionFromAction(parent.Scene, action));
+        }
+
+        /// <summary>
         /// Continue with another action.
         /// </summary>
         /// <param name="parent">The parent action.</param>        
@@ -62,6 +74,18 @@ namespace WaveEngine.Components.GameActions
         /// <returns>An action that continue with the next action when the parent is completed</returns>
         /// <exception cref="System.NotSupportedException">It is not possible to continue with, aborted or finised task. Defer the run command to a posterior stage.</exception>
         public static IGameActionSet ContinueWith(this IGameAction parent, params IGameAction[] childTasks)
+        {
+            return new GameActionSet(parent, childTasks);
+        }
+
+        /// <summary>
+        /// Continue with another action.
+        /// </summary>
+        /// <param name="parent">The parent action.</param>        
+        /// <param name="childTasks">The chhild tasks.</param>
+        /// <returns>An action that continue with the next action when the parent is completed</returns>
+        /// <exception cref="System.NotSupportedException">It is not possible to continue with, aborted or finised task. Defer the run command to a posterior stage.</exception>
+        public static IGameActionSet ContinueWith(this IGameAction parent, IEnumerable<IGameAction> childTasks)
         {
             return new GameActionSet(parent, childTasks);
         }
@@ -108,6 +132,17 @@ namespace WaveEngine.Components.GameActions
         public static IGameAction CreateEmptyGameAction(this Scene scene)
         {
             return new ActionGameAction(() => { }, scene);
+        }
+
+        /// <summary>
+        /// Creates an empty game action.
+        /// </summary>
+        /// <param name="scene">The scene.</param>
+        /// <param name="action"> simple code to be executed</param>
+        /// <returns>The action</returns>
+        public static IGameAction CreateGameActionFromAction(this Scene scene, Action action)
+        {
+            return new ActionGameAction(action, scene);
         }
 
         /// <summary>
@@ -221,6 +256,18 @@ namespace WaveEngine.Components.GameActions
         public static IGameActionSet CreateParallelGameActions(this Scene scene, params IGameAction[] actions)
         {
             return new GameActionSet(actions, scene);
+        }
+
+        /// <summary>
+        /// Continue with another action.
+        /// </summary>
+        /// <param name="parent">The parent action.</param>        
+        /// <param name="childTasks">The chhild tasks.</param>
+        /// <returns>An action that continue with the next action when the parent is completed</returns>
+        /// <exception cref="System.NotSupportedException">It is not possible to continue with, aborted or finised task. Defer the run command to a posterior stage.</exception>
+        public static IGameActionSet CreateParallelGameActions(this IGameAction parent, IEnumerable<IGameAction> childTasks)
+        {
+            return new GameActionSet(parent, childTasks);
         }
 
         /// <summary>

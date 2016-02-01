@@ -120,6 +120,8 @@ namespace WaveEngine.Components.Cameras
             this.theta = 0;
             this.phi = 0;
             this.initialPosition = this.Camera.Position - this.initialLookAt;
+
+            this.UpdateCameraPosition();
         }
 
         /// <summary>

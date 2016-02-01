@@ -121,7 +121,7 @@ namespace WaveEngine.Components.Transitions
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
 
-            this.spriteBatch.DrawVM(this.targetRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
+            this.spriteBatch.Draw(this.targetRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
 
             int width = this.targetRenderTarget.Width;
             int height = this.targetRenderTarget.Height;
@@ -138,7 +138,7 @@ namespace WaveEngine.Components.Transitions
                             width / this.segments,
                             height / this.segments);
 
-                        this.spriteBatch.DrawVM(this.sourceRenderTarget, rect, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                        this.spriteBatch.Draw(this.sourceRenderTarget, rect, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                     }
                 }
             }

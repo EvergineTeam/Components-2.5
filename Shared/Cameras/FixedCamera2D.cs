@@ -15,6 +15,7 @@ using WaveEngine.Common.Graphics;
 using WaveEngine.Common.Math;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Graphics;
+using WaveEngine.Framework.Managers;
 using WaveEngine.Framework.Services;
 #endregion
 
@@ -192,6 +193,22 @@ namespace WaveEngine.Components.Cameras
             get
             {
                 return this.entity.FindComponent<Camera2D>().LayerMask;
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the custom virtual screen.
+        /// </summary>
+        public VirtualScreenManager CustomVirtualScreen
+        {
+            get
+            {
+                return this.entity.FindComponent<Camera2D>().CustomVirtualScreen;
+            }
+
+            set
+            {
+                this.entity.FindComponent<Camera2D>().CustomVirtualScreen = value;
             }
         }
         #endregion

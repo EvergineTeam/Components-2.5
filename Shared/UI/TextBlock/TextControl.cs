@@ -52,7 +52,7 @@ namespace WaveEngine.Components.UI
         /// Occurs when Width Change.
         /// </summary>
         public event WidthChangedEventHandler OnWidthChanged;
-                        
+
         #region Fields
 
         /// <summary>
@@ -79,6 +79,11 @@ namespace WaveEngine.Components.UI
         /// The text.
         /// </summary>
         private string text;
+
+        /// <summary>
+        /// The foreground color
+        /// </summary>
+        private Color foreground;
 
         /// <summary>
         /// The line width
@@ -178,7 +183,19 @@ namespace WaveEngine.Components.UI
         ///     The color of the fore.
         /// </value>
         [DataMember]
-        public Color Foreground { get; set; }
+        public Color Foreground
+        {
+            get
+            {
+                return this.foreground;
+            }
+
+            set
+            {
+                this.foreground = value;
+                this.UpdateSize();
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether [perssistent asset].
@@ -677,13 +694,13 @@ namespace WaveEngine.Components.UI
                         this.Arrange(this.Owner.Parent.FindComponent<Transform2D>().Rectangle);
                     }
                 }
-                
+
                 // Event
                 if (this.OnWidthChanged != null)
                 {
                     this.OnWidthChanged(this, this.Width);
                 }
-            }           
+            }
         }
 
         /// <summary>

@@ -34,7 +34,12 @@ namespace WaveEngine.Components.Graphics3D
         /// Number of instances of this component created.
         /// </summary>
         private static int instances;
-        
+
+        /// <summary>
+        /// The use material copy
+        /// </summary>
+        private bool useMaterialCopy;
+
         /// <summary>
         /// Default Material
         /// </summary>
@@ -81,6 +86,26 @@ namespace WaveEngine.Components.Graphics3D
             {
                 this.defaultMaterial = value;
                 this.useDefaultMaterial = false;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the component will use an individual copy of the material file, instead of sharing the material instance.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if the material file will be copied otherwise, <c>false</c>.
+        /// </value>
+        [DataMember]
+        public bool UseMaterialCopy
+        {
+            get
+            {
+                return this.useMaterialCopy;
+            }
+
+            set
+            {
+                this.useMaterialCopy = value;
             }
         }
 
@@ -203,6 +228,7 @@ namespace WaveEngine.Components.Graphics3D
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Performs further custom initialization for this instance.
         /// </summary>
@@ -268,7 +294,7 @@ namespace WaveEngine.Components.Graphics3D
                 {
                     foreach (var kv in this.MaterialsPath)
                     {
-                        var materialModel = this.Assets.LoadModel<MaterialModel>(kv.Value);
+                        var materialModel = this.Assets.LoadModel<MaterialModel>(kv.Value, !this.useMaterialCopy);
                         this.Materials[kv.Key] = materialModel.Material;
                     }
                 }
@@ -286,7 +312,7 @@ namespace WaveEngine.Components.Graphics3D
             {
                 if ((this.Assets != null) && !string.IsNullOrEmpty(this.defaultMaterialPath))
                 {
-                    var materialModel = this.Assets.LoadModel<MaterialModel>(this.defaultMaterialPath);
+                    var materialModel = this.Assets.LoadModel<MaterialModel>(this.defaultMaterialPath, !this.useMaterialCopy);
                     this.defaultMaterial = materialModel.Material;
                     this.useDefaultMaterial = false;
                 }

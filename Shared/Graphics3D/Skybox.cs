@@ -311,12 +311,15 @@ namespace WaveEngine.Framework.Graphics
             {
                 if (disposing)
                 {
-                    this.GraphicsDevice.DestroyVertexBuffer(this.cubeMesh.VertexBuffer);
-                    this.GraphicsDevice.DestroyIndexBuffer(this.cubeMesh.IndexBuffer);
-                    
-                    if (!string.IsNullOrEmpty(this.cubemapPath))
+                    if (this.isInitialized)
                     {
-                        this.Assets.UnloadAsset(this.cubemapPath);
+                        this.GraphicsDevice.DestroyVertexBuffer(this.cubeMesh.VertexBuffer);
+                        this.GraphicsDevice.DestroyIndexBuffer(this.cubeMesh.IndexBuffer);
+
+                        if (!string.IsNullOrEmpty(this.cubemapPath))
+                        {
+                            this.Assets.UnloadAsset(this.cubemapPath);
+                        }
                     }
 
                     this.disposed = true;

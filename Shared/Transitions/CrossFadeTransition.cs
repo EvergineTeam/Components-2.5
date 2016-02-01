@@ -86,8 +86,8 @@ namespace WaveEngine.Components.Transitions
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
 
             this.SetRenderState();
-            this.spriteBatch.DrawVM(sourceRenderTarget, new Rectangle(0, 0, sourceRenderTarget.Width, sourceRenderTarget.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
-            this.spriteBatch.DrawVM(targetRenderTarget, new Rectangle(0, 0, sourceRenderTarget.Width, sourceRenderTarget.Height), null, blendColor, 0, Vector2.Zero, SpriteEffects.None, 0);
+            this.spriteBatch.Draw(sourceRenderTarget, new Rectangle(0, 0, sourceRenderTarget.Width, sourceRenderTarget.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+            this.spriteBatch.Draw(targetRenderTarget, new Rectangle(0, 0, sourceRenderTarget.Width, sourceRenderTarget.Height), null, blendColor, 0, Vector2.Zero, SpriteEffects.None, 0);
             this.spriteBatch.Render();
 
             this.graphicsDevice.RenderTargets.DestroyRenderTarget(sourceRenderTarget);

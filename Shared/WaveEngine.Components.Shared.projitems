@@ -143,5 +143,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Wrap\WrapPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Wrap\WrapPanelControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Wrap\WrapPanelRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VR\VRCameraRig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VR\VRProvider.cs" />
   </ItemGroup>
 </Project>

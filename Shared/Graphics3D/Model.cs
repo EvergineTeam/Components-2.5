@@ -72,12 +72,8 @@ namespace WaveEngine.Components.Graphics3D
             }
 
             set
-            {
-                if (value != null)
-                {
-                    this.ModelType = ModelType.Custom;
-                }
-
+            {               
+                this.ModelType = ModelType.Custom;             
                 base.ModelPath = value;
             }
         }
@@ -95,9 +91,14 @@ namespace WaveEngine.Components.Graphics3D
             }
 
             set
-            {
+            {                
                 this.modelType = value;
                 this.isPrimitive = true;
+
+                if (this.modelType != ModelType.Custom)
+                {
+                    base.ModelPath = null;
+                }
 
                 if (this.isInitialized)
                 {

@@ -115,7 +115,7 @@ namespace WaveEngine.Components.Transitions
 
             this.SetRenderState();
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
-            this.spriteBatch.DrawVM(StaticResources.WhitePixel, new Rectangle(0, 0, this.platform.ScreenWidth, this.platform.ScreenHeight), null, blendColor, 0, Vector2.Zero, SpriteEffects.None, 0);
+            this.spriteBatch.Draw(StaticResources.WhitePixel, new Rectangle(0, 0, this.platform.ScreenWidth, this.platform.ScreenHeight), null, blendColor, 0, Vector2.Zero, SpriteEffects.None, 0);
             this.spriteBatch.Render();
         }
 

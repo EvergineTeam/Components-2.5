@@ -162,7 +162,7 @@ namespace WaveEngine.Components.Graphics2D
         }
 
         /// <summary>
-        ///     Gets the texture.
+        ///     Gets or sets the texture.
         ///     Such is the in-memory representation for the given asset.
         ///     See <see cref="Texture"/> for more information.
         /// </summary>
@@ -172,7 +172,20 @@ namespace WaveEngine.Components.Graphics2D
         [DontRenderProperty]
         public Texture Texture
         {
-            get { return this.texture; }
+            get
+            {
+                return this.texture;
+            }
+
+            set
+            {
+                if (this.texture != null)
+                {
+                    this.UnloadTexture();
+                    this.texture = value;
+                    this.UpdateSourceRectangle();
+                }
+            }
         }
 
         /// <summary>

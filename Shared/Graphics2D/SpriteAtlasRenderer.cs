@@ -98,7 +98,7 @@ namespace WaveEngine.Components.Graphics2D
                 Vector2 origin = this.Transform2D.Origin;
 
                 Matrix spriteMatrix = this.Transform2D.WorldTransform;
-                this.layer.SpriteBatch.DrawVM(
+                this.layer.SpriteBatch.Draw(
                     this.Sprite.SpriteSheet.Texture,
                     this.Sprite.SourceRectangle,
                     ref color,

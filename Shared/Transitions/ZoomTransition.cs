@@ -89,7 +89,7 @@ namespace WaveEngine.Components.Transitions
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
             Vector2 center = new Vector2(this.sourceRenderTarget.Width / 2, this.sourceRenderTarget.Height / 2);
 
-            this.spriteBatch.DrawVM(this.sourceRenderTarget,
+            this.spriteBatch.Draw(this.sourceRenderTarget,
                                     center,
                                     null, 
                                     Color.White * (1 - this.Lerp), 
@@ -99,7 +99,7 @@ namespace WaveEngine.Components.Transitions
                                     SpriteEffects.None, 
                                     0.5f);
 
-            this.spriteBatch.DrawVM(this.targetRenderTarget,
+            this.spriteBatch.Draw(this.targetRenderTarget,
                                     center,
                                     null,
                                     Color.White * this.Lerp,

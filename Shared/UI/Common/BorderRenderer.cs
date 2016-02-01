@@ -102,7 +102,7 @@ namespace WaveEngine.Components.UI
         /// </remarks>
         public override void Draw(TimeSpan gameTime)
         {
-            this.layer.LineBatch2D.DrawRectangleVM(this.Transform2D.Rectangle, this.Color, this.Transform2D.DrawOrder);
+            this.layer.LineBatch2D.DrawRectangle(this.Transform2D.Rectangle, this.Color, this.Transform2D.DrawOrder);
         }
         #endregion
 

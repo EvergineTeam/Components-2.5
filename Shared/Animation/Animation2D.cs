@@ -57,7 +57,7 @@ namespace WaveEngine.Components.Animation
         /// <summary>
         ///     The SpriteSheet component
         /// </summary>
-        [RequiredComponent]
+        [RequiredComponent(false)]
         public SpriteAtlas SpriteAtlas;
 
         /// <summary>
