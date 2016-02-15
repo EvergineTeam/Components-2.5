@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitleAttribute("WaveEngine.Components linux")]
 [assembly: AssemblyCompanyAttribute("Wave Engine")]
 [assembly: AssemblyDescriptionAttribute("linux")]
-[assembly: AssemblyCopyrightAttribute("Copyright (c) Wave Engine 2015")]
+[assembly: AssemblyCopyrightAttribute("Copyright (c) Wave Engine 2016")]
 [assembly: GuidAttribute("d4161402-ce18-494c-9f3a-cde368b1f964")]
 [assembly: ComVisibleAttribute(false)]
-[assembly: AssemblyVersionAttribute("2.0.5.*")]
+[assembly: AssemblyVersionAttribute("2.0.6.*")]
 namespace System {
     internal static class AssemblyVersionInformation {
-        internal const string Version = "2.0.5.*";
+        internal const string Version = "2.0.6.*";
     }
 }

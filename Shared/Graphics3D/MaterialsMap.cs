@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // MaterialsMap
 //
-// Copyright © 2015 Wave Engine S.L. All rights reserved.
+// Copyright © 2016 Wave Engine S.L. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -319,7 +319,7 @@ namespace WaveEngine.Components.Graphics3D
             }
             else
             {
-                this.defaultMaterial = new WaveEngine.Materials.StandardMaterial(DefaultLayers.Opaque, StaticResources.DefaultTexture)
+                this.defaultMaterial = new WaveEngine.Materials.StandardMaterial(Color.White, DefaultLayers.Opaque)
                 {
                     LightingEnabled = false
                 };

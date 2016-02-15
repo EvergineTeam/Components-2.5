@@ -137,7 +137,7 @@
     <add key="VBdocman_titlePageText"><![CDATA[]]></add>
     <add key="VBdocman_rootNamespaceText"><![CDATA[]]></add>
     <add key="VBdocman_rootNamespaceCommentStyle"><![CDATA[2]]></add>
-    <add key="VBdocman_pageFooterText"><![CDATA[© 2015 Wave Engine. All Rights Reserved.]]></add>
+    <add key="VBdocman_pageFooterText"><![CDATA[© 2016 Wave Engine. All Rights Reserved.]]></add>
     <add key="VBdocman_outputPath"><![CDATA[$(ProjectDir)VSdoc]]></add>
     <add key="VBdocman_templateFolder"><![CDATA[$(VSdocmanDir)Templates]]></add>
     <add key="VBdocman_externalFilesFolder"><![CDATA[]]></add>
