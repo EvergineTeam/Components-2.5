@@ -108,8 +108,7 @@ namespace WaveEngine.Components.Animation
         /// <summary>
         /// Gets or sets the animation file path
         /// </summary>
-        [DontRenderProperty]
-        [RenderPropertyAsAsset(AssetType.SkinnedModel)]
+        [RenderPropertyAsAsset(AssetType.SkinnedModel, 1)]
         public string AnimationPath
         {
             get

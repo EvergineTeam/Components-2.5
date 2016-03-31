@@ -108,7 +108,7 @@ namespace WaveEngine.Components.Graphics3D
             base.Initialize();
 
             // For static entities create a world cache
-            if (this.Owner.IsStatic)
+            if (this.Owner.IsFinalStatic)
             {
                 this.cachedWorlds = new Matrix[this.Model.MeshCount];
 
@@ -154,7 +154,7 @@ namespace WaveEngine.Components.Graphics3D
                 {
                     Matrix world;
 
-                    if (!this.Owner.IsStatic)
+                    if (!this.Owner.IsFinalStatic)
                     {
                         // Obtain world matrix from scrach
                         InternalStaticModel internalModel = this.Model.InternalModel;
@@ -172,7 +172,7 @@ namespace WaveEngine.Components.Graphics3D
                     currentMesh.ZOrder = zOrder;
 
                     // Draw mesh
-                    this.RenderManager.DrawMesh(currentMesh, currentMaterial, ref world, this.Owner.IsStatic);
+                    this.RenderManager.DrawMesh(currentMesh, currentMaterial, ref world, this.Owner.IsFinalStatic);
                 }
             }
         }

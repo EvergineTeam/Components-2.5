@@ -19,6 +19,7 @@ using WaveEngine.Framework;
 using WaveEngine.Framework.Graphics;
 using System.Reflection;
 using WaveEngine.Common.Attributes;
+using WaveEngine.Common.Helpers;
 #endregion
 
 namespace WaveEngine.Components.Shared.Graphics3D
@@ -83,7 +84,7 @@ namespace WaveEngine.Components.Shared.Graphics3D
             set
             {
                 this.layerType = value;
-                this.layerTypeName = this.layerType.FullName + "," + this.layerType.GetTypeInfo().Assembly.GetName().Name;
+                this.layerTypeName = this.layerType.FullName + "," + ReflectionHelper.GetTypeAssemblyName(this.layerType);
 
                 if (this.RenderManager != null)
                 {

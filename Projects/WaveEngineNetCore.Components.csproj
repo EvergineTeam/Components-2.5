@@ -25,10 +25,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Windows\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WINDOWS</DefineConstants>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Windows\Debug\WaveEngine.Components.XML</DocumentationFile>
+    <DocumentationFile>bin\x86\Debug\WaveEngine.Components.XML</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,19 +36,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Windows\Release\</OutputPath>
-    <DefineConstants>TRACE;WINDOWS</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Windows\Release\WaveEngine.Components.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NuGet|AnyCPU'">
-    <OutputPath>bin\NuGet\</OutputPath>
-    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>bin\Windows\Release\WaveEngine.Components.xml</DocumentationFile>
     <Optimize>true</Optimize>
@@ -58,14 +47,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfoExt.cs">
@@ -76,24 +58,24 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\WaveEngine.Common\Projects\WaveEngine.Common.csproj">
-      <Project>{55B6B4F4-BCE2-4EF7-836F-44F17332F924}</Project>
-      <Name>WaveEngine.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\WaveEngine.Framework\Projects\WaveEngine.Framework.csproj">
-      <Project>{75527125-5AA8-45D0-A801-F674EE689E78}</Project>
-      <Name>WaveEngine.Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\WaveEngine.Materials\Projects\WaveEngine.Materials.csproj">
-      <Project>{97D4CEF4-07B4-4F5E-8C47-4972D45D2456}</Project>
-      <Name>WaveEngine.Materials</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="WaveEngineKeyWindows.snk" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\WaveEngine.Common\Projects\WaveEngineNetCore.Common.csproj">
+      <Project>{55b6b4f4-bce2-4ef7-836f-44f17332f924}</Project>
+      <Name>WaveEngineNetCore.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WaveEngine.Framework\Projects\WaveEngineNetCore.Framework.csproj">
+      <Project>{75527125-5aa8-45d0-a801-f674ee689e78}</Project>
+      <Name>WaveEngineNetCore.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WaveEngine.Materials\Projects\WaveEngineNetCore.Materials.csproj">
+      <Project>{97d4cef4-07b4-4f5e-8c47-4972d45d2456}</Project>
+      <Name>WaveEngineNetCore.Materials</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\Shared\WaveEngine.Components.Shared.projitems" Label="Shared" Condition="Exists('..\Shared\WaveEngine.Components.Shared.projitems')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\..\Resources\CoreFX\WaveEngine.CoreCLR.CSharp.targets" />
   <Import Project="..\..\..\Resources\StyleCop\StyleCop.Targets" />
   <Import Project="..\..\..\Resources\PostBuildTargets\Windows.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -24,9 +24,6 @@ using WaveEngine.Framework.Services;
 using WaveEngine.Materials;
 using WaveRandom = WaveEngine.Framework.Services.Random;
 
-#if WINDOWS_PHONE
-using WaveEngine.Common.Helpers;
-#endif
 #endregion
 
 namespace WaveEngine.Components.Graphics2D

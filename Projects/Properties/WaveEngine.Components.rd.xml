@@ -1,0 +1,13 @@
+<Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
+  <Library Name="WaveEngine.Components">
+    <Namespace Name="WaveEngine.Components.VR" Dynamic="Required All" DataContractSerializer="Required All" />
+    <Namespace Name="WaveEngine.Components.UI" Dynamic="Required All" DataContractSerializer="Required All" />
+    <Namespace Name="WaveEngine.Components.Particles" Dynamic="Required All" DataContractSerializer="Required All" />
+    <Namespace Name="WaveEngine.Components.Graphics3D" Dynamic="Required All" DataContractSerializer="Required All" />
+    <Namespace Name="WaveEngine.Components.Shared.Graphics3D" Dynamic="Required All" DataContractSerializer="Required All" />
+    <Namespace Name="WaveEngine.Components.Graphics2D" Dynamic="Required All" DataContractSerializer="Required All" />
+    <Namespace Name="WaveEngine.Components.Gestures" Dynamic="Required All" DataContractSerializer="Required All" />
+    <Namespace Name="WaveEngine.Components.Cameras" Dynamic="Required All" DataContractSerializer="Required All" />
+    <Namespace Name="WaveEngine.Components.Animation" Dynamic="Required All" DataContractSerializer="Required All" />
+  </Library>
+</Directives>

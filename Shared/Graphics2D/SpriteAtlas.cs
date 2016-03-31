@@ -312,6 +312,7 @@ namespace WaveEngine.Components.Graphics2D
                     if (!this.IsGlobalAsset && this.isInitialized && !string.IsNullOrEmpty(this.spriteSheetPath))
                     {
                         Assets.UnloadAsset(this.SpriteSheetPath);
+                        this.SpriteSheet = null;
                     }
 
                     this.disposed = true;
@@ -382,13 +383,13 @@ namespace WaveEngine.Components.Graphics2D
         /// <exception cref="System.ObjectDisposedException">SpriteAtlas has been disposed.</exception>
         protected void RefreshSourceRectangle()
         {
-            if (this.disposed)
-            {
-                throw new ObjectDisposedException("SpriteAtlas");
-            }
-
             if (this.SpriteSheet != null && this.SpriteSheet.Sprites.Count() > 0)
             {
+                if (this.textureIndex > this.SpriteSheet.Sprites.Length)
+                {
+                    this.TextureIndex = this.SpriteSheet.Sprites.Length - 1;
+                }
+
                 this.SourceRectangle = this.SpriteSheet.Sprites[this.textureIndex].Rectangle;
                 this.Transform2D.Rectangle.Width = this.SourceRectangle.Width;
                 this.Transform2D.Rectangle.Height = this.SourceRectangle.Height;

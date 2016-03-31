@@ -20,10 +20,6 @@ using WaveEngine.Framework;
 using WaveEngine.Framework.Graphics;
 using WaveEngine.Framework.Services;
 using WaveRandom = WaveEngine.Framework.Services.Random;
-
-#if WINDOWS_PHONE
-using WaveEngine.Common.Helpers;
-#endif
 #endregion
 
 namespace WaveEngine.Components.Graphics3D
