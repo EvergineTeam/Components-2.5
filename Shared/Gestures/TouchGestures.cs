@@ -475,6 +475,17 @@ namespace WaveEngine.Components.Gestures
         }
 
         /// <summary>
+        /// Delete dependencies method
+        /// </summary>
+        protected override void DeleteDependencies()
+        {
+            var touchManager = WaveServices.TouchPanel;
+            touchManager.Unsubscribe(this);
+
+            base.DeleteDependencies();
+        }
+
+        /// <summary>
         /// Draws the order property changed.
         /// </summary>
         /// <param name="sender">The sender.</param>

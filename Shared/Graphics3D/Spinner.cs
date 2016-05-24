@@ -143,6 +143,7 @@ namespace WaveEngine.Components.Graphics3D
         /// </summary>
         protected override void DefaultValues()
         {
+            base.DefaultValues();
             this.increase = Vector3.Zero;
         }
         #endregion

@@ -229,6 +229,7 @@ namespace WaveEngine.Components.Graphics2D
         /// </summary>
         protected override void DefaultValues()
         {
+            base.DefaultValues();
             this.isGlobalAsset = false;
             this.TintColor = Color.White;
             this.Origin = Vector2.Center;

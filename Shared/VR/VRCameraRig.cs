@@ -506,7 +506,7 @@ namespace WaveEngine.Components.VR
 
             camera.RenderTarget = rt;
             camera.Viewport = eyeTexture.Viewport;
-
+            ////camera.View = eyePose.View;
             camera.Transform.LocalPosition = this.Monoscopic ? this.CenterEyeAnchorTransform.LocalPosition : eyePose.Position;
             camera.Transform.LocalOrientation = this.Monoscopic ? this.CenterEyeAnchorTransform.LocalOrientation : eyePose.Orientation;
         }

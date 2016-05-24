@@ -60,6 +60,21 @@ namespace WaveEngine.Components.GameActions
             this.singleAnimation = singleAnimation;
             this.dependencyProperty = dependencyProperty;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SingleAnimationGameAction" /> class.
+        /// </summary>
+        /// <param name="parent">The parent task.</param>
+        /// <param name="singleAnimation">The single animation.</param>
+        /// <param name="animation">The AnimationUI component.</param>
+        /// <param name="dependencyProperty">The dependency property to animate.</param>
+        public SingleAnimationGameAction(IGameAction parent, SingleAnimation singleAnimation, AnimationUI animation, DependencyProperty dependencyProperty)
+             : base(parent, "SingleAnimationGameAction" + instances++)
+        {
+            this.animation = animation;
+            this.singleAnimation = singleAnimation;
+            this.dependencyProperty = dependencyProperty;
+        }
         #endregion
 
         #region Private Methods

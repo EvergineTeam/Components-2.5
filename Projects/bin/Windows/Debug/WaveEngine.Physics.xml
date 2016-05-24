@@ -1,0 +1,1847 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WaveEngine.Physics</name>
+    </assembly>
+    <members>
+        <member name="T:WaveEngine.Physics.Collision2DEventArgs">
+            <summary>
+            Collision 2D Event Args
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Collision2DEventArgs.Normal">
+            <summary>
+            Gets or sets Normal Vector
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Collision2DEventArgs.PointA">
+            <summary>
+            Gets or sets First Point Collision. 
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Collision2DEventArgs.PointB">
+            <summary>
+            Gets or sets Second Point Collision. Not used on Circle Collision.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Collision2DEventArgs.Body2DA">
+            <summary>
+            Gets or sets the first PhysicsBody2D of the collision.
+            </summary>
+            <value>
+            The first PhysicsBody2D.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.Collision2DEventArgs.Body2DB">
+            <summary>
+            Gets or sets second PhysicsBody2D of the collision.
+            </summary>
+            <value>
+            The second PhysicsBody2D.
+            </value>
+        </member>
+        <member name="T:WaveEngine.Physics.Collision3DEventArgs">
+            <summary>
+            Collision 3D event arguments
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Collision3DEventArgs.Normal">
+            <summary>
+            Gets or sets a value indicating the collision Normal Vector
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Collision3DEventArgs.Position">
+            <summary>
+            Gets or sets a value indicating the collision Position
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Collision3DEventArgs.Body3DA">
+            <summary>
+            Gets or sets the first PhysicsBody3D of the collision.
+            </summary>
+            <value>
+            The first PhysicsBody3D.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.Collision3DEventArgs.Body3DB">
+            <summary>
+            Gets or sets second PhysicsBody3D of the collision.
+            </summary>
+            <value>
+            The second PhysicsBody3D.
+            </value>
+        </member>
+        <member name="T:WaveEngine.Physics.Collision3DGroup">
+            <summary>
+            Class represents Physic 3D Collision group
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.Collision3DGroup.defaultGroup">
+            <summary>
+            Default group
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Collision3DGroup.DefaulCollisionGroup">
+            <summary>
+            Gets Default Collision Group
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.Collision3DGroup.physicGroup">
+            <summary>
+            Phsyic Collision Group
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Collision3DGroup.PhysicGroup">
+            <summary>
+            Gets physic group propery
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Physics.Collision3DGroup.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Physics.Collision3DGroup" /> class.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Physics.Collision3DGroup.IgnoreCollisionWith(WaveEngine.Physics.Collision3DGroup)">
+            <summary>
+            Ignores collision with group
+            </summary>
+            <param name="ignoreGroup">Ignore group</param>
+        </member>
+        <member name="M:WaveEngine.Physics.Collision3DGroup.DefineCollisionWith(WaveEngine.Physics.Collision3DGroup)">
+            <summary>
+            Defines collision with a group
+            </summary>
+            <param name="collideGroup">Collide group</param>
+        </member>
+        <member name="T:WaveEngine.Physics.JointType2D">
+            <summary>
+            Represent a 2d joint type.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType2D.Revolute">
+            <summary>
+            A revolute joint rains to bodies to share a common point while they
+            are free to rotate about the point. The relative rotation about the shared
+            point is the joint angle. You can limit the relative rotation with
+            a joint limit that specifies a lower and upper angle. You can use a motor
+            to drive the relative rotation about the shared point. A maximum motor torque
+            is provided so that infinite forces are not generated.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType2D.Fixed">
+            <summary>
+            The FixedJoints restricts one angular degree of freedom. Each entity has an axis attached and the constraint 
+            attempts to prevent any relative twisting motion around the axes. 
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType2D.Prismatic">
+            <summary>
+            A prismatic joint. This joint provides one degree of freedom: translation
+            along an axis fixed in body1. Relative rotation is prevented. You can
+            use a joint limit to restrict the range of motion and a joint motor to
+            drive the motion or to model joint friction.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType2D.Line">
+            <summary>
+            A line joint is used to make a point on a body track a
+            specified world point. This a soft constraint with a maximum
+            force. This allows the constraint to stretch and without
+            applying huge forces.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType2D.Angle">
+            <summary>
+            Maintains a fixed angle between two bodies.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType2D.Distance">
+            <summary>
+            A distance joint rains two points on two bodies
+            to remain at a fixed distance from each other. You can view
+            this as a massless, rigid rod.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType2D.Friction">
+            <summary>
+            Friction joint. This is used for top-down friction.
+            It provides 2D translational friction and angular friction.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType2D.Gear">
+            <summary>
+            A gear joint is used to connect two joints together. Either joint
+            can be a revolute or prismatic joint. You specify a gear ratio
+            to bind the motions together:
+            coordinate1 + ratio * coordinate2 = ant
+            The ratio can be negative or positive. If one joint is a revolute joint
+            and the other joint is a prismatic joint, then the ratio will have units
+            of length or units of 1/length.
+            @warning You have to manually destroy the gear joint if joint1 or joint2
+            is destroyed.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType2D.Pulley">
+            <summary>
+            The pulley joint is connected to two bodies and two fixed ground points.
+            The pulley supports a ratio such that:
+            Yes, the force transmitted is scaled by the ratio.
+            Warning: the pulley joint can get a bit squirrelly by itself. They often
+            work better when combined with prismatic joints. You should also cover the
+            the anchor points with static shapes to prevent one side from going to
+            zero length.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType2D.Slider">
+            <summary>
+            A distance joint contains two points on two bodies
+            to remain at a fixed distance from each other. You can view
+            this as a massless, rigid rod.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType2D.Rope">
+            <summary>
+            A rope joint enforces a maximum distance between two points
+            on two bodies. It has no other effect.
+            Warning: if you attempt to change the maximum length during
+            the simulation you will get some non-physical behavior.
+            A model that would allow you to dynamically modify the length
+            would have some sponginess, so I chose not to implement it
+            that way. See b2DistanceJoint if you want to dynamically
+            control length.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType2D.FixedMouseJoint">
+            <summary>
+            Joint to link an elastic rope, trent to 0 distance.
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Physics.JointType3D">
+            <summary>
+            Represent a 3d joint type.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType3D.BallSocket">
+            <summary>
+            The BallSocketJoint restricts all three linear degrees of freedom. Each entity has a point attached and the 
+            constraint attempts to keep the two points at the same location.
+            BallSocketJoints are very common and act as the linear component of many constraint configurations. For 
+            example, in a ragdoll, every joint has a BallSocketJoint to keep the body together (along with other constraints 
+            to handle angular motion). 
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType3D.Fixed">
+            <summary>
+            The FixedJoints restricts one angular degree of freedom. Each entity has an axis attached and the constraint 
+            attempts to prevent any relative twisting motion around the axes. 
+            FixedJoints have a singularity that can cause instability when the axes are folded back onto themselves. Prevent 
+            this configuration from occurring using other limits or by ensuring the connected physical entities will collide
+            before it can happen. 
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType3D.Hinge">
+            <summary>
+            The HingeJoint allows one angular degree of freedom between two entities. It is composed of a BallSocketJoint 
+            and RevoluteAngularJoint.
+            HingeJoints are commonly used for door hinges, elbows, and axis joints.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType3D.PointPointDistance">
+            <summary>
+            The PointPointDistanceJoint removes a single linear degree of freedom. Each entity has a point attached and the 
+            constraint attempts to keep them at the same distance. 
+            A target distance of zero will be difficult to maintain since the constraint only works on a single degree of 
+            freedom instead of three. If zero distance is desired between the anchor points, consider using a BallSocketJoint.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType3D.LineSlider">
+            <summary>
+            The LineSliderJoint is created from a PointOnLineJoint and a RevoluteAngularJoint. This leaves the entities with 
+            one linear sliding degree of freedom and one angular degree of freedom.
+            The LineSliderJoint also provides a LinearAxisLimit and a LinearAxisMotor, which are inactive by default.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType3D.PlaneSlider">
+            <summary>
+            The PlaneSliderJoint restricts a single linear degree of freedom. It is created from a PointOnPlaneJoint and 
+            a LinearAxisLimit and LinearAxisMotor for each of two axes on the plane. The limits and motors are inactive 
+            by default.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType3D.Prismatic">
+            <summary>
+            The PrismaticJoint allows a single sliding linear degree of freedom and zero angular degrees of freedom 
+            between two entities. It is created from a PointOnLineJoint and a NoRotationConstraint.
+            The joint also provides a LinearAxisLimit and a LinearAxisMotor which are initially inactive.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType3D.SwivelHinge">
+            <summary>
+            The SwivelHingeJoint allows two angular degrees of freedom between two entities. It is comprised of a 
+            BallSocketJoint and a SwivelHingeAngularJoint.
+            The joint also provides control over the free degrees of freedom through its RevoluteLimit, RevoluteMotor, 
+            TwistLimit, and TwistMotor which are initially inactive.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType3D.Universal">
+            <summary>
+            The UniversalJoint allows two angular degrees of freedom between two entities. It is comprised of a 
+            BallSocketJoint and a TwistJoint.  It’s useful for transferring twist motion around angles, such as in vehicle 
+            drive shafts.  The UniversalJoint also provides a TwistLimit and TwistMotor which are initially inactive. 
+            These are not complementary to the TwistJoint; the TwistJoint should be inactive if either the limit or motor 
+            is active.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.JointType3D.MotorizedGrabSpring">
+            <summary>
+            Motorized is a special joint to grab an Entity and move it on the physic space.
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Physics.Physic2DConvertUnits">
+            <summary>
+            Convert units between display and simulation units.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.Physic2DConvertUnits.displayUnitsToSimUnitsRatio">
+            <summary>
+            Display Units Ratio. Bigger value sets a smaller Physic World.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.Physic2DConvertUnits.simUnitsToDisplayUnitsRatio">
+            <summary>
+            Simulator Convert Back Ratio
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.SetDisplayUnitToSimUnitRatio(System.Single)">
+            <summary>
+            Sets Display Unit to Simulator2D Unit Ratio.
+            </summary>
+            <param name="displayUnitsPerSimUnit">Display unit per simulator unit ratio</param>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToDisplayUnits(System.Single)">
+            <summary>
+            Converts Simulator Units to Display Units
+            </summary>
+            <param name="simUnits">Simulator float Unit amount.</param>
+            <returns>Display units amount converted.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToDisplayUnits(System.Int32)">
+            <summary>
+            Converts Simulator Units to Display Units
+            </summary>
+            <param name="simUnits">Simulator Integer Units amount.</param>
+            <returns>Display units amount converted.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToDisplayUnits(WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Converts Simulator Units to Display Units
+            </summary>
+            <param name="simUnits">Simulator Vector2 amount</param>
+            <returns>Display units amount converted.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToDisplayUnits(WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Converts Simulator Units to Display Units
+            </summary>
+            <param name="simUnits">Simulator Vector2 Units amount.</param>
+            <param name="displayUnits">Display Vector2 Units amount converted.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToDisplayUnits(WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Converts Simulator Units to Display Units.
+            </summary>
+            <param name="simUnits">Vector3 Simulator Units.</param>
+            <returns>Display Vector3 Units.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToDisplayUnits(System.Single,System.Single)">
+            <summary>
+            Converts Simulator Units to Display Units.
+            </summary>
+            <param name="x">X Simulator Coordinate.</param>
+            <param name="y">Y Simulator Coordinate.</param>
+            <returns>Vector2 Display Units Coordinates.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToDisplayUnits(System.Single,System.Single,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Converts Simulator Units to Display Units.
+            </summary>
+            <param name="x">X Simulator Coordinate.</param>
+            <param name="y">Y Simulator Coordinate.</param>
+            <param name="displayUnits">Vector2 Display unit converted.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToSimUnits(System.Single)">
+            <summary>
+            Converts Display Units to Simulator Units.
+            </summary>
+            <param name="displayUnits">Float display units amount.</param>
+            <returns>Simulator units amount converted.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToSimUnits(System.Double)">
+            <summary>
+            Converts Display Units to Simulator Units.
+            </summary>
+            <param name="displayUnits">Double Display units amount.</param>
+            <returns>Simulator units amount converted.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToSimUnits(System.Int32)">
+            <summary>
+            Converts Display Units to Simulator Units.
+            </summary>
+            <param name="displayUnits">Integer Display units amount.</param>
+            <returns>Simulator units amount converted.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToSimUnits(WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Converts Display Units to Simulator Units.
+            </summary>
+            <param name="displayUnits">vector2 Display units amount.</param>
+            <returns>Simulator units converted.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToSimUnits(WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Converts Display Units to Simulator Units.
+            </summary>
+            <param name="displayUnits">Vector3 display unit amount.</param>
+            <returns>Vector3 Simulator units converted.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToSimUnits(WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Converts Display Units to Simulator Units.
+            </summary>
+            <param name="displayUnits">Vector2 display Units amount.</param>
+            <param name="simUnits">Vector2 Simulator units converted.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToSimUnits(System.Single,System.Single)">
+            <summary>
+            Converts Display Units to Simulator Units.
+            </summary>
+            <param name="x">X Display coordinate.</param>
+            <param name="y">Y Display coordinate.</param>
+            <returns>Vector2 Simulator units converted</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToSimUnits(System.Double,System.Double)">
+            <summary>
+            Converts Display Units to Simulator Units.
+            </summary>
+            <param name="x">X Display Coordinate.</param>
+            <param name="y">Y Display Coordinate.</param>
+            <returns>Vector2 simulator coordinate converted.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Physic2DConvertUnits.ToSimUnits(System.Single,System.Single,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Converts Display Units to Simulator Units.
+            </summary>
+            <param name="x">X Display coodinate.</param>
+            <param name="y">Y Display coordinate.</param>
+            <param name="simUnits">Vector2 Simulator coodinate converted.</param>
+        </member>
+        <member name="T:WaveEngine.Physics.PhysicsBody2D">
+            <summary>
+            This class represent a 2D physics body and properties.
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Physics.PhysicsBody2D.Collision2DEventHandler">
+            <summary>
+            Collision 2D delegate
+            </summary>
+            <param name="args">Event Argument.</param>
+        </member>
+        <member name="T:WaveEngine.Physics.PhysicsBody2D.Separation2DEventHandler">
+            <summary>
+            Separation 2D delegate
+            </summary>
+            <param name="args">Event Argument.</param>
+        </member>
+        <member name="E:WaveEngine.Physics.PhysicsBody2D.OnCollision">
+            <summary>
+            Collision Event Handler
+            </summary>
+        </member>
+        <member name="E:WaveEngine.Physics.PhysicsBody2D.OnSeparation">
+            <summary>
+            Separation Event Handler
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsBody2D.PhysicsEntity">
+            <summary>
+            Handle to internal physics entity.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.Awake">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:WaveEngine.Physics.PhysicsBody2D"/> is awake.
+            Bodies sleep thru few seconds of inactivity, you can query or set the awake state from this property.
+            </summary>
+            <value>
+              <c>true</c> if awake; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.AllowSleep">
+            <summary>
+            Gets or sets a value indicating whether [allow sleep].
+            If false the body doesn't sleep so Awake property value set is ignored cause its always awaken.
+            </summary>
+            <value>
+              <c>true</c> if [allow sleep]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.Damping">
+            <summary>
+            Gets or sets the linear damping.
+            </summary>
+            <value>
+            The damping.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.Friction">
+            <summary>
+            Gets or sets the friction coefficient of the physics entity.
+            </summary>
+            <remarks>
+            The friction coefficient used when the object is sliding slowly.
+            </remarks>
+            <value>
+            The friction.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.Restitution">
+            <summary>
+            Gets or sets the restitution of the physics entity.
+            </summary>
+            <value>
+            The restitution.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.BodyType">
+            <summary>
+            Gets or sets the type of the physic body.
+            </summary>
+            <value>
+            The type of the physic body.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.IgnoreGravity">
+            <summary>
+            Gets or sets a value indicating whether this instance ignore gravity force.
+            </summary>
+            <value>
+            <c>true</c> if this instance ignores gravity; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.Mass">
+            <summary>
+            Gets or sets the mass of the physics entity.
+            </summary>
+            <value>
+            The mass of this instance.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.Position">
+            <summary>
+            Gets or sets the position of the physics entity.
+            </summary>
+            <value>
+            The position.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.Rotation">
+            <summary>
+            Gets or sets the rotation of the physics entity.
+            </summary>
+            <value>
+            The rotation.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.EnableContinousContact">
+            <summary>
+            Gets or sets a value indicating whether [enable continous contact].
+            </summary>
+            <remarks>
+            Whether EnabledContinuosContanct is false fast-moving entities, such as bullets or falling objects, can pass right through a wall or floor.
+            </remarks>
+            <value>
+            <c>true</c> if [enable continous contact]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.Enabled">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:WaveEngine.Physics.PhysicsBody2D" /> is enabled.
+            </summary>
+            <value>
+              <c>true</c> if enable; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.LinearVelocity">
+            <summary>
+            Gets or sets the linear velocity of the physics entity.
+            </summary>
+            <value>
+            The linear velocity.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.AngularVelocity">
+            <summary>
+            Gets or sets the angular velocity of the physics entity.
+            </summary>
+            <value>
+            The angular velocity.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.CollisionCategories">
+            <summary>
+            Sets Physic Body Collision Category.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.CollidesWith">
+            <summary>
+            Sets the collides with.
+            </summary>
+            <value>
+            The collides with.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.FixedRotation">
+            <summary>
+            Gets or sets a value indicating whether [fixed rotation].
+            </summary>
+            <value>
+              <c>true</c> if [fixed rotation]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.Radius">
+            <summary>
+            Sets a value indicating whether the Body Radius
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody2D.UserData">
+            <summary>
+            Gets or sets the user data.
+            </summary>
+            <value>
+            The user data.
+            </value>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody2D.#ctor(FarseerPhysics.Dynamics.World,WaveEngine.Physics.PhysicsShape,WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Physics.PhysicsBody2D" /> class.
+            </summary>
+            <param name="world">The world.</param>
+            <param name="shape">The shape.</param>
+            <param name="position">The position.</param>
+            <exception cref="T:System.ArgumentException">Invalid shape.</exception>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody2D.PhysicsEntity_OnCollision(FarseerPhysics.Dynamics.Fixture,FarseerPhysics.Dynamics.Fixture,FarseerPhysics.Dynamics.Contacts.Contact)">
+            <summary>
+            Handles On Collision Event
+            </summary>
+            <param name="fixtureA">First Fixture</param>
+            <param name="fixtureB">Second Fixture</param>
+            <param name="contact">Contact info</param>
+            <returns>True if collision accept, False otherwise</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody2D.PhysicsEntity_OnSeparation(FarseerPhysics.Dynamics.Fixture,FarseerPhysics.Dynamics.Fixture)">
+            <summary>
+            Handles On Separation Event
+            </summary>
+            <param name="fixtureA">First Fixture</param>
+            <param name="fixtureB">Second Fixture</param>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody2D.ApplyAngularImpulse(System.Single)">
+            <summary>
+            Applies the angular impulse to this physics entity.
+            </summary>
+            <param name="impulse">The impulse.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody2D.ApplyForce(WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Applies the force to this physics entity.
+            </summary>
+            <param name="force">The force.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody2D.ApplyForce(WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Applies the force this physics entity.
+            </summary>
+            <param name="force">The force.</param>
+            <param name="point">The point.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody2D.ApplyLinearImpulse(WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Applies the linear impulse to this physics entity.
+            </summary>
+            <param name="impulse">The impulse.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody2D.ApplyLinearImpulse(WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Applies the linear impulse to this physics entity.
+            </summary>
+            <param name="impulse">The impulse.</param>
+            <param name="point">The point.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody2D.ApplyTorque(System.Single)">
+            <summary>
+            Applies the torque to this physics entity.
+            </summary>
+            <param name="torque">The torque.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody2D.Remove(FarseerPhysics.Dynamics.World)">
+            <summary>
+            Remove this physics entity from 2D physics simulation.
+            </summary>
+            <param name="world">The world.</param>
+        </member>
+        <member name="T:WaveEngine.Physics.PhysicsBody3D">
+            <summary>
+            This class represent a 3D physics body and properties.
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Physics.PhysicsBody3D.Collision3DEventHandler">
+            <summary>
+            Collision 3D delegate
+            </summary>
+            <param name="args">Collision Event Arguments</param>
+        </member>
+        <member name="E:WaveEngine.Physics.PhysicsBody3D.OnCollision">
+            <summary>
+            Collision Event Handler
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsBody3D.PhysicsEntity">
+            <summary>
+            Handle a reference to internal physics entity.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsBody3D.rotation">
+            <summary>
+            Rotation cached
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsBody3D.mass">
+            <summary>
+            Physic body mass
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody3D.Damping">
+            <summary>
+            Gets or sets the linear damping of the physics entity.
+            </summary>
+            <remarks>
+            Values range from 0 to 1, correspondong to a fraction of linear momentum removed
+            from the physics entity over a unit of time.        
+            </remarks>
+            <value>
+            The damping.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody3D.StaticFriction">
+            <summary>
+            Gets or sets the friction coefficient used when the object is sliding slowly.
+            </summary>
+            <value>
+            The static friction.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody3D.KineticFriction">
+            <summary>
+            Gets or sets the friction coefficient used when the object is sliding quickly.
+            </summary>
+            <value>
+            The kinetic friction.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody3D.Restitution">
+            <summary>
+            Gets or sets the coefficient of restitution between the objects.
+            </summary>
+            <value>
+            The restitution.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody3D.IsKinectic">
+            <summary>
+            Gets or sets a value indicating whether the physics entity is kinectic or Dynamic.
+            </summary>
+            <remarks>
+            Dynamic entities have finite mass and respond
+            to collisions.  Kinematic (non-dynamic) entities
+            have infinite mass and inertia and will plow through anything.
+            </remarks>
+            <value>
+            <c>true</c> if this instance is kinectic; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody3D.Mass">
+            <summary>
+            Gets or sets the mass of the physics entity.
+            </summary>
+            <remarks>
+            Setting this to an invalid value, such as a non-positive number, NaN, or infinity, makes the entity kinematic.
+            Setting it to a valid positive number will also scale the inertia tensor if it was already dynamic, or force the calculation of a new inertia tensor
+            if it was previously kinematic.
+            </remarks>
+            <value>
+            The mass of this object.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody3D.Position">
+            <summary>
+            Gets or sets the position of the physics Entity.  This Position acts
+            as the center of mass for dynamic entities.
+            </summary>
+            <value>
+            The position.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody3D.Rotation">
+            <summary>
+            Gets or sets the world rotation of the physics entity.
+            </summary>
+            <value>
+            The rotation.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody3D.WorldTransform">
+            <summary>
+            Gets the world transform.
+            </summary>
+            <value>
+            The world transform.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody3D.Orientation">
+            <summary>
+            Gets or sets the orientation quaternion of the physics entity.
+            </summary>
+            <value>
+            The orientation quaternion.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody3D.EnableContinousContact">
+            <summary>
+            Gets or sets a value indicating whether [enable continous contact].
+            </summary>
+            <value>
+            <remarks>
+            Whether EnabledContinuosContanct is false fast-moving entities, such as bullets or falling objects, can pass right through a wall or floor.
+            </remarks>
+            <c>true</c> if [enable continous contact]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody3D.LinearVelocity">
+            <summary>
+            Gets or sets the linear velocity of the physics entity.
+            </summary>
+            <value>
+            The linear velocity.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody3D.AngularVelocity">
+            <summary>
+            Gets or sets the angular velocity of the physics entity.
+            </summary>
+            <value>
+            The angular velocity.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsBody3D.UserData">
+            <summary>
+            Gets or sets the user data.
+            </summary>
+            <value>
+            The user data.
+            </value>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody3D.#ctor(WaveEngine.Physics.PhysicsShape)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Physics.PhysicsBody3D" /> class.
+            </summary>
+            <param name="shape">The 3d physics shape.</param>
+            <exception cref="T:System.ArgumentException">Invalid shape.</exception>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody3D.SetCollisionLocalOffset(WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Sets Collision local offset to better geometry adjustment
+            </summary>
+            <param name="offset">Offset vector</param>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody3D.SetCollisionGroup(WaveEngine.Physics.Collision3DGroup)">
+            <summary>
+            Sets Physic Collision Group
+            </summary>
+            <param name="group">Collision Group</param>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody3D.Events_ContactCreated(BEPUphysics.Collidables.MobileCollidables.EntityCollidable,BEPUphysics.Collidables.Collidable,BEPUphysics.NarrowPhaseSystems.Pairs.CollidablePairHandler,BEPUphysics.CollisionTests.ContactData)">
+            <summary>
+            Contact Created Event Handler
+            </summary>
+            <param name="sender">Sender Entity.</param>
+            <param name="other">Collisioned Entity.</param>
+            <param name="pair">Collision Pair.</param>
+            <param name="contact">Contacts Information.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody3D.ApplyAngularImpulse(WaveEngine.Common.Math.Vector3@)">
+            <summary>
+            Applies an angular velocity change to the physics entity using the given impulse.
+            </summary>
+            <remarks>
+            This method does not wake up the object or perform any other nonessential operation;
+            it is meant to be used for performance-sensitive constraint solving.
+            Consider equivalently adding to the AngularMomentum property for convenience instead.
+            </remarks>
+            <param name="impulse">Impulse to apply.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody3D.ApplyForce(WaveEngine.Common.Math.Vector3@)">
+            <summary>
+            Applies the force to this physics entity.
+            </summary>
+            <param name="force">Force to apply.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody3D.ApplyForce(WaveEngine.Common.Math.Vector3@,WaveEngine.Common.Math.Vector3@)">
+            <summary>
+            Applies the force to this physics entity.
+            </summary>
+            <param name="force">Force to apply.</param>
+            <param name="position">The force position.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody3D.ApplyLinearImpulse(WaveEngine.Common.Math.Vector3@)">
+            <summary>
+            Applies a linear velocity change to the entity using the given impulse.
+            This method does not wake up the object or perform any other nonessential operation;
+            it is meant to be used for performance-sensitive constraint solving.
+            Consider equivalently adding to the LinearMomentum property for convenience instead.
+            </summary>
+            <param name="impulse">The impulse.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsBody3D.Remove(BEPUphysics.Space)">
+            <summary>
+            Remove this physics entity from 3D physics simulation.
+            </summary>
+            <param name="space">Handle to internal physics world.</param>
+        </member>
+        <member name="T:WaveEngine.Physics.PhysicsJoint2D">
+            <summary>
+            This class represent a 2D physics joint and connects two entities together. 
+            All Joints restrict some degrees of freedom, seeking a specific configuration.
+            </summary>
+        </member>
+        <member name="E:WaveEngine.Physics.PhysicsJoint2D.OnBroke">
+            <summary>
+            Fires when the joint is broken.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsJoint2D.breakpoint">
+            <summary>
+            Breakpoint Force
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint2D.BodyA">
+            <summary>
+            Gets the first physics body.
+            </summary>
+            <value>
+            The body of this instance.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint2D.BodyB">
+            <summary>
+            Gets the second physics body.
+            </summary>
+            <value>
+            The body of this instace.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint2D.PhysicJoint">
+            <summary>
+            Gets the Physic Joint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint2D.JointType">
+            <summary>
+            Gets the type of the joint.
+            </summary>
+            <value>
+            The type of the joint.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint2D.WorldAnchorB">
+            <summary>
+            Gets or sets a value indicating the joint WorldAnchor
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint2D.BreakPoint">
+            <summary>
+            Gets or sets Joint Breakpoint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint2D.MotorEnabled">
+            <summary>
+            Gets or sets a value indicating whether Motor is Enabled. Only available on RevoluteJoint and Prismatic, false otherwise
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint2D.MotorSpeed">
+            <summary>
+            Gets or sets a value indicating Motor Speed in rad/s. Only Revolute Joint and Prismatic Joint is allow motorizing.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint2D.MotorTorque">
+            <summary>
+            Gets or sets a value indicating Motor Torque in N-s. Only Revolute Joint is allow motorizing.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint2D.MotorMaxTorque">
+            <summary>
+            Gets or sets a value indicating Motor Max Torque in N-s. Only Revolute Joint is allow motorizing.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint2D.MaxMotorForce">
+            <summary>
+            Gets or sets a value indicating Max Motor Force in N-s. Only Prismatic Joint is allow motorizing.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint2D.LimitEnabled">
+            <summary>
+            Gets or sets a value indicating whether Limit is Enabled. Only Prismatic Joint is allow Limit.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint2D.LowerLimit">
+            <summary>
+            Gets or sets a value indicating whether Prismatic Joint Lower Limit
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint2D.UpperLimit">
+            <summary>
+            Gets or sets a value indicating whether Prismatic Joint Upper Limit
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint2D.Length">
+            <summary>
+            Gets or sets a value indicating whether Distance Joint Lenght
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsJoint2D.#ctor(WaveEngine.Physics.JointType2D,WaveEngine.Physics.PhysicsBody2D,WaveEngine.Physics.PhysicsBody2D,WaveEngine.Physics.Simulation2D,WaveEngine.Common.Math.Vector2[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Physics.PhysicsJoint2D" /> class.
+            </summary>
+            <param name="jointType">Type of the joint.</param>
+            <param name="bodyA">Fist physics body.</param>
+            <param name="bodyB">Second physics body.</param>
+            <param name="simulation">Handle to <see cref="T:WaveEngine.Physics.Simulation2D"/>.</param>
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsJoint2D.PhysicJointBroke(FarseerPhysics.Dynamics.Joints.Joint,System.Single)">
+            <summary>
+            Joint broke event handler
+            </summary>
+            <param name="joint">Joint object.</param>
+            <param name="jointError">Joint error.</param>
+        </member>
+        <member name="T:WaveEngine.Physics.PhysicsJoint3D">
+            <summary>
+            This class represent a 3D physics joint and connects two entities together. 
+            All Joints restrict some degrees of freedom, seeking a specific configuration.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsJoint3D.isMotorEnabled">
+            <summary>
+            Is motor enabled
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsJoint3D.motorVelocity">
+            <summary>
+            Motor Velocity
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsJoint3D.motorMaxForce">
+            <summary>
+            Motor maximum force
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsJoint3D.motorDamping">
+            <summary>
+            Motor damping
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsJoint3D.motorStiffness">
+            <summary>
+            Servo Motor sprint stiffness
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsJoint3D.motorServoAxis">
+            <summary>
+            Servo Motor Axis
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsJoint3D.motorServoGoal">
+            <summary>
+            Motor Servo goal distance
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint3D.IsMotorEnabled">
+            <summary>
+            Gets or sets a value indicating whether the motor is enabled. Only Hinge (velocity motor) and Line (servo motor) joints can be motorized.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint3D.MotorVelocity">
+            <summary>
+            Gets or sets a value indicating whether Motor speed. This property must be used with IsMotorEnabled Property. Only hinge joints can be motorized.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint3D.MotorMaxForce">
+            <summary>
+            Gets or sets a value indicating whether the Motor Maximum Force. This property must be used with IsMotorEnabled Property and MotorVelocity. Only Hinge and Line joints can be motorized.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint3D.MotorDamping">
+            <summary>
+            Gets or sets a value indicating whether the Motor damping. This property must be used with IsMotorEnabled Property and MotorVelocity. Only hinge joints can be motorized.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint3D.MotorServoAxis">
+            <summary>
+            Gets or sets a value indicating whether the Motor Servo World axis. This property must be used with IsMotorEnabled Property. Only Line joints can be Servo Motorized.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint3D.MotorStiffness">
+            <summary>
+            Gets or sets a value indicating whether the Servo Motor Stiffness. This property must be used with IsMotorEnabled Property. Only Line joints can be Servo Motorized.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint3D.MotorServoGoal">
+            <summary>
+            Gets or sets a value indicating whether the Servo Motor Goal Distance. This property must be used with IsMotorEnabled Property. Only Line joints can be Servo Motorized.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint3D.BodyA">
+            <summary>
+            Gets the first physics body.
+            </summary>
+            <value>
+            The body of this instance.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint3D.BodyB">
+            <summary>
+            Gets the second physics body.
+            </summary>
+            <value>
+            The body of this instace.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint3D.JointType">
+            <summary>
+            Gets the type of the joint.
+            </summary>
+            <value>
+            The type of the joint.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint3D.PhysicJoint">
+            <summary>
+            Gets or sets Physic Joint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint3D.PhysicSolverGroup">
+            <summary>
+            Gets or sets Physic Solve Group
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint3D.LinearMotor">
+            <summary>
+            Gets or sets Linear Motor
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint3D.AngularMotor">
+            <summary>
+            Gets or sets Angular Motor
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsJoint3D.GrabLocation">
+            <summary>
+            Gets or sets Physic Entity Grab Location
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsJoint3D.#ctor(WaveEngine.Physics.JointType3D,WaveEngine.Physics.PhysicsBody3D,WaveEngine.Physics.PhysicsBody3D,WaveEngine.Physics.Simulation3D,WaveEngine.Common.Math.Vector3[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Physics.PhysicsJoint3D" /> class.
+            </summary>
+            <param name="jointType">Type of the joint.</param>
+            <param name="bodyA">Fist physics body.</param>
+            <param name="bodyB">Second physics body.</param>
+            <param name="simulation">Handle to <see cref="T:WaveEngine.Physics.Simulation3D"/>.</param>
+            <param name="parameters">The parameters.</param>
+            <exception cref="T:System.ArgumentNullException">Fist physics body cannot be null.</exception>
+            <exception cref="T:System.ArgumentException">Error invalid number of parameters</exception>
+        </member>
+        <member name="T:WaveEngine.Physics.PhysicsShape">
+            <summary>
+            This class represent a physics shape created from his properties.
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Physics.PhysicsShape.PropertyType">
+            <summary>
+            Properties for a physics shape.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsShape.PropertyType.Edge">
+            <summary>
+            The edge of shape.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsShape.PropertyType.Radius">
+            <summary>
+            The radius of shape.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsShape.PropertyType.Width">
+            <summary>
+            The width of shape.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsShape.PropertyType.Height">
+            <summary>
+            The height of shape.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsShape.PropertyType.Rotation">
+            <summary>
+            The rotation of the shape.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsShape.PropertyType.Length">
+            <summary>
+            The length of shape.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsShape.PropertyType.xRadius">
+            <summary>
+            The x radius of shape.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsShape.PropertyType.yRadius">
+            <summary>
+            The y radius of shape.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsShape.PropertyType.xOrigin">
+            <summary>
+            The x origin of shape.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsShape.PropertyType.yOrigin">
+            <summary>
+            The y origin of shape.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsShape.PropertyType.xScale">
+            <summary>
+            The x scale
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsShape.PropertyType.yScale">
+            <summary>
+            The y scale
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsShape.PropertyType.Vertices">
+            <summary>
+            The vertices of shape.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsShape.PropertyType.Indices">
+            <summary>
+            The Vertex Indices of shape.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.PhysicsShape.PropertyType.BooleanArray">
+            <summary>
+            The texture
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsShape.ShapeType">
+            <summary>
+            Gets the type of the shape.
+            </summary>
+            <value>
+            The type of the shape.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.PhysicsShape.Properties">
+            <summary>
+            Gets the properties.
+            </summary>
+            <value>
+            The properties.
+            </value>
+        </member>
+        <member name="M:WaveEngine.Physics.PhysicsShape.#ctor(WaveEngine.Physics.ShapeType,System.Object[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Physics.PhysicsShape" /> class.
+            </summary>
+            <param name="shapeType">Type of the shape.</param>
+            <param name="parameters">The parameters.</param>
+            <exception cref="T:System.ArgumentException">Error invalid number of parameters.</exception>
+        </member>
+        <member name="T:WaveEngine.Physics.Separation2DEventArgs">
+            <summary>
+            Separation 2D Event Args
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Separation2DEventArgs.Body2DA">
+            <summary>
+            Gets or sets the first PhysicsBody2D of the collision.
+            </summary>
+            <value>
+            The first PhysicsBody2D.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.Separation2DEventArgs.Body2DB">
+            <summary>
+            Gets or sets second PhysicsBody2D of the collision.
+            </summary>
+            <value>
+            The second PhysicsBody2D.
+            </value>
+        </member>
+        <member name="T:WaveEngine.Physics.ShapeType">
+            <summary>
+            Represent a 2D or 3D physics shape type.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.ShapeType.Rectangle">
+            <summary>
+            Represent a 2D physics rectangle.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.ShapeType.Circle">
+            <summary>
+            Represent a 2D physics circle.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.ShapeType.Ellipse">
+            <summary>
+            Represent a 2D physics ellipse.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.ShapeType.Polygon">
+            <summary>
+            Represent a 2D physics polygon.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.ShapeType.Box">
+            <summary>
+            Represent a 3D physics box.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.ShapeType.Sphere">
+            <summary>
+            Represent a 3D physics sphere.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.ShapeType.Capsule">
+            <summary>
+            Represent a 3D physics capsule.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.ShapeType.Cone">
+            <summary>
+            Represent a 3D physics cone.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.ShapeType.Cylinder">
+            <summary>
+            Represent a 3D physics cylinder.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.ShapeType.MobileMesh">
+            <summary>
+            Represents an Arbitrary Mesh of vertices
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.ShapeType.Texture">
+            <summary>
+            The texture
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Physics.Simulation2D">
+            <summary>
+            The Simulation2D class manages all 2D physics entities.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.Simulation2D.World">
+            <summary>
+            Internal renference to 2D physicsEngine.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.Simulation2D.status">
+            <summary>
+            Simulation Status
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Simulation2D.Gravity">
+            <summary>
+            Gets or sets the worlds gravity.
+            </summary>
+            <value>
+            The gravity.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.Simulation2D.AllowSleep">
+            <summary>
+            Gets or sets a value indicating whether [allow sleep].
+            </summary>
+            <value>
+              <c>true</c> if [allow sleep]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.Simulation2D.VelocityIterations">
+            <summary>
+            Gets or sets Velocity Iteration
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Simulation2D.PositionIterations">
+            <summary>
+            Gets or sets Position Iteration
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Simulation2D.TOIVelocityIterations">
+            <summary>
+            Gets or sets Time Of Impact Velocity Iteration
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Simulation2D.TOIPositionIterations">
+            <summary>
+            Gets or sets Time Of Impact Position Iteration
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Simulation2D.Status">
+            <summary>
+            Gets a value indicating physics 2d engine status
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Physics.Simulation2D" /> class.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.CreatePhysicsWorld">
+            <summary>
+            Create a 2D physics world.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.CreateRectangle(WaveEngine.Common.Math.Vector2,System.Single,System.Single,WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Create a 2D physics rectangle.
+            </summary>
+            <param name="position">Rectangle position.</param>
+            <param name="width">Rectangle with.</param>
+            <param name="height">Rectangle height.</param>
+            <param name="origin">Rectangle Origin.</param>
+            <param name="rotation">Rectangle rotation.</param>
+            <returns>A 2D physics rectangle.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.CreateCircle(WaveEngine.Common.Math.Vector2,System.Single,WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Creates the 2D physics circle.
+            </summary>
+            <param name="position">Circle position.</param>
+            <param name="radius">Circle radius.</param>
+            <param name="origin">Circle origin.</param>
+            <param name="rotation">Circle rotation.</param>
+            <returns>A 2D physics circle.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.CreateEllipse(WaveEngine.Common.Math.Vector2,System.Single,System.Single,System.Int32)">
+            <summary>
+            Creates the 2D physics ellipse.
+            </summary>
+            <param name="position">Ellipse position.</param>
+            <param name="xRadius">Ellipse x radius.</param>
+            <param name="yRadius">Ellipse y radius.</param>
+            <param name="edge">Ellipse edge.</param>
+            <returns>A 2D physics Ellipse.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.CreatePolygon(WaveEngine.Common.Math.Vector2,System.Collections.Generic.IList{WaveEngine.Common.Math.Vector2})">
+            <summary>
+            Creates the 2d physics polygon.
+            </summary>
+            <param name="position">Polygon position.</param>
+            <param name="vertices">Polygon vertices.</param>
+            <returns>A 2D physics polygon.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.CreatePolygonFromTexture(WaveEngine.Common.Math.Vector2,System.Boolean[],System.Int32,System.Single,System.Single)">
+            <summary>
+            Creates the polygon from texture.
+            </summary>
+            <param name="position">The position.</param>
+            <param name="textureData">The texture data.</param>
+            <param name="textureWidth">Width of the texture.</param>
+            <param name="xScale">The x scale.</param>
+            <param name="yScale">The y scale.</param>
+            <returns>A 2D Physic Polygon.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.RemoveRigidBody(WaveEngine.Physics.PhysicsBody2D)">
+            <summary>
+            Removes the 2D rigid body.
+            </summary>
+            <param name="physicsBody">The physics body.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.CreateRevoluteJoint(WaveEngine.Physics.PhysicsBody2D,WaveEngine.Physics.PhysicsBody2D,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Create a 2D physics Revolute joint.
+            </summary>
+            <param name="bodyA">First Physic Body.</param>
+            <param name="bodyB">Second Physic Body.</param>
+            <param name="localAnchorA">First Body Anchor Point measured from the body's origin.</param>
+            <param name="localAnchorB">Second Body Anchor Point measured from the body's origin</param>
+            <returns>A 2D Physics Revolute Joint.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.CreateRevoluteJoint(WaveEngine.Physics.PhysicsBody2D,WaveEngine.Physics.PhysicsBody2D,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Create a 2D physics Revolute joint.
+            </summary>
+            <param name="bodyA">First Physic Body.</param>
+            <param name="bodyB">Second Physic Body.</param>
+            <param name="localAnchorA">First Body Anchor Point measured from the body's origin.</param>
+            <param name="localAnchorB">Second Body Anchor Point measured from the body's origin</param>
+            <param name="breakpoint">Maximum Force to Break the joint. MaxValue by default</param>
+            <returns>A 2D Physics Revolute Joint.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.CreateFixedJoint(WaveEngine.Physics.PhysicsBody2D,WaveEngine.Physics.PhysicsBody2D)">
+            <summary>
+            Create a 2D physics Fixed joint. (Glue, Weld)
+            </summary>
+            <param name="bodyA">First Physic Body.</param>
+            <param name="bodyB">Second Physic Body.</param>
+            <returns>A 2D Physics Fixed Joint.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.CreateDistanceJoint(WaveEngine.Physics.PhysicsBody2D,WaveEngine.Physics.PhysicsBody2D,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Create a 2D physics Distance joint.
+            </summary>
+            <param name="bodyA">First Physic Body.</param>
+            <param name="bodyB">Second Physic Body.</param>
+            <param name="localAnchorA">First Body Anchor Point measured from the body's origin.</param>
+            <param name="localAnchorB">Second Body Anchor Point measured from the body's origin</param>
+            <returns>A 2D Physics Distance Joint. Distance is calculated from Bodies local anchors.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.CreateDistanceJoint(WaveEngine.Physics.PhysicsBody2D,WaveEngine.Physics.PhysicsBody2D,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Create a 2D physics Distance joint.
+            </summary>
+            <param name="bodyA">First Physic Body.</param>
+            <param name="bodyB">Second Physic Body.</param>
+            <param name="localAnchorA">First Body Anchor Point measured from the body's origin.</param>
+            <param name="localAnchorB">Second Body Anchor Point measured from the body's origin</param>
+            <param name="breakpoint">Maximum Force to Break the joint. MaxValue by default</param>
+            <returns>A 2D Physics Distance Joint. Distance is calculated from Bodies local anchors.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.CreateAngleJoint(WaveEngine.Physics.PhysicsBody2D,WaveEngine.Physics.PhysicsBody2D)">
+            <summary>
+            Create a 2D physics Angle joint. Mantains a fixed angle between two bodies.
+            </summary>
+            <param name="bodyA">First Physic Body.</param>
+            <param name="bodyB">Second Physic Body.</param>
+            <returns>A 2D Physics Angle Joint.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.CreateAngleJoint(WaveEngine.Physics.PhysicsBody2D,WaveEngine.Physics.PhysicsBody2D,System.Single)">
+            <summary>
+            Create a 2D physics Angle joint. Mantains a fixed angle between two bodies.
+            </summary>
+            <param name="bodyA">First Physic Body.</param>
+            <param name="bodyB">Second Physic Body.</param>
+            <param name="breakpoint">Maximum Force to Break the joint. MaxValue by default</param>
+            <returns>A 2D Physics Angle Joint.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.CreatePrismaticJoint(WaveEngine.Physics.PhysicsBody2D,WaveEngine.Physics.PhysicsBody2D,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Create a 2D physics Prismatic joint.
+            </summary>
+            <param name="bodyA">First Physic Body.</param>
+            <param name="bodyB">Second Physic Body.</param>
+            <param name="localAnchorA">First Body Anchor Point measured from the body's origin.</param>
+            <param name="localAnchorB">Second Body Anchor Point measured from the body's origin</param>
+            <param name="axis">Freedom axis </param>
+            <returns>A 2D Physics Prismatic Joint. Distance is calculated from Bodies local anchors.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.CreateFixedMouseJoint(WaveEngine.Physics.PhysicsBody2D,WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Create a 2D physics Angle joint. Mantains a fixed angle between two bodies.
+            </summary>
+            <param name="bodyA">First Physic Body.</param>
+            <param name="worldAnchor">World Anchor.</param>
+            <param name="breakpoint">Maximum Force to Break the joint. MaxValue by default</param>
+            <returns>A 2D Physics Fixed Mouse joint.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.RemoveJoint(WaveEngine.Physics.PhysicsJoint2D)">
+            <summary>
+            Removes a Physic Joint.
+            </summary>
+            <param name="physicJoint2D">Phsyics Joint 2D to remove.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.Pause">
+            <summary>
+            Pauses simulation
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.Resume">
+            <summary>
+            Resumes simulation
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.Update(System.TimeSpan)">
+            <summary>
+            Update all 2d physics entities of this instance.
+            </summary>
+            <param name="gameTime">The game time.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation2D.DestroyWorld">
+            <summary>
+            Destroys all 2d physics entities of this instance.
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Physics.Simulation3D">
+            <summary>
+            The Simulation3D class manages all 3D physics entities.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.Simulation3D.Space">
+            <summary>
+            Internal renference to 3D physicsEngine.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Physics.Simulation3D.Gravity">
+            <summary>
+            Gets or sets the gravity.
+            </summary>
+            <value>
+            The gravity.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Physics.Simulation3D.IterationLimit">
+            <summary>
+            Gets or sets Physic World Iteration Limit
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Physics.Simulation3D" /> class.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreatePhysicsWorld">
+            <summary>
+            Create a 3D physics world.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreateBox(WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Quaternion,WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Create a 3D physics box.
+            </summary>
+            <param name="position">Box position.</param>
+            <param name="orientation">The orientation.</param>
+            <param name="size">Box size.</param>
+            <returns>
+            A 3D physics box.
+            </returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreateSphere(WaveEngine.Common.Math.Vector3,System.Single)">
+            <summary>
+            Creates a 3D physics sphere.
+            </summary>
+            <param name="position">Sphere position.</param>
+            <param name="radius">Sphere radius.</param>
+            <returns>A 3D sphere box.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreateCapsule(WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Quaternion,System.Single,System.Single)">
+            <summary>
+            Create a 3d physics capsule.
+            </summary>
+            <param name="position">Capsule position.</param>
+            <param name="orientation">The orientation.</param>
+            <param name="length">Capsule length.</param>
+            <param name="radius">Capsule radius.</param>
+            <returns>
+            A 3D physics capsule.
+            </returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreateCylinder(WaveEngine.Common.Math.Vector3,System.Single,System.Single)">
+            <summary>
+            Create a 3d physics cylinder.
+            </summary>
+            <param name="position">Cylinder position.</param>
+            <param name="length">Cylinder length.</param>
+            <param name="radius">Cylinder radius.</param>
+            <returns>A 3D physics cylinder.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreateCone(WaveEngine.Common.Math.Vector3,System.Single,System.Single)">
+            <summary>
+            Create a 3D physics cone.
+            </summary>
+            <param name="position">Cone position.</param>
+            <param name="length">Cone length.</param>
+            <param name="radius">Cone radius.</param>
+            <returns>A 3D physics cone.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreateTriangleMesh(WaveEngine.Common.Math.Vector3[],System.Int32[])">
+            <summary>
+            Creates a triangle Mesh
+            </summary>
+            <param name="vertices">The Vertices</param>
+            <param name="indices">The Indices</param>
+            <returns>A 3d Physics Triangle Mesh</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreateFixedJoint(WaveEngine.Physics.PhysicsBody3D,WaveEngine.Physics.PhysicsBody3D)">
+            <summary>
+            Create a 3D physics fixed joint.
+            </summary>
+            <param name="bodyA">Fist physics body.</param>
+            <param name="bodyB">Second physics body.</param>
+            <returns>A 3D physics fixed joint.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreateBallSocketJoint(WaveEngine.Physics.PhysicsBody3D,WaveEngine.Physics.PhysicsBody3D,WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Create a 3D physics ball socket joint.
+            </summary>
+            <param name="bodyA">Fist physics body.</param>
+            <param name="bodyB">Second physics body.</param>
+            <param name="anchorLocation">The anchor location.</param>
+            <returns>A 3D physics ball socket joint.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreateHingeJoint(WaveEngine.Physics.PhysicsBody3D,WaveEngine.Physics.PhysicsBody3D,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Create a 3D physics hinge joint.
+            </summary>
+            <param name="bodyA">Fist physics body.  </param>
+            <param name="bodyB">Second physics body.</param>
+            <param name="anchorLocation">The anchor location.</param>
+            <param name="freeAxis">The free axis.</param>
+            <returns>A 3d physics hinge joint.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreatePointPointDistanceJoint(WaveEngine.Physics.PhysicsBody3D,WaveEngine.Physics.PhysicsBody3D,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Create a 3D physics the point point distance joint.
+            </summary>
+            <param name="bodyA">Fist physics body.  </param>
+            <param name="bodyB">Second physics body.</param>
+            <param name="anchorLocation">The anchor location.</param>
+            <param name="freeAxis">The free axis.</param>
+            <returns>A 3D physics point point distance joint.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreateLineSliderJoint(WaveEngine.Physics.PhysicsBody3D,WaveEngine.Physics.PhysicsBody3D,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Create a 3D physics line slider joint.
+            </summary>
+            <param name="bodyA">Fist physics body.  </param>
+            <param name="bodyB">Second physics body.</param>
+            <param name="lineAnchor">The line anchor.</param>
+            <param name="lineDirection">The line direction.</param>
+            <param name="pointAnchor">The point anchor.</param>
+            <returns>A 3D physics line slider joint.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreatePlaneSliderJoint(WaveEngine.Physics.PhysicsBody3D,WaveEngine.Physics.PhysicsBody3D,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Create a 3D physics plane slider joint.
+            </summary>
+            <param name="bodyA">Fist physics body.  </param>
+            <param name="bodyB">Second physics body.</param>
+            <param name="planeAnchor">The plane anchor.</param>
+            <param name="planeNormal">The plane normal.</param>
+            <param name="xAxis">The x axis.</param>
+            <param name="yAxis">The y axis.</param>
+            <param name="pointAnchor">The point anchor.</param>
+            <returns>A 3D physics plane slider joint.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreatePrismaticJoint(WaveEngine.Physics.PhysicsBody3D,WaveEngine.Physics.PhysicsBody3D,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Create a 3D physics prismatic joint.
+            </summary>
+            <param name="bodyA">Fist physics body.  </param>
+            <param name="bodyB">Second physics body.</param>
+            <param name="lineAnchor">The line anchor.</param>
+            <param name="lineDirection">The line direction.</param>
+            <param name="pointAnchor">The point anchor.</param>
+            <returns>A 3D physics prismatic joint.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreateSwivelHingeJoint(WaveEngine.Physics.PhysicsBody3D,WaveEngine.Physics.PhysicsBody3D,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Create a 3D physics swivel hinge joint.
+            </summary>
+            <param name="bodyA">Fist physics body.  </param>
+            <param name="bodyB">Second physics body.</param>
+            <param name="anchorLocation">The anchor.</param>
+            <param name="freeAxis">The hinge axis.</param>
+            <returns>A 3D physics swivel hinge joint.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreateUniversalJoint(WaveEngine.Physics.PhysicsBody3D,WaveEngine.Physics.PhysicsBody3D,WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Create a 3D physics universal joint.
+            </summary>
+            <param name="bodyA">Fist physics body.  </param>
+            <param name="bodyB">Second physics body.</param>
+            <param name="anchorLocation">The anchor.</param>
+            <returns>A 3D physics universal joint.</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.CreateMotorizedGrabSpring(WaveEngine.Physics.PhysicsBody3D,WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Creates a Motorized Grab spring to move Entities on the Space
+            </summary>
+            <param name="body">Physic Body.</param>
+            <param name="grabLocation">Grab Location.</param>
+            <returns>Returns a MotorizedGrabSpring Joint</returns>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.RemoveJoint(WaveEngine.Physics.PhysicsJoint3D)">
+            <summary>
+            Removes a Physic Joint 3D from Physic Space.
+            </summary>
+            <param name="physicJoint">Physic Joint 3D</param>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.RemoveAllRigidBody">
+            <summary>
+            Removes all 3D rigid body.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.RemoveRigidBody(WaveEngine.Physics.PhysicsBody3D)">
+            <summary>
+            Removes the 3D rigid body.
+            </summary>
+            <param name="physicsBody">The physics body.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.Update(System.TimeSpan)">
+            <summary>
+            Update all 3D physics entities for this instance.
+            </summary>
+            <param name="gameTime">Elapsed game time.</param>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.DestroyWorld">
+            <summary>
+            Destroys all 3d physics entities for this instance.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Physics.Simulation3D.GetGlobalDirection(WaveEngine.Physics.PhysicsBody3D,WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Get global direction from physic body orientation
+            </summary>
+            <param name="body">Physic Body</param>
+            <param name="direction">The direction</param>
+            <returns>The local direction</returns>
+        </member>
+        <member name="T:WaveEngine.Physics.SimulationStatusEnum">
+            <summary>
+            Simulation Status Enumeration
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.SimulationStatusEnum.NonInitialized">
+            <summary>
+            Non Initialized State
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.SimulationStatusEnum.Running">
+            <summary>
+            Running State
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Physics.SimulationStatusEnum.Paused">
+            <summary>
+            Paused State
+            </summary>
+        </member>
+    </members>
+</doc>

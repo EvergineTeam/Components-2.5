@@ -73,6 +73,21 @@ namespace WaveEngine.Components.GameActions
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PlaySoundGameAction" /> class.
+        /// </summary>
+        /// <param name="parent">The parent task.</param>
+        /// <param name="soundInfo">The sound info to play</param>
+        /// <param name="volume">The sound volume</param>
+        /// <param name="loop">The sound loop is enabled</param>
+        public PlaySoundGameAction(IGameAction parent, SoundInfo soundInfo, float volume = 1, bool loop = false)
+            : base(parent, "PlaySoundGameAction" + instances++)
+        {
+            this.SoundInfo = soundInfo;
+            this.volume = volume;
+            this.loop = loop;
+        }
+
+        /// <summary>
         /// Update the game action
         /// </summary>
         /// <param name="gameTime">The gameTime.</param>

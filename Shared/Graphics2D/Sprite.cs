@@ -82,6 +82,7 @@ namespace WaveEngine.Components.Graphics2D
         /// <summary>
         /// Sprite material path
         /// </summary>
+        [DataMember]
         private string materialPath;
 
         #region Properties

@@ -162,6 +162,7 @@ namespace WaveEngine.Framework.Graphics
         /// </summary>
         protected override void DefaultValues()
         {
+            base.DefaultValues();
             instances++;
             this.Rotation = Vector3.Zero;
         }

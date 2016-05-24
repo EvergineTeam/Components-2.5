@@ -134,6 +134,23 @@ namespace WaveEngine.Components.Graphics3D
 
         #region Public Methods
         /// <summary>
+        /// Create an internal model from a mesh
+        /// </summary>
+        /// <param name="graphicsDevice">The graphicsDevice device.</param>
+        /// <param name="mesh">The mesh</param>
+        public void FromMesh(GraphicsDevice graphicsDevice, Mesh mesh)
+        {
+            this.graphics = graphicsDevice;
+
+            this.Meshes = new List<Mesh>() { mesh };
+
+            var rootBone = new Bone(0, -1, "Root", Matrix.Identity);
+            this.Bones.Add(rootBone);
+
+            this.MeshBonePairs.Add(0, 0);
+        }
+
+        /// <summary>
         /// Loads this class with data from a primitive.
         /// </summary>
         /// <param name="graphicsDevice">The graphicsDevice device.</param>
@@ -283,9 +300,10 @@ namespace WaveEngine.Components.Graphics3D
                         byte[] bufferData = reader.ReadBytes(bufferSize);
 
                         int indexSize = reader.ReadInt32();
-                        var indices = new ushort[indexSize];
-
                         byte[] dataIndices = reader.ReadBytes(indexSize * 2);
+
+                        indexSize = (indexSize / 3) * 3;
+                        var indices = new ushort[indexSize];
 
                         for (int k = 0; k < indexSize; k++)
                         {

@@ -385,7 +385,7 @@ namespace WaveEngine.Components.Graphics2D
         {
             if (this.SpriteSheet != null && this.SpriteSheet.Sprites.Count() > 0)
             {
-                if (this.textureIndex > this.SpriteSheet.Sprites.Length)
+                if (this.textureIndex >= this.SpriteSheet.Sprites.Length)
                 {
                     this.TextureIndex = this.SpriteSheet.Sprites.Length - 1;
                 }

@@ -141,10 +141,10 @@ namespace WaveEngine.Components.UI
                             this.Transform2D.Effect,
                             this.Transform2D.DrawOrder);
 
-                        aux.X = aux.X + this.TextBlock.LinesInfo[i].SubTextList[j].Size.X;
+                        aux.X += this.TextBlock.LinesInfo[i].SubTextList[j].Size.X * this.Transform2D.XScale;
                     }
 
-                    this.position.Y = this.position.Y + ((this.TextBlock.FontHeight + this.TextBlock.LineSpacing) * this.Transform2D.YScale);
+                    this.position.Y += (this.TextBlock.FontHeight + this.TextBlock.LineSpacing) * this.Transform2D.YScale;
                 }
             }
         }

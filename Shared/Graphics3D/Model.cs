@@ -18,6 +18,7 @@ using WaveEngine.Common.Shared.Graphics;
 using WaveEngine.Components.Primitives;
 using WaveEngine.Framework.Services;
 using WaveEngine.Framework.Graphics;
+using WaveEngine.Common.Graphics;
 #endregion
 
 namespace WaveEngine.Components.Graphics3D
@@ -72,8 +73,12 @@ namespace WaveEngine.Components.Graphics3D
             }
 
             set
-            {               
-                this.ModelType = ModelType.Custom;             
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    this.ModelType = ModelType.Custom;
+                }
+
                 base.ModelPath = value;
             }
         }
@@ -150,6 +155,20 @@ namespace WaveEngine.Components.Graphics3D
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Creates the cube.
+        /// </summary>
+        /// <param name="mesh">The mesh</param>
+        /// <returns>A <see cref="Model"/> representing a cube.</returns>
+        public static Model CreateFromMesh(Mesh mesh)
+        {
+            Model model = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
+            model.InternalModel.FromMesh(WaveServices.GraphicsDevice, mesh);
+            model.modelType = ModelType.Custom;
+
+            return model;
+        }
+
         /// <summary>
         /// Creates the cube.
         /// </summary>

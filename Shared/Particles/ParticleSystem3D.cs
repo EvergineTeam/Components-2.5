@@ -277,13 +277,13 @@ namespace WaveEngine.Components.Particles
         }
 
         /// <summary>
-        ///     Gets or sets the How long these particles will last.
+        ///     Gets or sets the How long these particles will last. (In seconds)
         /// </summary>
         [DataMember]
         public float MinLife { get; set; }
 
         /// <summary>
-        /// Gets or sets the The max life.
+        /// Gets or sets the The max life. (In seconds)
         /// </summary>
         [DataMember]
         public float MaxLife { get; set; }

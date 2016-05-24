@@ -642,7 +642,7 @@ namespace WaveEngine.Components.UI
                                 i++;
                             }
 
-                            size = this.SpriteFont.MeasureString(stringBuilder.ToString());
+                            size = this.SpriteFont.MeasureString(stringBuilder.ToString()) * this.Transform2D.Scale;
 
                             LineInfo lineInfo = this.LinesInfo[lineInfoId];
                             lineInfo.AddText(stringBuilder.ToString(), color, size);

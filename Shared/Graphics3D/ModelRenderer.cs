@@ -94,6 +94,8 @@ namespace WaveEngine.Components.Graphics3D
         /// </summary>
         protected override void DefaultValues()
         {
+            base.DefaultValues();
+
             this.boneNames = new Dictionary<string, int>();
             instances++;
         }
