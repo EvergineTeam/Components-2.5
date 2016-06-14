@@ -23,7 +23,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The Image renderer.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class ImageControlRenderer : DrawableGUI
     {
         /// <summary>

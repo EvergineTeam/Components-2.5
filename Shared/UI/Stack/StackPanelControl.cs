@@ -20,7 +20,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The stack panel.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class StackPanelControl : Control
     {
         /// <summary>

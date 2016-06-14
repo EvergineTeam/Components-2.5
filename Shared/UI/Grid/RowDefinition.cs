@@ -17,7 +17,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// Defines row-specific properties that apply to Grid elements.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public sealed class RowDefinition
     {
         /// <summary>

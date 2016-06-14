@@ -24,7 +24,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The ProgressBar behavior
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class ProgressBarBehavior : FocusBehavior
     {
         #region Constants

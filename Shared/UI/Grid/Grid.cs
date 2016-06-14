@@ -22,7 +22,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// Grid decorate class
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class Grid : UIBase
     {
         /// <summary>

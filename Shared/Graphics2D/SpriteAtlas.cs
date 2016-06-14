@@ -118,12 +118,12 @@ namespace WaveEngine.Components.Graphics2D
 
             set
             {
+                this.isGlobalAsset = value;
+
                 if (this.isInitialized)
                 {
-                    throw new InvalidOperationException("Asset has already initialized.");
+                    this.RefreshAtlasTexture();
                 }
-
-                this.isGlobalAsset = value;
             }
         }
 

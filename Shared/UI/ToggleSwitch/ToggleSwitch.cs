@@ -25,7 +25,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// ToggleSwitch decorate class
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class ToggleSwitch : UIBase
     {
         /// <summary>

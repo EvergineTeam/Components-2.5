@@ -20,6 +20,7 @@ using System.Reflection;
 using WaveEngine.Common.Attributes;
 using WaveEngine.Common.Helpers;
 using System.Text;
+using System.Diagnostics;
 #endregion
 
 namespace WaveEngine.Components.Animation
@@ -430,14 +431,25 @@ namespace WaveEngine.Components.Animation
                     {
                         this.HandleEndAnimation();
                     }
+                    else
+                    {
+                        // Calc the new frame
+                        this.currentAnimationFrame = this.startFrame + (((int)(this.currentAnimationTime * this.framesPerSecond) + this.frameLength) % this.frameLength);
+                    }
                 }
-                else if (this.currentAnimationTime < 0)
+                else 
                 {
-                    this.HandleEndAnimation();
+                    if (this.currentAnimationTime < 0)
+                    {
+                        this.HandleEndAnimation();
+                    }
+                    else
+                    {
+                        // Calc the new frame
+                        this.currentAnimationFrame = this.startFrame + (((int)(this.currentAnimationTime * this.framesPerSecond) + this.frameLength) % this.frameLength);
+                    }
                 }
 
-                // Calc the new frame
-                this.currentAnimationFrame = this.startFrame + (((int)(this.currentAnimationTime * this.framesPerSecond) + this.frameLength) % this.frameLength);
                 this.SpriteAtlas.TextureIndex = this.currentSpriteSheetAnimation.First + this.currentAnimationFrame;
 
                 this.HandleKeyFrameEvents();

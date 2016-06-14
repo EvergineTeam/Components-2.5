@@ -22,7 +22,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// StackPanel decorate class
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class StackPanel : UIBase
     {
         /// <summary>

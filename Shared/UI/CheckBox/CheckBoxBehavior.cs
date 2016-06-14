@@ -24,7 +24,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The CheckBoxBehavior class.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class CheckBoxBehavior : FocusBehavior
     {
         /// <summary>

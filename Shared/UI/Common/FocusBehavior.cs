@@ -19,7 +19,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// Focused behavior
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class FocusBehavior : Behavior, IDisposable
     {
         /// <summary>

@@ -21,7 +21,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The grid panel.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class GridControl : Control
     {
         /// <summary>

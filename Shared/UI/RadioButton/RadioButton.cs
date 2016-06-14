@@ -25,7 +25,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// RadioButton decorate class
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class RadioButton : UIBase
     {
         /// <summary>

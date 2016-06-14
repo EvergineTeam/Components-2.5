@@ -22,7 +22,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The ToggleSwitch Behavior
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class ToggleSwitchBehavior : FocusBehavior
     {
         #region Constants

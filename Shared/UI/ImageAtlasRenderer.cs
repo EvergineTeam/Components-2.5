@@ -22,7 +22,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The Image atlas renderer.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class ImageAtlasRenderer : DrawableGUI
     {
         /// <summary>

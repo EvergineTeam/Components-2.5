@@ -16,7 +16,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// This class represent a grid column.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public sealed class ColumnDefinition
     {
         /// <summary>

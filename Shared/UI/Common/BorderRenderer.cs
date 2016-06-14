@@ -23,7 +23,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// Draw a simple border over controls
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class BorderRenderer : DrawableGUI
     {
         /// <summary>

@@ -22,7 +22,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The ButtonBehavior class.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class ButtonBehavior : FocusBehavior
     {
         /// <summary>

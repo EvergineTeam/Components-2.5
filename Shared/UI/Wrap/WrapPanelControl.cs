@@ -20,7 +20,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The wrap panel.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class WrapPanelControl : Control
     {
         /// <summary>

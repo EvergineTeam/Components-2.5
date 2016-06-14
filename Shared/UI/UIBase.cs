@@ -22,7 +22,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// UI decorator base class
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public abstract class UIBase : BaseDecorator
     {
         #region Properties

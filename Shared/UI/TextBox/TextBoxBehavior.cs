@@ -24,7 +24,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// TextBox Behavior
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class TextBoxBehavior : FocusBehavior
     {
         /// <summary>
@@ -339,53 +338,53 @@ namespace WaveEngine.Components.UI
         {
             if (this.inputService.KeyboardState.IsConnected && !this.isReadOnly && this.IsFocus)
             {
-                if (this.inputService.KeyboardState.D1 == ButtonState.Pressed &&
-                    this.beforeKeyboardState.D1 != ButtonState.Pressed)
+                if (this.inputService.KeyboardState.Number1 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.Number1 != ButtonState.Pressed)
                 {
                     this.AppendCharacter('1');
                 }
-                else if (this.inputService.KeyboardState.D2 == ButtonState.Pressed &&
-                    this.beforeKeyboardState.D2 != ButtonState.Pressed)
+                else if (this.inputService.KeyboardState.Number2 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.Number2 != ButtonState.Pressed)
                 {
                     this.AppendCharacter('2');
                 }
-                else if (this.inputService.KeyboardState.D3 == ButtonState.Pressed &&
-                    this.beforeKeyboardState.D3 != ButtonState.Pressed)
+                else if (this.inputService.KeyboardState.Number3 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.Number3 != ButtonState.Pressed)
                 {
                     this.AppendCharacter('3');
                 }
-                else if (this.inputService.KeyboardState.D4 == ButtonState.Pressed &&
-                    this.beforeKeyboardState.D4 != ButtonState.Pressed)
+                else if (this.inputService.KeyboardState.Number4 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.Number4 != ButtonState.Pressed)
                 {
                     this.AppendCharacter('4');
                 }
-                else if (this.inputService.KeyboardState.D5 == ButtonState.Pressed &&
-                    this.beforeKeyboardState.D5 != ButtonState.Pressed)
+                else if (this.inputService.KeyboardState.Number5 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.Number5 != ButtonState.Pressed)
                 {
                     this.AppendCharacter('5');
                 }
-                else if (this.inputService.KeyboardState.D6 == ButtonState.Pressed &&
-                    this.beforeKeyboardState.D6 != ButtonState.Pressed)
+                else if (this.inputService.KeyboardState.Number6 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.Number6 != ButtonState.Pressed)
                 {
                     this.AppendCharacter('6');
                 }
-                else if (this.inputService.KeyboardState.D7 == ButtonState.Pressed &&
-                    this.beforeKeyboardState.D7 != ButtonState.Pressed)
+                else if (this.inputService.KeyboardState.Number7 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.Number7 != ButtonState.Pressed)
                 {
                     this.AppendCharacter('7');
                 }
-                else if (this.inputService.KeyboardState.D8 == ButtonState.Pressed &&
-                    this.beforeKeyboardState.D8 != ButtonState.Pressed)
+                else if (this.inputService.KeyboardState.Number8 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.Number8 != ButtonState.Pressed)
                 {
                     this.AppendCharacter('8');
                 }
-                else if (this.inputService.KeyboardState.D9 == ButtonState.Pressed &&
-                    this.beforeKeyboardState.D9 != ButtonState.Pressed)
+                else if (this.inputService.KeyboardState.Number9 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.Number9 != ButtonState.Pressed)
                 {
                     this.AppendCharacter('9');
                 }
-                else if (this.inputService.KeyboardState.D0 == ButtonState.Pressed &&
-                    this.beforeKeyboardState.D0 != ButtonState.Pressed)
+                else if (this.inputService.KeyboardState.Number0 == ButtonState.Pressed &&
+                    this.beforeKeyboardState.Number0 != ButtonState.Pressed)
                 {
                     this.AppendCharacter('0');
                 }
@@ -433,6 +432,11 @@ namespace WaveEngine.Components.UI
                     this.beforeKeyboardState.I != ButtonState.Pressed)
                 {
                     this.AppendCharacter('i');
+                }
+                else if (this.inputService.KeyboardState.Grave == ButtonState.Pressed &&
+                    this.beforeKeyboardState.Grave != ButtonState.Pressed)
+                {
+                    this.AppendCharacter('º');
                 }
                 else if (this.inputService.KeyboardState.J == ButtonState.Pressed &&
                    this.beforeKeyboardState.J != ButtonState.Pressed)
@@ -519,11 +523,6 @@ namespace WaveEngine.Components.UI
                 {
                     this.AppendCharacter('z');
                 }
-                else if (this.inputService.KeyboardState.Grave == ButtonState.Pressed &&
-                    this.beforeKeyboardState.Grave != ButtonState.Pressed)
-                {
-                    this.AppendCharacter('º');
-                }
                 else if (this.inputService.KeyboardState.Space == ButtonState.Pressed &&
                    this.beforeKeyboardState.Space != ButtonState.Pressed)
                 {
@@ -552,13 +551,13 @@ namespace WaveEngine.Components.UI
                 // Special keys
                 if ((this.inputService.KeyboardState.LeftShift == ButtonState.Pressed && this.beforeKeyboardState.LeftShift != ButtonState.Pressed) ||
                      (this.inputService.KeyboardState.RightShift == ButtonState.Pressed && this.beforeKeyboardState.RightShift != ButtonState.Pressed) ||
-                     (this.inputService.KeyboardState.CapsLock == ButtonState.Pressed && this.beforeKeyboardState.CapsLock != ButtonState.Pressed && !this.uppercase))
+                     (this.inputService.KeyboardState.CapitalLock == ButtonState.Pressed && this.beforeKeyboardState.CapitalLock != ButtonState.Pressed && !this.uppercase))
                 {
                     this.uppercase = true;
                 }
                 else if ((this.inputService.KeyboardState.LeftShift == ButtonState.Release && this.beforeKeyboardState.LeftShift != ButtonState.Release) ||
                      (this.inputService.KeyboardState.RightShift == ButtonState.Release && this.beforeKeyboardState.RightShift != ButtonState.Release) ||
-                     (this.inputService.KeyboardState.CapsLock == ButtonState.Pressed && this.beforeKeyboardState.CapsLock != ButtonState.Pressed && this.uppercase))
+                     (this.inputService.KeyboardState.CapitalLock == ButtonState.Pressed && this.beforeKeyboardState.CapitalLock != ButtonState.Pressed && this.uppercase))
                 {
                     this.uppercase = false;
                 }

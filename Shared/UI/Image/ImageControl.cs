@@ -23,7 +23,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// Image control.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class ImageControl : Control
     {
         /// <summary>

@@ -165,6 +165,7 @@ namespace WaveEngine.Components.Particles
         ///     The num particles.
         /// </value>
         [DataMember]
+        [RenderPropertyAsInput(MinLimit = 1, MaxLimit = MAXPARTICLES)]
         public int NumParticles
         {
             get
@@ -285,6 +286,7 @@ namespace WaveEngine.Components.Particles
         /// <value>
         ///     The end delta scale.
         /// </value>
+        [RenderPropertyAsFInput(MinLimit = 0, MaxLimit = float.MaxValue)]
         public float EndDeltaScale
         {
             get
@@ -416,10 +418,10 @@ namespace WaveEngine.Components.Particles
             this.RandomVelocity = new Vector2(0.5f);
             this.Gravity = Vector2.Zero;
             this.EmitRate = 0;
-            this.EmitterShape = Shape.Rectangle;            
+            this.EmitterShape = Shape.Rectangle;
             this.MaxColor = Color.White;
             this.MinLife = 1;
-            this.MaxLife = 2;            
+            this.MaxLife = 2;
             this.MinColor = Color.White;
         }
 

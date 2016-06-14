@@ -21,7 +21,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The StackPanel Renderer
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class StackPanelRenderer : DrawableGUI
     {
         /// <summary>

@@ -17,7 +17,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// This class represent the grid size.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public struct GridLength : IEquatable<GridLength>
     {
         /// <summary>

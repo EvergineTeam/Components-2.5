@@ -22,7 +22,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// RadioButton Behavior
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class RadioButtonBehavior : FocusBehavior
     {
         /// <summary>

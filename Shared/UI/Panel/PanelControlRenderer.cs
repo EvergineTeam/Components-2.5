@@ -23,7 +23,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The Panel renderer
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class PanelControlRenderer : DrawableGUI
     {
         /// <summary>

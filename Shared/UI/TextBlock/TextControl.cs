@@ -29,7 +29,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     ///     The text block.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class TextControl : Control
     {
         #region Static Fields

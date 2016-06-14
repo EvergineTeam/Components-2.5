@@ -24,7 +24,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The SliderBehavior class.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class SliderBehavior : FocusBehavior
     {
         #region Constants

@@ -25,7 +25,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// ChekcBox decorate class
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class CheckBox : UIBase
     {
         #region Constants

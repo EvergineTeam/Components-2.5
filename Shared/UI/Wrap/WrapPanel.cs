@@ -22,7 +22,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// WrapPanel decorate class
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class WrapPanel : UIBase
     {
         /// <summary>

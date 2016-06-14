@@ -150,6 +150,7 @@ namespace WaveEngine.Components.Particles
         /// <value>
         ///     The num particles.
         /// </value>
+        [RenderPropertyAsInput(MinLimit = 1, MaxLimit = 32000)]
         public int NumParticles
         {
             get

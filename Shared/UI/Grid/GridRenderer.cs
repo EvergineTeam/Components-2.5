@@ -24,7 +24,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The Grid renderer.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class GridRenderer : DrawableGUI
     {
         /// <summary>

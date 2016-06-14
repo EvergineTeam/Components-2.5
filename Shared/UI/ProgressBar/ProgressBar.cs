@@ -25,7 +25,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// Progress bar decorate class
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class ProgressBar : UIBase
     {
         /// <summary>

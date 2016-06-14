@@ -23,7 +23,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The image atlas.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class ImageAtlas : Control
     {
         /// <summary>

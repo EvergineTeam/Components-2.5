@@ -22,7 +22,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// Simple panel as a grid with one row and one column
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class PanelControl : Control
     {
         /// <summary> 

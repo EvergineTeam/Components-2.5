@@ -24,7 +24,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// Image decorate class
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class Image : UIBase
     {
         /// <summary>

@@ -25,7 +25,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// Button decorate class
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class Button : UIBase
     {
         /// <summary>

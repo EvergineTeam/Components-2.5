@@ -21,7 +21,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The WrapPanel Renderer
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class WrapPanelRenderer : DrawableGUI
     {
         /// <summary>

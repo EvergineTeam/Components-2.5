@@ -25,7 +25,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// UI Slider decorate class
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class Slider : UIBase
     {
         /// <summary>

@@ -24,7 +24,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// TextBlock decorate class
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class TextBlock : UIBase
     {
         /// <summary>

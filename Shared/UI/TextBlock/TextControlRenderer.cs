@@ -21,7 +21,6 @@ namespace WaveEngine.Components.UI
     /// <summary>
     /// The text block renderer component.
     /// </summary>
-    [DataContract(Namespace = "WaveEngine.Components.UI")]
     public class TextControlRenderer : DrawableGUI
     {
         /// <summary>
