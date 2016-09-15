@@ -144,13 +144,17 @@ namespace WaveEngine.Components.UI
                 {
                     Text = textBlock.Text,
                     Foreground = textBlock.Foreground,
+                    IsGlobalAsset = textBlock.IsGlobalAsset,
                     Margin = textBlock.Margin,
                     HorizontalAlignment = textBlock.HorizontalAlignment,
                     VerticalAlignment = textBlock.VerticalAlignment,
                     LineSpacing = textBlock.LineSpacing,
                     LineWidth = textBlock.LineWidth,
                     TouchMargin = textBlock.TouchMargin,
-                    TextWrapping = textBlock.TextWrapping
+                    TextWrapping = textBlock.TextWrapping,
+                    TextAlignment = textBlock.TextAlignment,
+                    RichTextEnabled = textBlock.RichTextEnabled,
+                    Enabled = textBlock.Enabled,
                 });
 
                 textEntity.RefreshDependencies();

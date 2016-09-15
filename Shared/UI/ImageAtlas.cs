@@ -224,8 +224,11 @@ namespace WaveEngine.Components.UI
                 }
 
                 this.SourceRectangle = this.SpriteSheet.SpriteDictionary[this.textureName].Rectangle;
-                Transform2D.Rectangle.Width = this.SourceRectangle.Width;
-                Transform2D.Rectangle.Height = this.SourceRectangle.Height;
+
+                RectangleF rectangle = this.Transform2D.Rectangle;
+                rectangle.Width = this.SourceRectangle.Width;
+                rectangle.Height = this.SourceRectangle.Height;
+                this.Transform2D.Rectangle = rectangle;
             }
         }
 

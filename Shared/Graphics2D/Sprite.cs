@@ -180,10 +180,11 @@ namespace WaveEngine.Components.Graphics2D
 
             set
             {
+                this.UnloadTexture();
+                this.texture = value;
+
                 if (this.texture != null)
                 {
-                    this.UnloadTexture();
-                    this.texture = value;
                     this.UpdateSourceRectangle();
                 }
             }
@@ -501,17 +502,21 @@ namespace WaveEngine.Components.Graphics2D
 
             if (this.texture != null)
             {
+                RectangleF rectangle = this.Transform2D.Rectangle;
+
                 if (this.sourceRectangle.HasValue)
                 {
                     Rectangle rect = this.sourceRectangle.Value;
-                    this.Transform2D.Rectangle.Width = rect.Width;
-                    this.Transform2D.Rectangle.Height = rect.Height;
+                    rectangle.Width = rect.Width;
+                    rectangle.Height = rect.Height;
                 }
                 else
                 {
-                    this.Transform2D.Rectangle.Width = this.texture.Width;
-                    this.Transform2D.Rectangle.Height = this.texture.Height;
+                    rectangle.Width = this.texture.Width;
+                    rectangle.Height = this.texture.Height;
                 }
+
+                this.Transform2D.Rectangle = rectangle;
             }
         }
         #endregion

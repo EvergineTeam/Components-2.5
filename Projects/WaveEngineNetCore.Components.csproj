@@ -21,7 +21,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>WaveEngineKeyWindows.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>WaveEngineKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -58,7 +58,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="WaveEngineKeyWindows.snk" />
+    <None Include="WaveEngineKey.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WaveEngine.Common\Projects\WaveEngineNetCore.Common.csproj">

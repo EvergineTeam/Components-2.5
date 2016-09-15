@@ -195,14 +195,15 @@ namespace WaveEngine.Components.UI
         /// <param name="finalSize">The final size.</param>
         public override void Arrange(RectangleF finalSize)
         {
-            if (this.Transform2D.Rectangle.Width <= 0)
+            RectangleF currentRect = this.Transform2D.Rectangle;
+            if (currentRect.Width <= 0)
             {
-                this.Transform2D.Rectangle.Width = this.desiredSize.X;
+                currentRect.Width = this.desiredSize.X;
             }
 
-            if (this.Transform2D.Rectangle.Height <= 0)
+            if (currentRect.Height <= 0)
             {
-                this.Transform2D.Rectangle.Height = this.desiredSize.Y;
+                currentRect.Height = this.desiredSize.Y;
             }                              
 
             switch (this.Stretch)
@@ -210,8 +211,8 @@ namespace WaveEngine.Components.UI
                 case Stretch.None:
                     break;
                 case Stretch.Fill:
-                    this.Transform2D.Rectangle.Width = finalSize.Width - this.Margin.Left - this.Margin.Right;
-                    this.Transform2D.Rectangle.Height = finalSize.Height - this.Margin.Top - this.Margin.Bottom;
+                    currentRect.Width = finalSize.Width - this.Margin.Left - this.Margin.Right;
+                    currentRect.Height = finalSize.Height - this.Margin.Top - this.Margin.Bottom;
                     break;
                 case Stretch.Uniform:
 
@@ -221,13 +222,13 @@ namespace WaveEngine.Components.UI
 
                         if (finalSize.Height < finalProportionalHeight)
                         {
-                            this.Transform2D.Rectangle.Width = ((this.width * finalSize.Height) / this.height) - this.Margin.Left - this.Margin.Right;
-                            this.Transform2D.Rectangle.Height = finalSize.Height - this.Margin.Top - this.Margin.Bottom;
+                            currentRect.Width = ((this.width * finalSize.Height) / this.height) - this.Margin.Left - this.Margin.Right;
+                            currentRect.Height = finalSize.Height - this.Margin.Top - this.Margin.Bottom;
                         }
                         else
                         {
-                            this.Transform2D.Rectangle.Width = finalSize.Width - this.Margin.Left - this.Margin.Right;
-                            this.Transform2D.Rectangle.Height = finalProportionalHeight - this.Margin.Top - this.Margin.Bottom;
+                            currentRect.Width = finalSize.Width - this.Margin.Left - this.Margin.Right;
+                            currentRect.Height = finalProportionalHeight - this.Margin.Top - this.Margin.Bottom;
                         }
                     }
                     else
@@ -236,13 +237,13 @@ namespace WaveEngine.Components.UI
 
                         if (finalSize.Width < finalProportionalWidth)
                         {
-                            this.Transform2D.Rectangle.Width = finalSize.Width - this.Margin.Left - this.Margin.Right;
-                            this.Transform2D.Rectangle.Height = ((this.height * finalSize.Width) / this.width) - this.Margin.Top - this.Margin.Bottom;
+                            currentRect.Width = finalSize.Width - this.Margin.Left - this.Margin.Right;
+                            currentRect.Height = ((this.height * finalSize.Width) / this.width) - this.Margin.Top - this.Margin.Bottom;
                         }
                         else
                         {
-                            this.Transform2D.Rectangle.Width = finalProportionalWidth - this.Margin.Left - this.Margin.Right;
-                            this.Transform2D.Rectangle.Height = finalSize.Height - this.Margin.Top - this.Margin.Bottom;
+                            currentRect.Width = finalProportionalWidth - this.Margin.Left - this.Margin.Right;
+                            currentRect.Height = finalSize.Height - this.Margin.Top - this.Margin.Bottom;
                         }
                     }
 
@@ -255,13 +256,13 @@ namespace WaveEngine.Components.UI
 
                         if (finalSize.Width > finalProportionalWidth)
                         {
-                            this.Transform2D.Rectangle.Width = finalSize.Width - this.Margin.Left - this.Margin.Right;
-                            this.Transform2D.Rectangle.Height = ((this.height * finalSize.Width) / this.width) - this.Margin.Top - this.Margin.Bottom;
+                            currentRect.Width = finalSize.Width - this.Margin.Left - this.Margin.Right;
+                            currentRect.Height = ((this.height * finalSize.Width) / this.width) - this.Margin.Top - this.Margin.Bottom;
                         }
                         else
                         {
-                            this.Transform2D.Rectangle.Width = finalProportionalWidth - this.Margin.Left - this.Margin.Right;
-                            this.Transform2D.Rectangle.Height = finalSize.Height - this.Margin.Top - this.Margin.Bottom;
+                            currentRect.Width = finalProportionalWidth - this.Margin.Left - this.Margin.Right;
+                            currentRect.Height = finalSize.Height - this.Margin.Top - this.Margin.Bottom;
                         }
                     }
                     else
@@ -270,13 +271,13 @@ namespace WaveEngine.Components.UI
 
                         if (finalSize.Height > finalProportionalHeight)
                         {
-                            this.Transform2D.Rectangle.Width = ((this.width * finalSize.Height) / this.height) - this.Margin.Left - this.Margin.Right;
-                            this.Transform2D.Rectangle.Height = finalSize.Height - this.Margin.Top - this.Margin.Bottom;
+                            currentRect.Width = ((this.width * finalSize.Height) / this.height) - this.Margin.Left - this.Margin.Right;
+                            currentRect.Height = finalSize.Height - this.Margin.Top - this.Margin.Bottom;
                         }
                         else
                         {
-                            this.Transform2D.Rectangle.Width = finalSize.Width - this.Margin.Left - this.Margin.Right;
-                            this.Transform2D.Rectangle.Height = finalProportionalHeight - this.Margin.Top - this.Margin.Bottom;
+                            currentRect.Width = finalSize.Width - this.Margin.Left - this.Margin.Right;
+                            currentRect.Height = finalProportionalHeight - this.Margin.Top - this.Margin.Bottom;
                         }
                     }
 
@@ -290,13 +291,13 @@ namespace WaveEngine.Components.UI
             switch (this.HorizontalAlignment)
             {
                 case HorizontalAlignment.Left:
-                    this.Transform2D.Rectangle.X = finalSize.X + this.Margin.Left;
+                    currentRect.X = finalSize.X + this.Margin.Left;
                     break;
                 case HorizontalAlignment.Center:
-                    this.Transform2D.Rectangle.X = finalSize.X + (finalSize.Width / 2) - (rect.Width / 2) - this.Margin.Right + this.Margin.Left;
+                    currentRect.X = finalSize.X + (finalSize.Width / 2) - (rect.Width / 2) - this.Margin.Right + this.Margin.Left;
                     break;
                 case HorizontalAlignment.Right:
-                    this.Transform2D.Rectangle.X = finalSize.X + finalSize.Width - this.Margin.Right - rect.Width;
+                    currentRect.X = finalSize.X + finalSize.Width - this.Margin.Right - rect.Width;
                     break;
                 case HorizontalAlignment.Stretch:                  
                     break;
@@ -305,20 +306,22 @@ namespace WaveEngine.Components.UI
             switch (this.VerticalAlignment)
             {
                 case VerticalAlignment.Top:
-                    this.Transform2D.Rectangle.Y = finalSize.Y + this.Margin.Top;
+                    currentRect.Y = finalSize.Y + this.Margin.Top;
                     break;
                 case VerticalAlignment.Center:
-                    this.Transform2D.Rectangle.Y = finalSize.Y + (finalSize.Height / 2) - (rect.Height / 2) - this.Margin.Bottom + this.Margin.Top;
+                    currentRect.Y = finalSize.Y + (finalSize.Height / 2) - (rect.Height / 2) - this.Margin.Bottom + this.Margin.Top;
                     break;
                 case VerticalAlignment.Bottom:
-                    this.Transform2D.Rectangle.Y = finalSize.Y + finalSize.Height - this.Margin.Bottom - rect.Height;
+                    currentRect.Y = finalSize.Y + finalSize.Height - this.Margin.Bottom - rect.Height;
                     break;
                 case VerticalAlignment.Stretch:
                     break;
             }
 
-            this.Transform2D.Rectangle.X += this.Transform2D.Origin.X * rect.Width;
-            this.Transform2D.Rectangle.Y += this.Transform2D.Origin.Y * rect.Height;
+            currentRect.X += this.Transform2D.Origin.X * rect.Width;
+            currentRect.Y += this.Transform2D.Origin.Y * rect.Height;
+
+            this.Transform2D.Rectangle = currentRect;
         }
         #endregion
 

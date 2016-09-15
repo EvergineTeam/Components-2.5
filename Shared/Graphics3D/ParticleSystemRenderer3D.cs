@@ -881,13 +881,20 @@ namespace WaveEngine.Components.Graphics3D
             }
 
             // Color
-            if (this.settings.MinColor != this.settings.MaxColor)
+            if (this.settings.LinearColorEnabled && this.settings.InterpolationColors != null && this.settings.InterpolationColors.Count >= 1)
             {
-                p.CurrentColor = Color.Lerp(this.settings.MinColor, this.settings.MaxColor, 1 - (float)this.random.NextDouble());
+                p.CurrentColor = this.settings.InterpolationColors[0];
             }
             else
             {
-                p.CurrentColor = this.settings.MinColor;
+                if (this.settings.MinColor != this.settings.MaxColor)
+                {
+                    p.CurrentColor = Color.Lerp(this.settings.MinColor, this.settings.MaxColor, 1 - (float)this.random.NextDouble());
+                }
+                else
+                {
+                    p.CurrentColor = this.settings.MinColor;
+                }
             }
 
             p.Color = p.CurrentColor;

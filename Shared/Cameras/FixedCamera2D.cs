@@ -106,6 +106,25 @@ namespace WaveEngine.Components.Cameras
         }
 
         /// <summary>
+        /// Gets or sets the camera order.
+        /// </summary>
+        /// <value>
+        /// The near plane.
+        /// </value>
+        public float CameraOrder
+        {
+            get
+            {
+                return this.entity.FindComponent<Camera2D>().CameraOrder;
+            }
+
+            set
+            {
+                this.entity.FindComponent<Camera2D>().CameraOrder = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the RenderTarget associated to the camera.
         /// </summary>
         /// <value>

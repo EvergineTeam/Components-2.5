@@ -318,15 +318,6 @@ namespace WaveEngine.Components.Particles
         public float MaxLife { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether linear color interpolation is enabled.
-        /// </summary>
-        /// <value>
-        ///     <c>true</c> if linear color interpolation is enabled; otherwise, <c>false</c>.
-        /// </value>
-        [DataMember]
-        public bool LinearColorEnabled { get; set; }
-
-        /// <summary>
         ///     Gets or sets the Range of values controlling the particle color and alpha.
         /// </summary>
         [DataMember]
@@ -339,10 +330,20 @@ namespace WaveEngine.Components.Particles
         public Color MaxColor { get; set; }
 
         /// <summary>
-        /// Gets or sets Interpolation Colors
+        ///     Gets or sets a value indicating whether linear color interpolation is enabled.
         /// </summary>
-        [DontRenderProperty]
+        /// <value>
+        ///     <c>true</c> if linear color interpolation is enabled; otherwise, <c>false</c>.
+        /// </value>
         [DataMember]
+        [RenderProperty(Tag = 1)]
+        public bool LinearColorEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets Interpolation Colors
+        /// </summary>        
+        [DataMember]
+        [RenderProperty(AttatchToTag = 1, AttachToValue = true)]
         public List<Color> InterpolationColors { get; set; }
 
         /// <summary>

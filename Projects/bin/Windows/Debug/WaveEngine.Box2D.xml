@@ -1,0 +1,3001 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WaveEngine.Box2D</name>
+    </assembly>
+    <members>
+        <member name="T:WaveEngine.Box2D.Box2DRigidBody">
+            <summary>
+            The Box2DRigidBody implements Box2D rigid body for Wave
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DRigidBody.isDestroyed">
+            <summary>
+            The joint is removed
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DRigidBody.Simulation2D">
+            <summary>
+            The simulation 2D
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DRigidBody.Body">
+            <summary>
+            The Box2D body
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DRigidBody.userData">
+            <summary>
+            The user data instance
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DRigidBody.userDataKey">
+            <summary>
+            The user data key handle
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DRigidBody.colliderList">
+            <summary>
+            The collider list
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DRigidBody.rigidBodyDef">
+            <summary>
+            Rigid body definition
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.Position">
+            <summary>
+            Gets the world position of the body.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.Angle">
+            <summary>
+            Gets the world angle of the body in radians. 
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.LinearVelocity">
+            <summary>
+            Gets or sets the linear velocity of the body's origin in world co-ordinates. 
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.AngularVelocity">
+            <summary>
+            Gets or sets the angular velocity of the body. 
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.LinearDamping">
+            <summary>
+            Gets or sets the linear damping is use to reduce the linear velocity. 
+            <remarks>The damping parameter can be larger than 1.0f but the damping effect becomes sensitive to the time step when the damping parameter is large.</remarks>
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.AngularDamping">
+            <summary>
+            Gets or sets the angular damping is use to reduce the angular velocity.
+            <remarks>The damping parameter can be larger than 1.0f but the damping effect becomes sensitive to the time step when the damping parameter is large.</remarks>
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.AllowSleep">
+            <summary>
+            Gets or sets a value indicating whether or not this body should never fall asleep. Note that this increases CPU usage.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.Awake">
+            <summary>
+            Gets or sets a value indicating whether this body is awake 
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.FixedRotation">
+            <summary>
+            Gets or sets a value indicating whether this body be prevented from rotating. Useful for characters.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.Bullet">
+            <summary>
+            Gets or sets a value indicating whether this is a fast moving body that should be prevented from tunneling through other moving bodies?
+            <remarks>
+            Note that all bodies are prevented from tunneling through kinematic and static bodies. 
+            This setting is only considered on dynamic bodies.
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.Active">
+            <summary>
+            Gets or sets a value indicating whether thithis body start out active? 
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.GravityScale">
+            <summary>
+            Gets or sets the scale the gravity applied to this body. 
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.Type">
+            <summary>
+            Gets or sets the rigid body 2D type
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.UserData">
+            <summary>
+            Gets or sets the object user data
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.WorldCenter">
+            <summary>
+            Gets the world position of the center of mass.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.LocalCenter">
+            <summary>
+            Gets the local position of the center of the mass.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.ColliderList">
+            <summary>
+            Gets the collider list
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.Mass">
+            <summary>
+            Gets the total mass of the body, usually in kg-m^2.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.Inertia">
+            <summary>
+            Gets the rotational inertia of the body about the local origin, usually in kg-m^2.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.MassData">
+            <summary>
+            Gets or sets the mass data of the body.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRigidBody.IsDestroyed">
+            <summary>
+            Gets a value indicating whether the body is destroyed
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.#ctor(WaveEngine.Box2D.Box2DSimulation,WaveEngine.Common.Physics2D.RigidBodyDef2D)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DRigidBody" /> class.
+            </summary>
+            <param name="simulation2D">The box2D world</param>
+            <param name="rigidBodyDef">The definition of Rigid body</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.SetTransform(WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Set the position of the body's origin and rotation. This breaks any contacts and wakes the other bodies. Manipulating a body's transform may cause non-physical behavior.
+            </summary>
+            <param name="worldPosition">the world position of the body's local origin.</param>
+            <param name="angle">the world rotation in radians.</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.ApplyForce(WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,System.Boolean)">
+            <summary>
+            Apply a force at a world point. If the force is not applied at the center of mass, it will generate a torque and affect the angular velocity. This wakes up the body.
+            </summary>
+            <param name="force">The world force vector, usually in Newtons (N).</param>
+            <param name="point">The world position of the point of application.</param>
+            <param name="wake">Also wake up the body</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.ApplyForceToCenter(WaveEngine.Common.Math.Vector2,System.Boolean)">
+            <summary>
+            Apply a force to the center of mass. This wakes up the body.
+            </summary>
+            <param name="force">The world force vector, usually in Newtons (N).</param>
+            <param name="wake">Also wake up the body</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.ApplyLinearImpulse(WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,System.Boolean)">
+            <summary>
+            Apply an impulse at a point. This immediately modifies the velocity. It also modifies the angular velocity if the point of application is not at the center of mass. This wakes up the body.
+            </summary>
+            <param name="impulse">The world impulse vector, usually in N-seconds or kg-m/s.</param>
+            <param name="point">The world position of the point of application.</param>
+            <param name="wake">Also wake up the body</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.ApplyTorque(System.Single,System.Boolean)">
+            <summary>
+            Apply a torque. This affects the angular velocity without affecting the linear velocity of the center of mass. This wakes up the body.
+            </summary>
+            <param name="torque">About the z-axis (out of the screen), usually in N-m.</param>
+            <param name="wake">Also wake up the body</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.CreateCollider(WaveEngine.Common.Physics2D.ColliderDef2D)">
+            <summary>
+            Creates a collider with the specified definition
+            </summary>        
+            <param name="def">The collider 2D definition</param>
+            <returns>The collider 2D</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.DestroyCollider(WaveEngine.Common.Physics2D.ICollider2D)">
+            <summary>
+            Destroy a fixture. This removes the fixture from the broad-phase and destroys all contacts associated with this fixture.
+            This will automatically adjust the mass of the body if the body is dynamic and the fixture has positive density. 
+            All fixtures attached to a body are implicitly destroyed when the body is destroyed.
+            </summary>
+            <param name="collider">The collider 2D to be removed</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.GetLinearVelocityFromLocalPoint(WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Get the world velocity of a local point.
+            </summary>
+            <param name="localPoint">Point in local coordinates</param>
+            <returns>The world velocity of a point.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.GetLinearVelocityFromWorldPoint(WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Get the world linear velocity of a world point attached to this body..
+            </summary>
+            <param name="localPoint">Point in world coordinates</param>
+            <returns>The world velocity of a point.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.GetLocalPoint(WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Gets a local point relative to the body's origin given a world point
+            </summary>
+            <param name="worldPoint">Point in world coordinates</param>
+            <returns>The corresponding local point relative to the body's origin.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.GetLocalVector(WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Gets a local vector given a world vector.
+            </summary>
+            <param name="worldVector">Vector in world coordinates.</param>
+            <returns>The corresponding local vector</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.GetWorldPoint(WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Get the world coordinates of a point given the local coordinates.
+            </summary>
+            <param name="localPoint">A point on the body measured relative the the body's origin.</param>
+            <returns>The same point expressed in world coordinates.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.GetWorldVector(WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Get the world coordinates of a vector given the local coordinates.
+            </summary>
+            <param name="localVector">A vector fixed in the body.</param>
+            <returns>The same vector expressed in world coordinates</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.DestroyBody">
+            <summary>
+            Destroy box2D body
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.ResetMassData">
+            <summary>
+            Reset the mass data
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.RegenerateBody">
+            <summary>
+            Regenerate body
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRigidBody.InstantiateRigidBody(WaveEngine.Common.Physics2D.RigidBodyDef2D)">
+            <summary>
+            Create the rigid body
+            </summary>
+            <param name="def">The rigid body definition</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DDebugDraw">
+            <summary>
+            Box2D debug draw instance
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DDebugDraw.simulation">
+            <summary>
+            The simulation 2D
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DDebugDraw.ImplementationInstance">
+            <summary>
+            the debug draw instance
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DDebugDraw.IsActive">
+            <summary>
+            Gets a value indicating whether this debug draw is active
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DDebugDraw.#ctor(WaveEngine.Box2D.Box2DSimulation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DDebugDraw" /> class.
+            </summary>
+            <param name="simulation">The simulation</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DDebugDraw.DrawCircle(Box2D.b2Vec2,System.Single,Box2D.b2Color)">
+            <summary>
+            Draw a circle
+            </summary>
+            <param name="center">The center.</param>
+            <param name="radius">The radius.</param>
+            <param name="color">The color.</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DDebugDraw.DrawSolidCircle(Box2D.b2Vec2,System.Single,Box2D.b2Vec2,Box2D.b2Color)">
+            <summary>
+            Draw a solid circle
+            </summary>
+            <param name="center">The center.</param>
+            <param name="radius">The radius.</param>
+            <param name="axis">The axis.</param>
+            <param name="color">The color.</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DDebugDraw.DrawPolygon(Box2D.b2Vec2[],System.Int32,Box2D.b2Color)">
+            <summary>
+            Draw a polygon
+            </summary>
+            <param name="vertices">The vertices</param>
+            <param name="vertexCount">The number of vertices</param>
+            <param name="color">The color</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DDebugDraw.DrawSolidPolygon(Box2D.b2Vec2[],System.Int32,Box2D.b2Color)">
+            <summary>
+            Draw a solid polygon
+            </summary>
+            <param name="vertices">The vertices</param>
+            <param name="vertexCount">The number of vertices</param>
+            <param name="color">The color</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DDebugDraw.DrawSegment(Box2D.b2Vec2,Box2D.b2Vec2,Box2D.b2Color)">
+            <summary>
+            Draw a segment
+            </summary>
+            <param name="p1">The first point of the segment</param>
+            <param name="p2">The second point of the segment</param>
+            <param name="color">The color.</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DDebugDraw.DrawTransform(Box2D.b2Transform)">
+            <summary>
+            Draw a transform
+            </summary>
+            <param name="xf">The trasnform</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DCollideHelper">
+            <summary>
+            Collider helper class
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DCollideHelper.collisionMatrix">
+            <summary>
+            Collision matrix
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DCollideHelper.simulation">
+            <summary>
+            The simulation
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DCollideHelper.cachedTransformA">
+            <summary>
+            The cached transform A
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DCollideHelper.cachedTransformB">
+            <summary>
+            The cached transform B
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DCollideHelper.cachedManifold">
+            <summary>
+            The cached manifold
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DCollideHelper.cachedRectangleA">
+            <summary>
+            The cached aabb A
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DCollideHelper.cachedRectangleB">
+            <summary>
+            The cached aabb B
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DCollideHelper.#ctor(WaveEngine.Box2D.Box2DSimulation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DCollideHelper" /> class.
+            </summary>
+            <param name="simulation">The simulation</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DCollideHelper.TestPoint(WaveEngine.Box2D.Box2DColliderShape,WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@,System.Single)">
+            <summary>
+            Test if shape contains 
+            </summary>
+            <param name="shape">The shape</param>
+            <param name="point">The point</param>
+            <param name="shapePosition">The shape position</param>
+            <param name="shapeAngle">The shape angle</param>
+            <returns>True if intersects</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DCollideHelper.TestRectangle(WaveEngine.Box2D.Box2DColliderShape,WaveEngine.Common.Math.RectangleF@,WaveEngine.Common.Math.Vector2@,System.Single)">
+            <summary>
+            Test if shape contains a rectangle
+            </summary>
+            <param name="shape">The shape</param>
+            <param name="rectangle">The rectangle</param>
+            <param name="shapePosition">The shape position</param>
+            <param name="shapeAngle">The shape angle</param>
+            <returns>True if intersects</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DCollideHelper.TestShapeCollide(WaveEngine.Box2D.Box2DColliderShape,WaveEngine.Common.Math.Vector2,System.Single,WaveEngine.Box2D.Box2DColliderShape,WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Test shape collision
+            </summary>
+            <param name="shapeA">The shape A</param>
+            <param name="positionA">The position A</param>
+            <param name="angleA">The angle A</param>
+            <param name="shapeB">The shape B</param>
+            <param name="positionB">The position B</param>
+            <param name="angleB">The angle B</param>
+            <returns>If the collider intersects</returns>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DCollideHelper.CollideShapesDelegate">
+            <summary>
+            Detect collision between shapes
+            </summary>
+            <param name="manifold">The result</param>
+            <param name="shapeA">The shape A</param>
+            <param name="transformA">The transform A</param>
+            <param name="shapeB">The shape B</param>
+            <param name="transformB">The transform B</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DCollideHelper.CircleToCircleCollide(Box2D.b2Manifold,Box2D.b2Shape,Box2D.b2Transform,Box2D.b2Shape,Box2D.b2Transform)">
+            <summary>
+            Detect collision between shapes
+            </summary>
+            <param name="manifold">The result</param>
+            <param name="shapeA">The shape A</param>
+            <param name="transformA">The transform A</param>
+            <param name="shapeB">The shape B</param>
+            <param name="transformB">The transform B</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DCollideHelper.CircleToPolygonCollide(Box2D.b2Manifold,Box2D.b2Shape,Box2D.b2Transform,Box2D.b2Shape,Box2D.b2Transform)">
+            <summary>
+            Detect collision between shapes
+            </summary>
+            <param name="manifold">The result</param>
+            <param name="shapeA">The shape A</param>
+            <param name="transformA">The transform A</param>
+            <param name="shapeB">The shape B</param>
+            <param name="transformB">The transform B</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DCollideHelper.PolygonToCircleCollide(Box2D.b2Manifold,Box2D.b2Shape,Box2D.b2Transform,Box2D.b2Shape,Box2D.b2Transform)">
+            <summary>
+            Detect collision between shapes
+            </summary>
+            <param name="manifold">The result</param>
+            <param name="shapeA">The shape A</param>
+            <param name="transformA">The transform A</param>
+            <param name="shapeB">The shape B</param>
+            <param name="transformB">The transform B</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DCollideHelper.PolygonToPolygonCollide(Box2D.b2Manifold,Box2D.b2Shape,Box2D.b2Transform,Box2D.b2Shape,Box2D.b2Transform)">
+            <summary>
+            Detect collision between shapes
+            </summary>
+            <param name="manifold">The result</param>
+            <param name="shapeA">The shape A</param>
+            <param name="transformA">The transform A</param>
+            <param name="shapeB">The shape B</param>
+            <param name="transformB">The transform B</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DRectangleColliderShape">
+            <summary>
+            Implement a box shape for Box2D
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DRectangleColliderShape.width">
+            <summary>
+            The with
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DRectangleColliderShape.height">
+            <summary>
+            The height
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DRectangleColliderShape.center">
+            <summary>
+            The center
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DRectangleColliderShape.angle">
+            <summary>
+            The angle
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRectangleColliderShape.Width">
+            <summary>
+            Gets or sets the width of the Box collider.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRectangleColliderShape.Height">
+            <summary>
+            Gets or sets the height of the Box collider.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRectangleColliderShape.Center">
+            <summary>
+            Gets or sets the center of the Box collider shape.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRectangleColliderShape.Angle">
+            <summary>
+            Gets or sets the angle of the box shape.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRectangleColliderShape.Type">
+            <summary>
+            Gets the collider shape type
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRectangleColliderShape.#ctor(WaveEngine.Box2D.Box2DSimulation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DRectangleColliderShape" /> class.
+            </summary>
+            <param name="simulation">The box2D simulation instance</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRectangleColliderShape.SetShape(System.Single,System.Single)">
+            <summary>
+            Build vertices to represent an axis-aligned box.
+            </summary>
+            <param name="width">The width</param>
+            <param name="height">The height</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRectangleColliderShape.SetShape(System.Single,System.Single,WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Build vertices to represent an oriented box.
+            </summary>
+            <param name="width">The width</param>
+            <param name="height">The height</param>
+            <param name="center">The box center</param>
+            <param name="angle">The box angle</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRectangleColliderShape.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRectangleColliderShape.RefreshShape">
+            <summary>
+            Refresh the shape size
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DColliderShape`1">
+            <summary>
+            The Generic Box2DColliderShape implements Box2D collider shape associated to a native shape
+            </summary>
+            <typeparam name="T">The Box2D shape type</typeparam>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DColliderShape`1.Shape">
+            <summary>
+            The Box2D shape
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DColliderShape`1.radius">
+            <summary>
+            The radius
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DColliderShape`1.Radius">
+            <summary>
+            Gets or sets the shape Radius
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DColliderShape`1.ChildCount">
+            <summary>
+            Gets the shape Child count
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DColliderShape`1.InternalShape">
+            <summary>
+            Gets the Box2D internal shape
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DColliderShape`1.#ctor(WaveEngine.Box2D.Box2DSimulation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DColliderShape`1" /> class.
+            </summary>
+            <param name="simulation">The box2D simulation instance</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DColliderShape`1.TestPoint(WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@,System.Single)">
+            <summary>
+            Test a point for containment in this shape. This only works for convex shapes.
+            </summary>
+            <param name="point">a point in world coordinates</param>
+            <param name="shapePosition">the shape world position</param>
+            <param name="shapeAngle">the shape world angle</param>
+            <returns>True if the point is contained in the shape</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DColliderShape`1.TestRectangle(WaveEngine.Common.Math.RectangleF@,WaveEngine.Common.Math.Vector2@,System.Single)">
+            <summary>
+            Test a rectangle for containment in this shape.
+            </summary>
+            <param name="rectangle">a rectangle in world coordinates</param>
+            <param name="shapePosition">the shape world position</param>
+            <param name="shapeAngle">the shape world angle</param>
+            <returns>True if the point is contained in the shape</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DColliderShape`1.TestShape(WaveEngine.Common.Math.Vector2,System.Single,WaveEngine.Common.Physics2D.IColliderShape2D,WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Detect interesection with other shape.
+            </summary>
+            <param name="positionA">The position of A shape</param>
+            <param name="angleA">The angle of A shape</param>
+            <param name="shapeB">The second shape</param>
+            <param name="positionB">The position of B shape</param>
+            <param name="angleB">The angle of B shape</param>
+            <returns>If the two shapes collides</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DColliderShape`1.DestroyShape">
+            <summary>
+            Destroy the Box2D shape
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DColliderShape`1.GetAllShapes">
+            <summary>
+            Gets all box2D shapes
+            </summary>
+            <returns>Return all shapes</returns>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DPolygonColliderShape">
+            <summary>
+            Implement a polygon shape for Box2D
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DPolygonColliderShape.convexShapes">
+            <summary>
+            Convex shapes array
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DPolygonColliderShape.vertices">
+            <summary>
+            Vertices list
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DPolygonColliderShape.convexVerticesList">
+            <summary>
+            Convex shapes
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DPolygonColliderShape.Vertices">
+            <summary>
+            Gets the polygon shapes
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DPolygonColliderShape.Data">
+            <summary>
+            Gets the convex shapes as data
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DPolygonColliderShape.Normals">
+            <summary>
+            Gets the polygon normals
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DPolygonColliderShape.Type">
+            <summary>
+            Gets the collider shape type
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DPolygonColliderShape.#ctor(WaveEngine.Box2D.Box2DSimulation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DPolygonColliderShape" /> class.
+            </summary>
+            <param name="simulation">The box2D simulation instance</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DPolygonColliderShape.RefreshShape">
+            <summary>
+            Refresh shape
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DPolygonColliderShape.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DPolygonColliderShape.SetShapeFromVertices(WaveEngine.Common.Math.Vector2[])">
+            <summary>
+            Copy vertices. This assumes the vertices define a convex polygon. It is assumed that the exterior is the the right of each edge.
+            </summary>
+            <param name="vertices">The polygon vertices</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DPolygonColliderShape.SetShapeFromVertices(WaveEngine.Common.Math.Vector2[],System.Single,System.Single,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Copy vertices. This assumes the vertices define a convex polygon. It is assumed that the exterior is the the right of each edge.
+            </summary>
+            <param name="vertices">The polygon vertices</param>
+            <param name="width">The width</param>
+            <param name="height">The height</param>
+            <param name="scale">The scale of the shape</param>
+            <param name="center">The box center</param>
+            <param name="angle">The box angle</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DPolygonColliderShape.SetShapeFromData(WaveEngine.Common.Math.Vector2[],System.Collections.Generic.List{System.Collections.Generic.List{WaveEngine.Common.Math.Vector2}},System.Single,System.Single,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Shape generated from the implementation data
+            </summary>
+            <param name="vertices">The polygon vertices</param>
+            <param name="data">The data</param>
+            <param name="width">The width</param>
+            <param name="height">The height</param>
+            <param name="scale">The scale of the shape</param>
+            <param name="center">The box center</param>
+            <param name="angle">The box angle</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DPolygonColliderShape.SetShapeFromTexture(WaveEngine.Common.Graphics.Texture,WaveEngine.Common.Math.RectangleF,System.Single,System.Boolean,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Build the polygon shape from a texture.
+            </summary>
+            <param name="texture">The texture</param>
+            <param name="rectangle">The target rectangle</param>
+            <param name="alphaThreshold">The alpha threshold</param>
+            <param name="holeDetection">Hole detection in the image</param>
+            <param name="scale">The scale of the shape</param>
+            <param name="center">The box center</param>
+            <param name="angle">The box angle</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DPolygonColliderShape.GetAllShapes">
+            <summary>
+            Return all shapes
+            </summary>
+            <returns>All convex shapes</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DPolygonColliderShape.CreateVerticesTransform(System.Single,System.Single,WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@,System.Single)">
+            <summary>
+            Create transform for vertices 
+            </summary>
+            <param name="width">The width</param>
+            <param name="height">The height</param>
+            <param name="scale">The scale</param>
+            <param name="center">The center</param>
+            <param name="angle">The angle</param>
+            <returns>The transform matrix</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DPolygonColliderShape.SetShapeFromVertices(WaveEngine.Box2D.Utils.Vertices,WaveEngine.Common.Math.Matrix@)">
+            <summary>
+            Set shape from vertices
+            </summary>
+            <param name="vertices">The vertices list</param>
+            <param name="transform">The transform</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DPolygonColliderShape.SetShapeFromVertices(System.Collections.Generic.List{System.Collections.Generic.List{WaveEngine.Common.Math.Vector2}},WaveEngine.Common.Math.Matrix@)">
+            <summary>
+            Set shape from vertices
+            </summary>
+            <param name="shapes">The shapes</param>
+            <param name="transform">The transform</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DContact">
+            <summary>
+            Box2D contact listener
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DContact.B2Contact">
+            <summary>
+            The Box2D contact intance;
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DContact.simulation">
+            <summary>
+            The box2D simulation
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DContact.colliderA">
+            <summary>
+            The first collider
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DContact.colliderB">
+            <summary>
+            The second collider
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DContact.contactPoints">
+            <summary>
+            The contact points
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DContact.worldManifold">
+            <summary>
+            The world manifold
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DContact.IsEnabled">
+            <summary>
+            Gets or sets a value indicating whether this contact is enabled. You can disable the contact in contact listener methods
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DContact.IsTouching">
+            <summary>
+            Gets a value indicating whether the two colliders is touching
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DContact.Friction">
+            <summary>
+            Gets or sets the friction coefficient, usually in the range [0,1].
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DContact.Restitution">
+            <summary>
+            Gets or sets the restitution (elasticity) usually in the range [0,1].
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DContact.TangentSpeed">
+            <summary>
+            Gets or sets the tangent speed
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DContact.ColliderA">
+            <summary>
+            Gets collider A in this contact.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DContact.ColliderB">
+            <summary>
+            Gets collider B in this contact.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DContact.FixtureA">
+            <summary>
+            Gets internal collider A in this contact.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DContact.FixtureB">
+            <summary>
+            Gets internal collider B in this contact.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DContact.Points">
+            <summary>
+            Gets the collision points
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DContact.Normal">
+            <summary>
+            Gets the collision normals
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DContact.WorldManifold">
+            <summary>
+            Gets the world manifold instance
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DContact.#ctor(System.IntPtr,WaveEngine.Box2D.Box2DSimulation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DContact" /> class.
+            </summary>
+            <param name="ptr">The box2D contact pointer.</param>
+            <param name="simulation">The simulation.</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DContact.FlagForFiltering">
+            <summary>
+            Flag this contact for filtering. Filtering will occur the next time step.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DContact.ResetFriction">
+            <summary>
+            Reset the friction mixture to the default value.
+            </summary>
+            <remarks>
+            You can modify contact properties in PreSolve/PostSolve methods in ContactListener
+            </remarks>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DContact.ResetRestitution">
+            <summary>
+            Reset the restitution to the default contact value.
+            </summary>
+            <remarks>
+            You can modify contact properties in PreSolve/PostSolve methods in ContactListener
+            </remarks>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DContactListener">
+            <summary>
+            Box2D contact listener
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DContactListener.simulation">
+            <summary>
+            The box2D simulation
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DContactListener.itemsToRemove">
+            <summary>
+            Items to remove list
+            </summary>
+        </member>
+        <member name="E:WaveEngine.Box2D.Box2DContactListener.BeginCollision">
+            <summary>
+            Called when two fixtures begin to touch.
+            </summary>
+        </member>
+        <member name="E:WaveEngine.Box2D.Box2DContactListener.EndCollision">
+            <summary>
+            Called when two fixtures cease to touch.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DContactListener.#ctor(WaveEngine.Box2D.Box2DSimulation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DContactListener" /> class.
+            </summary>
+            <param name="simulation">The simulation.</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DContactListener.BeginContact(System.IntPtr)">
+            <summary>
+            Called when two fixtures begin to touch.
+            </summary>
+            <param name="contactPtr">The contact information.</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DContactListener.EndContact(System.IntPtr)">
+            <summary>
+            Called when two fixtures cease to touch.
+            </summary>
+            <param name="contactPtr">The contact information.</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DWheelJoint">
+            <summary>
+            Implementation of Box2D wheel joint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DWheelJoint.SpringFrequencyHz">
+            <summary>
+            Gets or sets the frequency in Hz
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DWheelJoint.SpringDampingRatio">
+            <summary>
+            Gets or sets the damping ratio.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DWheelJoint.EnableMotor">
+            <summary>
+            Gets or sets a value indicating whether the motor is enabled.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DWheelJoint.MotorSpeed">
+            <summary>
+            Gets or sets the desired motor speed. Usually in radians per second.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DWheelJoint.MaxMotorTorque">
+            <summary>
+            Gets or sets the maximum motor torque used to achieve the desired motor speed. Usually in N-m.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DWheelJoint.JointTranslation">
+            <summary>
+            Gets the current joint translation, usually in meters.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DWheelJoint.JointTranslationSpeed">
+            <summary>
+            Gets the current joint translation speed, usually in meters per second.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DWheelJoint.MotorTorque">
+            <summary>
+            Gets the current motor force given the inverse time step, usually in N.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DWheelJoint.#ctor(WaveEngine.Box2D.Box2DSimulation,WaveEngine.Common.Physics2D.WheelJointDef2D)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DWheelJoint" /> class.
+            </summary>
+            <param name="simulation">The box2D simulation instance</param>
+            <param name="def">The Joint definition</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DWheelJoint.FillJointDefinition(Box2D.b2WheelJointDef)">
+            <summary>
+            Fill the box2D definition
+            </summary>
+            <param name="b2Def">The box2D definition</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DRopeJoint">
+            <summary>
+            Implementation of Box2D rope joint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRopeJoint.MaxLength">
+            <summary>
+            Gets or sets the maximum length of the rope.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRopeJoint.#ctor(WaveEngine.Box2D.Box2DSimulation,WaveEngine.Common.Physics2D.RopeJointDef2D)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DRopeJoint" /> class.
+            </summary>
+            <param name="simulation">The box2D simulation instance</param>
+            <param name="def">The Joint definition</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRopeJoint.FillJointDefinition(Box2D.b2RopeJointDef)">
+            <summary>
+            Fill the box2D definition
+            </summary>
+            <param name="b2Def">The box2D definition</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DMouseJoint">
+            <summary>
+            Implementation of Box2D mouse joint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DMouseJoint.Target">
+            <summary>
+            Gets or sets the initial world target point. This is assumed
+            to coincide with the body anchor initially.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DMouseJoint.MaxForce">
+            <summary>
+            Gets or sets the maximum constraint force that can be exerted
+            to move the candidate body. Usually you will express
+            as some multiple of the weight (multiplier * mass * gravity).
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DMouseJoint.FrequencyHz">
+            <summary>
+            Gets or sets the frequency in Hz
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DMouseJoint.DampingRatio">
+            <summary>
+            Gets or sets the damping ratio.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DMouseJoint.#ctor(WaveEngine.Box2D.Box2DSimulation,WaveEngine.Common.Physics2D.MouseJointDef2D)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DMouseJoint" /> class.
+            </summary>
+            <param name="simulation">The box2D simulation instance</param>
+            <param name="def">The Joint definition</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DMouseJoint.FillJointDefinition(Box2D.b2MouseJointDef)">
+            <summary>
+            Fill the box2D definition
+            </summary>
+            <param name="b2Def">The box2D definition</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DPrismaticJoint">
+            <summary>
+            Implementation of Box2D prismatic joint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DPrismaticJoint.ReferenceAngle">
+            <summary>
+            Gets the reference angle
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DPrismaticJoint.EnableMotor">
+            <summary>
+            Gets or sets a value indicating whether the motor is enabled.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DPrismaticJoint.MotorSpeed">
+            <summary>
+            Gets or sets the desired motor speed. Usually in radians per second.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DPrismaticJoint.MaxMotorForce">
+            <summary>
+            Gets or sets the maximum motor torque used to achieve the desired motor speed. Usually in N-m.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DPrismaticJoint.EnableLimits">
+            <summary>
+            Gets or sets a value indicating whether the joint limits are enabled.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DPrismaticJoint.LowerLimit">
+            <summary>
+            Gets the lower angle for the joint limit (radians).
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DPrismaticJoint.UpperLimit">
+            <summary>
+            Gets the upper angle for the joint limit (radians).
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DPrismaticJoint.JointTranslation">
+            <summary>
+            Gets the current joint translation, usually in meters.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DPrismaticJoint.JointTranslationSpeed">
+            <summary>
+            Gets the current joint translation speed, usually in meters per second.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DPrismaticJoint.MotorForce">
+            <summary>
+            Gets the current motor force given the inverse time step, usually in N.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DPrismaticJoint.#ctor(WaveEngine.Box2D.Box2DSimulation,WaveEngine.Common.Physics2D.PrismaticJointDef2D)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DPrismaticJoint" /> class.
+            </summary>
+            <param name="simulation">The box2D simulation instance</param>
+            <param name="def">The Joint definition</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DPrismaticJoint.FillJointDefinition(Box2D.b2PrismaticJointDef)">
+            <summary>
+            Fill the box2D definition
+            </summary>
+            <param name="b2Def">The box2D definition</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DPrismaticJoint.SetLimits(System.Single,System.Single)">
+            <summary>
+            Set the joint limits
+            </summary>
+            <param name="lower">The lower limit</param>
+            <param name="upper">The upper limit</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DWeldJoint">
+            <summary>
+            Implementation of Box2D weld joint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DWeldJoint.ReferenceAngle">
+            <summary>
+            Gets the reference angle
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DWeldJoint.FrequencyHz">
+            <summary>
+            Gets or sets the frequency in Hz
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DWeldJoint.DampingRatio">
+            <summary>
+            Gets or sets the damping ratio.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DWeldJoint.#ctor(WaveEngine.Box2D.Box2DSimulation,WaveEngine.Common.Physics2D.WeldJointDef2D)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DWeldJoint" /> class.
+            </summary>
+            <param name="simulation">The box2D simulation instance</param>
+            <param name="def">The Joint definition</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DWeldJoint.FillJointDefinition(Box2D.b2WeldJointDef)">
+            <summary>
+            Fill the box2D definition
+            </summary>
+            <param name="b2Def">The box2D definition</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DDistanceJoint">
+            <summary>
+            Implementation of Box2D revolute joint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DDistanceJoint.Distance">
+            <summary>
+            Gets or sets the natural length.
+            Manipulating the length can lead to non-physical behavior when the frequency is zero.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DDistanceJoint.FrequencyHz">
+            <summary>
+            Gets or sets the frequency in Hz
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DDistanceJoint.DampingRatio">
+            <summary>
+            Gets or sets the damping ratio.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DDistanceJoint.#ctor(WaveEngine.Box2D.Box2DSimulation,WaveEngine.Common.Physics2D.DistanceJointDef2D)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DDistanceJoint" /> class.
+            </summary>
+            <param name="simulation">The box2D simulation instance</param>
+            <param name="def">The Joint definition</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DDistanceJoint.FillJointDefinition(Box2D.b2DistanceJointDef)">
+            <summary>
+            Fill the box2D definition
+            </summary>        
+            <param name="b2Def">The box2D definition</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DJoint`3">
+            <summary>
+            Base implementation of Box2D Joint
+            </summary>
+            <typeparam name="T">The Box2D joint type</typeparam>
+            <typeparam name="K">The interface joint definition type</typeparam>
+            <typeparam name="L">The Box2D joint definition type</typeparam>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DJoint`3.Joint">
+            <summary>
+            The Box2D joint
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DJoint`3.bodyA">
+            <summary>
+            The first body
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DJoint`3.bodyB">
+            <summary>
+            The second body
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DJoint`3.def">
+            <summary>
+            The interface joint definition
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint`3.InternalJoint">
+            <summary>
+            Gets the Box2D internal joint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint`3.BodyA">
+            <summary>
+            Get the first body attached to this joint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint`3.BodyB">
+            <summary>
+            Get the second body attached to this joint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint`3.LocalAnchorA">
+            <summary>
+            Gets the local anchor point relative to bodyA's origin.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint`3.LocalAnchorB">
+            <summary>
+            Gets the local anchor point relative to bodyA's origin.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint`3.ReactionForce">
+            <summary>
+            Gets the reaction force on bodyB at the joint anchor in Newtons.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint`3.ReactionTorque">
+            <summary>
+            Gets the reaction torque on bodyB in N*m.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint`3.IsActive">
+            <summary>
+            Gets or sets a value indicating whether this joint is enabled
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint`3.BreakPoint">
+            <summary>
+            Gets or sets the amount offorce that a joint can take before break.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DJoint`3.#ctor(WaveEngine.Box2D.Box2DSimulation,`1)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DJoint`3" /> class.
+            </summary>
+            <param name="simulation">The box2D simulation instance</param>
+            <param name="def">The Joint definition</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DJoint`3.CreateJoint">
+            <summary>
+            Create Joint
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DJoint`3.FillJointDefinition(`2)">
+            <summary>
+            Fill the box2D definition
+            </summary>
+            <param name="b2Def">The Box2D joint definition</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DJoint`3.CreateBox2DJoint(`2)">
+            <summary>
+            Create the Box2D joint
+            </summary>
+            <param name="b2Def">The Box2D joint definition</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DJoint`3.DestroyJoint">
+            <summary>
+            Destroy the box2D joint
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DJoint`3.RegenerateJoint">
+            <summary>
+            Create the joint
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DJoint`3.CheckJointIntegrity">
+            <summary>
+            Checks the joint integrity
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DRevoluteJoint">
+            <summary>
+            Implementation of Box2D revolute joint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRevoluteJoint.ReferenceAngle">
+            <summary>
+            Gets the reference angle
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRevoluteJoint.EnableMotor">
+            <summary>
+            Gets or sets a value indicating whether the motor is enabled.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRevoluteJoint.MotorSpeed">
+            <summary>
+            Gets or sets the desired motor speed. Usually in radians per second.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRevoluteJoint.MaxMotorTorque">
+            <summary>
+            Gets or sets the maximum motor torque used to achieve the desired motor speed. Usually in N-m.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRevoluteJoint.EnableLimits">
+            <summary>
+            Gets or sets a value indicating whether the joint limits are enabled.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRevoluteJoint.LowerAngle">
+            <summary>
+            Gets the lower angle for the joint limit (radians).
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRevoluteJoint.UpperAngle">
+            <summary>
+            Gets the upper angle for the joint limit (radians).
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRevoluteJoint.JointAngle">
+            <summary>
+            Gets the current joint angle in radians
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRevoluteJoint.JointAngleSpeed">
+            <summary>
+            Gets the current joint angle speed in radians per second.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DRevoluteJoint.MotorTorque">
+            <summary>
+            Gets the current motor torque given the inverse time step.
+            Unit is N*m        
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRevoluteJoint.#ctor(WaveEngine.Box2D.Box2DSimulation,WaveEngine.Common.Physics2D.RevoluteJointDef2D)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DRevoluteJoint" /> class.
+            </summary>
+            <param name="simulation">The box2D simulation instance</param>
+            <param name="def">The Joint definition</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRevoluteJoint.FillJointDefinition(Box2D.b2RevoluteJointDef)">
+            <summary>
+            Fill the box2D definition
+            </summary>
+            <param name="b2Def">The box2D definition</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DRevoluteJoint.SetLimits(System.Single,System.Single)">
+            <summary>
+            Set the joint limits
+            </summary>
+            <param name="lower">The lower limit</param>
+            <param name="upper">The upper limit</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DJoint">
+            <summary>
+            Base implementation of Box2D Joint
+            </summary>    
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DJoint.simulation">
+            <summary>
+            The Box2D simulation
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DJoint.isDestroyed">
+            <summary>
+            The joint is removed
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint.InternalJoint">
+            <summary>
+            Gets the Box2D internal joint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint.BodyA">
+            <summary>
+            Gets the first body attached to this joint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint.BodyB">
+            <summary>
+            Gets the second body attached to this joint
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint.LocalAnchorA">
+            <summary>
+            Gets the local anchor point relative to bodyA's origin.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint.LocalAnchorB">
+            <summary>
+            Gets the local anchor point relative to bodyB's origin.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint.ReactionForce">
+            <summary>
+            Gets the reaction force on bodyB at the joint anchor in Newtons.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint.ReactionTorque">
+            <summary>
+            Gets the reaction torque on bodyB in N*m.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint.IsActive">
+            <summary>
+            Gets or sets a value indicating whether this joint is enabled
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint.BreakPoint">
+            <summary>
+            Gets or sets the amount offorce that a joint can take before break.
+            </summary>
+        </member>
+        <member name="E:WaveEngine.Box2D.Box2DJoint.OnBroke">
+            <summary>
+            Event fired when the joint is broken
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DJoint.IsDestroyed">
+            <summary>
+            Gets a value indicating whether the joint is destroyed
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DJoint.#ctor(WaveEngine.Box2D.Box2DSimulation,WaveEngine.Common.Physics2D.JointDef2D)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DJoint" /> class.
+            </summary>
+            <param name="simulation">The box2D simulation instance</param>
+            <param name="def">The Joint definition</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DJoint.DestroyJoint">
+            <summary>
+            Destroy the box2D joint
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DJoint.RegenerateJoint">
+            <summary>
+            Create the joint
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DJoint.CheckJointIntegrity">
+            <summary>
+            Checks the joint integrity
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DJoint.FireOnBrokeEvent(System.Single)">
+            <summary>
+            Fire the joint break event 
+            </summary>
+            <param name="jointError">The amount of damaged received by the joint</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.UserDataStore">
+            <summary>
+            This class is responsible to store all UserData atributes from Box2D native classes.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.UserDataStore.userDataIndex">
+            <summary>
+            The current index
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.UserDataStore.userDataDictionary">
+            <summary>
+            The user data dictionary
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.UserDataStore.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.UserDataStore" /> class.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.UserDataStore.StoreUserData(System.Object)">
+            <summary>
+            Store a new User Data value
+            </summary>
+            <param name="userData">The user data object.</param>
+            <returns>The user data key</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.UserDataStore.GetUserData``1(System.Int32)">
+            <summary>
+            Gets the user data by its key
+            </summary>
+            <param name="key">The user data key</param>
+            <returns>The user data</returns>
+            <typeparam name="T">The cast type</typeparam>
+        </member>
+        <member name="M:WaveEngine.Box2D.UserDataStore.RemoveUserData(System.Int32)">
+            <summary>
+            Remove user data
+            </summary>
+            <param name="key">The key.</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DConverters">
+            <summary>
+            The Simulation2D class manages all 2D physics entities.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToBox2D(WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Convert Wave Vector2 to b2Vec2
+            </summary>
+            <param name="waveVector">Wave vector</param>
+            <param name="scale">The conversion scale</param>
+            <returns>The b2Vector</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToBox2D(WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Convert Wave Vector2 to b2Vec2
+            </summary>
+            <param name="waveVector">Wave vector</param>
+            <returns>The b2Vector</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToBox2D(WaveEngine.Common.Math.Vector2,System.Single,Box2D.b2Vec2@)">
+            <summary>
+            Convert Wave Vector2 to b2Vec2
+            </summary>
+            <param name="waveVector">Wave vector</param>
+            <param name="scale">The conversion scale</param>
+            <param name="result">The b2Vector</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToBox2D(WaveEngine.Common.Math.Vector2,Box2D.b2Vec2@)">
+            <summary>
+            Convert Wave Vector2 to b2Vec2
+            </summary>
+            <param name="waveVector">Wave vector</param>
+            <param name="result">The b2Vector</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToWave(Box2D.b2Vec2,System.Single)">
+            <summary>
+            Convert b2Vec2 to Wave Vector
+            </summary>
+            <param name="box2DVector">The b2Vector</param>
+            <param name="scale">The conversion scale</param>
+            <returns>The Wave vector</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToWave(Box2D.b2Vec2)">
+            <summary>
+            Convert b2Vec2 to Wave Vector
+            </summary>
+            <param name="box2DVector">The b2Vector</param>
+            <returns>The Wave vector</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToWave(Box2D.b2Vec2,System.Single,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Convert b2Vec2 to Wave Vector2
+            </summary>
+            <param name="box2DVector">The b2Vector</param>
+            <param name="scale">The conversion scale</param>
+            <param name="result">The Wave Vector</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToWave(Box2D.b2Vec2,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Convert b2Vec2 to Wave Vector2
+            </summary>
+            <param name="box2DVector">The b2Vector</param>
+            <param name="result">The Wave Vector</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToBox2D(System.Single,System.Single)">
+            <summary>
+            Convert unit from wave space to Box2D space
+            </summary>
+            <param name="waveUnit">Wave unit</param>
+            <param name="scale">The conversion scale</param>
+            <returns>The box2D float</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToWave(System.Single,System.Single)">
+            <summary>
+            Convert unit from Box2D space to wave space
+            </summary>
+            <param name="b2Unit">Box2D unit</param>
+            <param name="scale">The conversion scale</param>
+            <returns>The wave float</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToBox2D(WaveEngine.Common.Graphics.Color)">
+            <summary>
+            Convert from Wave color to Box2D
+            </summary>
+            <param name="waveColor">Wave color</param>
+            <returns>The box2D color</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToWave(Box2D.b2Color)">
+            <summary>
+            Convert from, Box2D color to Wave
+            </summary>
+            <param name="box2DColor">Box2D color</param>
+            <returns>The wave color</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToWave(Box2D.b2Shape.Type)">
+            <summary>
+            Convert from Box2D shape type to Wave
+            </summary>
+            <param name="b2ShapeType">The Box2D shape type</param>
+            <returns>The Wave shape type</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToBox2D(WaveEngine.Common.Physics2D.ColliderShapeType2D)">
+            <summary>
+            Convert from Wave shape type to Box2D
+            </summary>
+            <param name="shapeType">The Wave shape type</param>
+            <returns>The Box2D shape type</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.SetFromWave(Box2D.b2Transform,WaveEngine.Common.Math.Vector2@,System.Single,System.Single)">
+            <summary>
+            Sets the Box2D transform from wave properties
+            </summary>
+            <param name="transform">The Box2D transform</param>
+            <param name="position">The position</param>
+            <param name="angle">The angle</param>
+            <param name="worldScale">The world scale</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.SetFromWave(Box2D.b2AABB,WaveEngine.Common.Math.RectangleF@,System.Single)">
+            <summary>
+            Sets the AABB from wave rectangle
+            </summary>
+            <param name="aabb">The box2D aabb</param>
+            <param name="rectangle">The Wave rectangle</param>
+            <param name="worldScale">The world scale</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToWave(Box2D.b2MassData,System.Single)">
+            <summary>
+            Convert the MassData from Box2D to Wave
+            </summary>
+            <param name="b2Data">The Box2D mass data</param>
+            <param name="worldScale">The world scale</param>
+            <returns>The Wave mass data</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToWave(Box2D.b2MassData,System.Single,WaveEngine.Common.Physics2D.RigidBodyMassData2D@)">
+            <summary>
+            Convert the MassData from Box2D to Wave
+            </summary>
+            <param name="b2Data">The Box2D mass data</param>
+            <param name="worldScale">The world scale</param>
+            <param name="waveMassData">The wave mass data</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DConverters.ToBox2D(WaveEngine.Common.Physics2D.RigidBodyMassData2D,System.Single)">
+            <summary>
+            Convert the MassData from Wave to Box2D
+            </summary>
+            <param name="waveMassData">The wave mass data</param>
+            <param name="worldScale">The world scale</param>
+            <returns>The Box2D mass data</returns>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DSimulation">
+            <summary>
+            The Simulation2D class manages all 2D physics entities.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.World">
+            <summary>
+            The Box2D world
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.allowSleeping">
+            <summary>
+            Gets or sets a value indicating whether allow sleeping
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.gravity">
+            <summary>
+            The global gravity vector
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.UserDataStore">
+            <summary>
+            The user data store
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.box2DDebugDraw">
+            <summary>
+            The debug draw instance
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.drawFlags">
+            <summary>
+            The draw flags
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.debugDraw">
+            <summary>
+            The debug draw instance
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.ContactCache">
+            <summary>
+            the contact dictionary
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.contactListener">
+            <summary>
+            The contact listener
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.worldBody">
+            <summary>
+            The world body
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.LastStep">
+            <summary>
+            Last step time
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.InvLastStep">
+            <summary>
+            Inverse of the last step time
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.breakableJointList">
+            <summary>
+            The joint list
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.CollideHelper">
+            <summary>
+            The collider helper
+            </summary>
+        </member>
+        <member name="E:WaveEngine.Box2D.Box2DSimulation.OnPhysicStep">
+            <summary>
+            Event fired when the physics will do an step
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.jointsToBeInitialized">
+            <summary>
+            The list of joints that need to be initialized
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.jointsToBeRemoved">
+            <summary>
+            The list of joints that need to be removed
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.bodiesToBeInitialized">
+            <summary>
+            The list of bodies to be initialized
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.bodiesToBeRemoved">
+            <summary>
+            The list of bodies to be removed
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.accumulatorTime">
+            <summary>
+            Accumulated time
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.currentTime">
+            <summary>
+            The current time
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.deltaTime">
+            <summary>
+            The step time
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.minDeltaTime">
+            <summary>
+            The min step time
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DSimulation.maxDeltaTime">
+            <summary>
+            The max step time
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DSimulation.IsLocked">
+            <summary>
+            Gets a value indicating whether the world is locked (in the middle of a time step).
+            </summary>
+        </member>
+        <member name="E:WaveEngine.Box2D.Box2DSimulation.BeginCollision">
+            <summary>
+            Called when two fixtures begin to touch.
+            </summary>
+        </member>
+        <member name="E:WaveEngine.Box2D.Box2DSimulation.EndCollision">
+            <summary>
+            Called when two fixtures cease to touch.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DSimulation.CollisionList">
+            <summary>
+            Gets the colllision list
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DSimulation.DrawFlags">
+            <summary>
+            Gets or sets the debug draw flags
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DSimulation.State">
+            <summary>
+            Gets or sets the state.
+            </summary>
+            <value>
+            The asset path.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DSimulation.Gravity">
+            <summary>
+            Gets or sets the global gravity vector
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DSimulation.AllowSleeping">
+            <summary>
+            Gets or sets a value indicating whether allow sleeping
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DSimulation.WorldScale">
+            <summary>
+            Gets or sets the world scale
+            <remarks>
+            By default, the scale of the world is 1unit = 1meter.
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DSimulation.VelocityIterations">
+            <summary>
+            Gets or sets the velocity iterations.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DSimulation.PositionIterations">
+            <summary>
+            Gets or sets the position iterations.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DSimulation.InternWorld">
+            <summary>
+            Gets the internal native world instance.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DSimulation.DebugDrawInstance">
+            <summary>
+            Gets or sets the debug draw instance
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DSimulation.WorldStaticBody">
+            <summary>
+            Gets the world static body
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DSimulation" /> class.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.Initialize">
+            <summary>
+            Initialize the object.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.CreateRigidBody(WaveEngine.Common.Physics2D.RigidBodyDef2D)">
+            <summary>
+            Create a RigidBody 2D
+            </summary>
+            <param name="bodyDef"> Body definition</param>
+            <returns>The rigid body instance</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.RemoveRigidBody(WaveEngine.Common.Physics2D.IRigidBody2D)">
+            <summary>
+            Removes a RigidBody 2D from the world
+            </summary>
+            <param name="body"> The body to remove</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.CreateColliderShape``1">
+            <summary>
+            Instantiate a new Collider shape
+            </summary>
+            <typeparam name="T">The ColliderShape type</typeparam>
+            <returns>The new collider shape</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.CreateJoint``2(``1)">
+            <summary>
+            Creates a Joint 
+            </summary>
+            <typeparam name="T">The Joint type</typeparam>
+            <typeparam name="J">The Joint definition type</typeparam>
+            <param name="jointDef">The joint definition instance</param>
+            <returns>The new joint instance</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.RemoveJoint(WaveEngine.Common.Physics2D.IJoint2D)">
+            <summary>
+            Removes a Joint 2D from the world
+            </summary>
+            <param name="joint"> The joint to remove</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.Step(System.TimeSpan)">
+            <summary>
+            Take a time step. This performs collision detection, integration, and constraint solution.
+            </summary>
+            <param name="gameTime">the amount of time to simulate, this should not vary</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.DebugDraw">
+            <summary>
+            Draw the debug information
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.Pause">
+            <summary>
+            Pause the object
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.Resume">
+            <summary>
+            Pause the object
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.SetDebugDraw(WaveEngine.Common.Physics2D.ISimulationDebugDraw2D)">
+            <summary>
+            Sets the debug draw of Simulation 2D
+            </summary>
+            <param name="debugDraw">The deubg draw instance</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.RegisterBreakableJoint(WaveEngine.Box2D.Box2DJoint)">
+            <summary>
+            Register a breakable joint
+            </summary>
+            <param name="joint">The breakable joint</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.UnregisterBreakableJoint(WaveEngine.Box2D.Box2DJoint)">
+            <summary>
+            Unregister a breakable joint
+            </summary>
+            <param name="joint">The breakable joint</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.ProcessPendingJoints">
+            <summary>
+            Process pending joints (remove or initialize)
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DSimulation.ProcessPendingBodies">
+            <summary>
+            Process pending bodies (remove or initialize)
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DCircleColliderShape">
+            <summary>
+            Implement a Circle shape in Box2D
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DCircleColliderShape.position">
+            <summary>
+            The shape offset position
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DCircleColliderShape.Position">
+            <summary>
+            Gets or sets the circle position
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DCircleColliderShape.Type">
+            <summary>
+            Gets the collider shape type
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DCircleColliderShape.#ctor(WaveEngine.Box2D.Box2DSimulation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DCircleColliderShape" /> class.
+            </summary>
+            <param name="simulation">The box2D simulation instance</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DCircleColliderShape.RefreshShape">
+            <summary>
+            Refresh shape
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DCircleColliderShape.SetShape(System.Single,WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Set the shape properties
+            </summary>
+            <param name="radius">The radius.</param>
+            <param name="position">The position offset.</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DCircleColliderShape.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DFixture">
+            <summary>
+            The Box2DFixture implements Box2D collider for Wave using Box2D fixtures
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DFixture.body">
+            <summary>
+            The box2D Simulation
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DFixture.Fixtures">
+            <summary>
+            The Box2D fixture
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DFixture.userData">
+            <summary>
+            The user data instance
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DFixture.userDataKey">
+            <summary>
+            The user data key handle
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DFixture.ColliderShape">
+            <summary>
+            The collider shape
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DFixture.density">
+            <summary>
+            The density, usually in kg/m^2.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DFixture.friction">
+            <summary>
+            The friction coefficient, usually in the range [0,1]. 
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DFixture.isSensor">
+            <summary>
+            A sensor shape collects contact information but never generates a collision response.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DFixture.restitution">
+            <summary>
+            The restitution (elasticity) usually in the range [0,1].
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DFixture.filterData">
+            <summary>
+            The box2D filter data
+            </summary>
+        </member>
+        <member name="E:WaveEngine.Box2D.Box2DFixture.BeginCollision">
+            <summary>
+            Called when two fixtures begin to touch.
+            </summary>
+        </member>
+        <member name="E:WaveEngine.Box2D.Box2DFixture.EndCollision">
+            <summary>
+            Called when two fixtures cease to touch.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DFixture.Density">
+            <summary>
+            Gets or sets the density, usually in kg/m^2.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DFixture.Friction">
+            <summary>
+            Gets or sets the friction coefficient, usually in the range [0,1]. 
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DFixture.IsSensor">
+            <summary>
+            Gets or sets a value indicating whether this sensor shape collects contact information but never generates a collision response.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DFixture.Restitution">
+            <summary>
+            Gets or sets the restitution (elasticity) usually in the range [0,1].
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DFixture.Shape">
+            <summary>
+            Gets the Collider shape
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DFixture.RigidBody">
+            <summary>
+            Gets the parent body of this collider
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DFixture.GroupIndex">
+            <summary>
+            Gets or sets the collision groups allow a certain group of objects to never collide (negative) or always collide (positive).
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DFixture.CollisionCategories">
+            <summary>
+            Gets or sets the collision category bits. 
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DFixture.MaskBits">
+            <summary>
+            Gets or sets the collision mask bits.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DFixture.UserData">
+            <summary>
+            Gets or sets the object user data
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DFixture.InternalCollider">
+            <summary>
+            Gets the internal Box2D fixture instance.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DFixture.#ctor(WaveEngine.Box2D.Box2DRigidBody,WaveEngine.Common.Physics2D.ColliderDef2D)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DFixture" /> class.
+            </summary>
+            <param name="body">The box2D rigid body</param>
+            <param name="colliderDef">The collider definition</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DFixture.ComputeDistance(WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@,System.Single,System.Single@,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Compute the distance from the current shape to the specified point. This only works for convex shapes.
+            </summary>
+            <param name="point">a point in world coordinates</param>
+            <param name="shapePosition">the shape world position</param>
+            <param name="shapeAngle">the shape world angle</param>
+            <param name="distance">the distance from the current shape</param>
+            <param name="normal">the direction in which the distance increases</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DFixture.DestroyCollider">
+            <summary>
+            Destroy the collider
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DFixture.RefreshCollider">
+            <summary>
+            Refresh the collider
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DFixture.ClearFixtureList">
+            <summary>
+            Clear and remove from entity the fixture list
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DFixture.CreateFixtureList">
+            <summary>
+            Create the fixture list from its shapes
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DFixture.OnShapeChanged(System.Object,System.EventArgs)">
+            <summary>
+            Collider shape is changed
+            </summary>
+            <param name="sender">The shape .</param>
+            <param name="e">The event arg (null)</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DFixture.NotifyBeginContact(WaveEngine.Box2D.Box2DContact)">
+            <summary>
+            Fire Begin contact event
+            </summary>
+            <param name="contact">The contact information</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DFixture.NotifyEndContact(WaveEngine.Box2D.Box2DContact)">
+            <summary>
+            Fire End contact event
+            </summary>
+            <param name="contact">The contact information</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.Box2DColliderShape">
+            <summary>
+            The Box2DColliderShape implements Box2D collider shape
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DColliderShape.simulation">
+            <summary>
+            The box2D Simulation
+            </summary>
+        </member>
+        <member name="E:WaveEngine.Box2D.Box2DColliderShape.OnShapeChanged">
+            <summary>
+            Event fired when the shape is changed
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DColliderShape.Type">
+            <summary>
+            Gets collider shape type
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DColliderShape.Radius">
+            <summary>
+            Gets or sets the shape Radius
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DColliderShape.ChildCount">
+            <summary>
+            Gets the shape Child count
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DColliderShape.InternalShape">
+            <summary>
+            Gets the Box2D internal shape
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DColliderShape.#ctor(WaveEngine.Box2D.Box2DSimulation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DColliderShape" /> class.
+            </summary>
+            <param name="simulation">The box2D simulation instance</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DColliderShape.TestPoint(WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@,System.Single)">
+            <summary>
+            Test a point for containment in this shape. This only works for convex shapes.
+            </summary>
+            <param name="point">a point in world coordinates</param>
+            <param name="shapePosition">the shape world position</param>
+            <param name="shapeAngle">the shape world angle</param>
+            <returns>True if the point is contained in the shape</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DColliderShape.TestRectangle(WaveEngine.Common.Math.RectangleF@,WaveEngine.Common.Math.Vector2@,System.Single)">
+            <summary>
+            Test a rectangle for containment in this shape.
+            </summary>
+            <param name="rectangle">a rectangle in world coordinates</param>
+            <param name="shapePosition">the shape world position</param>
+            <param name="shapeAngle">the shape world angle</param>
+            <returns>True if the point is contained in the shape</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DColliderShape.TestShape(WaveEngine.Common.Math.Vector2,System.Single,WaveEngine.Common.Physics2D.IColliderShape2D,WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Detect interesection with other shape.
+            </summary>
+            <param name="positionA">The position of A shape</param>
+            <param name="angleA">The angle of A shape</param>
+            <param name="shapeB">The second shape</param>
+            <param name="positionB">The position of B shape</param>
+            <param name="angleB">The angle of B shape</param>
+            <returns>If the two shapes collides</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DColliderShape.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DColliderShape.BaseRefreshShape">
+            <summary>
+            Base method that refresh the shape and raise the OnShapeChanged event
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DColliderShape.RefreshShape">
+            <summary>
+            Refresh the collider shape
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DColliderShape.GetAllShapes">
+            <summary>
+            Gets all box2D shapes
+            </summary>
+            <returns>Return all shapes</returns>
+        </member>
+        <member name="T:WaveEngine.Box2D.Decomposition.BayazitDecomposer">
+            <summary>
+            Convex decomposition algorithm created by Mark Bayazit (http://mnbayazit.com/)
+            For more information about this algorithm, see http://mnbayazit.com/406/bayazit
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Decomposition.BayazitDecomposer.ConvexPartition(WaveEngine.Box2D.Utils.Vertices)">
+            <summary>
+            Decompose the polygon into several smaller non-concave polygon.
+            If the polygon is already convex, it will return the original polygon, unless it is over Settings.MaxPolygonVertices.
+            Precondition: Counter Clockwise polygon
+            </summary>
+            <param name="vertices"></param>        
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Decomposition.BayazitDecomposer.ConvexPartition(WaveEngine.Box2D.Utils.Vertices,System.Int32)">
+            <summary>
+            Decompose the polygon into several smaller non-concave polygon.
+            If the polygon is already convex, it will return the original polygon, unless it is over Settings.MaxPolygonVertices.
+            Precondition: Counter Clockwise polygon
+            </summary>
+            <param name="vertices"></param>        
+            <param name="stackLevel">The recursive stack level, to control stack overflow</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="T:WaveEngine.Box2D.Utils.LineTools">
+            <summary>
+            Collection of helper methods for misc collisions.
+            Does float tolerance and line collisions with lines and AABBs.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.LineTools.DistanceBetweenPointAndPoint(WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Distance between point and line segment
+            </summary>
+            <param name="point1">The point 1</param>
+            <param name="point2">The point 2</param>
+            <returns>The distance</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.LineTools.DistanceBetweenPointAndLineSegment(WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Distance between point and segment
+            </summary>
+            <param name="point">The point</param>
+            <param name="lineEndPoint1">The start of the segment</param>
+            <param name="lineEndPoint2">The end of the segment</param>
+            <returns>The distance</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.LineTools.LineIntersect2(WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Check if the lines a0->a1 and b0->b1 cross.
+            If they do, intersectionPoint will be filled
+            with the point of crossing.
+            Grazing lines should not return true.
+            </summary>
+            <param name="a0">The a0</param>
+            <param name="a1">The a1</param>
+            <param name="b0">The b0</param>
+            <param name="b1">The b1</param>
+            <param name="intersectionPoint">The intersection point</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.LineTools.LineIntersect(WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Line intersect. From Mark Bayazit's convex decomposition algorithm
+            </summary>
+            <param name="p1">The p1</param>
+            <param name="p2">The p2</param>
+            <param name="q1">The q1</param>
+            <param name="q2">The q2</param>
+            <returns>The distance</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.LineTools.LineIntersect(WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@,System.Boolean,System.Boolean,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            This method detects if two line segments (or lines) intersect,
+            and, if so, the point of intersection. Use the <paramref name="firstIsSegment"/> and
+            <paramref name="secondIsSegment"/> parameters to set whether the intersection point
+            must be on the first and second line segments. Setting these
+            both to true means you are doing a line-segment to line-segment
+            intersection. Setting one of them to true means you are doing a
+            line to line-segment intersection test, and so on.
+            Note: If two line segments are coincident, then 
+            no intersection is detected (there are actually
+            infinite intersection points).
+            Author: Jeremy Bell
+            </summary>
+            <param name="point1">The first point of the first line segment.</param>
+            <param name="point2">The second point of the first line segment.</param>
+            <param name="point3">The first point of the second line segment.</param>
+            <param name="point4">The second point of the second line segment.</param>
+            <param name="point">This is set to the intersection
+            point if an intersection is detected.</param>
+            <param name="firstIsSegment">Set this to true to require that the 
+            intersection point be on the first line segment.</param>
+            <param name="secondIsSegment">Set this to true to require that the
+            intersection point be on the second line segment.</param>
+            <returns>True if an intersection is detected, false otherwise.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.LineTools.LineIntersect(WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,System.Boolean,System.Boolean,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            This method detects if two line segments (or lines) intersect,
+            and, if so, the point of intersection. Use the <paramref name="firstIsSegment"/> and
+            <paramref name="secondIsSegment"/> parameters to set whether the intersection point
+            must be on the first and second line segments. Setting these
+            both to true means you are doing a line-segment to line-segment
+            intersection. Setting one of them to true means you are doing a
+            line to line-segment intersection test, and so on.
+            Note: If two line segments are coincident, then 
+            no intersection is detected (there are actually
+            infinite intersection points).
+            Author: Jeremy Bell
+            </summary>
+            <param name="point1">The first point of the first line segment.</param>
+            <param name="point2">The second point of the first line segment.</param>
+            <param name="point3">The first point of the second line segment.</param>
+            <param name="point4">The second point of the second line segment.</param>
+            <param name="intersectionPoint">This is set to the intersection
+            point if an intersection is detected.</param>
+            <param name="firstIsSegment">Set this to true to require that the 
+            intersection point be on the first line segment.</param>
+            <param name="secondIsSegment">Set this to true to require that the
+            intersection point be on the second line segment.</param>
+            <returns>True if an intersection is detected, false otherwise.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.LineTools.LineIntersect(WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            This method detects if two line segments intersect,
+            and, if so, the point of intersection. 
+            Note: If two line segments are coincident, then 
+            no intersection is detected (there are actually
+            infinite intersection points).
+            </summary>
+            <param name="point1">The first point of the first line segment.</param>
+            <param name="point2">The second point of the first line segment.</param>
+            <param name="point3">The first point of the second line segment.</param>
+            <param name="point4">The second point of the second line segment.</param>
+            <param name="intersectionPoint">This is set to the intersection
+            point if an intersection is detected.</param>
+            <returns>True if an intersection is detected, false otherwise.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.LineTools.LineIntersect(WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            This method detects if two line segments intersect,
+            and, if so, the point of intersection. 
+            Note: If two line segments are coincident, then 
+            no intersection is detected (there are actually
+            infinite intersection points).
+            </summary>
+            <param name="point1">The first point of the first line segment.</param>
+            <param name="point2">The second point of the first line segment.</param>
+            <param name="point3">The first point of the second line segment.</param>
+            <param name="point4">The second point of the second line segment.</param>
+            <param name="intersectionPoint">This is set to the intersection
+            point if an intersection is detected.</param>
+            <returns>True if an intersection is detected, false otherwise.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.LineTools.LineSegmentVerticesIntersect(WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@,WaveEngine.Box2D.Utils.Vertices,System.Collections.Generic.List{WaveEngine.Common.Math.Vector2}@)">
+            <summary>
+            Get all intersections between a line segment and a list of vertices
+            representing a polygon. The vertices reuse adjacent points, so for example
+            edges one and two are between the first and second vertices and between the
+            second and third vertices. The last edge is between vertex vertices.Count - 1
+            and verts0. (ie, vertices from a Geometry or AABB)
+            </summary>
+            <param name="point1">The first point of the line segment to test</param>
+            <param name="point2">The second point of the line segment to test.</param>
+            <param name="vertices">The vertices, as described above</param>
+            <param name="intersectionPoints">An list of intersection points. Any intersection points
+            found will be added to this list.</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.Utils.SimplifyTools">
+            <summary>
+            Simplify tools
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.SimplifyTools.CollinearSimplify(WaveEngine.Box2D.Utils.Vertices,System.Single)">
+            <summary>
+            Removes all collinear points on the polygon.
+            </summary>
+            <param name="vertices">The polygon that needs simplification.</param>
+            <param name="collinearityTolerance">The collinearity tolerance.</param>
+            <returns>A simplified polygon.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.SimplifyTools.CollinearSimplify(WaveEngine.Box2D.Utils.Vertices)">
+            <summary>
+            Removes all collinear points on the polygon.
+            Has a default bias of 0
+            </summary>
+            <param name="vertices">The polygon that needs simplification.</param>
+            <returns>A simplified polygon.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.SimplifyTools.DouglasPeuckerSimplify(WaveEngine.Box2D.Utils.Vertices,System.Single)">
+            <summary>
+            Ramer-Douglas-Peucker polygon simplification algorithm. This is the general recursive version that does not use the
+            speed-up technique by using the Melkman convex hull.
+            
+            If you pass in 0, it will remove all collinear points
+            </summary>
+            <returns>The simplified polygon</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.SimplifyTools.ReduceByArea(WaveEngine.Box2D.Utils.Vertices,System.Single)">
+            <summary>
+            Reduce vertices by area
+            </summary>
+            <param name="vertices">The vertices</param>
+            <param name="areaTolerance">The area tolerance</param>
+            <returns>The vertices</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.SimplifyTools.MergeParallelEdges(WaveEngine.Box2D.Utils.Vertices,System.Single)">
+            <summary>
+            Merges all parallel edges in the list of vertices
+            </summary>
+            <param name="vertices">The vertices.</param>
+            <param name="tolerance">The tolerance.</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.SimplifyTools.MergeIdenticalPoints(WaveEngine.Box2D.Utils.Vertices)">
+            <summary>
+            Merges the identical points in the polygon.
+            </summary>
+            <param name="vertices">The vertices.</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.SimplifyTools.ReduceByDistance(WaveEngine.Box2D.Utils.Vertices,System.Single)">
+            <summary>
+            Reduces the polygon by distance.
+            </summary>
+            <param name="vertices">The vertices.</param>
+            <param name="distance">The distance between points. Points closer than this will be 'joined'.</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.SimplifyTools.ReduceByNth(WaveEngine.Box2D.Utils.Vertices,System.Int32)">
+            <summary>
+            Reduces the polygon by removing the Nth vertex in the vertices list.
+            </summary>
+            <param name="vertices">The vertices.</param>
+            <param name="nth">The Nth point to remove. Example: 5.</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="T:WaveEngine.Box2D.Utils.Vertices">
+            <summary>
+            A list of vertices
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Utils.Vertices.MaxPolygonVertices">
+            <summary>
+            The maximum number of vertices on a convex polygon.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Utils.Vertices.AngularSlop">
+            <summary>
+            A small angle used as a collision and constraint tolerance. Usually it is
+            chosen to be numerically significant, but visually insignificant.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Utils.Vertices.LinearSlop">
+            <summary>
+            A small length used as a collision and constraint tolerance. Usually it is
+            chosen to be numerically significant, but visually insignificant.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Utils.Vertices" /> class.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Utils.Vertices" /> class.
+            </summary>
+            <param name="capacity">The initial capacity</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.#ctor(WaveEngine.Common.Math.Vector2[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Utils.Vertices" /> class.
+            </summary>
+            <param name="vector2">The initial vertices</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.#ctor(System.Collections.Generic.IList{WaveEngine.Common.Math.Vector2})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Utils.Vertices" /> class.
+            </summary>
+            <param name="vertices">The initial vertices</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.NextIndex(System.Int32)">
+            <summary>
+            Nexts the index.
+            </summary>
+            <param name="index">The index.</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.NextVertex(System.Int32)">
+            <summary>
+            The next vertex
+            </summary>
+            <param name="index">The index</param>
+            <returns>The vertex</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.PreviousIndex(System.Int32)">
+            <summary>
+            Gets the previous index.
+            </summary>
+            <param name="index">The index.</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.PreviousVertex(System.Int32)">
+            <summary>
+            The previous vertex
+            </summary>
+            <param name="index">The index</param>
+            <returns>The vertex</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.GetSignedArea">
+            <summary>
+            Gets the signed area.
+            </summary>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.GetArea">
+            <summary>
+            Gets the area.
+            </summary>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.GetCentroid">
+            <summary>
+            Gets the centroid.
+            </summary>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.GetRadius">
+            <summary>
+            Gets the radius based on area.
+            </summary>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.Translate(WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Translate vector
+            </summary>
+            <param name="vector">The vector</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.Translate(WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Translates the vertices with the specified vector.
+            </summary>
+            <param name="vector">The vector.</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.Scale(WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Scales the vertices with the specified vector.
+            </summary>
+            <param name="value">The Value.</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.Rotate(System.Single)">
+            <summary>
+            Rotate the vertices with the defined value in radians.
+            </summary>
+            <param name="value">The amount to rotate by in radians.</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.Transform(WaveEngine.Common.Math.Matrix@)">
+            <summary>
+            Transform the vertices with the defined matrix.
+            </summary>
+            <param name="transform">The transform matrix.</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.IsConvex">
+            <summary>
+            Assuming the polygon is simple; determines whether the polygon is convex.
+            NOTE: It will also return false if the input contains colinear edges.
+            </summary>
+            <returns>
+            	<c>true</c> if it is convex; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.IsCounterClockWise">
+            <summary>
+            Is counter clockwise
+            </summary>
+            <returns>if the vertices are counter clockwise</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.ForceCounterClockWise">
+            <summary>
+            Forces counter clock wise order.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.IsSimple">
+            <summary>
+            Check for edge crossings
+            </summary>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.CheckPolygon">
+             <summary>
+             Checks if polygon is valid for use in Box2d engine.
+             Last ditch effort to ensure no invalid polygons are
+             added to world geometry.
+            
+             Performs a full check, for simplicity, convexity,
+             orientation, minimum angle, and volume.  This won't
+             be very efficient, and a lot of it is redundant when
+             other tools in this section are used.
+             </summary>
+             <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.TraceEdge(WaveEngine.Box2D.Utils.Vertices)">
+            <summary>
+            Trace the edge of a non-simple polygon and return a simple polygon.
+            
+            Method:
+            Start at vertex with minimum y (pick maximum x one if there are two).
+            We aim our "lastDir" vector at (1.0, 0)
+            We look at the two rays going off from our start vertex, and follow whichever
+            has the smallest angle (in -Pi . Pi) wrt lastDir ("rightest" turn)
+            Loop until we hit starting vertex:
+            We add our current vertex to the list.
+            We check the seg from current vertex to next vertex for intersections
+            - if no intersections, follow to next vertex and continue
+            - if intersections, pick one with minimum distance
+            - if more than one, pick one with "rightest" next point (two possibilities for each)
+            </summary>
+            <param name="verts">The vertices.</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.ToString">
+            <summary>
+            To String
+            </summary>
+            <returns>The string</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.ProjectToAxis(WaveEngine.Common.Math.Vector2@,System.Single@,System.Single@)">
+            <summary>
+            Projects to axis.
+            </summary>
+            <param name="axis">The axis.</param>
+            <param name="min">The min.</param>
+            <param name="max">The max.</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.PointInPolygon(WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Winding number test for a point in a polygon.
+            </summary>
+            See more info about the algorithm here: http://softsurfer.com/Archive/algorithm_0103/algorithm_0103.htm
+            <param name="point">The point to be tested.</param>
+            <returns>-1 if the winding number is zero and the point is outside
+            the polygon, 1 if the point is inside the polygon, and 0 if the point
+            is on the polygons edge.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Utils.Vertices.PointInPolygonAngle(WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Compute the sum of the angles made between the test point and each pair of points making up the polygon. 
+            If this sum is 2pi then the point is an interior point, if 0 then the point is an exterior point. 
+            ref: http://ozviz.wasp.uwa.edu.au/~pbourke/geometry/insidepoly/  - Solution 2 
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Box2D.TextureTools.VerticesDetectionType">
+            <summary>
+            The detection type affects the resulting polygon data.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.TextureTools.VerticesDetectionType.Integrated">
+            <summary>
+            Holes are integrated into the main polygon.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.TextureTools.VerticesDetectionType.Separated">
+            <summary>
+            The data of the main polygon and hole polygons is returned separately.
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Box2D.TextureTools.DetectedVertices">
+            <summary>
+            Detected vertices of a single polygon.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.TextureTools.DetectedVertices._holes">
+            <summary>
+            The holes
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.TextureTools.DetectedVertices.Holes">
+            <summary>
+            Gets or sets the holes
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.DetectedVertices.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.TextureTools.DetectedVertices" /> class.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.DetectedVertices.#ctor(WaveEngine.Box2D.Utils.Vertices)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.TextureTools.DetectedVertices" /> class.
+            </summary>
+            <param name="vertices">The vertices</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.DetectedVertices.Transform(WaveEngine.Common.Math.Matrix)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.TextureTools.DetectedVertices" /> class.
+            </summary>
+            <param name="transform">The transform</param>
+        </member>
+        <member name="T:WaveEngine.Box2D.TextureTools.TextureConverter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.TextureTools.TextureConverter.ClosePixels">
+            <summary>
+            This array is ment to be readonly.
+            It's not because it is accessed very frequently.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.TextureTools.TextureConverter.PolygonDetectionType">
+            <summary>
+            Get or set the polygon detection type.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.TextureTools.TextureConverter.HoleDetection">
+            <summary>
+            Will detect texture 'holes' if set to true. Slows down the detection. Default is false.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.TextureTools.TextureConverter.MultipartDetection">
+            <summary>
+            Will detect texture multiple 'solid' isles if set to true. Slows down the detection. Default is false.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.TextureTools.TextureConverter.PixelOffsetOptimization">
+            <summary>
+            Will optimize the vertex positions along the interpolated normal between two edges about a half pixel (post processing). Default is false.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.TextureTools.TextureConverter.Transform">
+            <summary>
+            Can be used for scaling.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.TextureTools.TextureConverter.AlphaTolerance">
+            <summary>
+            Alpha (coverage) tolerance. Default is 20: Every pixel with a coverage value equal or greater to 20 will be counts as solid.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.TextureTools.TextureConverter.HullTolerance">
+            <summary>
+            Default is 1.5f.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.TextureTools.TextureConverter" /> class.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.#ctor(System.Nullable{System.Byte},System.Nullable{System.Single},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{WaveEngine.Common.Math.Matrix})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.TextureTools.TextureConverter" /> class.
+            </summary>
+            <param name="alphaTolerance">Alpha tolerance</param>
+            <param name="hullTolerance">The hull tolerance</param>
+            <param name="holeDetection">The hole detection</param>
+            <param name="multipartDetection">Multipart detection</param>
+            <param name="pixelOffsetOptimization">The pixel offset optimization</param>
+            <param name="transform">The transform</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.#ctor(System.UInt32[],System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.TextureTools.TextureConverter" /> class.
+            </summary>
+            <param name="data">The data</param>
+            <param name="width">the texture width</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.#ctor(System.UInt32[],System.Int32,System.Nullable{System.Byte},System.Nullable{System.Single},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{WaveEngine.Common.Math.Matrix})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.TextureTools.TextureConverter" /> class.
+            </summary>
+            <param name="data">The data</param>
+            <param name="width">the texture width</param>
+            <param name="alphaTolerance">Alpha tolerance</param>
+            <param name="hullTolerance">The hull tolerance</param>
+            <param name="holeDetection">The hole detection</param>
+            <param name="multipartDetection">Multipart detection</param>
+            <param name="pixelOffsetOptimization">The pixel offset optimization</param>
+            <param name="transform">The transform</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.SetTextureData(System.UInt32[],System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+            <param name="width"></param>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.DetectVertices(System.UInt32[],System.Int32)">
+            <summary>
+            Detects the vertices of the supplied texture data. (PolygonDetectionType.Integrated)
+            </summary>
+            <param name="data">The texture data.</param>
+            <param name="width">The texture width.</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.DetectVertices(System.UInt32[],System.Int32,System.Boolean)">
+            <summary>
+            Detects the vertices of the supplied texture data.
+            </summary>
+            <param name="data">The texture data.</param>
+            <param name="width">The texture width.</param>
+            <param name="holeDetection">if set to <c>true</c> it will perform hole detection.</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.DetectVertices(System.UInt32[],System.Int32,System.Single,System.Byte,System.Boolean,System.Boolean)">
+            <summary>
+            Detects the vertices of the supplied texture data.
+            </summary>
+            <param name="data">The texture data.</param>
+            <param name="width">The texture width.</param>
+            <param name="holeDetection">if set to <c>true</c> it will perform hole detection.</param>
+            <param name="hullTolerance">The hull tolerance.</param>
+            <param name="alphaTolerance">The alpha tolerance.</param>
+            <param name="multiPartDetection">if set to <c>true</c> it will perform multi part detection.</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.DetectVertices">
+            <summary>
+            Detect vertices
+            </summary>
+            <returns>The list of vertices</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.ApplyTriangulationCompatibleWinding(System.Collections.Generic.List{WaveEngine.Box2D.TextureTools.DetectedVertices}@)">
+            <summary>
+            Apply triangulation compatible
+            </summary>
+            <param name="detectedPolygons">The detected polygons</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.ApplyPixelOffsetOptimization(System.Collections.Generic.List{WaveEngine.Box2D.TextureTools.DetectedVertices}@)">
+            <summary>
+            Apply optimizations
+            </summary>
+            <param name="detectedPolygons">The detected polygons</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.ApplyTransform(System.Collections.Generic.List{WaveEngine.Box2D.TextureTools.DetectedVertices}@)">
+            <summary>
+            Apply transform
+            </summary>
+            <param name="detectedPolygons">The detected polygons</param>
+        </member>
+        <member name="F:WaveEngine.Box2D.TextureTools.TextureConverter._tempIsSolidX">
+            <summary>
+            Temp is solid x
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.TextureTools.TextureConverter._tempIsSolidY">
+            <summary>
+            Temp is solid y
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.IsSolid(WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Is solid?
+            </summary>
+            <param name="v">The vector2</param>
+            <returns>Is solid?</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.IsSolid(System.Int32@,System.Int32@)">
+            <summary>
+            Is solid?
+            </summary>
+            <param name="x">The x</param>
+            <param name="y">The y</param>
+            <returns>Is solid?</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.IsSolid(System.Int32@)">
+            <summary>
+            Is solid?
+            </summary>
+            <param name="index">The index</param>
+            <returns>Is solid?</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.InBounds(WaveEngine.Common.Math.Vector2@)">
+            <summary>
+            Is bound
+            </summary>
+            <param name="coord">The coordinates</param>
+            <returns></returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.SearchHoleEntrance(WaveEngine.Box2D.Utils.Vertices,System.Nullable{WaveEngine.Common.Math.Vector2})">
+            <summary>
+            Function to search for an entrance point of a hole in a polygon. It searches the polygon from top to bottom between the polygon edges.
+            </summary>
+            <param name="polygon">The polygon to search in.</param>
+            <param name="lastHoleEntrance">The last entrance point.</param>
+            <returns>The next holes entrance point. Null if ther are no holes.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.SearchCrossingEdges(WaveEngine.Box2D.Utils.Vertices,System.Int32)">
+            <summary>
+            Searches the polygon for the x coordinates of the edges that cross the specified y coordinate.
+            </summary>
+            <param name="polygon">Polygon to search in.</param>
+            <param name="y">Y coordinate to check for edges.</param>
+            <returns>Descending sorted list of x coordinates of edges that cross the specified y coordinate.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.CreateSimplePolygon(WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2)">
+            <summary>
+            
+            </summary>
+            <param name="entrance"></param>
+            <param name="last"></param>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.TextureTools.TextureConverter.SearchNextHullEntrance(System.Collections.Generic.List{WaveEngine.Box2D.TextureTools.DetectedVertices},WaveEngine.Common.Math.Vector2,System.Nullable{WaveEngine.Common.Math.Vector2}@)">
+            <summary>
+            Searches for the next shape.
+            </summary>
+            <param name="detectedPolygons">Already detected polygons.</param>
+            <param name="start">Search start coordinate.</param>
+            <param name="entrance">Returns the found entrance coordinate. Null if no other shapes found.</param>
+            <returns>True if a new shape was found.</returns>
+        </member>
+    </members>
+</doc>

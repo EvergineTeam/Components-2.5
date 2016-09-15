@@ -151,6 +151,18 @@ namespace WaveEngine.Components.Graphics3D
         }
 
         /// <summary>
+        /// Create an internal model from a mesh
+        /// </summary>
+        /// <param name="graphicsDevice">The graphicsDevice device.</param>
+        /// <param name="mesh">The mesh</param>
+        /// <param name="boundingBox">The bounding box</param>
+        public void FromMesh(GraphicsDevice graphicsDevice, Mesh mesh, BoundingBox boundingBox)
+        {
+            this.FromMesh(graphicsDevice, mesh);
+            this.BoundingBox = boundingBox;
+        }
+
+        /// <summary>
         /// Loads this class with data from a primitive.
         /// </summary>
         /// <param name="graphicsDevice">The graphicsDevice device.</param>

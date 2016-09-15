@@ -27,7 +27,7 @@ namespace WaveEngine.Components.Graphics3D
     /// A 3D model. To render a model use the <see cref="ModelRenderer"/> class.
     /// </summary>
     [DataContract(Namespace = "WaveEngine.Components.Graphics3D")]
-    public class Model : BaseModel, IDisposable
+    public class Model : LoadableModel, IDisposable
     {
         /// <summary>
         /// Number of instances of this component created.
@@ -96,7 +96,7 @@ namespace WaveEngine.Components.Graphics3D
             }
 
             set
-            {                
+            {
                 this.modelType = value;
                 this.isPrimitive = true;
 
@@ -164,6 +164,21 @@ namespace WaveEngine.Components.Graphics3D
         {
             Model model = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
             model.InternalModel.FromMesh(WaveServices.GraphicsDevice, mesh);
+            model.modelType = ModelType.Custom;
+
+            return model;
+        }
+
+        /// <summary>
+        /// Creates the cube.
+        /// </summary>
+        /// <param name="mesh">The mesh</param>
+        /// <param name="boundingBox">The mesh bounding box</param>
+        /// <returns>A <see cref="Model"/> representing a cube.</returns>
+        public static Model CreateFromMesh(Mesh mesh, BoundingBox boundingBox)
+        {
+            Model model = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
+            model.InternalModel.FromMesh(WaveServices.GraphicsDevice, mesh, boundingBox);
             model.modelType = ModelType.Custom;
 
             return model;
@@ -441,7 +456,7 @@ namespace WaveEngine.Components.Graphics3D
                 this.RefreshPrimitive();
             }
 
-            if (this.InternalModel != null)
+            if (this.InternalModel != null && !this.customBoundingBoxSet)
             {
                 this.BoundingBox = this.InternalModel.BoundingBox;
             }

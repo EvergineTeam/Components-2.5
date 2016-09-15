@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using WaveEngine.Common.Attributes;
+using WaveEngine.Common.Graphics;
 using WaveEngine.Common.Math;
 using WaveEngine.Framework.Graphics;
 #endregion
@@ -22,7 +23,7 @@ namespace WaveEngine.Components.Graphics3D
     /// Class that holds the data of an animated 3D model.
     /// </summary>
     [DataContract(Namespace = "WaveEngine.Components.Graphics3D")]
-    public class SkinnedModel : BaseModel
+    public class SkinnedModel : LoadableModel
     {
         /// <summary>
         /// Number of instances of this component created.
@@ -157,7 +158,11 @@ namespace WaveEngine.Components.Graphics3D
             if (!string.IsNullOrEmpty(this.ModelPath))
             {
                 this.InternalModel = Assets.LoadAsset<InternalSkinnedModel>(this.ModelPath);
-                this.BoundingBox = this.InternalModel.BoundingBox;
+
+                if (!this.customBoundingBoxSet)
+                {
+                    this.BoundingBox = this.InternalModel.BoundingBox;
+                }
             }
         }
         #endregion

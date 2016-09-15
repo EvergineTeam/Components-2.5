@@ -32,12 +32,6 @@ namespace WaveEngine.Components.Particles
         private static int instances;
 
         /// <summary>
-        ///     Gets or sets the Range of color for particle life.
-        /// </summary>
-        [DataMember]
-        public List<Color> InterpolationColors;
-
-        /// <summary>
         /// The end delta scale.
         /// </summary>
         [DataMember]
@@ -296,7 +290,15 @@ namespace WaveEngine.Components.Particles
         ///     <c>true</c> if linear color interpolation is enabled; otherwise, <c>false</c>.
         /// </value>
         [DataMember]
+        [RenderProperty(Tag = 1)]
         public bool LinearColorEnabled { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Range of color for particle life.
+        /// </summary>
+        [DataMember]
+        [RenderProperty(AttatchToTag = 1, AttachToValue = true)]
+        public List<Color> InterpolationColors { get; set; }
 
         /// <summary>
         ///     Gets or sets the Range of values controlling the particle color and alpha.
