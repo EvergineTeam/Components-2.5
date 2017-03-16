@@ -1,7 +1,7 @@
 ﻿#region File Description
 //-----------------------------------------------------------------------------
 // FreeCamera3DBehavior
-// Copyright © 2016 Wave Engine S.L. All rights reserved.
+// Copyright © 2017 Wave Engine S.L. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -60,7 +60,8 @@ namespace WaveEngine.Components.Cameras
         /// <summary>
         /// The input.
         /// </summary>
-        private Input input;
+        [RequiredService]
+        private Input input = null;
 
         /// <summary>
         /// The is dragging.
@@ -120,17 +121,17 @@ namespace WaveEngine.Components.Cameras
         /// <summary>
         ///     Mouse speed movement
         /// </summary>
-        private float rotationSpeed = .004f;
+        private float rotationSpeed;
 
         /// <summary>
         /// GamePad speed movement
         /// </summary>
-        private float gamepadRotationSpeed = .75f;
+        private float gamepadRotationSpeed;
 
         /// <summary>
         ///     Speed of the movement
         /// </summary>
-        private float speed = 20f;
+        private float speed;
 
         /// <summary>
         /// The time difference.
@@ -221,6 +222,18 @@ namespace WaveEngine.Components.Cameras
         {
         }
 
+        /// <summary>
+        /// Default values
+        /// </summary>
+        protected override void DefaultValues()
+        {
+            base.DefaultValues();
+
+            this.rotationSpeed = .004f;
+            this.gamepadRotationSpeed = .75f;
+            this.speed = 20;
+        }
+
         #endregion
 
         #region Private Methods
@@ -258,7 +271,6 @@ namespace WaveEngine.Components.Cameras
         /// </param>
         private void HandleInput(float amount)
         {
-            this.input = WaveServices.Input;
             this.isMouseConnected = this.input.MouseState.IsConnected;
             this.isTouchPanelConnected = this.input.TouchPanelState.IsConnected;
 

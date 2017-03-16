@@ -1037,6 +1037,11 @@
             Initializes a new instance of the <see cref="T:WaveEngine.Components.Cameras.FreeCamera2DBehavior" /> class.
             </summary>
         </member>
+        <member name="M:WaveEngine.Components.Cameras.FreeCamera2DBehavior.DefaultValues">
+            <summary>
+            Default values
+            </summary>
+        </member>
         <member name="M:WaveEngine.Components.Cameras.FreeCamera2DBehavior.Update(System.TimeSpan)">
             <summary>
             Updates the camera position.
@@ -1231,6 +1236,11 @@
                 Initializes a new instance of the <see cref="T:WaveEngine.Components.Cameras.FreeCamera3DBehavior" /> class.
             </summary>
         </member>
+        <member name="M:WaveEngine.Components.Cameras.FreeCamera3DBehavior.DefaultValues">
+            <summary>
+            Default values
+            </summary>
+        </member>
         <member name="M:WaveEngine.Components.Cameras.FreeCamera3DBehavior.Initialize">
             <summary>
                 Performs further custom initialization for this instance.
@@ -1304,6 +1314,11 @@
             The speed.
             </summary>
         </member>
+        <member name="F:WaveEngine.Components.Cameras.ViewCamera3DBehavior.input">
+            <summary>
+            Input service.
+            </summary>
+        </member>
         <member name="F:WaveEngine.Components.Cameras.ViewCamera3DBehavior.touchState">
             <summary>
             The touch state.
@@ -1348,6 +1363,11 @@
             <summary>
             The initial lookAt.
             </summary>
+        </member>
+        <member name="M:WaveEngine.Components.Cameras.ViewCamera3DBehavior.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Components.Cameras.ViewCamera3DBehavior" /> class.
+            </summary>        
         </member>
         <member name="M:WaveEngine.Components.Cameras.ViewCamera3DBehavior.#ctor(WaveEngine.Common.Math.Vector3)">
             <summary>
@@ -1678,7 +1698,7 @@
             <param name="totalTime">Animation duration</param>
             <returns>Delta value</returns>
         </member>
-        <member name="M:WaveEngine.Components.GameActions.FloatAnimationGameAction.SmoothStep(System.Single,System.Single,System.Single)">
+        <member name="M:WaveEngine.Components.GameActions.FloatAnimationGameAction.LinearStep(System.Single,System.Single,System.Single)">
             <summary>
             Smooth Step method
             </summary>
@@ -2040,7 +2060,12 @@
             The transform
             </summary>
         </member>
-        <member name="M:WaveEngine.Components.GameActions.MoveTo2DGameAction.#ctor(WaveEngine.Framework.Entity,WaveEngine.Common.Math.Vector2,System.TimeSpan,WaveEngine.Components.GameActions.EaseFunction)">
+        <member name="F:WaveEngine.Components.GameActions.MoveTo2DGameAction.local">
+            <summary>
+            If the animation is in local coordinates.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Components.GameActions.MoveTo2DGameAction.#ctor(WaveEngine.Framework.Entity,WaveEngine.Common.Math.Vector2,System.TimeSpan,WaveEngine.Components.GameActions.EaseFunction,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:WaveEngine.Components.GameActions.MoveTo2DGameAction"/> class.
             </summary>
@@ -2048,6 +2073,7 @@
             <param name="to">The target position</param>
             <param name="time">Animation duration</param>
             <param name="ease">The ease function</param>
+            <param name="local">If the position is in local coordinates.</param>
         </member>
         <member name="M:WaveEngine.Components.GameActions.MoveTo2DGameAction.PerformRun">
             <summary>
@@ -2055,6 +2081,12 @@
             </summary>
         </member>
         <member name="M:WaveEngine.Components.GameActions.MoveTo2DGameAction.MoveAction(WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Move action
+            </summary>
+            <param name="delta">The delta movement</param>
+        </member>
+        <member name="M:WaveEngine.Components.GameActions.MoveTo2DGameAction.LocalMoveAction(WaveEngine.Common.Math.Vector2)">
             <summary>
             Move action
             </summary>
@@ -2070,7 +2102,12 @@
             The transform
             </summary>
         </member>
-        <member name="M:WaveEngine.Components.GameActions.MoveTo3DGameAction.#ctor(WaveEngine.Framework.Entity,WaveEngine.Common.Math.Vector3,System.TimeSpan,WaveEngine.Components.GameActions.EaseFunction)">
+        <member name="F:WaveEngine.Components.GameActions.MoveTo3DGameAction.local">
+            <summary>
+            If the animation is in local coordinates.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Components.GameActions.MoveTo3DGameAction.#ctor(WaveEngine.Framework.Entity,WaveEngine.Common.Math.Vector3,System.TimeSpan,WaveEngine.Components.GameActions.EaseFunction,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:WaveEngine.Components.GameActions.MoveTo3DGameAction"/> class.
             </summary>
@@ -2078,6 +2115,7 @@
             <param name="to">The target position</param>
             <param name="time">Animation duration</param>
             <param name="ease">The ease function</param>
+            <param name="local">If the position is in local coordinates.</param>
         </member>
         <member name="M:WaveEngine.Components.GameActions.MoveTo3DGameAction.PerformRun">
             <summary>
@@ -2085,6 +2123,12 @@
             </summary>
         </member>
         <member name="M:WaveEngine.Components.GameActions.MoveTo3DGameAction.MoveAction(WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Move action
+            </summary>
+            <param name="delta">The delta movement</param>
+        </member>
+        <member name="M:WaveEngine.Components.GameActions.MoveTo3DGameAction.LocalMoveAction(WaveEngine.Common.Math.Vector3)">
             <summary>
             Move action
             </summary>
@@ -2100,7 +2144,12 @@
             The trasform 2D
             </summary>
         </member>
-        <member name="M:WaveEngine.Components.GameActions.RotateTo2DGameAction.#ctor(WaveEngine.Framework.Entity,System.Single,System.TimeSpan,WaveEngine.Components.GameActions.EaseFunction)">
+        <member name="F:WaveEngine.Components.GameActions.RotateTo2DGameAction.local">
+            <summary>
+            If the animation is in local coordinates.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Components.GameActions.RotateTo2DGameAction.#ctor(WaveEngine.Framework.Entity,System.Single,System.TimeSpan,WaveEngine.Components.GameActions.EaseFunction,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:WaveEngine.Components.GameActions.RotateTo2DGameAction"/> class.
             </summary>
@@ -2108,6 +2157,7 @@
             <param name="to">The target angle</param>
             <param name="time">Animation duration</param>
             <param name="ease">The ease function</param>
+            <param name="local">If the rotation is local</param>
         </member>
         <member name="M:WaveEngine.Components.GameActions.RotateTo2DGameAction.PerformRun">
             <summary>
@@ -2117,6 +2167,12 @@
         <member name="M:WaveEngine.Components.GameActions.RotateTo2DGameAction.RotateAction(System.Single)">
             <summary>
             The rotate method
+            </summary>
+            <param name="delta">Delta angle</param>
+        </member>
+        <member name="M:WaveEngine.Components.GameActions.RotateTo2DGameAction.LocalRotateAction(System.Single)">
+            <summary>
+            The local rotate method
             </summary>
             <param name="delta">Delta angle</param>
         </member>
@@ -2130,7 +2186,17 @@
             The transform 3D
             </summary>
         </member>
-        <member name="M:WaveEngine.Components.GameActions.RotateTo3DGameAction.#ctor(WaveEngine.Framework.Entity,WaveEngine.Common.Math.Vector3,System.TimeSpan,WaveEngine.Components.GameActions.EaseFunction)">
+        <member name="F:WaveEngine.Components.GameActions.RotateTo3DGameAction.local">
+            <summary>
+            If the animation is in local coordinates.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Components.GameActions.RotateTo3DGameAction.shorterPath">
+            <summary>
+            If the animation rotates on the shorter path
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Components.GameActions.RotateTo3DGameAction.#ctor(WaveEngine.Framework.Entity,WaveEngine.Common.Math.Vector3,System.TimeSpan,WaveEngine.Components.GameActions.EaseFunction,System.Boolean,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:WaveEngine.Components.GameActions.RotateTo3DGameAction"/> class.
             </summary>
@@ -2138,6 +2204,8 @@
             <param name="to">The target rotation</param>
             <param name="time">Animation duration</param>
             <param name="ease">The ease function</param>
+            <param name="local">If the rotation is in local coordinates</param>
+            <param name="shorterPath">If the rotation goes on the shorter path</param>
         </member>
         <member name="M:WaveEngine.Components.GameActions.RotateTo3DGameAction.PerformRun">
             <summary>
@@ -2147,6 +2215,12 @@
         <member name="M:WaveEngine.Components.GameActions.RotateTo3DGameAction.RotateAction(WaveEngine.Common.Math.Vector3)">
             <summary>
             Rotate action
+            </summary>
+            <param name="delta">The delta rotation</param>
+        </member>
+        <member name="M:WaveEngine.Components.GameActions.RotateTo3DGameAction.LocalRotateAction(WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Local Rotate action
             </summary>
             <param name="delta">The delta rotation</param>
         </member>
@@ -2160,7 +2234,12 @@
             The transform 2D
             </summary>
         </member>
-        <member name="M:WaveEngine.Components.GameActions.ScaleTo2DGameAction.#ctor(WaveEngine.Framework.Entity,WaveEngine.Common.Math.Vector2,System.TimeSpan,WaveEngine.Components.GameActions.EaseFunction)">
+        <member name="F:WaveEngine.Components.GameActions.ScaleTo2DGameAction.local">
+            <summary>
+            If the animation is in local coordinates.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Components.GameActions.ScaleTo2DGameAction.#ctor(WaveEngine.Framework.Entity,WaveEngine.Common.Math.Vector2,System.TimeSpan,WaveEngine.Components.GameActions.EaseFunction,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:WaveEngine.Components.GameActions.ScaleTo2DGameAction"/> class.
             </summary>
@@ -2168,6 +2247,7 @@
             <param name="to">The target scale</param>
             <param name="time">Animation duration</param>
             <param name="ease">The ease function</param>
+            <param name="local">If the scale is in local coordinate</param>
         </member>
         <member name="M:WaveEngine.Components.GameActions.ScaleTo2DGameAction.PerformRun">
             <summary>
@@ -2180,6 +2260,12 @@
             </summary>
             <param name="delta">Delta scale</param>
         </member>
+        <member name="M:WaveEngine.Components.GameActions.ScaleTo2DGameAction.LocalScaleAction(WaveEngine.Common.Math.Vector2)">
+            <summary>
+            Scale action
+            </summary>
+            <param name="delta">The delta scale</param>
+        </member>
         <member name="T:WaveEngine.Components.GameActions.ScaleTo3DGameAction">
             <summary>
             Game action that scales an entity 3D
@@ -2190,7 +2276,12 @@
             The transform 3D
             </summary>
         </member>
-        <member name="M:WaveEngine.Components.GameActions.ScaleTo3DGameAction.#ctor(WaveEngine.Framework.Entity,WaveEngine.Common.Math.Vector3,System.TimeSpan,WaveEngine.Components.GameActions.EaseFunction)">
+        <member name="F:WaveEngine.Components.GameActions.ScaleTo3DGameAction.local">
+            <summary>
+            If the animation is in local coordinates.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Components.GameActions.ScaleTo3DGameAction.#ctor(WaveEngine.Framework.Entity,WaveEngine.Common.Math.Vector3,System.TimeSpan,WaveEngine.Components.GameActions.EaseFunction,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:WaveEngine.Components.GameActions.ScaleTo3DGameAction"/> class.
             </summary>
@@ -2198,6 +2289,7 @@
             <param name="to">The target scale</param>
             <param name="time">Animation duration</param>
             <param name="ease">The ease function</param>
+            <param name="local">If the scale is in local coordinate</param>
         </member>
         <member name="M:WaveEngine.Components.GameActions.ScaleTo3DGameAction.PerformRun">
             <summary>
@@ -2205,6 +2297,12 @@
             </summary>
         </member>
         <member name="M:WaveEngine.Components.GameActions.ScaleTo3DGameAction.ScaleAction(WaveEngine.Common.Math.Vector3)">
+            <summary>
+            Scale action
+            </summary>
+            <param name="delta">The delta scale</param>
+        </member>
+        <member name="M:WaveEngine.Components.GameActions.ScaleTo3DGameAction.LocalScaleAction(WaveEngine.Common.Math.Vector3)">
             <summary>
             Scale action
             </summary>
@@ -2338,7 +2436,7 @@
             <param name="totalTime">Animation duration</param>
             <returns>Delta value</returns>
         </member>
-        <member name="M:WaveEngine.Components.GameActions.Vector2AnimationGameAction.SmoothStep(System.Single,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,System.Single)">
+        <member name="M:WaveEngine.Components.GameActions.Vector2AnimationGameAction.LinearStep(System.Single,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,System.Single)">
             <summary>
             Smooth Step method
             </summary>
@@ -2752,7 +2850,7 @@
             <param name="totalTime">Animation duration</param>
             <returns>Delta value</returns>
         </member>
-        <member name="M:WaveEngine.Components.GameActions.QuaternionAnimationGameAction.SmoothStep(System.Single,WaveEngine.Common.Math.Quaternion,WaveEngine.Common.Math.Quaternion,System.Single)">
+        <member name="M:WaveEngine.Components.GameActions.QuaternionAnimationGameAction.LinearStep(System.Single,WaveEngine.Common.Math.Quaternion,WaveEngine.Common.Math.Quaternion,System.Single)">
             <summary>
             Smooth Step method
             </summary>
@@ -3166,7 +3264,7 @@
             <param name="totalTime">Animation duration</param>
             <returns>Delta value</returns>
         </member>
-        <member name="M:WaveEngine.Components.GameActions.Vector3AnimationGameAction.SmoothStep(System.Single,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3,System.Single)">
+        <member name="M:WaveEngine.Components.GameActions.Vector3AnimationGameAction.LinearStep(System.Single,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3,System.Single)">
             <summary>
             Smooth Step method
             </summary>
@@ -3639,6 +3737,11 @@
             The music info
             </summary>
         </member>
+        <member name="F:WaveEngine.Components.GameActions.PlayVideoGameAction.videoPlayer">
+            <summary>
+            Video Player service.
+            </summary>
+        </member>
         <member name="M:WaveEngine.Components.GameActions.PlayVideoGameAction.#ctor(WaveEngine.Common.Media.VideoInfo,WaveEngine.Framework.Scene)">
             <summary>
             Initializes a new instance of the <see cref="T:WaveEngine.Components.GameActions.PlayVideoGameAction" /> class.
@@ -3689,6 +3792,11 @@
         <member name="F:WaveEngine.Components.GameActions.PlayMusicGameAction.musicInfo">
             <summary>
             The music info
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Components.GameActions.PlayMusicGameAction.musicPlayer">
+            <summary>
+            Music player service.
             </summary>
         </member>
         <member name="M:WaveEngine.Components.GameActions.PlayMusicGameAction.#ctor(WaveEngine.Common.Media.MusicInfo,WaveEngine.Framework.Scene)">
@@ -6448,6 +6556,21 @@
             Initializes a new instance of the <see cref="T:WaveEngine.Components.Graphics3D.InternalStaticModel"/> class.
             </summary>
         </member>
+        <member name="M:WaveEngine.Components.Graphics3D.InternalStaticModel.FromMeshes(WaveEngine.Framework.Services.GraphicsDevice,System.Collections.Generic.IEnumerable{WaveEngine.Common.Graphics.Mesh})">
+            <summary>
+            Create an internal model from a mesh
+            </summary>
+            <param name="graphicsDevice">The graphicsDevice device.</param>
+            <param name="meshes">The meshes</param>
+        </member>
+        <member name="M:WaveEngine.Components.Graphics3D.InternalStaticModel.FromMeshes(WaveEngine.Framework.Services.GraphicsDevice,System.Collections.Generic.IEnumerable{WaveEngine.Common.Graphics.Mesh},WaveEngine.Common.Math.BoundingBox)">
+            <summary>
+            Create an internal model from a mesh
+            </summary>
+            <param name="graphicsDevice">The graphicsDevice device.</param>
+            <param name="meshes">The meshes</param>
+            <param name="boundingBox">The bounding box</param>
+        </member>
         <member name="M:WaveEngine.Components.Graphics3D.InternalStaticModel.FromMesh(WaveEngine.Framework.Services.GraphicsDevice,WaveEngine.Common.Graphics.Mesh)">
             <summary>
             Create an internal model from a mesh
@@ -6692,7 +6815,7 @@
             Creates the cube.
             </summary>
             <param name="mesh">The mesh</param>
-            <returns>A <see cref="T:WaveEngine.Components.Graphics3D.Model"/> representing a cube.</returns>
+            <returns>A <see cref="T:WaveEngine.Components.Graphics3D.Model"/> representing a custom mesh.</returns>
         </member>
         <member name="M:WaveEngine.Components.Graphics3D.Model.CreateFromMesh(WaveEngine.Common.Graphics.Mesh,WaveEngine.Common.Math.BoundingBox)">
             <summary>
@@ -6700,7 +6823,22 @@
             </summary>
             <param name="mesh">The mesh</param>
             <param name="boundingBox">The mesh bounding box</param>
-            <returns>A <see cref="T:WaveEngine.Components.Graphics3D.Model"/> representing a cube.</returns>
+            <returns>A <see cref="T:WaveEngine.Components.Graphics3D.Model"/> representing a custom mesh.</returns>
+        </member>
+        <member name="M:WaveEngine.Components.Graphics3D.Model.CreateFromMeshes(System.Collections.Generic.IEnumerable{WaveEngine.Common.Graphics.Mesh})">
+            <summary>
+            Creates the cube.
+            </summary>
+            <param name="meshes">The meshes</param>
+            <returns>A <see cref="T:WaveEngine.Components.Graphics3D.Model"/> representing a custom mesh.</returns>
+        </member>
+        <member name="M:WaveEngine.Components.Graphics3D.Model.CreateFromMeshes(System.Collections.Generic.IEnumerable{WaveEngine.Common.Graphics.Mesh},WaveEngine.Common.Math.BoundingBox)">
+            <summary>
+            Creates the cube.
+            </summary>
+            <param name="meshes">The meshes</param>
+            <param name="boundingBox">The mesh bounding box</param>
+            <returns>A <see cref="T:WaveEngine.Components.Graphics3D.Model"/> representing a custom mesh.</returns>
         </member>
         <member name="M:WaveEngine.Components.Graphics3D.Model.CreateCube(System.Single)">
             <summary>
@@ -7472,11 +7610,6 @@
         <member name="F:WaveEngine.Components.Graphics3D.Spinner.transform">
             <summary>
             The transform of the model to spin.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Components.Graphics3D.Spinner.angle">
-            <summary>
-            The angle
             </summary>
         </member>
         <member name="F:WaveEngine.Components.Graphics3D.Spinner.increase">
@@ -8748,6 +8881,11 @@
             Indices per character
             </summary>
         </member>
+        <member name="F:WaveEngine.Components.Toolkit.TextComponent.transform">
+            <summary>
+            The transform
+            </summary>
+        </member>
         <member name="F:WaveEngine.Components.Toolkit.TextComponent.vertexBufferData">
             <summary>
             The vertex buffer data
@@ -8798,11 +8936,6 @@
             The text scale
             </summary>
         </member>
-        <member name="F:WaveEngine.Components.Toolkit.TextComponent.layerType">
-            <summary>
-            The layer type of the text
-            </summary>
-        </member>
         <member name="F:WaveEngine.Components.Toolkit.TextComponent.spriteFont">
             <summary>
             The sprite font
@@ -8821,11 +8954,6 @@
         <member name="F:WaveEngine.Components.Toolkit.TextComponent.width">
             <summary>
             The with of the text control
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Components.Toolkit.TextComponent.MaterialDirty">
-            <summary>
-            If the text component material needs an update
             </summary>
         </member>
         <member name="F:WaveEngine.Components.Toolkit.TextComponent.textOffset">
@@ -8893,14 +9021,6 @@
             Gets or sets the foreground color of the text control
             </summary>
         </member>
-        <member name="P:WaveEngine.Components.Toolkit.TextComponent.LayerType">
-            <summary>
-            Gets or sets the type of the layer.
-            </summary>
-            <value>
-            The type of the layer.
-            </value>            
-        </member>
         <member name="P:WaveEngine.Components.Toolkit.TextComponent.LineSpacing">
             <summary>
             Gets or sets the line spacing
@@ -8924,7 +9044,7 @@
         <member name="P:WaveEngine.Components.Toolkit.TextComponent.Origin">
             <summary>
             Gets or sets the origin of the text control
-            </summary>
+            </summary>     
         </member>
         <member name="P:WaveEngine.Components.Toolkit.TextComponent.TextOffset">
             <summary>
@@ -8945,6 +9065,19 @@
             <summary>
             Initializes the component
             </summary>
+        </member>
+        <member name="M:WaveEngine.Components.Toolkit.TextComponent.ShowOrigin">
+            <summary>
+            The origin must be shown
+            </summary>
+            <returns>If transform2D is null</returns>
+        </member>
+        <member name="M:WaveEngine.Components.Toolkit.TextComponent.OnTransform2DOriginChanged(System.Object,System.EventArgs)">
+            <summary>
+            The transform2D origin is changed
+            </summary>
+            <param name="sender">The sender</param>
+            <param name="e">The args</param>
         </member>
         <member name="M:WaveEngine.Components.Toolkit.TextComponent.UpdateSpriteFont">
             <summary>
@@ -9026,6 +9159,11 @@
             Updates the bonding box
             </summary>
         </member>
+        <member name="M:WaveEngine.Components.Toolkit.TextComponent.Dispose">
+            <summary>
+            Release native 
+            </summary>
+        </member>
         <member name="T:WaveEngine.Components.Toolkit.TextRenderer2D">
             <summary>
             Renderer of the 2d text control
@@ -9088,9 +9226,32 @@
             The text material
             </summary>
         </member>
-        <member name="M:WaveEngine.Components.Toolkit.TextRenderer3D.ResolveDependencies">
+        <member name="F:WaveEngine.Components.Toolkit.TextRenderer3D.layerType">
             <summary>
-            Resolves the dependencies
+            Type of layer.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Components.Toolkit.TextRenderer3D.layerTypeName">
+            <summary>
+            The layer type string
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Components.Toolkit.TextRenderer3D.LayerType">
+            <summary>
+            Gets or sets the type of the layer.
+            </summary>
+            <value>
+            The type of the layer.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Components.Toolkit.TextRenderer3D.LayerTypeName">
+            <summary>
+            Gets or sets Layer Type Name
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Components.Toolkit.TextRenderer3D.DefaultValues">
+            <summary>
+            Initializes default values
             </summary>
         </member>
         <member name="M:WaveEngine.Components.Toolkit.TextRenderer3D.Initialize">
@@ -9178,6 +9339,16 @@
         <member name="T:WaveEngine.Components.Transitions.ColorFadeTransition">
             <summary>
             This class make an effect between two <see cref="T:WaveEngine.Components.Transitions.ColorFadeTransition"/> pasing first to a specified color (white for example)
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Components.Transitions.ColorFadeTransition.sourceRenderTarget">
+            <summary>
+            Source transition renderTarget
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Components.Transitions.ColorFadeTransition.targetRenderTarget">
+            <summary>
+            Target transition renderTarget
             </summary>
         </member>
         <member name="F:WaveEngine.Components.Transitions.ColorFadeTransition.transitionColor">
@@ -14653,6 +14824,11 @@
             Eye anchor
             </summary>
         </member>
+        <member name="F:WaveEngine.Components.VR.VRCameraRig.controllerAnchorName">
+            <summary>
+            Controller anchor
+            </summary>
+        </member>
         <member name="E:WaveEngine.Components.VR.VRCameraRig.UpdatedAnchors">
             <summary>
             Occurs when the eye pose anchors have been set.
@@ -14661,11 +14837,6 @@
         <member name="F:WaveEngine.Components.VR.VRCameraRig.vrProvider">
             <summary>
             The VR info provider
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Components.VR.VRCameraRig.platform">
-            <summary>
-            Platform service
             </summary>
         </member>
         <member name="F:WaveEngine.Components.VR.VRCameraRig.nearPlane">
@@ -14748,6 +14919,16 @@
             Gets the root entity that always coincides with the pose of the tracker.
             </summary>
         </member>
+        <member name="P:WaveEngine.Components.VR.VRCameraRig.LeftControllerAnchor">
+            <summary>
+            Gets the root entity that always coincides with the pose of the left controller.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Components.VR.VRCameraRig.RightControllerAnchor">
+            <summary>
+            Gets the root entity that always coincides with the pose of the right controller.
+            </summary>
+        </member>
         <member name="P:WaveEngine.Components.VR.VRCameraRig.TrackingSpaceTransform">
             <summary>
             Gets the root transform for all anchors in tracking space.
@@ -14771,6 +14952,16 @@
         <member name="P:WaveEngine.Components.VR.VRCameraRig.TrackerAnchorTransform">
             <summary>
             Gets the root transform that always coincides with the pose of the tracker.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Components.VR.VRCameraRig.LeftControllerAnchorTransform">
+            <summary>
+            Gets the root transform that always coincides with the pose of the left controller.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Components.VR.VRCameraRig.RightControllerAnchorTransform">
+            <summary>
+            Gets the root transform that always coincides with the pose of the right controller.
             </summary>
         </member>
         <member name="P:WaveEngine.Components.VR.VRCameraRig.NearPlane">
@@ -14831,6 +15022,13 @@
             <param name="camera">The camera</param>
             <param name="eyeIndex">The eye index</param>
         </member>
+        <member name="M:WaveEngine.Components.VR.VRCameraRig.UpdateController(WaveEngine.Framework.Graphics.Transform3D,WaveEngine.Common.VR.VREyePose)">
+            <summary>
+            Update controller transform using VR provider data
+            </summary>
+            <param name="controllerAnchorTransform">The controller anchor transform</param>
+            <param name="pose">The controller pose</param>
+        </member>
         <member name="M:WaveEngine.Components.VR.VRCameraRig.ConfigureRootAnchor(System.String)">
             <summary>
             Create the root anchor
@@ -14852,6 +15050,14 @@
             </summary>
             <param name="root">The root entity</param>
             <returns>The tracker anchor</returns>
+        </member>
+        <member name="M:WaveEngine.Components.VR.VRCameraRig.ConfigureControllerAnchor(WaveEngine.Framework.Entity,System.String)">
+            <summary>
+            Creates the OVR controller position
+            </summary>
+            <param name="root">The root entity</param>
+            <param name="namePrefix">The prefix for the name of the entity</param>
+            <returns>The controller anchor</returns>
         </member>
         <member name="T:WaveEngine.Components.VR.VRProvider">
             <summary>
@@ -14876,6 +15082,16 @@
         <member name="P:WaveEngine.Components.VR.VRProvider.TrackerCameraPose">
             <summary>
             Gets the tracker camera pose
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Components.VR.VRProvider.LeftControllerPose">
+            <summary>
+            Gets the left controller pose
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Components.VR.VRProvider.RightControllerPose">
+            <summary>
+            Gets the right controller pose
             </summary>
         </member>
         <member name="P:WaveEngine.Components.VR.VRProvider.IsConnected">

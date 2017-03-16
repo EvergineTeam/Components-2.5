@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // ParticleSystemRenderer2D
 //
-// Copyright © 2016 Wave Engine S.L. All rights reserved.
+// Copyright © 2017 Wave Engine S.L. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -10,7 +10,6 @@
 #region Using Statements
 
 using System;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using WaveEngine.Common.Graphics;
@@ -20,14 +19,13 @@ using WaveEngine.Components.Graphics3D;
 using WaveEngine.Components.Particles;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Graphics;
-using WaveEngine.Framework.Services;
-using WaveEngine.Materials;
-using WaveRandom = WaveEngine.Framework.Services.Random;
 
 #endregion
 
 namespace WaveEngine.Components.Graphics2D
 {
+    using WaveEngine.Framework.Services;
+
     /// <summary>
     /// Renders a 2D particle system on the screen.
     /// </summary>
@@ -115,7 +113,8 @@ namespace WaveEngine.Components.Graphics2D
         /// <summary>
         /// The random
         /// </summary>
-        private WaveRandom random;
+        [RequiredService]
+        private Random random = null;
 
         /// <summary>
         /// The alive particles
@@ -592,8 +591,6 @@ namespace WaveEngine.Components.Graphics2D
         /// </summary>
         private void LoadParticleSystem()
         {
-            this.random = WaveServices.Random;
-
             if (this.mesh != null)
             {
                 if (this.mesh.IndexBuffer != null)

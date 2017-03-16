@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // PlayVideoGameAction
 //
-// Copyright © 2016 Wave Engine S.L. All rights reserved.
+// Copyright © 2017 Wave Engine S.L. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -30,6 +30,12 @@ namespace WaveEngine.Components.GameActions
         /// The music info
         /// </summary>
         private VideoInfo videoInfo;
+
+        /// <summary>
+        /// Video Player service.
+        /// </summary>
+        [RequiredService]
+        private VideoPlayer videoPlayer = null;
 
         #region Properties
         #endregion
@@ -64,8 +70,8 @@ namespace WaveEngine.Components.GameActions
         /// </summary>
         protected override void PerformRun()
         {
-            WaveServices.VideoPlayer.OnComplete += this.OnVideoCompleted;
-            WaveServices.VideoPlayer.Play(this.videoInfo);
+            this.videoPlayer.OnComplete += this.OnVideoCompleted;
+            this.videoPlayer.Play(this.videoInfo);
         }
 
         /// <summary>
@@ -75,7 +81,7 @@ namespace WaveEngine.Components.GameActions
         /// <param name="e">The event args.</param>
         private void OnVideoCompleted(object sender, EventArgs e)
         {
-            WaveServices.VideoPlayer.OnComplete -= this.OnVideoCompleted;
+            this.videoPlayer.OnComplete -= this.OnVideoCompleted;
             this.PerformCompleted();
         }
 
@@ -84,9 +90,8 @@ namespace WaveEngine.Components.GameActions
         /// </summary>
         protected override void PerformCancel()
         {
-            var videoPlayer = WaveServices.VideoPlayer;
-            videoPlayer.OnComplete -= this.OnVideoCompleted;
-            videoPlayer.Stop();
+            this.videoPlayer.OnComplete -= this.OnVideoCompleted;
+            this.videoPlayer.Stop();
 
             base.PerformCancel();
         }

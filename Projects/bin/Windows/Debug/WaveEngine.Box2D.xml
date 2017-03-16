@@ -478,6 +478,89 @@
             <param name="shapeB">The shape B</param>
             <param name="transformB">The transform B</param>
         </member>
+        <member name="T:WaveEngine.Box2D.Box2DEdgeColliderShape">
+            <summary>
+            Implements an edge shape for Box2D
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DEdgeColliderShape.edgeShapes">
+            <summary>
+            shapes list
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DEdgeColliderShape.vertices">
+            <summary>
+            Vertices list
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DEdgeColliderShape.Vertices">
+            <summary>
+            Gets the edge vertices
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DEdgeColliderShape.Normals">
+            <summary>
+            Gets the Edge normals
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Box2D.Box2DEdgeColliderShape.Type">
+            <summary>
+            Gets the collider shape type
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DEdgeColliderShape.#ctor(WaveEngine.Box2D.Box2DSimulation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Box2D.Box2DEdgeColliderShape" /> class.
+            </summary>
+            <param name="simulation">The box2D simulation instance</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DEdgeColliderShape.RefreshShape">
+            <summary>
+            Refresh shape
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DEdgeColliderShape.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DEdgeColliderShape.SetShapeFromVertices(WaveEngine.Common.Math.Vector2[])">
+            <summary>
+            Copy vertices. This assumes the vertices define a convex polygon. It is assumed that the exterior is the the right of each edge.
+            </summary>
+            <param name="vertices">The polygon vertices</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DEdgeColliderShape.SetShapeFromVertices(WaveEngine.Common.Math.Vector2[],WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Copy vertices.
+            </summary>
+            <param name="vertices">The edge vertices</param>
+            <param name="scale">The scale of the shape</param>
+            <param name="center">The box center</param>
+            <param name="angle">The box angle</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DEdgeColliderShape.SetShapeFromVertices(WaveEngine.Common.Math.Vector2[],WaveEngine.Common.Math.Matrix@)">
+            <summary>
+            Set shape from vertices
+            </summary>
+            <param name="vertices">The vertices list</param>
+            <param name="transform">The transform</param>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DEdgeColliderShape.GetAllShapes">
+            <summary>
+            Return all shapes
+            </summary>
+            <returns>All convex shapes</returns>
+        </member>
+        <member name="M:WaveEngine.Box2D.Box2DEdgeColliderShape.CreateVerticesTransform(WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Math.Vector2@,System.Single)">
+            <summary>
+            Create transform for vertices 
+            </summary>
+            <param name="scale">The scale</param>
+            <param name="center">The center</param>
+            <param name="angle">The angle</param>
+            <returns>The transform matrix</returns>
+        </member>
         <member name="T:WaveEngine.Box2D.Box2DRectangleColliderShape">
             <summary>
             Implement a box shape for Box2D
@@ -778,6 +861,16 @@
         <member name="F:WaveEngine.Box2D.Box2DContact.simulation">
             <summary>
             The box2D simulation
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DContact.idColliderA">
+            <summary>
+            The collider A index
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Box2D.Box2DContact.idColliderB">
+            <summary>
+            The collider B index
             </summary>
         </member>
         <member name="F:WaveEngine.Box2D.Box2DContact.colliderA">

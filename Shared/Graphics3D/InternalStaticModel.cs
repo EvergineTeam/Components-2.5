@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // InternalStaticModel
 //
-// Copyright © 2016 Wave Engine S.L. All rights reserved.
+// Copyright © 2017 Wave Engine S.L. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -17,6 +17,7 @@ using WaveEngine.Common.Math;
 using WaveEngine.Components.Primitives;
 using WaveEngine.Framework.Services;
 using WaveEngine.Common.Graphics.VertexFormats;
+using System.Linq;
 #endregion
 
 namespace WaveEngine.Components.Graphics3D
@@ -133,6 +134,39 @@ namespace WaveEngine.Components.Graphics3D
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Create an internal model from a mesh
+        /// </summary>
+        /// <param name="graphicsDevice">The graphicsDevice device.</param>
+        /// <param name="meshes">The meshes</param>
+        public void FromMeshes(GraphicsDevice graphicsDevice, IEnumerable<Mesh> meshes)
+        {
+            this.graphics = graphicsDevice;
+
+            this.Meshes = meshes.ToList();
+
+            var rootBone = new Bone(0, -1, "Root", Matrix.Identity);
+            this.Bones.Add(rootBone);
+
+            for (int i = 0; i < this.Meshes.Count; i++)
+            {
+                this.MeshBonePairs.Add(i, 0);
+            }
+        }
+
+        /// <summary>
+        /// Create an internal model from a mesh
+        /// </summary>
+        /// <param name="graphicsDevice">The graphicsDevice device.</param>
+        /// <param name="meshes">The meshes</param>
+        /// <param name="boundingBox">The bounding box</param>
+        public void FromMeshes(GraphicsDevice graphicsDevice, IEnumerable<Mesh> meshes, BoundingBox boundingBox)
+        {
+            this.FromMeshes(graphicsDevice, meshes);
+            this.BoundingBox = boundingBox;
+        }
+
         /// <summary>
         /// Create an internal model from a mesh
         /// </summary>
@@ -140,14 +174,7 @@ namespace WaveEngine.Components.Graphics3D
         /// <param name="mesh">The mesh</param>
         public void FromMesh(GraphicsDevice graphicsDevice, Mesh mesh)
         {
-            this.graphics = graphicsDevice;
-
-            this.Meshes = new List<Mesh>() { mesh };
-
-            var rootBone = new Bone(0, -1, "Root", Matrix.Identity);
-            this.Bones.Add(rootBone);
-
-            this.MeshBonePairs.Add(0, 0);
+            this.FromMeshes(graphicsDevice, new List<Mesh>() { mesh });
         }
 
         /// <summary>

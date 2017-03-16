@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // LookAtBehavior
 //
-// Copyright © 2016 Wave Engine S.L. All rights reserved.
+// Copyright © 2017 Wave Engine S.L. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -212,7 +212,7 @@ namespace WaveEngine.Components.Toolkit
 
             this.Axis = AxisEnum.Z;
             this.AxisConstraint = false;
-            this.TargetEntity = null;
+            ////this.targetEntity = null;
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace WaveEngine.Components.Toolkit
             if (this.dirtyTarget)
             {
                 this.UpdateTarget();
-                this.dirtyTarget = true;
+                this.dirtyTarget = false;
             }
 
             if (this.dirtyStrategy)
@@ -263,9 +263,9 @@ namespace WaveEngine.Components.Toolkit
         /// </summary>
         private void UpdateTarget()
         {
-            if (this.lookAtEntity)
+            if (this.lookAtEntity && this.targetEntity != null)
             {
-                var target = this.EntityManager.Find(this.targetEntity);
+                var target = this.EntityManager.Find(this.targetEntity, this.Owner);
                 if (target != null)
                 {
                     this.targetTransform = target.FindComponent<Transform3D>();

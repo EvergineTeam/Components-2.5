@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // VRCameraRig
 //
-// Copyright © 2016 Wave Coorporation. All rights reserved.
+// Copyright © 2017 Wave Coorporation. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -25,6 +25,7 @@ namespace WaveEngine.Components.VR
     /// Oculus Rift manager
     /// </summary>
     [DataContract]
+    [RefreshEntityRequired]    
     public class VRCameraRig : Behavior
     {
         /// <summary>
@@ -43,6 +44,11 @@ namespace WaveEngine.Components.VR
         private static readonly string eyeAnchorName = "EyeAnchor";
 
         /// <summary>
+        /// Controller anchor
+        /// </summary>
+        private static readonly string controllerAnchorName = "ControllerAnchor";
+
+        /// <summary>
         /// Occurs when the eye pose anchors have been set.
         /// </summary>
         public event System.Action<VRCameraRig> UpdatedAnchors;
@@ -51,11 +57,6 @@ namespace WaveEngine.Components.VR
         /// The VR info provider
         /// </summary>
         private VRProvider vrProvider = null;
-
-        /// <summary>
-        /// Platform service
-        /// </summary>
-        private Platform platform;
 
         /// <summary>
         /// Camera near plane
@@ -209,6 +210,26 @@ namespace WaveEngine.Components.VR
         }
 
         /// <summary>
+        /// Gets the root entity that always coincides with the pose of the left controller.
+        /// </summary>
+        [DontRenderProperty]
+        public Entity LeftControllerAnchor
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the root entity that always coincides with the pose of the right controller.
+        /// </summary>
+        [DontRenderProperty]
+        public Entity RightControllerAnchor
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Gets the root transform for all anchors in tracking space.
         /// </summary>
         [DontRenderProperty]
@@ -253,6 +274,26 @@ namespace WaveEngine.Components.VR
         /// </summary>
         [DontRenderProperty]
         public Transform3D TrackerAnchorTransform
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the root transform that always coincides with the pose of the left controller.
+        /// </summary>
+        [DontRenderProperty]
+        public Transform3D LeftControllerAnchorTransform
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the root transform that always coincides with the pose of the right controller.
+        /// </summary>
+        [DontRenderProperty]
+        public Transform3D RightControllerAnchorTransform
         {
             get;
             private set;
@@ -335,7 +376,6 @@ namespace WaveEngine.Components.VR
         {
             base.DefaultValues();
             this.Monoscopic = false;
-            this.platform = WaveServices.Platform;
             this.nearPlane = 0.05f;
             this.farPlane = 500f;
             this.clearFlags = ClearFlags.All;
@@ -373,13 +413,17 @@ namespace WaveEngine.Components.VR
             var eyePoses = this.vrProvider.EyePoses;
             var trackerCameraPose = this.vrProvider.TrackerCameraPose;
 
-            // Left eye camera
+            // Eye cameras
             this.UpdateCamera(this.LeftEyeCamera, (int)VREyeType.LeftEye);
             this.UpdateCamera(this.RightEyeCamera, (int)VREyeType.RightEye);
 
             // Camera tracker
             this.TrackerAnchorTransform.LocalPosition = trackerCameraPose.Position;
             this.TrackerAnchorTransform.LocalOrientation = trackerCameraPose.Orientation;
+
+            // Controllers
+            this.UpdateController(this.LeftControllerAnchorTransform, this.vrProvider.LeftControllerPose);
+            this.UpdateController(this.RightControllerAnchorTransform, this.vrProvider.RightControllerPose);
 
             // Center
             this.CenterEyeAnchorTransform.LocalPosition = eyePoses[(int)VREyeType.CenterEye].Position;
@@ -435,6 +479,18 @@ namespace WaveEngine.Components.VR
             {
                 this.TrackerAnchor = this.ConfigureTrackerAnchor(this.TrackingSpace);
                 this.TrackerAnchorTransform = this.TrackerAnchor.FindComponent<Transform3D>();
+            }
+
+            if (this.LeftControllerAnchor == null)
+            {
+                this.LeftControllerAnchor = this.ConfigureControllerAnchor(this.TrackingSpace, "Left");
+                this.LeftControllerAnchorTransform = this.LeftControllerAnchor.FindComponent<Transform3D>();
+            }
+
+            if (this.RightControllerAnchor == null)
+            {
+                this.RightControllerAnchor = this.ConfigureControllerAnchor(this.TrackingSpace, "Right");
+                this.RightControllerAnchorTransform = this.RightControllerAnchor.FindComponent<Transform3D>();
             }
 
             bool needsCamera = this.LeftEyeCamera == null || this.RightEyeCamera == null || this.AttachedCamera == null;
@@ -512,6 +568,17 @@ namespace WaveEngine.Components.VR
         }
 
         /// <summary>
+        /// Update controller transform using VR provider data
+        /// </summary>
+        /// <param name="controllerAnchorTransform">The controller anchor transform</param>
+        /// <param name="pose">The controller pose</param>
+        private void UpdateController(Transform3D controllerAnchorTransform, VREyePose pose)
+        {
+            controllerAnchorTransform.LocalPosition = pose.Position;
+            controllerAnchorTransform.LocalOrientation = pose.Orientation;
+        }
+
+        /// <summary>
         /// Create the root anchor
         /// </summary>
         /// <param name="name">The name</param>
@@ -572,6 +639,29 @@ namespace WaveEngine.Components.VR
             if (anchor == null)
             {
                 anchor = new Entity(trackerAnchorName)
+                .AddComponent(new Transform3D());
+
+                root.AddChild(anchor);
+            }
+
+            return anchor;
+        }
+
+        /// <summary>
+        /// Creates the OVR controller position
+        /// </summary>
+        /// <param name="root">The root entity</param>
+        /// <param name="namePrefix">The prefix for the name of the entity</param>
+        /// <returns>The controller anchor</returns>
+        private Entity ConfigureControllerAnchor(Entity root, string namePrefix)
+        {
+            string name = namePrefix + controllerAnchorName;
+
+            Entity anchor = root.FindChild(name);
+
+            if (anchor == null)
+            {
+                anchor = new Entity(name)
                 .AddComponent(new Transform3D());
 
                 root.AddChild(anchor);

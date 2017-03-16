@@ -4,6 +4,7 @@ C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\WaveEngine.
 C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\WaveEngine.Common.dll
 C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\WaveEngine.Framework.dll
 C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\WaveEngine.Materials.dll
+C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\protobuf-net.dll
 C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\WaveEngine.Physics.dll
 C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\WaveEngine.Box2D.dll
 C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\WaveEngine.Bepu.dll
@@ -14,6 +15,8 @@ C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\WaveEngine.
 C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\WaveEngine.Framework.xml
 C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\WaveEngine.Materials.pdb
 C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\WaveEngine.Materials.xml
+C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\protobuf-net.pdb
+C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\protobuf-net.xml
 C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\WaveEngine.Physics.pdb
 C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\WaveEngine.Physics.xml
 C:\VO\Engine\Common\WaveEngine.Components\Projects\bin\Windows\Debug\WaveEngine.Box2D.pdb

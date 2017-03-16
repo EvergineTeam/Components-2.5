@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // VRProvider
 //
-// Copyright © 2016 Wave Coorporation. All rights reserved.
+// Copyright © 2017 Wave Coorporation. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -54,6 +54,22 @@ namespace WaveEngine.Components.VR
         /// Gets the tracker camera pose
         /// </summary>
         public abstract VREyePose TrackerCameraPose
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the left controller pose
+        /// </summary>
+        public abstract VREyePose LeftControllerPose
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the right controller pose
+        /// </summary>
+        public abstract VREyePose RightControllerPose
         {
             get;
         }

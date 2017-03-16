@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // ScaleTo3DGameAction
 //
-// Copyright © 2016 Wave Coorporation. All rights reserved.
+// Copyright © 2017 Wave Coorporation. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -38,7 +38,7 @@ namespace WaveEngine.Components.GameActions
         /// <param name="to">The target scale</param>
         /// <param name="time">Animation duration</param>
         /// <param name="ease">The ease function</param>
-        /// /// <param name="local">If the scale is in local coordinate</param>
+        /// <param name="local">If the scale is in local coordinate</param>
         public ScaleTo3DGameAction(Entity entity, Vector3 to, TimeSpan time, EaseFunction ease = EaseFunction.None, bool local = false)
             : base(entity, Vector3.Zero, to, time, ease)
         {

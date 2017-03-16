@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // RotateTo3DGameAction
 //
-// Copyright © 2016 Wave Coorporation. All rights reserved.
+// Copyright © 2017 Wave Coorporation. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -33,6 +33,11 @@ namespace WaveEngine.Components.GameActions
         private bool local;
 
         /// <summary>
+        /// If the animation rotates on the shorter path
+        /// </summary>
+        private bool shorterPath;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="RotateTo3DGameAction"/> class.
         /// </summary>
         /// <param name="entity">The target entity</param>
@@ -40,10 +45,12 @@ namespace WaveEngine.Components.GameActions
         /// <param name="time">Animation duration</param>
         /// <param name="ease">The ease function</param>
         /// <param name="local">If the rotation is in local coordinates</param>
-        public RotateTo3DGameAction(Entity entity, Vector3 to, TimeSpan time, EaseFunction ease = EaseFunction.None, bool local = false)
+        /// <param name="shorterPath">If the rotation goes on the shorter path</param>
+        public RotateTo3DGameAction(Entity entity, Vector3 to, TimeSpan time, EaseFunction ease = EaseFunction.None, bool local = false, bool shorterPath = false)
             : base(entity, Vector3.Zero, to, time, ease)
         {
             this.local = local;
+            this.shorterPath = shorterPath;
 
             if (local)
             {
@@ -63,6 +70,39 @@ namespace WaveEngine.Components.GameActions
         protected override void PerformRun()
         {
             this.from = this.local ? this.transform.LocalRotation : this.transform.Rotation;
+
+            if (this.shorterPath)
+            {
+                var diff = this.to - this.from;
+                
+                if (diff.X > MathHelper.Pi)
+                {
+                    this.to.X -= MathHelper.TwoPi;
+                }
+                else if (diff.X < -MathHelper.Pi)
+                {
+                    this.to.X += MathHelper.TwoPi;
+                }
+
+                if (diff.Y > MathHelper.Pi)
+                {
+                    this.to.Y -= MathHelper.TwoPi;
+                }
+                else if (diff.Y < -MathHelper.Pi)
+                {
+                    this.to.Y += MathHelper.TwoPi;
+                }
+
+                if (diff.Z > MathHelper.Pi)
+                {
+                    this.to.Z -= MathHelper.TwoPi;
+                }
+                else if (diff.Z < -MathHelper.Pi)
+                {
+                    this.to.Z += MathHelper.TwoPi;
+                }
+            }
+
             base.PerformRun();
         }
 

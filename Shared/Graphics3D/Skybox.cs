@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // Skybox
 //
-// Copyright © 2016 Wave Engine S.L. All rights reserved.
+// Copyright © 2017 Wave Engine S.L. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -18,6 +18,7 @@ using WaveEngine.Materials;
 using WaveEngine.Common.Graphics.VertexFormats;
 using System.Runtime.Serialization;
 using WaveEngine.Common.Attributes;
+using WaveEngine.Common.Attributes.Converters;
 
 #endregion
 
@@ -102,7 +103,8 @@ namespace WaveEngine.Framework.Graphics
         /// <summary>
         /// Gets or sets the SkyBox cube rotation expressed in Euler angles (yaw, pitch, roll)
         /// </summary>
-        [DontRenderProperty]
+        [RenderProperty(typeof(Vector3RadianToDegreeConverter))]
+
         public Vector3 Rotation
         {
             get
@@ -121,6 +123,7 @@ namespace WaveEngine.Framework.Graphics
         /// <summary>
         /// Gets or sets the SkyBox cube orientation expressed in quaternion.
         /// </summary>
+        [DontRenderProperty]
         [DataMember]
         public Quaternion Orientation
         {

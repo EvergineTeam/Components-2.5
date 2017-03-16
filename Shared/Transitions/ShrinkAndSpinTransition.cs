@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // ShrinkAndSpinTransition
 //
-// Copyright © 2016 Wave Engine S.L. All rights reserved.
+// Copyright © 2017 Wave Engine S.L. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion

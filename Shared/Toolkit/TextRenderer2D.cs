@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // TextRenderer2D
 //
-// Copyright © 2016 Wave Coorporation. All rights reserved.
+// Copyright © 2017 Wave Coorporation. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -60,7 +60,7 @@ namespace WaveEngine.Components.Toolkit
         {
             base.Initialize();
 
-            this.material = new StandardMaterial() { DiffuseColor = Color.White, LightingEnabled = false, LayerType = DefaultLayers.Alpha };
+            this.material = new StandardMaterial() { DiffuseColor = Color.White, LightingEnabled = false, LayerType = this.LayerType, SamplerMode = AddressMode.LinearClamp };
         }
 
         #endregion
@@ -73,17 +73,21 @@ namespace WaveEngine.Components.Toolkit
         /// <param name="gameTime">The ellapsed gameTime</param>
         public override void Draw(TimeSpan gameTime)
         {
-            if ((this.RenderManager == null) || (this.textComponent.SpriteFont == null))
+            if ((this.RenderManager == null) ||
+                (this.textComponent.SpriteFont == null) ||
+                this.transform.GlobalOpacity <= Drawable2D.Delta)
             {
                 return;
             }
 
-            if (this.textComponent.MaterialDirty)
+            float opacity = this.RenderManager.DebugLines ? DebugAlpha : this.transform.GlobalOpacity;
+            this.material.Diffuse = this.textComponent.SpriteFont.FontTexture;
+            this.material.DiffuseColor = this.textComponent.Foreground;
+            this.material.Alpha = opacity;
+
+            if (this.LayerType != this.material.LayerType)
             {
-                this.material.Diffuse = this.textComponent.SpriteFont.FontTexture;
-                this.material.DiffuseColor = this.textComponent.Foreground;
-                this.material.LayerType = this.textComponent.LayerType;
-                this.textComponent.MaterialDirty = false;
+                this.material.LayerType = this.LayerType;
             }
 
             var scaleTransform = Matrix.CreateScale(new Vector3(1, -1, 1));
@@ -104,6 +108,7 @@ namespace WaveEngine.Components.Toolkit
             for (int i = 0; i < this.textComponent.MeshCount; i++)
             {
                 var mesh = this.textComponent.Meshes[i];
+                mesh.ZOrder = this.transform.DrawOrder;
 
                 this.RenderManager.DrawMesh(mesh, this.material, ref worldTransform);
             }

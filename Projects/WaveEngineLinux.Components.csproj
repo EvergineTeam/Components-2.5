@@ -29,7 +29,7 @@
     <DocumentationFile>bin\Debug\WaveEngine.Components.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <DebugType>none</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
@@ -45,6 +45,7 @@
     </CustomCommands>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>bin\Release\WaveEngine.Components.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NuGet|x86'">
     <OutputPath>bin\x86\NuGet\</OutputPath>
@@ -56,6 +57,8 @@
     <DocumentationFile>bin\x86\NuGet\WaveEngine.Components.XML</DocumentationFile>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <Import Project="..\Shared\WaveEngine.Components.Shared.projitems" Label="Shared" Condition="Exists('..\Shared\WaveEngine.Components.Shared.projitems')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

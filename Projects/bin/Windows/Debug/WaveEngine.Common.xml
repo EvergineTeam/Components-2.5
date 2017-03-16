@@ -146,6 +146,16 @@
             Don't Render Property attribute
             </summary>
         </member>
+        <member name="T:WaveEngine.Common.Attributes.RefreshEntityRequired">
+            <summary>
+            Refresh entity required components attribute
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Attributes.RefreshEntityRequired.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Common.Attributes.RefreshEntityRequired" /> class. 
+            </summary>
+        </member>
         <member name="T:WaveEngine.Common.Attributes.RenderPropertyAsTextBox">
             <summary>
             Render Property As TextBox input
@@ -334,6 +344,11 @@
             Custom property name
             </summary>
         </member>
+        <member name="F:WaveEngine.Common.Attributes.RenderProperty.ShowConditionFunction">
+            <summary>
+            The property is shown if the contition is true
+            </summary>
+        </member>
         <member name="M:WaveEngine.Common.Attributes.RenderProperty.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:WaveEngine.Common.Attributes.RenderProperty" /> class.
@@ -355,16 +370,22 @@
             Asset Type
             </summary>
         </member>
+        <member name="F:WaveEngine.Common.Attributes.RenderPropertyAsAsset.ExtensionFilter">
+            <summary>
+            Extension filter
+            </summary>
+        </member>
         <member name="F:WaveEngine.Common.Attributes.RenderPropertyAsAsset.OutputIndex">
             <summary>
             The output index
             </summary>
         </member>
-        <member name="M:WaveEngine.Common.Attributes.RenderPropertyAsAsset.#ctor(WaveEngine.Common.Attributes.AssetType,System.Int32)">
+        <member name="M:WaveEngine.Common.Attributes.RenderPropertyAsAsset.#ctor(WaveEngine.Common.Attributes.AssetType,System.String,System.Int32)">
             <summary>
             Initializes a new instance of the  <see cref="T:WaveEngine.Common.Attributes.RenderPropertyAsAsset" /> class.
             </summary>
             <param name="type">Asset type (Model, Material, Texture)</param>
+            <param name="extensionFilter">Extension Filter (Ej: .mp3|.mp4)</param>
             <param name="outputIndex">The output index</param>
         </member>
         <member name="T:WaveEngine.Common.Attributes.RenderPropertyAsAnimationList">
@@ -810,6 +831,76 @@
         <member name="F:WaveEngine.Common.Graphics.TextureUsage.Dynamic">
             <summary>
             A texture that is accessible by both the GPU (read only) and the CPU (write only).
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Common.Graphics.VertexElementUsage">
+            <summary>
+            Specifies the vertex element usage.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Position">
+            <summary>
+            Used for position.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Color">
+            <summary>
+            Used for color.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.TextureCoordinate">
+            <summary>
+            Used for texture coordinate.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Normal">
+            <summary>
+            Used for normal.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Binormal">
+            <summary>
+            Used for binormal.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Tangent">
+            <summary>
+            Used for tangent.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.BlendIndices">
+            <summary>
+            Used for blend indices.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.BlendWeight">
+            <summary>
+            Used for blend weights.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Depth">
+            <summary>
+            Used for depth.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Fog">
+            <summary>
+            Used for fog.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.PointSize">
+            <summary>
+            Used for point size.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Sample">
+            <summary>
+            Used for sample.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.TessellateFactor">
+            <summary>
+            Used for tesellation factor.
             </summary>
         </member>
         <member name="T:WaveEngine.Common.Graphics.AddressMode">
@@ -3114,14 +3205,6 @@
             The viewport.
             </value>
         </member>
-        <member name="P:WaveEngine.Common.Graphics.IRenderState.ScissorTestEnabled">
-            <summary>
-            Gets or sets a value indicating whether scissor test is enabled.
-            </summary>
-            <value>
-              <c>true</c> if scissor test is enabled; otherwise, <c>false</c>.
-            </value>
-        </member>
         <member name="P:WaveEngine.Common.Graphics.IRenderState.ScissorRectangle">
             <summary>
             Gets or sets the scissor rectangle.
@@ -3285,12 +3368,13 @@
             </summary>
             <param name="shader">The shader.</param>        
         </member>
-        <member name="M:WaveEngine.Common.Graphics.IShaderManager.SetTexture(WaveEngine.Common.Graphics.Texture,System.Int32)">
+        <member name="M:WaveEngine.Common.Graphics.IShaderManager.SetTexture(WaveEngine.Common.Graphics.Texture,System.Int32,WaveEngine.Common.Graphics.TextureSlotUsage)">
             <summary>
             Sets the texture.
             </summary>
             <param name="texture">The texture.</param>
             <param name="slot">The slot.</param>
+            <param name="textureUsage">The texture usage</param>
         </member>
         <member name="T:WaveEngine.Common.Graphics.ITextureManager">
             <summary>
@@ -4380,74 +4464,24 @@
             The result of the operator.
             </returns>
         </member>
-        <member name="T:WaveEngine.Common.Graphics.VertexElementUsage">
+        <member name="T:WaveEngine.Common.Graphics.TextureSlotUsage">
             <summary>
-            Specifies the vertex element usage.
+            Specifies the usage of the texture in shaders
             </summary>
         </member>
-        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Position">
+        <member name="F:WaveEngine.Common.Graphics.TextureSlotUsage.PixelShader">
             <summary>
-            Used for position.
+            This texture will be used in pixel shader
             </summary>
         </member>
-        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Color">
+        <member name="F:WaveEngine.Common.Graphics.TextureSlotUsage.VertexShader">
             <summary>
-            Used for color.
+            This texture will be used in vertex shader
             </summary>
         </member>
-        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.TextureCoordinate">
+        <member name="F:WaveEngine.Common.Graphics.TextureSlotUsage.All">
             <summary>
-            Used for texture coordinate.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Normal">
-            <summary>
-            Used for normal.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Binormal">
-            <summary>
-            Used for binormal.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Tangent">
-            <summary>
-            Used for tangent.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.BlendIndices">
-            <summary>
-            Used for blend indices.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.BlendWeight">
-            <summary>
-            Used for blend weights.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Depth">
-            <summary>
-            Used for depth.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Fog">
-            <summary>
-            Used for fog.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.PointSize">
-            <summary>
-            Used for point size.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.Sample">
-            <summary>
-            Used for sample.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Common.Graphics.VertexElementUsage.TessellateFactor">
-            <summary>
-            Used for tesellation factor.
+            This texture will be used in pixel and vertex shader
             </summary>
         </member>
         <member name="T:WaveEngine.Common.Graphics.VertexFormats.SkinnedNormalMappedVertex">
@@ -5569,13 +5603,27 @@
             Helper methods for reflection
             </summary>
         </member>
+        <member name="F:WaveEngine.Common.Helpers.ReflectionHelper.castablePrimitiveTypes">
+            <summary>
+            List of castable primitive types by each primitive type
+            </summary>
+        </member>
         <member name="M:WaveEngine.Common.Helpers.ReflectionHelper.IsEnum(System.Type)">
             <summary>
-            Determines whether the specified type is enum.
+            Determines whether the specified <see cref="T:System.Type" /> is enum.
             </summary>
             <param name="type">The type.</param>
             <returns>
-            <c>true</c> if the Type is a enum type; otherwise, <c>false</c>.
+            <c>true</c> if the <see cref="T:System.Type" /> is a enum type; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:WaveEngine.Common.Helpers.ReflectionHelper.IsInterface(System.Type)">
+            <summary>
+            Determines whether the specified type is an interface.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+            <c>true</c> if the <see cref="T:System.Type"/> is a enum type; otherwise, <c>false</c>.
             </returns>
         </member>
         <member name="M:WaveEngine.Common.Helpers.ReflectionHelper.IsValueType(System.Type)">
@@ -5584,16 +5632,34 @@
             </summary>
             <param name="type">The type.</param>
             <returns>
-            <c>true</c> if the Type is a value type; otherwise, <c>false</c>.
+            <c>true</c> if the <see cref="T:System.Type"/> is a value type; otherwise, <c>false</c>.
             </returns>
         </member>
         <member name="M:WaveEngine.Common.Helpers.ReflectionHelper.IsGenericType(System.Type)">
             <summary>
-            Gets a value indicating whether the specified type is a generic type.
+            Gets a value indicating whether the specified <see cref="T:System.Type" /> is a generic type.
             </summary>
             <param name="type">The type.</param>
             <returns>
-            <c>true</c> if the Type is a generic type; otherwise, <c>false</c>.
+            <c>true</c> if the <see cref="T:System.Type"/> is a generic type; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:WaveEngine.Common.Helpers.ReflectionHelper.IsGenericTypeDefinition(System.Type)">
+            <summary>
+            Gets a value indicating whether the specified type is a generic type definition.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+            <c>true</c> if the <see cref="T:System.Type"/> is a generic type definition; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:WaveEngine.Common.Helpers.ReflectionHelper.IsPrimitive(System.Type)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Type" /> is one of the primitive types.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+            <c>true</c> if the <see cref="T:System.Type" /> is one of the primitive types; otherwise, <c>false</c>.
             </returns>
         </member>
         <member name="M:WaveEngine.Common.Helpers.ReflectionHelper.IsAssignableFrom(System.Type,System.Type)">
@@ -5601,9 +5667,19 @@
             Determines whether an instance of the second specified type can be assigned to the first specified type instance.
             </summary>
             <param name="first">The first type.</param>
-            <param name="second">The second second.</param>
+            <param name="second">The type to check.</param>
             <returns>
-            <c>true</c> if the attribute is defined; otherwise, <c>false</c>.
+            <c>true</c> if the first specified type can be assigned from the second type; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:WaveEngine.Common.Helpers.ReflectionHelper.IsCastableFrom(System.Type,System.Type)">
+            <summary>
+            Determines whether an instance of the second specified type can be casted to the first specified type instance.
+            </summary>
+            <param name="first">The first type.</param>
+            <param name="second">The type to check.</param>
+            <returns>
+            <c>true</c> if the first specified type can be casted from the second type; otherwise, <c>false</c>.
             </returns>
         </member>
         <member name="M:WaveEngine.Common.Helpers.ReflectionHelper.IsAttributeDefined``1(System.Type)">
@@ -5643,6 +5719,32 @@
             A <see cref="T:System.String"/> containing the name of this member assembly.
             </returns>
         </member>
+        <member name="M:WaveEngine.Common.Helpers.ReflectionHelper.GetBaseType(System.Type)">
+            <summary>
+            Gets the type from which the current System.Type directly inherits.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+            The <see cref="T:System.Type"/> from which the current System.Type directly inherits, or null
+            if the current <see cref="T:System.Type"/> represents the System.Object class or an interface.
+            </returns>
+        </member>
+        <member name="M:WaveEngine.Common.Helpers.ReflectionHelper.GetGenericTypeDefinition(System.Type)">
+            <summary>
+            Returns a <see cref="T:System.Type"/> object that represents a generic type definition from which the current generic type can be constructed.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+            A <see cref="T:System.Type"/> object representing a generic type from which the current type can be constructed.
+            </returns>
+        </member>
+        <member name="M:WaveEngine.Common.Helpers.ReflectionHelper.GetInterfaces(System.Type)">
+            <summary>
+            Gets the interfaces.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The interfaces.</returns>
+        </member>
         <member name="M:WaveEngine.Common.Helpers.ReflectionHelper.GetTypeName(System.Object)">
             <summary>
             Gets the name of the current member.
@@ -5658,6 +5760,13 @@
             </summary>
             <typeparam name="T">The type</typeparam>
             <returns>The size of the specified type</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Helpers.ReflectionHelper.GetFullNameWithoutAssemblyInfo(System.Type)">
+            <summary>
+            Gets the full name of the name of the specified type without assembly full name.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The full name of the name without assembly full name.</returns>
         </member>
         <member name="T:WaveEngine.Common.Helpers.SizeEventArgs">
             <summary>
@@ -6068,6 +6177,11 @@
             Occurs when screen size is changed.
             </summary>
         </member>
+        <member name="E:WaveEngine.Common.IAdapter.OnDisplayOrientationChanged">
+            <summary>
+            Occurs when display orientation is changed.
+            </summary>
+        </member>
         <member name="P:WaveEngine.Common.IAdapter.Platform">
             <summary>
             Gets the platform.
@@ -6218,6 +6332,14 @@
             </summary>
             <value>
             The default orientation.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Common.IAdapter.DisplayOrientation">
+            <summary>
+            Gets the current display orientation of the device.
+            </summary>
+            <value>
+            The current display orientation of the device.
             </value>
         </member>
         <member name="P:WaveEngine.Common.IAdapter.AdvertismentVisible">
@@ -6620,26 +6742,10 @@
             Portrait up.
             </summary>
         </member>
-        <member name="T:WaveEngine.Common.Input.DisplayOrientationState">
+        <member name="F:WaveEngine.Common.Input.DisplayOrientation.PortraitFlipped">
             <summary>
-            Represents the status of the display orientation.
+            Portrait down.
             </summary>
-        </member>
-        <member name="P:WaveEngine.Common.Input.DisplayOrientationState.Orientation">
-            <summary>
-            Gets or sets the orientation.
-            </summary>
-            <value>
-            The orientation.
-            </value>
-        </member>
-        <member name="P:WaveEngine.Common.Input.DisplayOrientationState.IsConnected">
-            <summary>
-            Gets or sets a value indicating whether this instance is connected.
-            </summary>
-            <value>
-                <c>true</c> if this instance is connected; otherwise, <c>false</c>.
-            </value>
         </member>
         <member name="T:WaveEngine.Common.Input.GamePadButtons">
             <summary>
@@ -6995,22 +7101,11 @@
             <param name="rightTrigger">The level of the right trigger vibration motor.</param>
             <returns>True is everything Ok, false if doesn't exist the player index.</returns>
         </member>
-        <member name="M:WaveEngine.Common.Input.IInput.TouchPanelGetState">
+        <member name="M:WaveEngine.Common.Input.IInput.TouchPanelGetState(WaveEngine.Common.Input.TouchPanelState@)">
             <summary>
             Touches the state of the panel get.
             </summary>
-            <returns>Touch panel state.</returns>
-        </member>
-        <member name="M:WaveEngine.Common.Input.IInput.DisplayOrientationGetState">
-            <summary>
-            Displays the state of the orientation get.
-            </summary>
-            <returns>Display orientation state.</returns>
-        </member>
-        <member name="E:WaveEngine.Common.Input.IInput.OnOrientationChanged">
-            <summary>
-            Occurs when [on orientation changed].
-            </summary>
+            <param name="state">Touch panel state.</param>
         </member>
         <member name="E:WaveEngine.Common.Input.IInput.OnInputChanged">
             <summary>
@@ -8952,21 +9047,6 @@
             Represents the state of the touch panel.
             </summary>
         </member>
-        <member name="F:WaveEngine.Common.Input.TouchPanelState.MaxTouches">
-            <summary>
-            Maximum number of touches.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Common.Input.TouchPanelState.isConnected">
-            <summary>
-            Touch panel is connected.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Common.Input.TouchPanelState.touchCount">
-            <summary>
-            Number of touches.
-            </summary>
-        </member>
         <member name="F:WaveEngine.Common.Input.TouchPanelState.touch0">
             <summary>
             First touch position.
@@ -9047,6 +9127,21 @@
             Sixteenth touch position.
             </summary>
         </member>
+        <member name="F:WaveEngine.Common.Input.TouchPanelState.MaxTouches">
+            <summary>
+            Maximum number of touches.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Input.TouchPanelState.isConnected">
+            <summary>
+            Touch panel is connected.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Input.TouchPanelState.touchCount">
+            <summary>
+            Number of touches.
+            </summary>
+        </member>
         <member name="P:WaveEngine.Common.Input.TouchPanelState.IsConnected">
             <summary>
             Gets or sets a value indicating whether this instance is connected.
@@ -9086,9 +9181,23 @@
             Adds the touch location.
             </summary>
             <param name="id">The id.</param>
-            <param name="state">The state.</param>
+            <param name="state">The touch state.</param>
             <param name="x">The x.</param>
             <param name="y">The y.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Input.TouchPanelState.AddTouchLocation(System.Int32,System.Single,System.Single)">
+            <summary>
+            Adds the touch location.
+            </summary>
+            <param name="id">The id.</param>
+            <param name="x">The x.</param>
+            <param name="y">The y.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Input.TouchPanelState.RemoveTouchLocation(System.Int32)">
+            <summary>
+            Adds the touch location.
+            </summary>
+            <param name="id">The id.</param>
         </member>
         <member name="M:WaveEngine.Common.Input.TouchPanelState.TryGetTouch(System.Int32,WaveEngine.Common.Input.TouchLocation@)">
             <summary>
@@ -9135,6 +9244,11 @@
             <returns>The result.</returns>
         </member>
         <member name="M:WaveEngine.Common.Input.TouchPanelState.Clear">
+            <summary>
+            Clears this instance.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Input.TouchPanelState.Update">
             <summary>
             Clears this instance.
             </summary>
@@ -9495,6 +9609,11 @@
         <member name="T:WaveEngine.Common.IO.SerializableObject">
             <summary>
             Abstract class to extend for each class that we need to serialize
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.IO.SerializableObject.constructorInvoked">
+            <summary>
+            Flag that indicate if the constructor has been invoked
             </summary>
         </member>
         <member name="M:WaveEngine.Common.IO.SerializableObject.#ctor">
@@ -14751,6 +14870,37 @@
             <param name="amount">The amount.</param>
             <param name="result">The result.</param>
         </member>
+        <member name="M:WaveEngine.Common.Math.Vector2.SmoothDamp(WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2@,System.Single,System.Single)">
+            <summary>
+            Changes a vector towards a desired goal over time
+            </summary>
+            <param name="current">The current position</param>
+            <param name="target">The target position we are trying to reach</param>
+            <param name="currentVelocity">The current velocity, modified by the function</param>
+            <param name="smoothTime">The time it will take to reach the target.</param>
+            <param name="gameTime">The current game time (time between last frame)</param>
+            <returns>The smooth vector</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Math.Vector2.SmoothDamp(WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2@,System.Single,System.Single,System.Single)">
+            <summary>
+            Changes a vector towards a desired goal over time
+            </summary>
+            <param name="current">The current position</param>
+            <param name="target">The target position we are trying to reach</param>
+            <param name="currentVelocity">The current velocity, modified by the function</param>
+            <param name="smoothTime">The time it will take to reach the target.</param>
+            <param name="maxSpeed">The maximum speed</param>
+            <param name="gameTime">The current game time (time between last frame)</param>
+            <returns>The smooth vector</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Math.Vector2.ClampMagnitude(WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Returns a vector with its magnitude clamped to maxLength.
+            </summary>
+            <param name="vector">The vector</param>
+            <param name="maxLength">The max length</param>
+            <returns>The clamped vector</returns>
+        </member>
         <member name="M:WaveEngine.Common.Math.Vector2.CatmullRom(WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,System.Single)">
             <summary>
             Catmulls the rom.
@@ -15548,6 +15698,37 @@
             <param name="value2">The value2.</param>
             <param name="amount">The amount.</param>
             <param name="result">The result.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Math.Vector3.SmoothDamp(WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3@,System.Single,System.Single)">
+            <summary>
+            Changes a vector towards a desired goal over time
+            </summary>
+            <param name="current">The current position</param>
+            <param name="target">The target position we are trying to reach</param>
+            <param name="currentVelocity">The current velocity, modified by the function</param>
+            <param name="smoothTime">The time it will take to reach the target.</param>
+            <param name="gameTime">The current game time (time between last frame)</param>
+            <returns>The smooth vector</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Math.Vector3.SmoothDamp(WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3@,System.Single,System.Single,System.Single)">
+            <summary>
+            Changes a vector towards a desired goal over time
+            </summary>
+            <param name="current">The current position</param>
+            <param name="target">The target position we are trying to reach</param>
+            <param name="currentVelocity">The current velocity, modified by the function</param>
+            <param name="smoothTime">The time it will take to reach the target.</param>
+            <param name="maxSpeed">The maximum speed</param>
+            <param name="gameTime">The current game time (time between last frame)</param>
+            <returns>The smooth vector</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Math.Vector3.ClampMagnitude(WaveEngine.Common.Math.Vector3,System.Single)">
+            <summary>
+            Returns a vector with its magnitude clamped to maxLength.
+            </summary>
+            <param name="vector">The vector</param>
+            <param name="maxLength">The max length</param>
+            <returns>The clamped vector</returns>
         </member>
         <member name="M:WaveEngine.Common.Math.Vector3.CatmullRom(WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3,WaveEngine.Common.Math.Vector3,System.Single)">
             <summary>
@@ -17744,6 +17925,36 @@
             The rotational inertia of the shape about the local origin.
             </summary>
         </member>
+        <member name="T:WaveEngine.Common.Physics2D.IEdgeColliderShape2D">
+            <summary>
+            Interface for a Edge Shape of 2D physics.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Common.Physics2D.IEdgeColliderShape2D.Vertices">
+            <summary>
+            Gets the edge vertices
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Common.Physics2D.IEdgeColliderShape2D.Normals">
+            <summary>
+            Gets the Edge normals
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Physics2D.IEdgeColliderShape2D.SetShapeFromVertices(WaveEngine.Common.Math.Vector2[])">
+            <summary>
+            Copy vertices.
+            </summary>
+            <param name="vertices">The edge vertices</param>>
+        </member>
+        <member name="M:WaveEngine.Common.Physics2D.IEdgeColliderShape2D.SetShapeFromVertices(WaveEngine.Common.Math.Vector2[],WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2,System.Single)">
+            <summary>
+            Copy vertices.
+            </summary>
+            <param name="vertices">The edge vertices</param>
+            <param name="scale">The scale of the shape</param>
+            <param name="center">The box center</param>
+            <param name="angle">The box angle</param>
+        </member>
         <member name="T:WaveEngine.Common.Physics2D.AngleLimitsDef">
             <summary>
             Angle limit properties
@@ -19453,6 +19664,581 @@
             <summary>
             Universal Windows App
             </summary>
+        </member>
+        <member name="T:WaveEngine.Common.Serialization.ISerializer">
+            <summary>
+            Interfaces that represents a serializer
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ISerializer.Serialize(System.IO.Stream,System.Object)">
+            <summary>
+            Serializes the specified stream.
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="obj">The object.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ISerializer.Deserialize(System.IO.Stream)">
+            <summary>
+            Deserializes the specified stream.
+            </summary>
+            <param name="stream">The stream.</param>
+            <returns>Deserialize object</returns>
+        </member>
+        <member name="T:WaveEngine.Common.Serialization.ProtobufModelBuilder">
+            <summary>
+            Protobuf builder
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.ProtobufModelBuilder.factories">
+            <summary>
+            The factories cache
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtobufModelBuilder.TypeFactory(System.Type)">
+            <summary>
+            Gets the factory for the given type
+            </summary>
+            <param name="t">The type to create</param>
+            <returns>The new instance</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtobufModelBuilder.SetRuntimeModelDefaultFactory(ProtoBuf.Meta.RuntimeTypeModel)">
+            <summary>
+            Set the runtime model default factory
+            </summary>
+            <param name="runtimeModel">The runtime model</param>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.ProtobufModelBuilder.knownTypes">
+            <summary>
+            The known types
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.ProtobufModelBuilder.runtimeModel">
+            <summary>
+            The runtime type model
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Common.Serialization.ProtobufModelBuilder.RuntimeModel">
+            <summary>
+            Gets the runtime type model
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtobufModelBuilder.#ctor(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Common.Serialization.ProtobufModelBuilder"/> class.
+            </summary>
+            <param name="knownTypes">The known types.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtobufModelBuilder.Build">
+            <summary>
+            Builds the type model.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtobufModelBuilder.IncludeNotReferencedParents(System.Type,System.Collections.Generic.Dictionary{System.Type,System.Collections.Generic.HashSet{System.Type}},System.Collections.Generic.HashSet{System.Type},System.Int32@)">
+            <summary>
+            Include not referenced parents
+            </summary>
+            <param name="type">The type</param>
+            <param name="subtypesByType">The subtypes by types</param>
+            <param name="referencedTypes">The referenced types</param>
+            <param name="baseIndex">The base Index</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtobufModelBuilder.BuildFromSchema(System.IO.Stream)">
+            <summary>
+            Builds the type model.
+            </summary>
+            <param name="schemaStream">The schema stream.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtobufModelBuilder.SaveSchema(System.IO.Stream)">
+            <summary>
+            Save the proto schema in the stream
+            </summary>
+            <param name="schemaStream">The schema stream</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtobufModelBuilder.ProccessMetaType(ProtoBuf.Meta.MetaType,System.Collections.Generic.Dictionary{System.Type,System.Collections.Generic.HashSet{System.Type}},System.Collections.Generic.HashSet{System.Type})">
+            <summary>
+            Adds the type to runtime model.
+            </summary>
+            <param name="metaType">The meta type.</param>
+            <param name="subtypesByType">The dependencies by type collection.</param>
+            <param name="referencedTypes">The referenced types collection.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtobufModelBuilder.GetMemberType(System.Reflection.MemberInfo)">
+            <summary>
+            Get the MemberInfo type of a PropertyInfo or FieldInfo.
+            </summary>
+            <param name="memberInfo">The member info.</param>
+            <returns>The type of the member info.</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtobufModelBuilder.AddMemberTypeReference(System.Type,System.Collections.Generic.HashSet{System.Type})">
+            <summary>
+            Add the type to the references collection.
+            </summary>
+            <param name="memberType">The type of the member.</param>
+            <param name="referencedTypes">The referenced types collection.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtobufModelBuilder.AddTypeDependency(System.Type,System.Type,System.Collections.Generic.Dictionary{System.Type,System.Collections.Generic.HashSet{System.Type}})">
+            <summary>
+            Add the type to the dependecies collection.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="baseType">The base type.</param>
+            <param name="subtypesByType">The dependencies by type collection.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtobufModelBuilder.GetDataMemberPropertiesAndFields(System.Type)">
+            <summary>
+            Gets the data member properties and fields.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The members of the type.</returns>
+        </member>
+        <member name="T:WaveEngine.Common.Serialization.ProtoSchemaModel">
+            <summary>
+            Proto Schema Model
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.ProtoSchemaModel.types">
+            <summary>
+            The wave types.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Common.Serialization.ProtoSchemaModel.TypeModels">
+            <summary>
+            Gets or sets the TypeModels
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtoSchemaModel.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Common.Serialization.ProtoSchemaModel"/> class.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtoSchemaModel.#ctor(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Common.Serialization.ProtoSchemaModel"/> class.
+            </summary>
+            <param name="knownTypes">The known types.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtoSchemaModel.FromStream(System.IO.Stream,System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Deserialize the ProtoSchemaModel from the stream source
+            </summary>
+            <param name="source">The source stream</param>
+            <param name="knownTypes">The known types.</param>
+            <returns>The ProtoSchemaModel</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtoSchemaModel.GetTypeByName(System.String)">
+            <summary>
+            Get the type with the name indicated
+            </summary>
+            <param name="typeName">The type name</param>
+            <returns>The type</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtoSchemaModel.Save(System.IO.Stream)">
+            <summary>
+            Save the proto schema in the stream
+            </summary>
+            <param name="schemaStream">The schema stream</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtoSchemaModel.GetSchemaRuntimeModel">
+            <summary>
+            Get the Runtime Model for the Proto Schema
+            </summary>
+            <returns>The runtime type model</returns>
+        </member>
+        <member name="T:WaveEngine.Common.Serialization.ProtoTypeModel">
+            <summary>
+            Proto Type Model
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.ProtoTypeModel.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Common.Serialization.ProtoTypeModel"/> class.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Common.Serialization.ProtoTypeModel.Type">
+            <summary>
+            Gets or sets the known type.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Common.Serialization.ProtoTypeModel.Fields">
+            <summary>
+            Gets or sets the fields.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Common.Serialization.ProtoTypeModel.Subtypes">
+            <summary>
+            Gets or sets the subtypes.
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Common.Serialization.SerializationUtils">
+            <summary>
+            Serialization Utils static class
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializationUtils.AdditionalAssemblies">
+            <summary>
+            The additional assemblies
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializationUtils.ExcludeAssemblies">
+            <summary>
+            The assemblies to be excluded
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializationUtils.AssemblyCache">
+            <summary>
+            Dictionary Assemblies (cache)
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Common.Serialization.SerializationUtils.UserProjectAssembly">
+            <summary>
+            Gets the user project assembly
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Common.Serialization.SerializationUtils.UserAdditionalRegisteredAssembly">
+            <summary>
+            Gets the user additional assemblies
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializationUtils.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:WaveEngine.Common.Serialization.SerializationUtils" /> class.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializationUtils.SearchWaveEngineType(System.String)">
+            <summary>
+            Searches the type of the wave engine.
+            </summary>
+            <param name="typeFullName">Full name of the type.</param>
+            <returns>Type whether exists or null</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializationUtils.GetWaveEngineTypes(System.Boolean)">
+            <summary>
+            Gets the wave engine types.
+            </summary>
+            <param name="includeInterfaces">Include all interfaces.</param>
+            <returns>Known types of Wave Engine</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializationUtils.IsValidWaveType(System.Reflection.TypeInfo,System.Boolean)">
+            <summary>
+            Determines whether a type is a valid Wave Engine type.
+            </summary>
+            <param name="typeInfo">The type information.</param>
+            <param name="includeInterfaces">if set to <c>true</c> interfaces will be included.</param>
+            <returns>
+              <c>true</c> if the type is a valid Wave Engine type; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializationUtils.GetAssemblyList">
+            <summary>
+            Get wave engine assemblies
+            </summary>
+            <returns>the assemblies</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializationUtils.SetUserAssembly(System.Reflection.Assembly)">
+            <summary>
+            Register user project assembly
+            </summary>
+            <param name="assembly">User assembly.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializationUtils.RegisterAditionalAssembly(System.Reflection.Assembly)">
+            <summary>
+            Register additional assembly
+            </summary>
+            <param name="assembly">Assembly to be registered.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializationUtils.AddWaveAssemblies(System.Collections.Generic.Dictionary{System.String,System.Reflection.Assembly})">
+            <summary>
+            Add extra assemblies
+            </summary>
+            <param name="assemblies">Assemblies map.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializationUtils.AddWaveAssembly(System.Collections.Generic.Dictionary{System.String,System.Reflection.Assembly},System.String)">
+            <summary>
+            Add extra assembly
+            </summary>
+            <param name="assemblies">Assemblies map.</param>
+            <param name="waveName">Wave lib name.</param>
+        </member>
+        <member name="T:WaveEngine.Common.Serialization.SerializerDataContract">
+            <summary>
+            Xml serializer
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializerDataContract.serializersCache">
+            <summary>
+            Cache of serializer used to improve the performance of load times.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializerDataContract.xmlSettings">
+            <summary>
+            The XML settings
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializerDataContract.serializer">
+            <summary>
+            The serializar
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerDataContract.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:WaveEngine.Common.Serialization.SerializerDataContract" /> class.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerDataContract.GetSerializer``1">
+            <summary>
+            Get a new serializer instance.
+            </summary>
+            <typeparam name="T">Generic type.</typeparam>
+            <returns>ISerializer instance.</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerDataContract.GetSerializer(System.Type)">
+            <summary>
+            Get a new serializer instance.
+            </summary>
+            <param name="type">The serializer type</param>
+            <returns>ISerializer instance.</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerDataContract.CleanCache">
+            <summary>
+            Clean the cache of serializer types.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerDataContract.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Common.Serialization.SerializerDataContract"/> class.
+            </summary>
+            <param name="type">Generic type.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerDataContract.Serialize(System.IO.Stream,System.Object)">
+            <summary>
+            Serializes the specified stream.
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="obj">The object.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerDataContract.Deserialize(System.IO.Stream)">
+            <summary>
+            Deserializes the specified stream.
+            </summary>
+            <param name="stream">The stream.</param>
+            <returns>Deserialize object</returns>
+        </member>
+        <member name="T:WaveEngine.Common.Serialization.SerializerJson">
+            <summary>
+            Xml serializer
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializerJson.serializersCache">
+            <summary>
+            Cache of serializer used to improve the performance of load times.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializerJson.serializer">
+            <summary>
+            The serializar
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerJson.GetSerializer``1">
+            <summary>
+            Get a new serializer instance.
+            </summary>
+            <typeparam name="T">Generic type.</typeparam>
+            <returns>ISerializer instance.</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerJson.GetSerializer(System.Type)">
+            <summary>
+            Get a new serializer instance.
+            </summary>
+            <param name="type">The serializer type</param>
+            <returns>ISerializer instance.</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerJson.CleanCache">
+            <summary>
+            Clean the cache of serializer types.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerJson.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Common.Serialization.SerializerJson"/> class.
+            </summary>
+            <param name="type">Generic Type.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerJson.Serialize(System.IO.Stream,System.Object)">
+            <summary>
+            Serializes the specified stream.
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="obj">The object.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerJson.Deserialize(System.IO.Stream)">
+            <summary>
+            Deserializes the specified stream.
+            </summary>
+            <param name="stream">The stream.</param>
+            <returns>Deserialize object</returns>
+        </member>
+        <member name="T:WaveEngine.Common.Serialization.SerializerProtobuf">
+            <summary>
+            Protobuf serializer
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializerProtobuf.ProtoSchemaFileName">
+            <summary>
+            The proto schema file name
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializerProtobuf.ProtoSchemaDefaultPath">
+            <summary>
+            The proto schema default path
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializerProtobuf.createLock">
+            <summary>
+            Lock for creation
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializerProtobuf.runtimeModel">
+            <summary>
+            The runtime model singleton.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializerProtobuf.serializerType">
+            <summary>
+            The serializer type.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializerProtobuf.serializerRuntimeModel">
+            <summary>
+            The serializer runtime model.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerProtobuf.GetSerializer``1">
+            <summary>
+            Get a new serializer instance.
+            </summary>
+            <typeparam name="T">Generic type.</typeparam>
+            <returns>ISerializer instance.</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerProtobuf.GetSerializer``1(WaveEngine.Common.IO.IIOManager)">
+            <summary>
+            The XML serializer
+            Get a new serializer instance.
+            </summary>
+            <typeparam name="T">Generic type.</typeparam>
+            <param name="ioManager">The io managers</param>
+            <returns>ISerializer instance.</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerProtobuf.GetSerializer(System.Type)">
+            <summary>
+            Get a new serializer instance.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>ISerializer instance.</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerProtobuf.GetSerializer(System.Type,WaveEngine.Common.IO.IIOManager)">
+            <summary>
+            The XML serializer
+            Get a new serializer instance.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="ioManager">The io managers</param>
+            <returns>ISerializer instance.</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerProtobuf.CleanCache">
+            <summary>
+            Clean the cache of serializer types.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerProtobuf.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Common.Serialization.SerializerProtobuf" /> class.
+            </summary>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerProtobuf.BuildRuntimeModel(WaveEngine.Common.IO.IIOManager)">
+            <summary>
+            Builds the runtime model.
+            </summary>
+            <param name="ioManager">The io manager</param>
+            <returns>Returns a new runtime model.</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerProtobuf.Serialize(System.IO.Stream,System.Object)">
+            <summary>
+            Serializes the specified stream.
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="obj">The object.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerProtobuf.Deserialize(System.IO.Stream)">
+            <summary>
+            Deserializes the specified stream.
+            </summary>
+            <param name="stream">The stream.</param>
+            <returns>Deserialize object</returns>
+        </member>
+        <member name="T:WaveEngine.Common.Serialization.SerializerXml">
+            <summary>
+            Xml serializer
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializerXml.serializersCache">
+            <summary>
+            Cache of serializer used to improve the performance of load times.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializerXml.xmlSettings">
+            <summary>
+            The XML settings
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Common.Serialization.SerializerXml.serializer">
+            <summary>
+            The serializar
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerXml.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:WaveEngine.Common.Serialization.SerializerXml" /> class.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerXml.GetSerializer``1">
+            <summary>
+            Get a new serializer instance.
+            </summary>
+            <typeparam name="T">Generic type.</typeparam>
+            <returns>ISerializer instance.</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerXml.GetSerializer(System.Type)">
+            <summary>
+            Get a new serializer instance.
+            </summary>
+            <param name="type">The serializer type</param>
+            <returns>ISerializer instance.</returns>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerXml.CleanCache">
+            <summary>
+            Clean the cache of serializer types.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerXml.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Common.Serialization.SerializerXml"/> class.
+            </summary>
+            <param name="type">Generic type.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerXml.Serialize(System.IO.Stream,System.Object)">
+            <summary>
+            Serializes the specified stream.
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="obj">The object.</param>
+        </member>
+        <member name="M:WaveEngine.Common.Serialization.SerializerXml.Deserialize(System.IO.Stream)">
+            <summary>
+            Deserializes the specified stream.
+            </summary>
+            <param name="stream">The stream.</param>
+            <returns>Deserialize object</returns>
         </member>
         <member name="T:WaveEngine.Common.Service">
             <summary>

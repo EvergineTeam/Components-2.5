@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // BillboardRenderer
 //
-// Copyright © 2016 Wave Engine S.L. All rights reserved.
+// Copyright © 2017 Wave Engine S.L. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -84,7 +84,7 @@ namespace WaveEngine.Components.Shared.Graphics3D
             set
             {
                 this.layerType = value;
-                this.layerTypeName = this.layerType.FullName + "," + ReflectionHelper.GetTypeAssemblyName(this.layerType);
+                this.layerTypeName = this.layerType.FullName + "," + this.layerType.GetTypeAssemblyName();
 
                 if (this.RenderManager != null)
                 {

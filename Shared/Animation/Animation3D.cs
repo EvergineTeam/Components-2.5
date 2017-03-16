@@ -1,7 +1,7 @@
 ﻿#region File Description
 //-----------------------------------------------------------------------------
 // Animation3D
-// Copyright © 2016 Wave Engine S.L. All rights reserved.
+// Copyright © 2017 Wave Engine S.L. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -108,7 +108,7 @@ namespace WaveEngine.Components.Animation
         /// <summary>
         /// Gets or sets the animation file path
         /// </summary>
-        [RenderPropertyAsAsset(AssetType.SkinnedModel, 1)]
+        [RenderPropertyAsAsset(AssetType.SkinnedModel, null, 1)]
         public string AnimationPath
         {
             get

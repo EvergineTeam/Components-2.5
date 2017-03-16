@@ -1,7 +1,7 @@
 ﻿#region File Description
 //-----------------------------------------------------------------------------
 // FreeCamera2DBehavior
-// Copyright © 2016 Wave Engine S.L. All rights reserved.
+// Copyright © 2017 Wave Engine S.L. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -50,7 +50,8 @@ namespace WaveEngine.Components.Cameras
         /// <summary>
         /// The input.
         /// </summary>
-        private Input input;
+        [RequiredService]
+        private Input input = null;
 
         /// <summary>   
         /// The mouse is dragging.
@@ -60,17 +61,17 @@ namespace WaveEngine.Components.Cameras
         /// <summary>
         /// Mouse speed movement
         /// </summary>
-        private float rotationSpeed = .004f;
+        private float rotationSpeed;
 
         /// <summary>
         /// Zoom speed with mouse wheel.
         /// </summary>
-        private float wheelZoomSpeed = 1 / 4000f;
+        private float wheelZoomSpeed;
 
         /// <summary>
         ///     Speed of the movement
         /// </summary>
-        private float speed = 200f;
+        private float speed;
 
         /// <summary>
         /// The time difference.
@@ -173,6 +174,18 @@ namespace WaveEngine.Components.Cameras
             : base("FreeCamera2DBehavior")
         {
         }
+
+        /// <summary>
+        /// Default values
+        /// </summary>
+        protected override void DefaultValues()
+        {
+            base.DefaultValues();
+
+            this.rotationSpeed = .004f;
+            this.wheelZoomSpeed = 1 / 4000f;
+            this.speed = 200.0f;
+        }
         #endregion
 
         #region Private Methods
@@ -196,8 +209,6 @@ namespace WaveEngine.Components.Cameras
         /// </param>
         private void HandleInput(float amount)
         {
-            this.input = WaveServices.Input;
-
             this.up = this.Camera.UpVector;
             this.right.X = this.up.Y;
             this.right.Y = -this.up.X;

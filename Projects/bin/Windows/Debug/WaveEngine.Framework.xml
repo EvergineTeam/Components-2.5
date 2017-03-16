@@ -1610,9 +1610,9 @@
             The update order 0.5f by default (range 0f - 1f)
             </summary>
         </member>
-        <member name="F:WaveEngine.Framework.Behavior.isActive">
+        <member name="F:WaveEngine.Framework.Behavior.isDisabled">
             <summary>
-            Whether this instance is active.
+            Whether this instance is disabled.
             </summary>
         </member>
         <member name="P:WaveEngine.Framework.Behavior.Family">
@@ -1726,26 +1726,6 @@
             Number of instances created.
             </summary>
         </member>
-        <member name="F:WaveEngine.Framework.Component.fieldComponentsCache">
-            <summary>
-            Cached fields by component type.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Component.propertyComponentsCache">
-            <summary>
-            Cached properties by component type.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Component.fieldServicesCache">
-            <summary>
-            Cached field by service type.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Component.propertyServicesCache">
-            <summary>
-            Cached property by service type.
-            </summary>
-        </member>
         <member name="F:WaveEngine.Framework.Component.Dependencies">
             <summary>
             The dependencies
@@ -1799,11 +1779,6 @@
         <member name="P:WaveEngine.Framework.Component.RenderManager">
             <summary>
             Gets the <see cref="P:WaveEngine.Framework.Component.RenderManager"/> of this instance.
-            </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Component.#cctor">
-            <summary>
-            Initializes static members of the <see cref="T:WaveEngine.Framework.Component"/> class.
             </summary>
         </member>
         <member name="M:WaveEngine.Framework.Component.#ctor">
@@ -1868,69 +1843,6 @@
             Resolves the dependencies needed for this instance to work.
             </summary>
         </member>
-        <member name="M:WaveEngine.Framework.Component.GetCachedRequiredServicesFields">
-            <summary>
-            Returns a List with the fields of this instance that has the RequiredService attribute, using a static cache.
-            </summary>
-            <returns>The list with the fields and its RequiredService attribute.</returns>
-        </member>
-        <member name="M:WaveEngine.Framework.Component.GetRequiredServicesFields">
-            <summary>
-            Returns a list with the fields of this instance that has the RequiredService attribute.
-            </summary>
-            <returns>The list with the fields and its RequiredService attribute.</returns>
-        </member>
-        <member name="M:WaveEngine.Framework.Component.GetCachedRequiredServicesProperties">
-            <summary>
-            Returns a List with the properties of this instance that has the RequiredService attribute, using a static cache.
-            </summary>
-            <returns>The list with the properties and its RequiredService attribute.</returns>
-        </member>
-        <member name="M:WaveEngine.Framework.Component.GetRequiredServicesProperties">
-            <summary>
-            Returns a list with the properties of this instance that has the RequiredService attribute.
-            </summary>
-            <returns>The list with the properties and its RequiredService attribute.</returns>
-        </member>
-        <member name="M:WaveEngine.Framework.Component.SetDependencyService(System.Type,System.Action{System.Object})">
-            <summary>
-            Sets the dependency member.
-            </summary>
-            <param name="service">The service type.</param>
-            <param name="action">The action.</param>
-        </member>
-        <member name="M:WaveEngine.Framework.Component.GetCachedRequiredComponentsFields">
-            <summary>
-            Returns a dictionary with the fields of this instance that has the RequiredComponent attribute, using a static cache. Thre returned object is Lazy, this ensures that the dictionary is created one time only.
-            </summary>
-            <returns>The dictionary with the fields and its RequiredComponent attribute.</returns>
-        </member>
-        <member name="M:WaveEngine.Framework.Component.GetRequiredComponentsFields">
-            <summary>
-            Returns a dictionary with the fields of this instance that has the RequiredComponent attribute.
-            </summary>
-            <returns>The dictionary with the fields and its RequiredComponent attribute.</returns>
-        </member>
-        <member name="M:WaveEngine.Framework.Component.GetCachedRequiredComponentsProperties">
-            <summary>
-            Returns a dictionary with the properties of this instance that has the RequiredComponent attribute, using a static cache. Thre returned object is Lazy, this ensures that the dictionary is created one time only.
-            </summary>
-            <returns>The dictionary with the properties and its RequiredComponent attribute.</returns>
-        </member>
-        <member name="M:WaveEngine.Framework.Component.GetRequiredComponentsProperties">
-            <summary>
-            Returns a dictionary with the properties of this instance that has the RequiredComponent attribute.
-            </summary>
-            <returns>The dictionary with the properties and its RequiredComponent attribute.</returns>
-        </member>
-        <member name="M:WaveEngine.Framework.Component.SetDependencyComponent(System.Collections.Generic.IEnumerable{System.Object},System.Type,System.Action{System.Object})">
-            <summary>
-            Sets the dependency member.
-            </summary>
-            <param name="attributes">The attributes.</param>
-            <param name="type">The type.</param>
-            <param name="action">The action.</param>
-        </member>
         <member name="M:WaveEngine.Framework.Component.Initialize">
             <summary>
             Performs further custom initialization for this instance.
@@ -1954,7 +1866,7 @@
         </member>
         <member name="M:WaveEngine.Framework.Component.DeleteDependencies">
             <summary>
-            Deletes the dependencies after .
+            Deletes the dependencies.
             </summary>
         </member>
         <member name="M:WaveEngine.Framework.Component.FireOnComponentRemoved">
@@ -2190,6 +2102,132 @@
             <param name="oldValue">The old value.</param>
             <param name="property">The property.</param>
         </member>
+        <member name="T:WaveEngine.Framework.DependencyResolver">
+            <summary>
+            Resolve types dependencies for custom attributes. 
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.DependencyResolver.resolver">
+            <summary>
+            Unique instance.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.DependencyResolver.fieldComponentsCache">
+            <summary>
+            Cached fields by component type.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.DependencyResolver.propertyComponentsCache">
+            <summary>
+            Cached properties by component type.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.DependencyResolver.fieldServicesCache">
+            <summary>
+            Cached field by service type.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.DependencyResolver.propertyServicesCache">
+            <summary>
+            Cached property by service type.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Framework.DependencyResolver.Instance">
+            <summary>
+            Gets singleton instance of <see cref="T:WaveEngine.Framework.DependencyResolver"/> class.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Framework.DependencyResolver.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:WaveEngine.Framework.DependencyResolver" /> class.
+            </summary>
+            <remarks>Explicit static constructor to tell C# compiler not to mark type as beforefieldinit.</remarks>
+        </member>
+        <member name="M:WaveEngine.Framework.DependencyResolver.#ctor">
+            <summary>
+            Prevents a default instance of the <see cref="T:WaveEngine.Framework.DependencyResolver" /> class from being created.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Framework.DependencyResolver.ResolveDependencies(WaveEngine.Framework.Component)">
+            <summary>
+            Resolves the dependencies needed for this instance to work.
+            </summary>
+            <param name="component">The component</param>
+        </member>
+        <member name="M:WaveEngine.Framework.DependencyResolver.DeleteDependencies(WaveEngine.Framework.Component)">
+            <summary>
+            Deletes the dependencies.
+            </summary>
+            <param name="component">The component</param>
+        </member>
+        <member name="M:WaveEngine.Framework.DependencyResolver.AnalizeFields(System.Type,System.Lazy{System.Collections.Generic.List{System.Reflection.FieldInfo}}@,System.Lazy{System.Collections.Generic.Dictionary{System.Reflection.FieldInfo,WaveEngine.Framework.RequiredComponent}}@)">
+            <summary>
+            Analize fields of the type
+            </summary>
+            <param name="type">The type.</param>
+            <param name="serviceFields">The field with requiredService.</param>
+            <param name="componentFields">The field with requiredComponent.</param>
+        </member>
+        <member name="M:WaveEngine.Framework.DependencyResolver.AnalizeProperties(System.Type,System.Lazy{System.Collections.Generic.List{System.Reflection.PropertyInfo}}@,System.Lazy{System.Collections.Generic.Dictionary{System.Reflection.PropertyInfo,WaveEngine.Framework.RequiredComponent}}@)">
+            <summary>
+            Analize properties of the type.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="serviceProperties">The properties with requiredService.</param>
+            <param name="componentProperties">The properties with requiredComponent.</param>
+        </member>
+        <member name="M:WaveEngine.Framework.DependencyResolver.SetDependencyService(WaveEngine.Framework.Component,System.Type,System.Action{System.Object})">
+            <summary>
+            Sets the dependency member.
+            </summary>
+            <param name="component">The component.</param>
+            <param name="service">The service type.</param>
+            <param name="action">The action.</param>
+        </member>
+        <member name="M:WaveEngine.Framework.DependencyResolver.SetDependencyComponent(WaveEngine.Framework.Component,System.Collections.Generic.IEnumerable{System.Object},System.Type,System.Action{System.Object})">
+            <summary>
+            Sets the dependency member.
+            </summary>
+            <param name="component">The component.</param>
+            <param name="attributes">The attributes.</param>
+            <param name="type">The type.</param>
+            <param name="action">The action.</param>
+        </member>
+        <member name="M:WaveEngine.Framework.DependencyResolver.PrintError(System.Type,WaveEngine.Framework.Component)">
+            <summary>
+            Print a debug error
+            </summary>
+            <param name="type">The type.</param>
+            <param name="component">The component.</param>
+        </member>
+        <member name="T:WaveEngine.Framework.Diagnostic.CallCounter">
+            <summary>
+            This class represent a call counter diagnostic component useful to count how many times a method is called.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.Diagnostic.CallCounter.counters">
+            <summary>
+            All the register counters.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Framework.Diagnostic.CallCounter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Framework.Diagnostic.CallCounter" /> class.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Framework.Diagnostic.CallCounter.Draw(WaveEngine.Framework.Graphics.SpriteBatch,System.TimeSpan)">
+            <summary>
+            Draws the specified sprite batch.
+            </summary>
+            <param name="spriteBatch">The sprite batch.</param>
+            <param name="gameTime">The elapsed game time.</param>
+        </member>
+        <member name="M:WaveEngine.Framework.Diagnostic.CallCounter.Count(System.String)">
+            <summary>
+            Call counter method.
+            </summary>
+            <param name="name">The name.</param>
+        </member>
         <member name="T:WaveEngine.Framework.Diagnostic.DiagnosticComponent">
             <summary>
             This class represent the base implamentation for a diagnostic component.
@@ -2230,11 +2268,10 @@
             The background color
             </summary>
         </member>
-        <member name="M:WaveEngine.Framework.Diagnostic.DiagnosticComponent.#ctor(WaveEngine.Framework.Services.GraphicsDevice)">
+        <member name="M:WaveEngine.Framework.Diagnostic.DiagnosticComponent.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:WaveEngine.Framework.Diagnostic.DiagnosticComponent" /> class.
             </summary>
-            <param name="graphics">The graphics.</param>
         </member>
         <member name="M:WaveEngine.Framework.Diagnostic.DiagnosticComponent.Update(System.TimeSpan)">
             <summary>
@@ -2285,11 +2322,10 @@
             The elapsed time
             </summary>
         </member>
-        <member name="M:WaveEngine.Framework.Diagnostic.FpsCounter.#ctor(WaveEngine.Framework.Services.GraphicsDevice)">
+        <member name="M:WaveEngine.Framework.Diagnostic.FpsCounter.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:WaveEngine.Framework.Diagnostic.FpsCounter" /> class.
             </summary>
-            <param name="graphics">The graphics.</param>
         </member>
         <member name="M:WaveEngine.Framework.Diagnostic.FpsCounter.Update(System.TimeSpan)">
             <summary>
@@ -2319,11 +2355,10 @@
             The labels
             </summary>
         </member>
-        <member name="M:WaveEngine.Framework.Diagnostic.Labels.#ctor(WaveEngine.Framework.Services.GraphicsDevice)">
+        <member name="M:WaveEngine.Framework.Diagnostic.Labels.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:WaveEngine.Framework.Diagnostic.Labels" /> class.
             </summary>
-            <param name="graphics">The graphics.</param>
         </member>
         <member name="M:WaveEngine.Framework.Diagnostic.Labels.Draw(WaveEngine.Framework.Graphics.SpriteBatch,System.TimeSpan)">
             <summary>
@@ -2369,12 +2404,10 @@
             The amount of items taken into account for averaging.
             </summary>
         </member>
-        <member name="M:WaveEngine.Framework.Diagnostic.Timers.#ctor(WaveEngine.Framework.Services.GraphicsDevice)">
+        <member name="M:WaveEngine.Framework.Diagnostic.Timers.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:WaveEngine.Framework.Diagnostic.Timers" /> class.
             </summary>
-            <param name="graphics">The graphics.</param>
-            <exception cref="T:System.ArgumentNullException">Platform is null.</exception>
         </member>
         <member name="M:WaveEngine.Framework.Diagnostic.Timers.Draw(WaveEngine.Framework.Graphics.SpriteBatch,System.TimeSpan)">
             <summary>
@@ -2383,9 +2416,16 @@
             <param name="spriteBatch">The sprite batch.</param>
             <param name="gameTime">The game time.</param>
         </member>
-        <member name="M:WaveEngine.Framework.Diagnostic.Timers.BeginTimer(System.String)">
+        <member name="M:WaveEngine.Framework.Diagnostic.Timers.BeginTimer(System.String,System.Boolean)">
             <summary>
             Begins the timer.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="reset">The reset flag. true by default.</param>
+        </member>
+        <member name="M:WaveEngine.Framework.Diagnostic.Timers.EndTimer(System.String)">
+            <summary>
+            Ends the timer.
             </summary>
             <param name="name">The name.</param>
         </member>
@@ -2395,9 +2435,9 @@
             </summary>
             <param name="name">The name.</param>
         </member>
-        <member name="M:WaveEngine.Framework.Diagnostic.Timers.EndTimer(System.String)">
+        <member name="M:WaveEngine.Framework.Diagnostic.Timers.EndAveragedTimer(System.String)">
             <summary>
-            Ends the timer.
+            Ends the averaged timer.
             </summary>
             <param name="name">The name.</param>
         </member>
@@ -2405,12 +2445,6 @@
             <summary>
             Clear all timers and averages timers.
             </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Diagnostic.Timers.EndAveragedTimer(System.String)">
-            <summary>
-            Ends the averaged timer.
-            </summary>
-            <param name="name">The name.</param>
         </member>
         <member name="M:WaveEngine.Framework.Diagnostic.Timers.Initialize">
             <summary>
@@ -2575,19 +2609,24 @@
             The separator char used in EntityPath property
             </summary>
         </member>
+        <member name="F:WaveEngine.Framework.Entity.PathSelf">
+            <summary>
+            The separator string
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.Entity.PathParent">
+            <summary>
+            The separator string
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.Entity.PathSeparatorString">
+            <summary>
+            The separator string
+            </summary>
+        </member>
         <member name="F:WaveEngine.Framework.Entity.instances">
             <summary>
             Number of instances created.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Entity.spreadVisibleProperty">
-            <summary>
-            Whether visibility of the children <see cref="T:WaveEngine.Framework.Entity"/> depends on visibility of this instance.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Entity.spreadEnabledProperty">
-            <summary>
-            Whether enable of the children <see cref="T:WaveEngine.Framework.Entity"/> depends on Enable property of this instance.
             </summary>
         </member>
         <member name="F:WaveEngine.Framework.Entity.parent">
@@ -2595,9 +2634,9 @@
             Parent <see cref="T:WaveEngine.Framework.Entity"/> of this instance.
             </summary>
         </member>
-        <member name="F:WaveEngine.Framework.Entity.isActive">
+        <member name="F:WaveEngine.Framework.Entity.isDisabled">
             <summary>
-            Whether this instance is active.
+            Whether this instance is disabled.
             </summary>
         </member>
         <member name="F:WaveEngine.Framework.Entity.isVisible">
@@ -2608,6 +2647,16 @@
         <member name="F:WaveEngine.Framework.Entity.isStatic">
             <summary>
             Whether this instance is static.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.Entity.isHierarchyVisible">
+            <summary>
+            Whether this instance is visible and its hierarchy
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.Entity.isHierarchyActive">
+            <summary>
+            Whether this instance is active and its hierarchy
             </summary>
         </member>
         <member name="F:WaveEngine.Framework.Entity.isInitialized">
@@ -2715,6 +2764,22 @@
                 <c>true</c> if this instance is visible; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="P:WaveEngine.Framework.Entity.IsHierarchyVisible">
+            <summary>
+            Gets a value indicating whether this instance and its entire hierarchy is visible .
+            </summary>
+            <value>
+                <c>true</c> if this instance is visible; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WaveEngine.Framework.Entity.IsHierarchyActive">
+            <summary>
+            Gets a value indicating whether this instance and its entire hierarchy is active.
+            </summary>
+            <value>
+                <c>true</c> if this instance is active; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="P:WaveEngine.Framework.Entity.Enabled">
             <summary>
             Gets or sets a value indicating whether this <see cref="T:WaveEngine.Framework.Entity" /> is enabled.
@@ -2740,22 +2805,6 @@
               <c>true</c> if this instance is static; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:WaveEngine.Framework.Entity.SpreadVisibleProperty">
-            <summary>
-            Gets or sets a value indicating whether the visibility of this instance determines the visibility of its children <see cref="T:WaveEngine.Framework.Entity"/>.
-            </summary>
-            <value>
-                <c>true</c> if visibility of the children <see cref="T:WaveEngine.Framework.Entity"/> depends on visibility of this instance; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="P:WaveEngine.Framework.Entity.SpreadEnableProperty">
-            <summary>
-            Gets or sets a value indicating whether the Enabled property of this instance determines the Enabled property of its children <see cref="T:WaveEngine.Framework.Entity"/>.
-            </summary>
-            <value>
-                <c>true</c> if Enabled property of the children <see cref="T:WaveEngine.Framework.Entity"/> depends on Enabled property of this instance; otherwise, <c>false</c>.
-            </value>
-        </member>
         <member name="P:WaveEngine.Framework.Entity.Components">
             <summary>
             Gets the <see cref="T:WaveEngine.Framework.Component"/> collection of this instance.
@@ -2771,7 +2820,7 @@
             Gets the children <see cref="T:WaveEngine.Framework.Entity"/> of this instance.
             </summary>
         </member>
-        <member name="P:WaveEngine.Framework.Entity.NumChildrens">
+        <member name="P:WaveEngine.Framework.Entity.NumChildren">
             <summary>
             Gets the number of children <see cref="T:WaveEngine.Framework.Entity"/> actually contained in this instance.
             </summary>
@@ -2912,6 +2961,13 @@
             <exception cref="T:System.InvalidOperationException">
             If there already was a <see cref="T:WaveEngine.Framework.Component"/> of the same type as component added to this instance.
             </exception>
+        </member>
+        <member name="M:WaveEngine.Framework.Entity.Find(System.String)">
+            <summary>
+            Gets an entity from a path (relative or not)
+            </summary>
+            <param name="entityPath">The path to the entity</param>
+            <returns>The entity of the path</returns>
         </member>
         <member name="M:WaveEngine.Framework.Entity.RemoveComponent``1">
             <summary>
@@ -3079,6 +3135,30 @@
             </returns>
             <exception cref="T:System.ObjectDisposedException">Entity has been disposed.</exception>
         </member>
+        <member name="M:WaveEngine.Framework.Entity.FindComponentsInChildren``1(System.Boolean)">
+            <summary>
+            Finds a <see cref="T:WaveEngine.Framework.Component" /> list in this instance with an exact type.
+            </summary>
+            <typeparam name="T">The type.</typeparam>
+            <param name="isExactType">if set to <c>true</c> [is exact type].</param>
+            <returns>
+            The <see cref="T:WaveEngine.Framework.Component" /> or null if no <see cref="T:WaveEngine.Framework.Component" /> with the exact searched type was found.
+            </returns>
+            <exception cref="T:System.ObjectDisposedException">Entity has been disposed.</exception>
+        </member>
+        <member name="M:WaveEngine.Framework.Entity.IsValidName(System.String)">
+            <summary>
+            Check an entity name
+            </summary>
+            <param name="name">The entity name</param>
+            <returns>If it's valid or not</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.Entity.RefreshEntityPointer(WaveEngine.Framework.Models.Entities.EntityPointer)">
+            <summary>
+            Refreshes the entity pointers
+            </summary>
+            <param name="entityPointer">The entity pointer</param>
+        </member>
         <member name="M:WaveEngine.Framework.Entity.OnNameChanged(System.Object,WaveEngine.Framework.Helpers.NameEventArgs)">
             <summary>
             Raises when the entity name is changed.
@@ -3107,6 +3187,11 @@
             <returns>
             The cloned instance.
             </returns>
+        </member>
+        <member name="M:WaveEngine.Framework.Entity.RefreshVisibility">
+            <summary>
+            Refresh the visibility
+            </summary>
         </member>
         <member name="M:WaveEngine.Framework.Entity.Dispose(System.Boolean)">
             <summary>
@@ -5532,6 +5617,11 @@
             Sets default values
             </summary>
         </member>
+        <member name="M:WaveEngine.Framework.Graphics.DirectionalLightProperties.Initialize">
+            <summary>
+            Initialize this component
+            </summary>
+        </member>
         <member name="M:WaveEngine.Framework.Graphics.DirectionalLightProperties.CameraFrustumIntersection(WaveEngine.Framework.Graphics.Camera)">
             <summary>
             Check if the current light is inside the camera frustum.
@@ -5822,6 +5912,16 @@
             <summary>
             Number of instances of this component created.
             </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.Graphics.LightProperties.isLightDisabled">
+            <summary>
+            The light is disabled
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Framework.Graphics.LightProperties.IsLightEnabled">
+            <summary>
+            Gets or sets a value indicating whether the light is enabled
+            </summary>        
         </member>
         <member name="P:WaveEngine.Framework.Graphics.LightProperties.Intensity">
             <summary>
@@ -8118,14 +8218,6 @@
             The sampler mode.
             </value>
         </member>
-        <member name="P:WaveEngine.Framework.Graphics.RenderState.ScissorTestEnabled">
-            <summary>
-            Gets or sets a value indicating whether scissor test is enabled.
-            </summary>
-            <value>
-              <c>true</c> if scissor test is enabled; otherwise, <c>false</c>.
-            </value>
-        </member>
         <member name="P:WaveEngine.Framework.Graphics.RenderState.ScissorRectangle">
             <summary>
             Gets or sets the scissor rectangle.
@@ -9260,6 +9352,12 @@
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             </summary>
         </member>
+        <member name="M:WaveEngine.Framework.Graphics.SpriteBatch.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
         <member name="M:WaveEngine.Framework.Graphics.SpriteBatch.RefreshMesh(System.Int32)">
             <summary>
             Refresh the mesh to the number of sprites
@@ -9304,11 +9402,16 @@
             <param name="startOffset">The start offset.</param>
             <param name="count">The count.</param>
         </member>
-        <member name="M:WaveEngine.Framework.Graphics.SpriteBatch.Dispose(System.Boolean)">
+        <member name="M:WaveEngine.Framework.Graphics.SpriteBatch.AddBatchSplits">
             <summary>
-            Releases unmanaged and - optionally - managed resources
+            Add sprites to split batches
             </summary>
-            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:WaveEngine.Framework.Graphics.SpriteBatch.CheckSpriteQueueCapacity(System.Int32)">
+            <summary>
+            Checks the sprite queue size
+            </summary>
+            <param name="requiredSize">The required size</param>
         </member>
         <member name="M:WaveEngine.Framework.Graphics.SpriteBatch.InternalDrawString(System.String,WaveEngine.Framework.Graphics.SpriteFont,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Graphics.Color,System.Single,WaveEngine.Common.Math.Vector2,WaveEngine.Common.Math.Vector2@,WaveEngine.Common.Graphics.SpriteEffects,System.Single,WaveEngine.Common.Graphics.AddressMode)">
             <summary>
@@ -10799,6 +10902,42 @@
             <param name="y">Drawable B</param>
             <returns>Value comparing zorder between A and B</returns>
         </member>
+        <member name="T:WaveEngine.Framework.Helpers.EntityPathHelper">
+            <summary>
+            Set of entity path utils
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Framework.Helpers.EntityPathHelper.PathFromEntity(WaveEngine.Framework.Entity)">
+            <summary>
+            Gets the (absolute) entity path of a desired entity
+            </summary>
+            <param name="entity">The entity</param>
+            <returns>The path</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.Helpers.EntityPathHelper.RelativePathFromEntity(WaveEngine.Framework.Entity,WaveEngine.Framework.Entity)">
+            <summary>
+            Gets the relative path from the source entity to the target entity
+            </summary>
+            <param name="target">The target entity</param>
+            <param name="source">The source entity</param>
+            <returns>The relative path.</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.Helpers.EntityPathHelper.BreadcrumbsFromEntity(WaveEngine.Framework.Entity)">
+            <summary>
+            Gets the breadcrumbs of an entity.
+            </summary>
+            <param name="entity">The entity</param>
+            <returns>A list of the entities from the source to its root</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.Helpers.EntityPathHelper.EntityFromPath(System.String,WaveEngine.Framework.Entity,WaveEngine.Framework.Scene)">
+            <summary>
+            Gets an entity from a path (relative or not)
+            </summary>
+            <param name="path">The path to the entity</param>
+            <param name="source">The source entity of the relative path</param>
+            <param name="scene">The scene</param>
+            <returns>The entity of the path</returns>
+        </member>
         <member name="T:WaveEngine.Framework.Helpers.NameEventArgs">
             <summary>
             Event arguments to Name Changed
@@ -11069,15 +11208,50 @@
             <exception cref="T:System.ObjectDisposedException">Object disposed.</exception>
             <exception cref="T:System.ArgumentNullException">If decorator is null.</exception>
         </member>
-        <member name="M:WaveEngine.Framework.Managers.EntityManager.Find(System.String)">
+        <member name="M:WaveEngine.Framework.Managers.EntityManager.Find(System.String,WaveEngine.Framework.Entity)">
             <summary>
             Looks for an <see cref="T:WaveEngine.Framework.Entity"/> or <see cref="T:WaveEngine.Framework.BaseDecorator"/> entity 
             in the <see pref="EntityGraph"/>, through its name.
             </summary>
             <param name="name">Name of the entity to look for.</param>
+            <param name="sourceEntity">The source entity for a relative path</param>
             <returns>The <see cref="T:WaveEngine.Framework.Entity"/> with the specified <paramref name="name"/>, 
             or null if no entity was found.</returns>
             <exception cref="T:System.ArgumentNullException">If name is null or empty.</exception>
+        </member>
+        <member name="M:WaveEngine.Framework.Managers.EntityManager.FindFirstComponentOfType``1(System.Boolean)">
+            <summary>
+            Iterate through the entire entity hierarchy and return the first component instance of the specified type
+            </summary>
+            <remarks>This method is extremely low, try to not use inside an Update method.</remarks>
+            <param name="isExactType">Name of the entity to look for.</param>
+            <typeparam name="T">The component type</typeparam>
+            <returns>The component</returns>        
+        </member>
+        <member name="M:WaveEngine.Framework.Managers.EntityManager.FindComponentsOfType``1(System.Boolean)">
+            <summary>
+            Iterate through the entire entity hierarchy and return all component instances of the specified type
+            </summary>
+            <remarks>This method is extremely low, try to not use inside an Update method.</remarks>
+            <param name="isExactType">Name of the entity to look for.</param>
+            <typeparam name="T">The component type</typeparam>
+            <returns>The component enumerable</returns>        
+        </member>
+        <member name="M:WaveEngine.Framework.Managers.EntityManager.FindComponentFromEntityPath``1(System.String)">
+            <summary>
+            Return the first component inside an entity 
+            </summary>
+            <typeparam name="T">Component Type</typeparam>
+            <param name="entityPath">Entity Path</param>
+            <returns>Component inside of entity</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.Managers.EntityManager.FindComponentsFromEntityPath``1(System.String)">
+            <summary>
+            Return the components inside an entity 
+            </summary>
+            <typeparam name="T">Component Type</typeparam>
+            <param name="entityPath">Entity Path</param>
+            <returns>Components collection</returns>
         </member>
         <member name="M:WaveEngine.Framework.Managers.EntityManager.Find``1(System.String)">
             <summary>
@@ -12172,6 +12346,11 @@
             Gets or sets Material Thumbnail
             </summary>
         </member>
+        <member name="P:WaveEngine.Framework.Models.AssetModel.AsRaw">
+            <summary>
+            Gets or sets a value indicating whether asset export as raw or not.
+            </summary>
+        </member>
         <member name="M:WaveEngine.Framework.Models.AssetModel.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:WaveEngine.Framework.Models.AssetModel"/> class.
@@ -12372,6 +12551,11 @@
             The component
             </summary>
         </member>
+        <member name="P:WaveEngine.Framework.Models.Assets.PrefabModel.EntityPointers">
+            <summary>
+            Gets or sets the entity links
+            </summary>
+        </member>
         <member name="F:WaveEngine.Framework.Models.Assets.PrefabModel.jsonEntityCopy">
             <summary>
             Json Entity Copy
@@ -12382,6 +12566,12 @@
             Instantiate method
             </summary>
             <returns>Prefab instance copy</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.Models.Assets.PrefabModel.RefreshEntityPointers(WaveEngine.Framework.Entity)">
+            <summary>
+            Refreshes the entity pointers
+            </summary>
+            <param name="entity">The entity</param>
         </member>
         <member name="T:WaveEngine.Framework.Models.Assets.SoundModel">
             <summary>
@@ -12610,7 +12800,7 @@
             Default profiles by platform
             </summary>
         </member>
-        <member name="F:WaveEngine.Framework.Models.DefaultPlatformProfile.platforms">
+        <member name="F:WaveEngine.Framework.Models.DefaultPlatformProfile.profiles">
             <summary>
             The platforms
             </summary>
@@ -12620,19 +12810,36 @@
             Initializes static members of the <see cref="T:WaveEngine.Framework.Models.DefaultPlatformProfile" /> class.
             </summary>
         </member>
-        <member name="M:WaveEngine.Framework.Models.DefaultPlatformProfile.RegisterPlatform(WaveEngine.Common.PlatformType,WaveEngine.Common.Graphics.PixelFormat,WaveEngine.Common.Graphics.PixelFormat)">
+        <member name="M:WaveEngine.Framework.Models.DefaultPlatformProfile.RegisterPlatform(WaveEngine.Common.PlatformType,WaveEngine.Common.Graphics.PixelFormat,WaveEngine.Common.Graphics.PixelFormat,System.String,System.String)">
             <summary>
             Registers the platform.
             </summary>
             <param name="platform">The platform.</param>
             <param name="alphaCompressed">Alpha Pixel format</param>
             <param name="nonAlphaCompressed">Non alpha Pixel format</param>
+            <param name="launcherType">The default launcher type</param>
+            <param name="defaultName">The default profile name</param>
         </member>
         <member name="M:WaveEngine.Framework.Models.DefaultPlatformProfile.GetDefaultPlatformProfile(WaveEngine.Common.PlatformType)">
             <summary>
             Gets the platform information.
             </summary>
             <param name="platform">The platform.</param>
+            <returns>Default profile model</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.Models.DefaultPlatformProfile.GetPlatformProfile(WaveEngine.Common.PlatformType,System.String)">
+            <summary>
+            Gets the platform information.
+            </summary>
+            <param name="platform">The platform.</param>
+            <param name="launcherType">The launcher type</param>
+            <returns>Default profile model</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.Models.DefaultPlatformProfile.GetPlatformLaunchers(WaveEngine.Common.PlatformType)">
+            <summary>
+            Gets the platform launchers.
+            </summary>
+            <param name="platform">The platform.</param>        
             <returns>Default profile model</returns>
         </member>
         <member name="T:WaveEngine.Framework.Models.Entities.BaseEntityModel">
@@ -12650,9 +12857,9 @@
             The entity name
             </summary>
         </member>
-        <member name="F:WaveEngine.Framework.Models.Entities.BaseEntityModel.isActive">
+        <member name="F:WaveEngine.Framework.Models.Entities.BaseEntityModel.isDisabled">
             <summary>
-            If the entity is active
+            If the entity is disabled
             </summary>
         </member>
         <member name="F:WaveEngine.Framework.Models.Entities.BaseEntityModel.isVisible">
@@ -12766,12 +12973,6 @@
             Refresh method
             </summary>
         </member>
-        <member name="M:WaveEngine.Framework.Models.Entities.BaseEntityModel.RemoveComponent(System.Type)">
-            <summary>
-            Remove Component
-            </summary>
-            <param name="componentType">The component</param>
-        </member>
         <member name="M:WaveEngine.Framework.Models.Entities.BaseEntityModel.RemoveComponent(WaveEngine.Framework.Component)">
             <summary>
             Remove Component
@@ -12814,13 +13015,22 @@
             <param name="relativePath">relative child path</param>
             <returns>base entity model</returns>
         </member>
-        <member name="M:WaveEngine.Framework.Models.Entities.BaseEntityModel.SetPropertyByPath(System.String,System.Object)">
+        <member name="M:WaveEngine.Framework.Models.Entities.BaseEntityModel.SetMemberByPath(System.String,System.Object)">
             <summary>
             Set property value by Property Path
             </summary>
             <param name="propertyPath">The propertyPath</param>
             <param name="value">New property value</param>
             <returns>Property info</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.Models.Entities.BaseEntityModel.GetMemberFromComponent(System.Object,System.String,WaveEngine.Framework.Component)">
+            <summary>
+            Gets the member of a component from its name and value type.
+            </summary>
+            <param name="value">The member value</param>
+            <param name="memberName">The member name</param>
+            <param name="component">Th component</param>
+            <returns>The member</returns>
         </member>
         <member name="T:WaveEngine.Framework.Models.Entities.EntityModel">
             <summary>
@@ -12856,6 +13066,31 @@
         <member name="M:WaveEngine.Framework.Models.Entities.EntityModel.RecreateEntity">
             <summary>
             Recreates the underlying entity
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Framework.Models.Entities.EntityPointer">
+            <summary>
+            The entity pointer struct
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.Models.Entities.EntityPointer.SourcePath">
+            <summary>
+            The entity source path
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.Models.Entities.EntityPointer.ComponentIndex">
+            <summary>
+            The entity's component index
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.Models.Entities.EntityPointer.Property">
+            <summary>
+            The property's name
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.Models.Entities.EntityPointer.PointerPath">
+            <summary>
+            The link path
             </summary>
         </member>
         <member name="T:WaveEngine.Framework.Models.Entities.PrefabInstanceModel">
@@ -12935,6 +13170,11 @@
             Initializes a new instance of the <see cref="T:WaveEngine.Framework.Models.Entities.PrefabInstanceModel"/> class.
             </summary>        
         </member>
+        <member name="P:WaveEngine.Framework.Models.Entities.PrefabInstanceModel.SourceEntityModel">
+            <summary>
+            Gets the source entity of the prefab instance
+            </summary>
+        </member>
         <member name="M:WaveEngine.Framework.Models.Entities.PrefabInstanceModel.#ctor(WaveEngine.Framework.Models.Entities.BaseEntityModel,System.String,System.String,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:WaveEngine.Framework.Models.Entities.PrefabInstanceModel"/> class.
@@ -12965,19 +13205,55 @@
             </summary>
             <param name="c">new component</param>
         </member>
-        <member name="M:WaveEngine.Framework.Models.Entities.PrefabInstanceModel.RemoveComponent(System.Type)">
+        <member name="M:WaveEngine.Framework.Models.Entities.PrefabInstanceModel.RemoveComponent(WaveEngine.Framework.Component)">
             <summary>
             Remove component
             </summary>
-            <param name="componentType">component type</param>
+            <param name="component">The component to remove</param>
         </member>
-        <member name="M:WaveEngine.Framework.Models.Entities.PrefabInstanceModel.SetComponentProperty(WaveEngine.Framework.Component,System.String,System.Object)">
+        <member name="M:WaveEngine.Framework.Models.Entities.PrefabInstanceModel.SetComponentProperty(WaveEngine.Framework.Component,System.Int32,System.String,System.Object)">
             <summary>
             Sets a property of the prefabinstance
             </summary>
             <param name="component">The component</param>
+            <param name="index">The component index</param>
             <param name="propertyName">The property name</param>
             <param name="value">The value</param>
+        </member>
+        <member name="M:WaveEngine.Framework.Models.Entities.PrefabInstanceModel.OnSerializing(System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Called when serializing the prefab instance model.
+            </summary>
+            <param name="context">The streaming context</param>
+        </member>
+        <member name="M:WaveEngine.Framework.Models.Entities.PrefabInstanceModel.ParseComponentString(System.Collections.Generic.Dictionary{System.String,System.Type},System.String,System.Type@,System.Int32@)">
+            <summary>
+            Parses the component string and extracs its elements
+            </summary>
+            <param name="componentTypes">The component types</param>
+            <param name="componentString">The component string</param>
+            <param name="componentType">The component type</param>
+            <param name="index">The index</param>
+        </member>
+        <member name="M:WaveEngine.Framework.Models.Entities.PrefabInstanceModel.CheckInstanceChanges">
+            <summary>
+            Checks the changes of the prefab instance respect the source and stores it.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Framework.Models.Entities.PrefabInstanceModel.CheckComponentChanges(WaveEngine.Framework.Component,WaveEngine.Framework.Component,System.Int32)">
+            <summary>
+            Checks the component changes
+            </summary>
+            <param name="component">The component</param>
+            <param name="sourceComponent">The source component from the prefab asset</param>
+            <param name="index">The component index</param>
+        </member>
+        <member name="M:WaveEngine.Framework.Models.Entities.PrefabInstanceModel.GetComponentsDictionary(System.Collections.Generic.IEnumerable{WaveEngine.Framework.Component})">
+            <summary>
+            Gets the component dictionary
+            </summary>
+            <param name="components">The component</param>
+            <returns>A dictionary with type key and a list of components</returns>
         </member>
         <member name="M:WaveEngine.Framework.Models.Entities.PrefabInstanceModel.Reset">
             <summary>
@@ -13013,6 +13289,16 @@
             </summary>
             <returns>The cloned instance.</returns>
         </member>
+        <member name="T:WaveEngine.Framework.Models.IPointersContainer">
+            <summary>
+            Interface containing pointers
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Framework.Models.IPointersContainer.EntityPointers">
+            <summary>
+            Gets or sets the Entity pointers
+            </summary>
+        </member>
         <member name="T:WaveEngine.Framework.Models.MaterialModel">
             <summary>
             Material model class
@@ -13044,16 +13330,6 @@
             Profile element class
             </summary>    
         </member>
-        <member name="F:WaveEngine.Framework.Models.ProfileModel.launcherTypes">
-            <summary>
-            launcher types
-            </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Models.ProfileModel.#cctor">
-            <summary>
-            Initializes static members of the <see cref="T:WaveEngine.Framework.Models.ProfileModel" /> class.
-            </summary>
-        </member>
         <member name="P:WaveEngine.Framework.Models.ProfileModel.Name">
             <summary>
             Gets or sets the name.
@@ -13078,13 +13354,6 @@
             <summary>
             Gets or sets non alpha compresion format
             </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Models.ProfileModel.GetPlatformLaunchers(WaveEngine.Common.PlatformType)">
-            <summary>
-            Gets the platform launchers
-            </summary>
-            <param name="platformType">The platform type</param>
-            <returns>The launchers</returns>
         </member>
         <member name="T:WaveEngine.Framework.Models.Profiles.AnimatedProfileModel">
             <summary>
@@ -13384,6 +13653,11 @@
             The entities
             </summary>
         </member>
+        <member name="P:WaveEngine.Framework.Models.SceneModel.EntityPointers">
+            <summary>
+            Gets or sets the list of entities links
+            </summary>
+        </member>
         <member name="F:WaveEngine.Framework.Models.SceneModel.Settings">
             <summary>
             The scene settings
@@ -13404,6 +13678,16 @@
             Return a copy of SceneModel
             </summary>
             <returns>SceneModel copied</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.Models.SceneModel.SavePointers">
+            <summary>
+            Refreshes the entity pointers
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Framework.Models.SceneModel.LoadPointers">
+            <summary>
+            Load the object pointers
+            </summary>
         </member>
         <member name="T:WaveEngine.Framework.Models.Settings.Categories.PhysicCategory">
             <summary>
@@ -14146,6 +14430,99 @@
             The end collision event
             </summary>
             <param name="contact">The contact info</param>
+        </member>
+        <member name="T:WaveEngine.Framework.Physics2D.EdgeCollider2D">
+            <summary>
+            The Edge Collider is a wire-shaped collision primitive.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.Physics2D.EdgeCollider2D.instances">
+            <summary>
+            Total number of instances.
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.Physics2D.EdgeCollider2D.edgeColliderShape">
+            <summary>
+            The edge collider
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.Physics2D.EdgeCollider2D.vertices">
+            <summary>
+            The vertices list
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Framework.Physics2D.EdgeCollider2D.Vertices">
+            <summary>
+            Gets or setsthe vertex list
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Framework.Physics2D.EdgeCollider2D.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WaveEngine.Framework.Physics2D.EdgeCollider2D" /> class.
+            By default, the size is set to 1x1 pxs, the debug line color to orange and
+            the origin to zero (top-left corner).
+            NOTE: both size and origin will later be taken from the associated 
+            <see cref="T:WaveEngine.Framework.Graphics.Transform2D"/>.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Framework.Physics2D.EdgeCollider2D.DefaultValues">
+            <summary>
+            Sets the default values
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Framework.Physics2D.EdgeCollider2D.Initialize">
+            <summary>
+            Initializes the instance
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Framework.Physics2D.EdgeCollider2D.DrawDebugLines(WaveEngine.Framework.Graphics.LineBatch2D)">
+            <summary>
+            Draws the debug lines.
+            </summary>
+            <param name="lineBatch">The line batch.</param>
+            <exception cref="T:System.ArgumentNullException">lineBatch2D cannot be null.</exception>
+        </member>
+        <member name="M:WaveEngine.Framework.Physics2D.EdgeCollider2D.GetAABBInScreenSpace(WaveEngine.Framework.Graphics.Camera2D)">
+            <summary>
+            Gets the collider rectangle in screen space
+            </summary>
+            <param name="camera">The camera.</param>
+            <returns>The aabb</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.Physics2D.EdgeCollider2D.GetAABBInScreenSpace">
+            <summary>
+            Gets the collider rectangle in screen space
+            </summary>
+            <returns>The aabb</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.Physics2D.EdgeCollider2D.CreateColliderShape2D">
+            <summary>
+            Create collider shape 2D
+            </summary>
+            <returns>The edge collider shape</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.Physics2D.EdgeCollider2D.RefreshColliderShape">
+            <summary>
+            Refresh the collider shape
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Framework.Physics2D.EdgeCollider2D.RefreshColliderShapeFromVertexList">
+            <summary>
+            Refresh the collider shape
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Framework.Physics2D.PolygonShapeData">
+            <summary>
+            Polygon Shape Data
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Framework.Physics2D.PolygonShapeData.Vertices">
+            <summary>
+            Gets or sets the vertices.
+            </summary>
+            <value>
+            The vertices.
+            </value>
         </member>
         <member name="T:WaveEngine.Framework.Physics2D.WheelJoint2D">
             <summary>
@@ -15286,11 +15663,6 @@
         <member name="F:WaveEngine.Framework.Physics2D.RigidBody2D.instances">
             <summary>
             Total number of instances.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Physics2D.RigidBody2D.bodyType">
-            <summary>
-            Body type
             </summary>
         </member>
         <member name="F:WaveEngine.Framework.Physics2D.RigidBody2D.Transform2D">
@@ -18074,6 +18446,12 @@
             </summary>
             <param name="path">Path of the scene file.</param>
         </member>
+        <member name="M:WaveEngine.Framework.Scene.RefreshEntityPointers(System.Collections.Generic.List{WaveEngine.Framework.Models.Entities.EntityPointer})">
+            <summary>
+            Refreshes the entiti links
+            </summary>
+            <param name="entityLinks">The entity link list</param>
+        </member>
         <member name="M:WaveEngine.Framework.Scene.CreateScene">
             <summary>
             Creates the scene.
@@ -18213,6 +18591,84 @@
             </summary>
             <param name="ex">The exception to capture</param>
             <returns>True if the exception need to be rethrown</returns>
+        </member>
+        <member name="T:WaveEngine.Framework.SerializationType">
+            <summary>
+            Serialization Type enum
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.SerializationType.DATACONTRACT">
+            <summary>
+            Data Contract
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.SerializationType.XML">
+            <summary>
+            The XML
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.SerializationType.JSON">
+            <summary>
+            Json Serialization
+            </summary>
+        </member>
+        <member name="F:WaveEngine.Framework.SerializationType.PROTOBUF">
+            <summary>
+            Protobuf Serialization
+            </summary>
+        </member>
+        <member name="T:WaveEngine.Framework.SerializerFactory">
+            <summary>
+            Serializer Factory
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Framework.SerializerFactory.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:WaveEngine.Framework.SerializerFactory"/> class.
+            </summary>
+        </member>
+        <member name="P:WaveEngine.Framework.SerializerFactory.DefaultSerializationType">
+            <summary>
+            Gets or sets the type of the default serializer.
+            </summary>
+            <value>
+            The type of the default serializer.
+            </value>
+        </member>
+        <member name="M:WaveEngine.Framework.SerializerFactory.GetSerializer``1">
+            <summary>
+            Gets the serializer.
+            </summary>
+            <typeparam name="T">Generic type</typeparam>
+            <returns>ISerializer instance</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.SerializerFactory.GetSerializer``1(WaveEngine.Framework.SerializationType)">
+            <summary>
+            Gets the serializer.
+            </summary>
+            <typeparam name="T">Generic type</typeparam>
+            <param name="serializationType">Serialization type.</param>
+            <returns>ISerializer instance</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.SerializerFactory.GetSerializer(System.Type)">
+            <summary>
+            Gets the serializer.
+            </summary>
+            <param name="type">The type of the serializer</param>
+            <returns>ISerializer instance</returns>
+        </member>
+        <member name="M:WaveEngine.Framework.SerializerFactory.CleanAllCaches">
+            <summary>
+            Clean all dictionaries cache.
+            </summary>
+        </member>
+        <member name="M:WaveEngine.Framework.SerializerFactory.GetSerializer(System.Type,WaveEngine.Framework.SerializationType)">
+            <summary>
+            Gets the serializer.
+            </summary>
+            <param name="type">Serializer type.</param>
+            <param name="serializationType">Serialization type.</param>
+            <returns>ISerializer instance</returns>
         </member>
         <member name="T:WaveEngine.Framework.Services.Accelerometer">
             <summary>
@@ -18709,22 +19165,15 @@
             The occluded
             </summary>
         </member>
-        <member name="F:WaveEngine.Framework.Services.Diagnostics.graphicsDevice">
-            <summary>
-            The specific <see cref="T:WaveEngine.Common.Graphics.IGraphics"/> that the application is using.
-            </summary>
-        </member>
         <member name="F:WaveEngine.Framework.Services.Diagnostics.diagnosticComponents">
             <summary>
             Registered diagnostic components that will be updated and draw.
             </summary>
         </member>
-        <member name="M:WaveEngine.Framework.Services.Diagnostics.#ctor(WaveEngine.Framework.Services.GraphicsDevice)">
+        <member name="M:WaveEngine.Framework.Services.Diagnostics.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:WaveEngine.Framework.Services.Diagnostics" /> class.
             </summary>
-            <param name="graphicsDevice">The graphics device.</param>
-            <exception cref="T:System.ArgumentNullException">If graphics is null.</exception>
         </member>
         <member name="M:WaveEngine.Framework.Services.Diagnostics.Initialize">
             <summary>
@@ -19134,12 +19583,13 @@
             <param name="vertexShaderSymbols">The technique preprocessor symbols</param>
             <param name="pixelShaderSymbols">The pixel shader technique preprocessor symbols</param>
         </member>
-        <member name="M:WaveEngine.Framework.Services.GraphicsDevice.SetTexture(WaveEngine.Common.Graphics.Texture,System.Int32)">
+        <member name="M:WaveEngine.Framework.Services.GraphicsDevice.SetTexture(WaveEngine.Common.Graphics.Texture,System.Int32,WaveEngine.Common.Graphics.TextureSlotUsage)">
             <summary>
             Sets the texture.
             </summary>
             <param name="texture">The texture.</param>
             <param name="slot">The slot.</param>
+            <param name="textureUsage">The texture usage</param>
         </member>
         <member name="M:WaveEngine.Framework.Services.GraphicsDevice.TechniqueExists(WaveEngine.Common.Graphics.Effect,System.String)">
             <summary>
@@ -19625,11 +20075,6 @@
         <member name="F:WaveEngine.Framework.Services.Input.MotionState">
             <summary>
             The motion state.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Input.DisplayOrientationState">
-            <summary>
-            How the device is oriented.
             </summary>
         </member>
         <member name="F:WaveEngine.Framework.Services.Input.GyroscopeState">
@@ -20168,6 +20613,14 @@
             The default orientation of the device.
             </value>
         </member>
+        <member name="P:WaveEngine.Framework.Services.Platform.DisplayOrientation">
+            <summary>
+            Gets the current display orientation of the device.
+            </summary>
+            <value>
+            The current display orientation of the device.
+            </value>
+        </member>
         <member name="P:WaveEngine.Framework.Services.Platform.AspectRatio">
             <summary>
             Gets the aspect ratio of the screen.
@@ -20221,6 +20674,11 @@
             </summary>
         </member>
         <member name="E:WaveEngine.Framework.Services.Platform.OnScreenSizeChanged">
+            <summary>
+            Occurs when screen size is changed.
+            </summary>
+        </member>
+        <member name="E:WaveEngine.Framework.Services.Platform.OnDisplayOrientationChanged">
             <summary>
             Occurs when screen size is changed.
             </summary>
@@ -20307,6 +20765,13 @@
             </summary>
             <param name="sender">The sender.</param>
             <param name="e">The new size.</param>
+        </member>
+        <member name="M:WaveEngine.Framework.Services.Platform.Adapter_OnDisplayOrientationChanged(System.Object,WaveEngine.Common.Input.DisplayOrientation)">
+            <summary>
+            Adapter display orientation changed event.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="newOrientation">The new orientation.</param>
         </member>
         <member name="T:WaveEngine.Framework.Services.FastRandom">
             <summary>
@@ -21453,328 +21918,6 @@
             </summary>
             <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         </member>
-        <member name="T:WaveEngine.Framework.Services.Serialize.ISerializer">
-            <summary>
-            Interfaces that represents a serializer
-            </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.ISerializer.Serialize(System.IO.Stream,System.Object)">
-            <summary>
-            Serializes the specified stream.
-            </summary>
-            <param name="stream">The stream.</param>
-            <param name="obj">The object.</param>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.ISerializer.Deserialize(System.IO.Stream)">
-            <summary>
-            Deserializes the specified stream.
-            </summary>
-            <param name="stream">The stream.</param>
-            <returns>Deserialize object</returns>
-        </member>
-        <member name="T:WaveEngine.Framework.Services.Serialize.SerializationUtils">
-            <summary>
-            Serialization Utils static class
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Serialize.SerializationUtils.AdditionalAssemblies">
-            <summary>
-            The additional assemblies
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Serialize.SerializationUtils.ExcludeAssemblies">
-            <summary>
-            The assemblies to be excluded
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Serialize.SerializationUtils.AssemblyCache">
-            <summary>
-            Dictionary Assemblies (cache)
-            </summary>
-        </member>
-        <member name="P:WaveEngine.Framework.Services.Serialize.SerializationUtils.UserProjectAssembly">
-            <summary>
-            Gets the user project assembly
-            </summary>
-        </member>
-        <member name="P:WaveEngine.Framework.Services.Serialize.SerializationUtils.UserAdditionalRegisteredAssembly">
-            <summary>
-            Gets the user additional assemblies
-            </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializationUtils.#cctor">
-            <summary>
-            Initializes static members of the <see cref="T:WaveEngine.Framework.Services.Serialize.SerializationUtils" /> class.
-            </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializationUtils.SearchWaveEngineType(System.String)">
-            <summary>
-            Searches the type of the wave engine.
-            </summary>
-            <param name="typeFullName">Full name of the type.</param>
-            <returns>Type whether exists or null</returns>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializationUtils.GetWaveEngineTypes">
-            <summary>
-            Gets the wave engine types.
-            </summary>
-            <returns>Known types of Wave Engine</returns>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializationUtils.GetAssemblyList">
-            <summary>
-            Get wave engine assemblies
-            </summary>
-            <returns>the assemblies</returns>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializationUtils.SetUserAssembly(System.Reflection.Assembly)">
-            <summary>
-            Register user project assembly
-            </summary>
-            <param name="assembly">User assembly.</param>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializationUtils.RegisterAditionalAssembly(System.Reflection.Assembly)">
-            <summary>
-            Register additional assembly
-            </summary>
-            <param name="assembly">Assembly to be registered.</param>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializationUtils.AddWaveAssemblies(System.Collections.Generic.Dictionary{System.String,System.Reflection.Assembly})">
-            <summary>
-            Add extra assemblies
-            </summary>
-            <param name="assemblies">Assemblies map.</param>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializationUtils.AddWaveAssembly(System.Collections.Generic.Dictionary{System.String,System.Reflection.Assembly},System.String)">
-            <summary>
-            Add extra assembly
-            </summary>
-            <param name="assemblies">Assemblies map.</param>
-            <param name="waveName">Wave lib name.</param>
-        </member>
-        <member name="T:WaveEngine.Framework.Services.Serialize.SerializationType">
-            <summary>
-            Serialization Type enum
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Serialize.SerializationType.DATACONTRACT">
-            <summary>
-            Data Contract
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Serialize.SerializationType.XML">
-            <summary>
-            The XML
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Serialize.SerializationType.JSON">
-            <summary>
-            Json Serialization
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Serialize.SerializationType.BINARY">
-            <summary>
-            Binary serialization
-            </summary>
-        </member>
-        <member name="T:WaveEngine.Framework.Services.Serialize.SerializerFactory">
-            <summary>
-            Serializer Factory
-            </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerFactory.#cctor">
-            <summary>
-            Initializes static members of the <see cref="T:WaveEngine.Framework.Services.Serialize.SerializerFactory"/> class.
-            </summary>
-        </member>
-        <member name="P:WaveEngine.Framework.Services.Serialize.SerializerFactory.SerializationType">
-            <summary>
-            Gets or sets the type of the serialization.
-            </summary>
-            <value>
-            The type of the serialization.
-            </value>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerFactory.GetSerializer``1">
-            <summary>
-            Gets the serializer.
-            </summary>
-            <typeparam name="T">Generic type</typeparam>
-            <returns>ISerializer instance</returns>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerFactory.CleanAllCaches">
-            <summary>
-            Clean all dictionaries cache.
-            </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerFactory.GetSerializer``1(WaveEngine.Framework.Services.Serialize.SerializationType)">
-            <summary>
-            Gets the serializer.
-            </summary>
-            <typeparam name="T">Generic type</typeparam>
-            <param name="serializationType">Serialization type.</param>
-            <returns>ISerializer instance</returns>
-        </member>
-        <member name="T:WaveEngine.Framework.Services.Serialize.SerializerJson">
-            <summary>
-            Xml serializer
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Serialize.SerializerJson.serializersCache">
-            <summary>
-            Cache of serializer used to improve the performance of load times.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Serialize.SerializerJson.serializer">
-            <summary>
-            The serializar
-            </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerJson.GetSerializer``1">
-            <summary>
-            Get a new serializer instance.
-            </summary>
-            <typeparam name="T">Generic type.</typeparam>
-            <returns>ISerializer instance.</returns>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerJson.CleanCache">
-            <summary>
-            Clean the cache of serializer types.
-            </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerJson.#ctor(System.Type)">
-            <summary>
-            Initializes a new instance of the <see cref="T:WaveEngine.Framework.Services.Serialize.SerializerJson"/> class.
-            </summary>
-            <param name="type">Generic Type.</param>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerJson.Serialize(System.IO.Stream,System.Object)">
-            <summary>
-            Serializes the specified stream.
-            </summary>
-            <param name="stream">The stream.</param>
-            <param name="obj">The object.</param>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerJson.Deserialize(System.IO.Stream)">
-            <summary>
-            Deserializes the specified stream.
-            </summary>
-            <param name="stream">The stream.</param>
-            <returns>Deserialize object</returns>
-        </member>
-        <member name="T:WaveEngine.Framework.Services.Serialize.SerializerDataContract">
-            <summary>
-            Xml serializer
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Serialize.SerializerDataContract.serializersCache">
-            <summary>
-            Cache of serializer used to improve the performance of load times.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Serialize.SerializerDataContract.xmlSettings">
-            <summary>
-            The XML settings
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Serialize.SerializerDataContract.serializer">
-            <summary>
-            The serializar
-            </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerDataContract.#cctor">
-            <summary>
-            Initializes static members of the <see cref="T:WaveEngine.Framework.Services.Serialize.SerializerDataContract" /> class.
-            </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerDataContract.GetSerializer``1">
-            <summary>
-            Get a new serializer instance.
-            </summary>
-            <typeparam name="T">Generic type.</typeparam>
-            <returns>ISerializer instance.</returns>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerDataContract.CleanCache">
-            <summary>
-            Clean the cache of serializer types.
-            </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerDataContract.#ctor(System.Type)">
-            <summary>
-            Initializes a new instance of the <see cref="T:WaveEngine.Framework.Services.Serialize.SerializerDataContract"/> class.
-            </summary>
-            <param name="type">Generic type.</param>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerDataContract.Serialize(System.IO.Stream,System.Object)">
-            <summary>
-            Serializes the specified stream.
-            </summary>
-            <param name="stream">The stream.</param>
-            <param name="obj">The object.</param>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerDataContract.Deserialize(System.IO.Stream)">
-            <summary>
-            Deserializes the specified stream.
-            </summary>
-            <param name="stream">The stream.</param>
-            <returns>Deserialize object</returns>
-        </member>
-        <member name="T:WaveEngine.Framework.Services.Serialize.SerializerXml">
-            <summary>
-            Xml serializer
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Serialize.SerializerXml.serializersCache">
-            <summary>
-            Cache of serializer used to improve the performance of load times.
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Serialize.SerializerXml.xmlSettings">
-            <summary>
-            The XML settings
-            </summary>
-        </member>
-        <member name="F:WaveEngine.Framework.Services.Serialize.SerializerXml.serializer">
-            <summary>
-            The serializar
-            </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerXml.#cctor">
-            <summary>
-            Initializes static members of the <see cref="T:WaveEngine.Framework.Services.Serialize.SerializerXml" /> class.
-            </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerXml.GetSerializer``1">
-            <summary>
-            Get a new serializer instance.
-            </summary>
-            <typeparam name="T">Generic type.</typeparam>
-            <returns>ISerializer instance.</returns>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerXml.CleanCache">
-            <summary>
-            Clean the cache of serializer types.
-            </summary>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerXml.#ctor(System.Type)">
-            <summary>
-            Initializes a new instance of the <see cref="T:WaveEngine.Framework.Services.Serialize.SerializerXml"/> class.
-            </summary>
-            <param name="type">Generic type.</param>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerXml.Serialize(System.IO.Stream,System.Object)">
-            <summary>
-            Serializes the specified stream.
-            </summary>
-            <param name="stream">The stream.</param>
-            <param name="obj">The object.</param>
-        </member>
-        <member name="M:WaveEngine.Framework.Services.Serialize.SerializerXml.Deserialize(System.IO.Stream)">
-            <summary>
-            Deserializes the specified stream.
-            </summary>
-            <param name="stream">The stream.</param>
-            <returns>Deserialize object</returns>
-        </member>
         <member name="T:WaveEngine.Framework.Services.SingleTransition">
             <summary>
             This class represent a single screen transition.
@@ -22269,6 +22412,13 @@
             <returns>The object read.</returns>
             <exception cref="T:System.ArgumentNullException">If fileName is null or emtpy.</exception>
         </member>
+        <member name="M:WaveEngine.Framework.Services.Storage.ReadAsString(System.String)">
+            <summary>
+            Reads file content as string
+            </summary>
+            <param name="fileName">file path</param>
+            <returns>Content as string</returns>
+        </member>
         <member name="M:WaveEngine.Framework.Services.Storage.ReadFromContent``1(System.String)">
             <summary>
             Reads an object from the content.
@@ -22277,6 +22427,13 @@
             <param name="fileName">Name of the filename where the object was written.</param>
             <returns>The object read.</returns>
             <exception cref="T:System.ArgumentNullException">If fileName is null or emtpy.</exception>
+        </member>
+        <member name="M:WaveEngine.Framework.Services.Storage.ReadFromContentAsString(System.String)">
+            <summary>
+            Read a file content as string
+            </summary>
+            <param name="fileName">file path</param>
+            <returns>content as string</returns>
         </member>
         <member name="M:WaveEngine.Framework.Services.Storage.Write``1(``0)">
             <summary>
@@ -23072,6 +23229,12 @@
             Update video player
             </summary>
             <param name="gameTime">game time</param>
+        </member>
+        <member name="M:WaveEngine.Framework.Services.VideoPlayer.CheckInternalVideoPlayer">
+            <summary>
+            Checks the internal video player.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">VideoPlayer is not supported</exception>
         </member>
         <member name="T:WaveEngine.Framework.Services.WaveServices">
             <summary>

@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // TextComponent
 //
-// Copyright © 2016 Wave Coorporation. All rights reserved.
+// Copyright © 2017 Wave Coorporation. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -31,7 +31,7 @@ namespace WaveEngine.Components.Toolkit
     /// Component with the 3D text information
     /// </summary>
     [DataContract(Namespace = "WaveEngine.Components.Toolkit")]
-    public class TextComponent : BaseModel
+    public class TextComponent : BaseModel, IDisposable
     {
         /// <summary>
         /// The info of a text character
@@ -55,7 +55,6 @@ namespace WaveEngine.Components.Toolkit
         }
 
         #region fields
-
         /// <summary>
         /// The max number of characters per mesh
         /// </summary>
@@ -80,6 +79,12 @@ namespace WaveEngine.Components.Toolkit
         /// Indices per character
         /// </summary>
         private const int CHARINDICES = 6;
+
+        /// <summary>
+        /// The transform
+        /// </summary>
+        [RequiredComponent(false)]
+        private Transform3D transform = null;
 
         /// <summary>
         /// The vertex buffer data
@@ -138,12 +143,6 @@ namespace WaveEngine.Components.Toolkit
         private Vector2 scale;
 
         /// <summary>
-        /// The layer type of the text
-        /// </summary>
-        ////[DataMember]
-        private Type layerType;
-
-        /// <summary>
         /// The sprite font
         /// </summary>
         private SpriteFont spriteFont;
@@ -167,15 +166,9 @@ namespace WaveEngine.Components.Toolkit
         private float width;
 
         /// <summary>
-        /// If the text component material needs an update
-        /// </summary>
-        internal bool MaterialDirty;
-
-        /// <summary>
         /// Text offset
         /// </summary>
         private Vector2 textOffset;
-
         #endregion
 
         #region Properties
@@ -263,7 +256,6 @@ namespace WaveEngine.Components.Toolkit
                 {
                     this.UpdateSpriteFont();
                     this.RefreshText();
-                    this.MaterialDirty = true;
                 }
                 ////}
             }
@@ -329,31 +321,6 @@ namespace WaveEngine.Components.Toolkit
                 if (this.foreground != value)
                 {
                     this.foreground = value;
-                    this.MaterialDirty = true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the type of the layer.
-        /// </summary>
-        /// <value>
-        /// The type of the layer.
-        /// </value>            
-        [RenderPropertyAsLayer]
-        public Type LayerType
-        {
-            get
-            {
-                return this.layerType;
-            }
-
-            set
-            {
-                if (this.layerType != value)
-                {
-                    this.layerType = value;
-                    this.MaterialDirty = true;
                 }
             }
         }
@@ -458,7 +425,8 @@ namespace WaveEngine.Components.Toolkit
 
         /// <summary>
         /// Gets or sets the origin of the text control
-        /// </summary>
+        /// </summary>     
+        [RenderProperty(ShowConditionFunction = "ShowOrigin")]
         public Vector2 Origin
         {
             get
@@ -514,7 +482,6 @@ namespace WaveEngine.Components.Toolkit
             base.DefaultValues();
             this.origin = new Vector2(0.5f);
             this.foreground = Color.White;
-            this.layerType = DefaultLayers.Alpha;
             this.LinesInfo = new List<LineInfo>();
             this.textWrapping = false;
             this.width = 300;
@@ -544,7 +511,31 @@ namespace WaveEngine.Components.Toolkit
             this.UpdateSpriteFont();
 
             this.RefreshText();
-            this.MaterialDirty = true;
+
+            var transform2D = this.transform as Transform2D;
+            if (transform2D != null)
+            {
+                transform2D.OriginChanged += this.OnTransform2DOriginChanged;
+            }
+        }
+
+        /// <summary>
+        /// The origin must be shown
+        /// </summary>
+        /// <returns>If transform2D is null</returns>
+        private bool ShowOrigin()
+        {
+            return this.Owner.FindComponent<Transform2D>() == null;
+        }
+
+        /// <summary>
+        /// The transform2D origin is changed
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">The args</param>
+        private void OnTransform2DOriginChanged(object sender, EventArgs e)
+        {
+            this.Origin = (sender as Transform2D).Origin;
         }
 
         /// <summary>
@@ -960,6 +951,18 @@ namespace WaveEngine.Components.Toolkit
             boundingBox.Max = boundingBox.Min + new Vector3(this.ActualWidth, this.ActualHeight, 0);
 
             this.BoundingBoxRefreshed = true;
+        }
+
+        /// <summary>
+        /// Release native 
+        /// </summary>
+        public void Dispose()
+        {
+            var transform2D = this.transform as Transform2D;
+            if (transform2D != null)
+            {
+                transform2D.OriginChanged -= this.OnTransform2DOriginChanged;
+            }
         }
         #endregion
     }

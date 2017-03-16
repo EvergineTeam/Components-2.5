@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // TextRenderer3D
 //
-// Copyright © 2016 Wave Coorporation. All rights reserved.
+// Copyright © 2017 Wave Coorporation. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -11,8 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using WaveEngine.Common.Attributes;
 using WaveEngine.Common.Graphics;
 using WaveEngine.Common.Graphics.VertexFormats;
+using WaveEngine.Common.Helpers;
 using WaveEngine.Common.Math;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Graphics;
@@ -28,8 +30,6 @@ namespace WaveEngine.Components.Toolkit
     [DataContract(Namespace = "WaveEngine.Components.Toolkit")]
     public class TextRenderer3D : Drawable3D
     {
-        #region Fields
-
         /// <summary>
         /// The text component
         /// </summary>
@@ -46,19 +46,77 @@ namespace WaveEngine.Components.Toolkit
         /// The text material
         /// </summary>
         private StandardMaterial material;
-        #endregion
+
+        /// <summary>
+        /// Type of layer.
+        /// </summary>
+        private Type layerType;
+
+        /// <summary>
+        /// The layer type string
+        /// </summary>
+        private string layerTypeName;
 
         #region Properties
+        /// <summary>
+        /// Gets or sets the type of the layer.
+        /// </summary>
+        /// <value>
+        /// The type of the layer.
+        /// </value>
+        [RenderPropertyAsLayer]
+        public Type LayerType
+        {
+            get
+            {
+                return this.layerType;
+            }
+
+            set
+            {
+                this.layerType = value;
+
+                if (this.layerType != null)
+                {
+                    string layerAssemblyName = ReflectionHelper.GetTypeAssemblyName(this.layerType);
+                    this.layerTypeName = this.layerType.FullName + "," + layerAssemblyName;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets Layer Type Name
+        /// </summary>
+        [DataMember]
+        private string LayerTypeName
+        {
+            get
+            {
+                return this.layerTypeName;
+            }
+
+            set
+            {
+                this.layerTypeName = value;
+                if (!string.IsNullOrEmpty(this.layerTypeName))
+                {
+                    this.layerType = Type.GetType(this.layerTypeName);
+                }
+            }
+        }
         #endregion
 
         #region Initialize
+        #endregion
 
+        #region Public Methods
         /// <summary>
-        /// Resolves the dependencies
+        /// Initializes default values
         /// </summary>
-        protected override void ResolveDependencies()
+        protected override void DefaultValues()
         {
-            base.ResolveDependencies();
+            base.DefaultValues();
+            this.LayerType = DefaultLayers.Alpha;
         }
 
         /// <summary>
@@ -68,12 +126,8 @@ namespace WaveEngine.Components.Toolkit
         {
             base.Initialize();
 
-            this.material = new StandardMaterial() { DiffuseColor = Color.White, LightingEnabled = false, LayerType = DefaultLayers.Alpha };
+            this.material = new StandardMaterial() { DiffuseColor = Color.White, LightingEnabled = false, LayerType = this.LayerType, SamplerMode = AddressMode.LinearClamp };
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Draws the text
@@ -86,12 +140,12 @@ namespace WaveEngine.Components.Toolkit
                 return;
             }
 
-            if (this.textComponent.MaterialDirty)
-            {
-                this.material.Diffuse = this.textComponent.SpriteFont.FontTexture;
-                this.material.DiffuseColor = this.textComponent.Foreground;
-                this.material.LayerType = this.textComponent.LayerType;
-                this.textComponent.MaterialDirty = false;
+            this.material.Diffuse = this.textComponent.SpriteFont.FontTexture;
+            this.material.DiffuseColor = this.textComponent.Foreground;
+
+            if (this.material.LayerType != this.LayerType)
+            {            
+                this.material.LayerType = this.LayerType;             
             }
 
             var worldTransform = this.transform.WorldTransform;
@@ -99,10 +153,13 @@ namespace WaveEngine.Components.Toolkit
 
             Matrix.Multiply(ref scaleTransform, ref worldTransform, out worldTransform);
 
+            float zOrder = Vector3.DistanceSquared(this.RenderManager.CurrentDrawingCamera3D.Position, this.transform.Position);
+            
             for (int i = 0; i < this.textComponent.MeshCount; i++)
             {
                 var mesh = this.textComponent.Meshes[i];
-
+                mesh.ZOrder = zOrder;
+                
                 this.RenderManager.DrawMesh(mesh, this.material, ref worldTransform);
             }
         }

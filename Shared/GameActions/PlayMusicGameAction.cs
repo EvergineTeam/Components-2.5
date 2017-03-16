@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // PlayMusicGameAction
 //
-// Copyright © 2016 Wave Engine S.L. All rights reserved.
+// Copyright © 2017 Wave Engine S.L. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -30,6 +30,12 @@ namespace WaveEngine.Components.GameActions
         /// The music info
         /// </summary>
         private MusicInfo musicInfo;
+
+        /// <summary>
+        /// Music player service.
+        /// </summary>
+        [RequiredService]
+        private MusicPlayer musicPlayer = null;
 
         #region Properties
         #endregion
@@ -64,8 +70,8 @@ namespace WaveEngine.Components.GameActions
         /// </summary>
         protected override void PerformRun()
         {
-            WaveServices.MusicPlayer.OnSongCompleted += this.OnSongCompleted;
-            WaveServices.MusicPlayer.Play(this.musicInfo);
+            this.musicPlayer.OnSongCompleted += this.OnSongCompleted;
+            this.musicPlayer.Play(this.musicInfo);
         }
 
         /// <summary>
@@ -75,7 +81,7 @@ namespace WaveEngine.Components.GameActions
         /// <param name="e">The event args.</param>
         private void OnSongCompleted(object sender, EventArgs e)
         {
-            WaveServices.MusicPlayer.OnSongCompleted -= this.OnSongCompleted;
+            this.musicPlayer.OnSongCompleted -= this.OnSongCompleted;
             this.PerformCompleted();
         }
 
@@ -84,9 +90,8 @@ namespace WaveEngine.Components.GameActions
         /// </summary>
         protected override void PerformCancel()
         {
-            var musicPlayer = WaveServices.MusicPlayer;
-            musicPlayer.OnSongCompleted -= this.OnSongCompleted;
-            musicPlayer.Stop();
+            this.musicPlayer.OnSongCompleted -= this.OnSongCompleted;
+            this.musicPlayer.Stop();
 
             base.PerformCancel();
         }

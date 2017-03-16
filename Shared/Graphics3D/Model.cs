@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // Model
 //
-// Copyright © 2016 Wave Engine S.L. All rights reserved.
+// Copyright © 2017 Wave Engine S.L. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -74,12 +74,12 @@ namespace WaveEngine.Components.Graphics3D
 
             set
             {
+                base.ModelPath = value;
+
                 if (!string.IsNullOrEmpty(value))
                 {
-                    this.ModelType = ModelType.Custom;
-                }
-
-                base.ModelPath = value;
+                    this.ModelType = ModelType.Custom;                    
+                }                
             }
         }
 
@@ -159,12 +159,11 @@ namespace WaveEngine.Components.Graphics3D
         /// Creates the cube.
         /// </summary>
         /// <param name="mesh">The mesh</param>
-        /// <returns>A <see cref="Model"/> representing a cube.</returns>
+        /// <returns>A <see cref="Model"/> representing a custom mesh.</returns>
         public static Model CreateFromMesh(Mesh mesh)
         {
-            Model model = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
+            Model model = new Model() { InternalModel = new InternalStaticModel() };
             model.InternalModel.FromMesh(WaveServices.GraphicsDevice, mesh);
-            model.modelType = ModelType.Custom;
 
             return model;
         }
@@ -174,12 +173,38 @@ namespace WaveEngine.Components.Graphics3D
         /// </summary>
         /// <param name="mesh">The mesh</param>
         /// <param name="boundingBox">The mesh bounding box</param>
-        /// <returns>A <see cref="Model"/> representing a cube.</returns>
+        /// <returns>A <see cref="Model"/> representing a custom mesh.</returns>
         public static Model CreateFromMesh(Mesh mesh, BoundingBox boundingBox)
         {
-            Model model = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
+            Model model = new Model() { InternalModel = new InternalStaticModel() };
             model.InternalModel.FromMesh(WaveServices.GraphicsDevice, mesh, boundingBox);
-            model.modelType = ModelType.Custom;
+
+            return model;
+        }
+
+        /// <summary>
+        /// Creates the cube.
+        /// </summary>
+        /// <param name="meshes">The meshes</param>
+        /// <returns>A <see cref="Model"/> representing a custom mesh.</returns>
+        public static Model CreateFromMeshes(IEnumerable<Mesh> meshes)
+        {
+            Model model = new Model() { InternalModel = new InternalStaticModel() };
+            model.InternalModel.FromMeshes(WaveServices.GraphicsDevice, meshes);
+
+            return model;
+        }
+
+        /// <summary>
+        /// Creates the cube.
+        /// </summary>
+        /// <param name="meshes">The meshes</param>
+        /// <param name="boundingBox">The mesh bounding box</param>
+        /// <returns>A <see cref="Model"/> representing a custom mesh.</returns>
+        public static Model CreateFromMeshes(IEnumerable<Mesh> meshes, BoundingBox boundingBox)
+        {
+            Model model = new Model() { InternalModel = new InternalStaticModel() };
+            model.InternalModel.FromMeshes(WaveServices.GraphicsDevice, meshes, boundingBox);
 
             return model;
         }

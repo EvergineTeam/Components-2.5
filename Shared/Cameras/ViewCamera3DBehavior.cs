@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // ViewCamera3DBehavior
 //
-// Copyright © 2016 Wave Engine S.L. All rights reserved.
+// Copyright © 2017 Wave Engine S.L. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -38,6 +38,12 @@ namespace WaveEngine.Components.Cameras
         /// </summary>
         [DataMember]
         public float RotationSpeed;
+
+        /// <summary>
+        /// Input service.
+        /// </summary>
+        [RequiredService]
+        private Input input = null;
 
         /// <summary>
         /// The touch state.
@@ -88,6 +94,14 @@ namespace WaveEngine.Components.Cameras
         #region Initialize
         /// <summary>
         /// Initializes a new instance of the <see cref="ViewCamera3DBehavior" /> class.
+        /// </summary>        
+        public ViewCamera3DBehavior()
+            : this(Vector3.Zero)
+        {            
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ViewCamera3DBehavior" /> class.
         /// </summary>
         /// <param name="lookAt">The look at</param>
         public ViewCamera3DBehavior(Vector3 lookAt)
@@ -134,9 +148,10 @@ namespace WaveEngine.Components.Cameras
         /// </remarks>
         protected override void Update(TimeSpan gameTime)
         {
-            this.touchState = WaveServices.Input.TouchPanelState;
+            this.touchState = this.input.TouchPanelState;
             if (this.touchState.Count > 0 && this.touchState[0].State == TouchLocationState.Pressed)
             {
+                System.Diagnostics.Debug.WriteLine(" Touch: " + this.touchState[0].Position);
                 if (!this.isDragging)
                 {
                     this.isDragging = true;
@@ -187,9 +202,9 @@ namespace WaveEngine.Components.Cameras
             Matrix rotationMatrix = Matrix.CreateFromYawPitchRoll(this.phi, this.theta, 0);
             Vector3 transformedReference = Vector3.Transform(this.initialPosition, rotationMatrix);
             this.Camera.Transform.Position = transformedReference + this.initialLookAt;
-            this.Camera.Transform.LookAt(this.initialLookAt);            
+            this.Camera.Transform.LookAt(this.initialLookAt);
         }
-        
+
         #endregion
     }
 }

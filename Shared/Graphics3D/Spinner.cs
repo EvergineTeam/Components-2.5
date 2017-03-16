@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // Spinner
 //
-// Copyright © 2016 Wave Engine S.L. All rights reserved.
+// Copyright © 2017 Wave Engine S.L. All rights reserved.
 // Use is subject to license terms.
 //-----------------------------------------------------------------------------
 #endregion
@@ -35,11 +35,6 @@ namespace WaveEngine.Components.Graphics3D
         /// </summary>
         [RequiredComponent(false)]
         private Transform3D transform = null;
-
-        /// <summary>
-        /// The angle
-        /// </summary>
-        private Vector3 angle;
 
         /// <summary>
         /// The increase
@@ -157,12 +152,11 @@ namespace WaveEngine.Components.Graphics3D
         {
             float totalSeconds = (float)gameTime.TotalSeconds;
 
-            // angle += increase;
-            this.angle.X = this.angle.X + (this.increase.X * totalSeconds);
-            this.angle.Y = this.angle.Y + (this.increase.Y * totalSeconds);
-            this.angle.Z = this.angle.Z + (this.increase.Z * totalSeconds);
+            var rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitX, this.increase.X * totalSeconds) *
+                           Quaternion.CreateFromAxisAngle(Vector3.UnitY, this.increase.Y * totalSeconds) *
+                           Quaternion.CreateFromAxisAngle(Vector3.UnitZ, this.increase.Z * totalSeconds);
 
-            this.transform.LocalRotation = this.angle;            
+            this.transform.LocalOrientation *= rotation;
         }
         #endregion
     }
