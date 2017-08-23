@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Spinner
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -42,6 +35,7 @@ namespace WaveEngine.Components.Graphics3D
         private Vector3 increase;
 
         #region Properties
+
         /// <summary>
         /// Gets or sets the axis increase.
         /// </summary>
@@ -125,6 +119,7 @@ namespace WaveEngine.Components.Graphics3D
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Spinner" /> class.
         /// </summary>
@@ -144,6 +139,7 @@ namespace WaveEngine.Components.Graphics3D
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Updates the transform of the model so it rotates along the defined axis.
         /// </summary>

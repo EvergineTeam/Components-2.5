@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// TextComponent
-//
-// Copyright © 2017 Wave Coorporation. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -55,6 +48,7 @@ namespace WaveEngine.Components.Toolkit
         }
 
         #region fields
+
         /// <summary>
         /// The max number of characters per mesh
         /// </summary>
@@ -123,6 +117,12 @@ namespace WaveEngine.Components.Toolkit
         /// </summary>
         [DataMember]
         private Color foreground;
+
+        /// <summary>
+        /// The text alpha
+        /// </summary>
+        [DataMember]
+        private float alpha;
 
         /// <summary>
         /// The text alignment
@@ -257,6 +257,7 @@ namespace WaveEngine.Components.Toolkit
                     this.UpdateSpriteFont();
                     this.RefreshText();
                 }
+
                 ////}
             }
         }
@@ -321,6 +322,26 @@ namespace WaveEngine.Components.Toolkit
                 if (this.foreground != value)
                 {
                     this.foreground = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the alpha of the text
+        /// </summary>
+        [RenderPropertyAsSlider(0, 1, 0.01f)]
+        public float Alpha
+        {
+            get
+            {
+                return this.alpha;
+            }
+
+            set
+            {
+                if (this.alpha != value)
+                {
+                    this.alpha = value;
                 }
             }
         }
@@ -425,7 +446,7 @@ namespace WaveEngine.Components.Toolkit
 
         /// <summary>
         /// Gets or sets the origin of the text control
-        /// </summary>     
+        /// </summary>
         [RenderProperty(ShowConditionFunction = "ShowOrigin")]
         public Vector2 Origin
         {
@@ -482,6 +503,7 @@ namespace WaveEngine.Components.Toolkit
             base.DefaultValues();
             this.origin = new Vector2(0.5f);
             this.foreground = Color.White;
+            this.alpha = 1;
             this.LinesInfo = new List<LineInfo>();
             this.textWrapping = false;
             this.width = 300;
@@ -571,7 +593,7 @@ namespace WaveEngine.Components.Toolkit
         {
             this.RemoveAll();
 
-            if (!string.IsNullOrEmpty(this.Text))
+            if (this.text != null)
             {
                 this.RefreshSize();
                 this.RefreshLines();
@@ -587,9 +609,9 @@ namespace WaveEngine.Components.Toolkit
         {
             this.LinesInfo.Clear();
 
-            if (!string.IsNullOrEmpty(this.text) && this.SpriteFont != null)
+            if (this.text != null && this.spriteFont != null)
             {
-                this.FontHeight = this.SpriteFont.MeasureString("A").Y;
+                this.FontHeight = this.spriteFont.MeasureString("A").Y;
 
                 // Filters
                 var handledText = this.text;
@@ -954,7 +976,7 @@ namespace WaveEngine.Components.Toolkit
         }
 
         /// <summary>
-        /// Release native 
+        /// Release native
         /// </summary>
         public void Dispose()
         {

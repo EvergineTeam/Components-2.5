@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Cylinder
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -20,6 +13,7 @@ namespace WaveEngine.Components.Primitives
     internal sealed class Cylinder : Geometric
     {
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Cylinder" /> class.
         /// </summary>
@@ -49,8 +43,8 @@ namespace WaveEngine.Components.Primitives
 
                 Vector3 normal = new Vector3(dx, 0, dz);
 
-                this.AddVertex((normal * radius) + (Vector3.Up * height), normal, new Vector2(percent, 0));
-                this.AddVertex((normal * radius) + (Vector3.Down * height), normal, new Vector2(percent, 1));
+                this.AddVertex((normal * radius) + (Vector3.Up * height), normal, new Vector2(1 - percent, 0));
+                this.AddVertex((normal * radius) + (Vector3.Down * height), normal, new Vector2(1 - percent, 1));
 
                 if (i < tessellation)
                 {
@@ -106,7 +100,14 @@ namespace WaveEngine.Components.Primitives
                 Vector3 iniPosition = new Vector3(dx, 0, dz);
                 Vector3 position = (iniPosition * radius) + (normal * height);
 
-                this.AddVertex(position, normal, new Vector2((dx * 0.5f) + 0.5f, (dz * 0.5f) + 0.5f));
+                var uHorizontalCoord = (dx * 0.5f) + 0.5f;
+
+                if (normal.Y < 0)
+                {
+                    uHorizontalCoord = 1 - uHorizontalCoord;
+                }
+
+                this.AddVertex(position, normal, new Vector2(uHorizontalCoord, (dz * 0.5f) + 0.5f));
             }
         }
         #endregion

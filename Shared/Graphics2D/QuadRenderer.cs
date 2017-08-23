@@ -1,11 +1,4 @@
-#region File Description
-//-----------------------------------------------------------------------------
-// QuadRenderer
-//
-// Copyright � 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -112,6 +105,7 @@ namespace WaveEngine.Components.Graphics2D
         }
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="QuadRenderer" /> class.
         /// </summary>
@@ -143,6 +137,7 @@ namespace WaveEngine.Components.Graphics2D
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Allows to perform custom drawing.
         /// </summary>
@@ -173,6 +168,7 @@ namespace WaveEngine.Components.Graphics2D
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Performs further custom initialization for this instance.
         /// </summary>
@@ -272,8 +268,8 @@ namespace WaveEngine.Components.Graphics2D
                 {
                     if (this.quadMesh != null)
                     {
-                        GraphicsDevice.DestroyIndexBuffer(this.quadMesh.IndexBuffer);
-                        GraphicsDevice.DestroyVertexBuffer(this.quadMesh.VertexBuffer);
+                        this.GraphicsDevice.DestroyIndexBuffer(this.quadMesh.IndexBuffer);
+                        this.GraphicsDevice.DestroyVertexBuffer(this.quadMesh.VertexBuffer);
                     }
 
                     this.disposed = true;

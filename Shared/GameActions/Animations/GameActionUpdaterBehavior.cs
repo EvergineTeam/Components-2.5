@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// GameActionUpdaterBehavior
-//
-// Copyright © 2017 Wave Coorporation. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -47,7 +40,8 @@ namespace WaveEngine.Components.GameActions
         /// <summary>
         /// Initializes a new instance of the <see cref="GameActionUpdaterBehavior"/> class.
         /// </summary>
-        public GameActionUpdaterBehavior() : base()
+        public GameActionUpdaterBehavior()
+            : base()
         {
             this.gameActions = new List<UpdatableGameAction>();
             this.addList = new List<UpdatableGameAction>();
@@ -59,17 +53,13 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Updates the instance of the behavior
         /// </summary>
         /// <param name="gameTime">Ellapsed time</param>
         protected override void Update(TimeSpan gameTime)
         {
-            foreach (var gameAction in this.gameActions)
-            {
-                gameAction.Update(gameTime);
-            }
-
             if (this.addList.Count > 0)
             {
                 foreach (var toAdd in this.addList)
@@ -88,6 +78,11 @@ namespace WaveEngine.Components.GameActions
                 }
 
                 this.deleteList.Clear();
+            }
+
+            foreach (var gameAction in this.gameActions)
+            {
+                gameAction.Update(gameTime);
             }
         }
 

@@ -1,10 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// FreeCamera2DBehavior
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Usings Statements
 using System;
@@ -53,7 +47,7 @@ namespace WaveEngine.Components.Cameras
         [RequiredService]
         private Input input = null;
 
-        /// <summary>   
+        /// <summary>
         /// The mouse is dragging.
         /// </summary>
         private bool isDragging;
@@ -104,6 +98,7 @@ namespace WaveEngine.Components.Cameras
         private Vector2 lastDragPosition;
 
         #region Properties
+
         /// <summary>
         /// Gets or sets the rotation speed.
         /// </summary>
@@ -167,6 +162,7 @@ namespace WaveEngine.Components.Cameras
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeCamera2DBehavior" /> class.
         /// </summary>
@@ -189,6 +185,7 @@ namespace WaveEngine.Components.Cameras
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Updates the camera position.
         /// </summary>
@@ -255,7 +252,7 @@ namespace WaveEngine.Components.Cameras
             }
             else if (keyboardState.W == ButtonState.Pressed)
             {
-                // Manual inline: position -= speed * forward;                          
+                // Manual inline: position -= speed * forward;
                 this.positionDelta.X = this.positionDelta.X - (amount * this.speed * this.up.X);
                 this.positionDelta.Y = this.positionDelta.Y - (amount * this.speed * this.up.Y);
             }
@@ -362,7 +359,7 @@ namespace WaveEngine.Components.Cameras
         {
             GamePadState gamePadState = this.input.GamePadState;
 
-            Vector2 leftStick = gamePadState.ThumbStricks.Left;
+            Vector2 leftStick = gamePadState.ThumbSticks.Left;
 
             if (leftStick.Y > StickThreshold)
             {

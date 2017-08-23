@@ -1,10 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// SkinnedModelRenderer
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -223,6 +217,16 @@ namespace WaveEngine.Components.Graphics3D
             }
         }
 
+        /// <summary>
+        /// Gets .the skinned model.
+        /// </summary>
+        public InternalSkinnedModel SkinnedModel
+        {
+            get
+            {
+                return this.skinnedModel;
+            }
+        }
         #endregion
 
         #region Initialize

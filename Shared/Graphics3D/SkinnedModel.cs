@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// SkinnedModel
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -25,12 +18,8 @@ namespace WaveEngine.Components.Graphics3D
     [DataContract(Namespace = "WaveEngine.Components.Graphics3D")]
     public class SkinnedModel : LoadableModel
     {
-        /// <summary>
-        /// Number of instances of this component created.
-        /// </summary>
-        private static int instances;
-
         #region Properties
+
         /// <summary>
         /// Gets the number of meshes of this model.
         /// </summary>
@@ -69,11 +58,12 @@ namespace WaveEngine.Components.Graphics3D
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SkinnedModel"/> class.
-        /// </summary>        
+        /// </summary>
         public SkinnedModel()
-            : base("SkinnedModel" + instances)
+            : base("SkinnedModel" + BaseModel.instances)
         {
         }
 
@@ -82,7 +72,7 @@ namespace WaveEngine.Components.Graphics3D
         /// </summary>
         /// <param name="modelPath">The model path.</param>
         public SkinnedModel(string modelPath)
-            : this("SkinnedModel" + instances, modelPath)
+            : this("SkinnedModel" + BaseModel.instances, modelPath)
         {
         }
 
@@ -100,11 +90,12 @@ namespace WaveEngine.Components.Graphics3D
             }
 
             this.ModelPath = modelPath;
-            instances++;
+            BaseModel.instances++;
         }
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Gets the collition info.
         /// </summary>
@@ -129,6 +120,7 @@ namespace WaveEngine.Components.Graphics3D
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Performs further custom initialization for this instance.
         /// </summary>
@@ -157,7 +149,7 @@ namespace WaveEngine.Components.Graphics3D
         {
             if (!string.IsNullOrEmpty(this.ModelPath))
             {
-                this.InternalModel = Assets.LoadAsset<InternalSkinnedModel>(this.ModelPath);
+                this.InternalModel = this.Assets.LoadAsset<InternalSkinnedModel>(this.ModelPath);
 
                 if (!this.customBoundingBoxSet)
                 {

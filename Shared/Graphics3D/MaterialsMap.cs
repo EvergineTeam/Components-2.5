@@ -1,13 +1,7 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// MaterialsMap
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -27,10 +21,11 @@ namespace WaveEngine.Components.Graphics3D
     /// <summary>
     /// A list of materials.
     /// </summary>
+    ////[Obsolete("This class is obsolete. Use MaterialComponent instead.", false)]
     [DataContract(Namespace = "WaveEngine.Components.Graphics3D")]
     public class MaterialsMap : Component
     {
-        /// <summary>   
+        /// <summary>
         /// Number of instances of this component created.
         /// </summary>
         private static int instances;
@@ -68,6 +63,7 @@ namespace WaveEngine.Components.Graphics3D
         private bool useDummyMaterial;
 
         #region Properties
+
         /// <summary>
         /// Gets or sets the default material.
         /// </summary>
@@ -164,6 +160,7 @@ namespace WaveEngine.Components.Graphics3D
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MaterialsMap" /> class.
         /// </summary>
@@ -230,10 +227,12 @@ namespace WaveEngine.Components.Graphics3D
         #region Private Methods
 
         /// <summary>
-        /// Performs further custom initialization for this instance.
+        /// Initializes this instance.
         /// </summary>
-        protected override void ResolveDependencies()
+        protected override void Initialize()
         {
+            base.Initialize();
+
             this.useDefaultMaterial = (this.defaultMaterial == null) && string.IsNullOrEmpty(this.defaultMaterialPath);
             this.RefreshDefaultMaterialPath();
 

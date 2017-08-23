@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// UIBase
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -67,7 +60,7 @@ namespace WaveEngine.Components.UI
         /// <value>
         /// The color of the border.
         /// </value>
-        /// <exception cref="System.InvalidOperationException">There isn't Border component. You must set Border=true</exception>
+        /// <exception cref="InvalidOperationException">There isn't Border component. You must set Border=true</exception>
         public Color BorderColor
         {
             get
@@ -130,7 +123,7 @@ namespace WaveEngine.Components.UI
         /// <value>
         /// The opacity property [0-Transparent 1-Opaque].
         /// </value>
-        /// <exception cref="System.InvalidOperationException">There isn't Transform2D component.</exception>
+        /// <exception cref="InvalidOperationException">There isn't Transform2D component.</exception>
         public float Opacity
         {
             get

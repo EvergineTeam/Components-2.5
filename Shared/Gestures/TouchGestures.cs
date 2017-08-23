@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// TouchGestures
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -26,7 +19,7 @@ namespace WaveEngine.Components.Gestures
 {
     /// <summary>
     /// Enables an <see cref="Entity"/> to support touchs.
-    /// It requires a <see cref="Collider2D"/> (usually, <see cref="RectangleCollider2D"/>) 
+    /// It requires a <see cref="Collider2D"/> (usually, <see cref="RectangleCollider2D"/>)
     /// and a <see cref="Transform2D"/>.
     /// Common events on touch scenarios are provided: pressed, released, etc.
     /// </summary>
@@ -166,7 +159,7 @@ namespace WaveEngine.Components.Gestures
 
         /// <summary>
         /// Gets or sets the touch order.
-        /// Value within [0, Int32.MaxValue] where 0 means the farthest (i.e., the last to receive the touch gesture) 
+        /// Value within [0, Int32.MaxValue] where 0 means the farthest (i.e., the last to receive the touch gesture)
         /// and bigger values come near increasing the chance to receive the input.
         /// NOTE: It is required to have set <see cref="ManualTouchOrder"/> to <c>true</c> in order the engine not to override
         /// this value. See <see cref="ManualTouchOrder"/> for a more detailed information.
@@ -194,8 +187,8 @@ namespace WaveEngine.Components.Gestures
 
         /// <summary>
         /// Gets or sets the minimun scale.
-        /// Value within [0, float.MaxValue] which is understood as the minimun scale applicable to required 
-        /// <see cref="Transform2D"/> when <see cref="SupportedGesture.Scale"/> is enabled through 
+        /// Value within [0, float.MaxValue] which is understood as the minimun scale applicable to required
+        /// <see cref="Transform2D"/> when <see cref="SupportedGesture.Scale"/> is enabled through
         /// <see cref="TouchGestures.EnabledGestures"/>.
         /// </summary>
         /// <value>
@@ -217,8 +210,8 @@ namespace WaveEngine.Components.Gestures
 
         /// <summary>
         /// Gets or sets the maximun scale.
-        /// Value within [0, float.MaxValue] which is understood as the maximun scale applicable to required 
-        /// <see cref="Transform2D"/> when <see cref="SupportedGesture.Scale"/> is enabled through 
+        /// Value within [0, float.MaxValue] which is understood as the maximun scale applicable to required
+        /// <see cref="Transform2D"/> when <see cref="SupportedGesture.Scale"/> is enabled through
         /// <see cref="TouchGestures.EnabledGestures"/>.
         /// </summary>
         /// <value>
@@ -264,7 +257,7 @@ namespace WaveEngine.Components.Gestures
         /// <summary>
         /// Gets or sets a value indicating whether using <see cref="TouchOrder"/>,
         /// or a different order gathered using both the <see pref="Transform2D.DrawOrder"/> and
-        /// the <see cref="Layer"/> used. Such calcs are performed during the call to 
+        /// the <see cref="Layer"/> used. Such calcs are performed during the call to
         /// <see cref="UpdateTouchOrder"/>.
         /// </summary>
         /// <value>
@@ -300,7 +293,7 @@ namespace WaveEngine.Components.Gestures
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TouchGestures"/> class.
-        /// By default, scale is within [0.1, 5], the delta scale is set to 1 and there is no 
+        /// By default, scale is within [0.1, 5], the delta scale is set to 1 and there is no
         /// supported gesture.
         /// </summary>
         /// <param name="projectCamera">Indicates if the touches will be processed using Cameras</param>
@@ -311,8 +304,8 @@ namespace WaveEngine.Components.Gestures
         }
 
         /// <summary>
-        /// This methods is used to set default values by the default constructor of our classes. 
-        /// This is called too when an entity is deserializing. 
+        /// This methods is used to set default values by the default constructor of our classes.
+        /// This is called too when an entity is deserializing.
         /// </summary>
         protected override void DefaultValues()
         {
@@ -338,7 +331,7 @@ namespace WaveEngine.Components.Gestures
         /// </returns>
         public bool Contains(Vector2 point)
         {
-            if (!Owner.IsActive || !Owner.IsVisible)
+            if (!this.Owner.IsActive || !this.Owner.IsVisible)
             {
                 return false;
             }
@@ -435,7 +428,7 @@ namespace WaveEngine.Components.Gestures
                 if (drawable2D != null)
                 {
                     Type layer = drawable2D.LayerType;
-                    int index = RenderManager.GetLayerIndex(layer);
+                    int index = this.RenderManager.GetLayerIndex(layer);
 
                     if (index != -1)
                     {
@@ -465,8 +458,6 @@ namespace WaveEngine.Components.Gestures
 
             this.UpdateTouchOrder();
 
-            this.Owner.FindComponent<Transform2D>().PropertyChanged += this.DrawOrderPropertyChanged;
-
             if (this.Owner.Scene.IsInitialized)
             {
                 var touchManager = WaveServices.TouchPanel;
@@ -483,19 +474,6 @@ namespace WaveEngine.Components.Gestures
             touchManager.Unsubscribe(this);
 
             base.DeleteDependencies();
-        }
-
-        /// <summary>
-        /// Draws the order property changed.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-        private void DrawOrderPropertyChanged(object sender, ref DependencyPropertyChangedEventArgs e)
-        {
-            ////    if (e.Property == WaveEngine.Framework.Graphics.Transform2D.DrawOrderProperty)
-            ////    {
-            ////        this.UpdateTouchOrder();
-            ////    }
         }
 
         /// <summary>

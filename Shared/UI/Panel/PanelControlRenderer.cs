@@ -1,11 +1,4 @@
-﻿#region File Description
-//----------------------------------------------------------------------------- 
-// PanelControlRenderer
-// 
-// Copyright © 2017 Wave Engine S.L. All rights reserved. 
-// Use is subject to license terms. 
-//----------------------------------------------------------------------------- 
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -15,7 +8,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using WaveEngine.Common.Graphics;
 using WaveEngine.Framework;
-using WaveEngine.Framework.Graphics; 
+using WaveEngine.Framework.Graphics;
 #endregion
 
 namespace WaveEngine.Components.UI
@@ -68,6 +61,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Allows to perform custom drawing.
         /// </summary>
@@ -95,12 +89,13 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
-        {            
+        {
         }
 
         /// <summary>
@@ -115,10 +110,10 @@ namespace WaveEngine.Components.UI
             base.DrawDebugLines();
 
             // Rectangle
-            RenderManager.LineBatch2D.DrawRectangle(this.Transform2D.Rectangle, Color.Orange, this.Transform2D.DrawOrder);
+            this.RenderManager.LineBatch2D.DrawRectangle(this.Transform2D.Rectangle, Color.Orange, this.Transform2D.DrawOrder);
 
             // Origin
-            RenderManager.LineBatch2D.DrawPoint(this.Transform2D.Rectangle.Location + this.Transform2D.Origin, 10f, Color.Red, this.Transform2D.DrawOrder);
+            this.RenderManager.LineBatch2D.DrawPoint(this.Transform2D.Rectangle.Location + this.Transform2D.Origin, 10f, Color.Red, this.Transform2D.DrawOrder);
         }
         #endregion
     }

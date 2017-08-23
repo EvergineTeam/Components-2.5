@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// LineInfo
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -16,27 +9,6 @@ using WaveEngine.Common.Math;
 
 namespace WaveEngine.Components.UI
 {
-    /// <summary>
-    /// Helper to TextControl component
-    /// </summary>
-    public struct SubTextInfo
-    {
-        /// <summary>
-        /// The line text
-        /// </summary>
-        public string Text;
-
-        /// <summary>
-        /// The text
-        /// </summary>
-        public Color Color;
-
-        /// <summary>
-        /// The size
-        /// </summary>
-        public Vector2 Size;
-    }
-
     /// <summary>
     /// Helper to TextControl component
     /// </summary>
@@ -58,6 +30,7 @@ namespace WaveEngine.Components.UI
         public float AlignmentOffsetX;
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LineInfo" /> struct.
         /// </summary>

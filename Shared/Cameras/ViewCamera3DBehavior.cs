@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// ViewCamera3DBehavior
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -51,12 +44,6 @@ namespace WaveEngine.Components.Cameras
         private TouchPanelState touchState;
 
         /// <summary>
-        /// The is dragging.
-        /// </summary>
-        [DataMember]
-        private bool isDragging;
-
-        /// <summary>
         /// The prev position.
         /// </summary>
         private Vector2 prevPosition;
@@ -92,12 +79,13 @@ namespace WaveEngine.Components.Cameras
         private Vector3 initialLookAt;
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ViewCamera3DBehavior" /> class.
-        /// </summary>        
+        /// </summary>
         public ViewCamera3DBehavior()
             : this(Vector3.Zero)
-        {            
+        {
         }
 
         /// <summary>
@@ -122,6 +110,7 @@ namespace WaveEngine.Components.Cameras
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Performs further custom initialization for this instance.
         /// </summary>
@@ -149,15 +138,15 @@ namespace WaveEngine.Components.Cameras
         protected override void Update(TimeSpan gameTime)
         {
             this.touchState = this.input.TouchPanelState;
-            if (this.touchState.Count > 0 && this.touchState[0].State == TouchLocationState.Pressed)
+            if (this.touchState.Count > 0)
             {
-                System.Diagnostics.Debug.WriteLine(" Touch: " + this.touchState[0].Position);
-                if (!this.isDragging)
+                var currentState = this.touchState[0].State;
+
+                if (currentState == TouchLocationState.Pressed)
                 {
-                    this.isDragging = true;
                     this.prevPosition = this.touchState[0].Position;
                 }
-                else
+                else if (currentState == TouchLocationState.Moved)
                 {
                     this.currentPosition = this.touchState[0].Position;
                     this.delta = (this.currentPosition - this.prevPosition) * ((float)Math.PI / 180);
@@ -187,10 +176,6 @@ namespace WaveEngine.Components.Cameras
 
                     this.UpdateCameraPosition();
                 }
-            }
-            else
-            {
-                this.isDragging = false;
             }
         }
 

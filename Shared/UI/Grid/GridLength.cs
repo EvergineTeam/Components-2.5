@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// GridLength
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -30,13 +23,14 @@ namespace WaveEngine.Components.UI
         private GridUnitType type;
 
         #region Properties
+
         /// <summary>
         /// Gets a value indicating whether this instance is auto.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is auto; otherwise, <c>false</c>.
         /// </value>
-        public bool IsAuto 
+        public bool IsAuto
         {
             get
             {
@@ -52,7 +46,7 @@ namespace WaveEngine.Components.UI
         /// </value>
         public bool IsPixel
         {
-            get 
+            get
             {
                 return this.type == GridUnitType.Pixel;
             }
@@ -78,7 +72,7 @@ namespace WaveEngine.Components.UI
         /// <value>
         /// The value.
         /// </value>
-        public float Value 
+        public float Value
         {
             get
             {
@@ -93,6 +87,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GridLength" /> struct.
         /// </summary>
@@ -117,6 +112,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Iqual operator of GridLength struct.
         /// </summary>
@@ -140,15 +136,15 @@ namespace WaveEngine.Components.UI
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// Determines whether the specified <see cref="object" /> is equal to this instance.
         /// </summary>
-        /// <param name="o">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <param name="o">The <see cref="object" /> to compare with this instance.</param>
         /// <returns>
-        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        ///   <c>true</c> if the specified <see cref="object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals(object o)
         {
-            return this == (GridLength)o; 
+            return this == (GridLength)o;
         }
 
         /// <summary>
@@ -165,7 +161,7 @@ namespace WaveEngine.Components.UI
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
         /// </returns>
         public override int GetHashCode()
         {

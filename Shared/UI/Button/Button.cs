@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Button
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -33,6 +26,7 @@ namespace WaveEngine.Components.UI
         private static int instances;
 
         #region Constants
+
         /// <summary>
         /// The default margin
         /// </summary>
@@ -429,6 +423,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Handles the TouchReleased event of the Button control.
         /// </summary>
@@ -482,8 +477,8 @@ namespace WaveEngine.Components.UI
                 RectangleF rectangle = transform.Rectangle;
 
                 rectangle.Offset(-rectangle.Width * transform.Origin.X, -rectangle.Height * transform.Origin.Y);
-                                
-                // If imageEntity exist                
+
+                // If imageEntity exist
                 imageEntity.RemoveComponent<ImageControl>();
                 imageEntity.AddComponent(newImageControl);
                 imageEntity.RefreshDependencies();

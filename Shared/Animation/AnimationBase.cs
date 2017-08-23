@@ -1,10 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// AnimationBase
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -67,10 +61,11 @@ namespace WaveEngine.Components.Animation
 
             this.keyFrameEvents = new Dictionary<string, Dictionary<int, string>>();
             instances++;
-        } 
+        }
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Gets the animation names.
         /// </summary>
@@ -131,6 +126,7 @@ namespace WaveEngine.Components.Animation
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Adds a key frame event to a given animation.
         /// </summary>

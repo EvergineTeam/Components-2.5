@@ -1,10 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// ParticleSystem2D
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -36,12 +30,12 @@ namespace WaveEngine.Components.Particles
 
         /// <summary>
         /// The end delta scale.
-        /// </summary>        
+        /// </summary>
         private float endDeltaScale = 1;
 
         /// <summary>
         ///     Maximun number of particles that can be displayed at one time.
-        /// </summary>        
+        /// </summary>
         private int numParticles = 100;
 
         /// <summary>
@@ -342,7 +336,7 @@ namespace WaveEngine.Components.Particles
 
         /// <summary>
         /// Gets or sets Interpolation Colors
-        /// </summary>        
+        /// </summary>
         [DataMember]
         [RenderProperty(AttatchToTag = 1, AttachToValue = true)]
         public List<Color> InterpolationColors { get; set; }

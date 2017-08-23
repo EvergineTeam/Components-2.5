@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// FixedCamera2D
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -49,7 +42,7 @@ namespace WaveEngine.Components.Cameras
         }
 
         /// <summary>
-        /// Gets or sets the vanishing point of the Camera 2D. It indicates the point of the screen where the perspective is focused. 
+        /// Gets or sets the vanishing point of the Camera 2D. It indicates the point of the screen where the perspective is focused.
         /// Its values are included in [0, 1] where (0, 0) indicates the top left corner.
         /// Such values are percentages where 1 means the 100% of the rectangle's width/height.
         /// </summary>
@@ -214,7 +207,7 @@ namespace WaveEngine.Components.Cameras
                 return this.entity.FindComponent<Camera2D>().LayerMask;
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the custom virtual screen.
         /// </summary>
@@ -266,7 +259,7 @@ namespace WaveEngine.Components.Cameras
         {
             this.entity = new Entity(name)
             .AddComponent(new Transform2D())
-            .AddComponent(new Camera2D());            
+            .AddComponent(new Camera2D());
         }
     }
 }

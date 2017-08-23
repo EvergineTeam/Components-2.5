@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// ScaleTransition
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -90,14 +83,15 @@ namespace WaveEngine.Components.Transitions
             Vector2 center = new Vector2(this.sourceRenderTarget.Width / 2, this.sourceRenderTarget.Height / 2);
 
             this.spriteBatch.Draw(this.sourceRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
-            this.spriteBatch.Draw(this.targetRenderTarget, 
-                                    center,                                   
-                                    null, 
-                                    Color.White * this.Lerp, 
-                                    0f, 
+            this.spriteBatch.Draw(
+                this.targetRenderTarget,
                                     center,
-                                    new Vector2(this.Lerp), 
-                                    SpriteEffects.None, 
+                                    null,
+                                    Color.White * this.Lerp,
+                                    0f,
+                                    center,
+                                    new Vector2(this.Lerp),
+                                    SpriteEffects.None,
                                     0f);
 
             this.spriteBatch.Render();

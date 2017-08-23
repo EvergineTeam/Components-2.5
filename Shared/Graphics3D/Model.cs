@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Model
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -26,14 +19,10 @@ namespace WaveEngine.Components.Graphics3D
     /// <summary>
     /// A 3D model. To render a model use the <see cref="ModelRenderer"/> class.
     /// </summary>
+    [Obsolete("This class is obsolete. Use MeshComponent (FileMesh, SphereMesh, CubeMesh...) instead.", false)]
     [DataContract(Namespace = "WaveEngine.Components.Graphics3D")]
     public class Model : LoadableModel, IDisposable
     {
-        /// <summary>
-        /// Number of instances of this component created.
-        /// </summary>
-        private static int instances;
-
         /// <summary>
         /// The is primitive.
         /// </summary>
@@ -45,6 +34,7 @@ namespace WaveEngine.Components.Graphics3D
         private ModelType modelType = ModelType.Custom;
 
         #region Properties
+
         /// <summary>
         /// Gets the number of meshes of this model.
         /// </summary>
@@ -78,14 +68,14 @@ namespace WaveEngine.Components.Graphics3D
 
                 if (!string.IsNullOrEmpty(value))
                 {
-                    this.ModelType = ModelType.Custom;                    
-                }                
+                    this.ModelType = ModelType.Custom;
+                }
             }
         }
 
         /// <summary>
         /// Gets or sets the model type.
-        /// </summary>   
+        /// </summary>
         [DontRenderProperty]
         [DataMember]
         public ModelType ModelType
@@ -126,9 +116,9 @@ namespace WaveEngine.Components.Graphics3D
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Model"/> class.
-        /// </summary>         
+        /// </summary>
         public Model()
-            : this("Model" + instances++, string.Empty)
+            : this("Model" + BaseModel.instances++, string.Empty)
         {
         }
 
@@ -137,7 +127,7 @@ namespace WaveEngine.Components.Graphics3D
         /// </summary>
         /// <param name="modelPath">The model path.</param>
         public Model(string modelPath)
-            : this("Model" + instances++, modelPath)
+            : this("Model" + BaseModel.instances++, modelPath)
         {
         }
 
@@ -155,6 +145,7 @@ namespace WaveEngine.Components.Graphics3D
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Creates the cube.
         /// </summary>
@@ -256,7 +247,7 @@ namespace WaveEngine.Components.Graphics3D
             }
 
             Model plane = new Model(string.Empty) { InternalModel = new InternalStaticModel() };
-            plane.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Primitives.Plane(normal.Value, size));
+            plane.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Primitives.Plane(normal.Value, size, size));
             plane.isPrimitive = true;
             plane.modelType = ModelType.Plane;
 
@@ -413,6 +404,7 @@ namespace WaveEngine.Components.Graphics3D
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Refresh primitive model
         /// </summary>
@@ -443,7 +435,7 @@ namespace WaveEngine.Components.Graphics3D
                     break;
                 case ModelType.Plane:
                     this.InternalModel = new InternalStaticModel();
-                    this.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Primitives.Plane(Vector3.UnitY, 1.0f));
+                    this.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Primitives.Plane(Vector3.UnitY, 1.0f, 1.0f));
                     break;
                 case ModelType.Pyramid:
                     this.InternalModel = new InternalStaticModel();

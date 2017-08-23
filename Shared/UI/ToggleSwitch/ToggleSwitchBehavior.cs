@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// ToggleSwitchBehavior
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -62,12 +55,22 @@ namespace WaveEngine.Components.UI
         /// <summary>
         /// The animations
         /// </summary>
-        private AnimationUI bulletAnimation, foregroundAnimation;
+        private AnimationUI bulletAnimation;
+
+        /// <summary>
+        /// The animations
+        /// </summary>
+        private AnimationUI foregroundAnimation;
 
         /// <summary>
         /// The animOn and animOff animations
         /// </summary>
-        private SingleAnimation animOn, animOff;
+        private SingleAnimation animOn;
+
+        /// <summary>
+        /// The animOn and animOff animations
+        /// </summary>
+        private SingleAnimation animOff;
 
         /// <summary>
         /// The on
@@ -94,9 +97,9 @@ namespace WaveEngine.Components.UI
         /// </value>
         public bool IsOn
         {
-            get 
+            get
             {
-                return this.on; 
+                return this.on;
             }
 
             set
@@ -158,6 +161,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ToggleSwitchBehavior" /> class.
         /// </summary>
@@ -178,6 +182,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Performs further custom initialization for this instance.
         /// </summary>
@@ -199,15 +204,15 @@ namespace WaveEngine.Components.UI
         {
             base.ResolveDependencies();
 
-            Entity foregroundEntity = Owner.FindChild("ForegroundEntity");
+            Entity foregroundEntity = this.Owner.FindChild("ForegroundEntity");
             this.foregroundTransform = foregroundEntity.FindComponent<Transform2D>();
             this.foregroundAnimation = foregroundEntity.FindComponent<AnimationUI>();
 
-            Entity bulletEntity = Owner.FindChild("BulletEntity");
+            Entity bulletEntity = this.Owner.FindChild("BulletEntity");
             this.bulletTransform = bulletEntity.FindComponent<Transform2D>();
             this.bulletAnimation = bulletEntity.FindComponent<AnimationUI>();
 
-            this.textControl = Owner.FindChild("TextEntity").FindComponent<TextControl>();
+            this.textControl = this.Owner.FindChild("TextEntity").FindComponent<TextControl>();
 
             if (this.on)
             {

@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// ImageAtlas
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -51,6 +44,7 @@ namespace WaveEngine.Components.UI
         private string textureName;
 
         #region Properties
+
         /// <summary>
         /// Gets or sets a value indicating whether [perssistent asset].
         /// </summary>
@@ -160,6 +154,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageAtlas" /> class.
         /// </summary>
@@ -181,8 +176,9 @@ namespace WaveEngine.Components.UI
             this.TintColor = Color.White;
         }
         #endregion
-        
+
         #region Private Methods
+
         /// <summary>
         /// Performs further custom initialization for this instance.
         /// </summary>
@@ -199,7 +195,7 @@ namespace WaveEngine.Components.UI
             }
             else
             {
-                this.SpriteSheet = Assets.LoadAsset<SpriteSheet>(this.AtlasPath);
+                this.SpriteSheet = this.Assets.LoadAsset<SpriteSheet>(this.AtlasPath);
             }
 
             this.UpdateSourceRectangle();
@@ -244,7 +240,7 @@ namespace WaveEngine.Components.UI
                 {
                     if (!this.IsGlobalAsset)
                     {
-                        Assets.UnloadAsset(this.AtlasPath);
+                        this.Assets.UnloadAsset(this.AtlasPath);
                     }
 
                     this.disposed = true;

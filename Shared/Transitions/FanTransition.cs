@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// FanTransition
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -25,7 +18,7 @@ namespace WaveEngine.Components.Transitions
     /// Transition effect where each square of the image appears at a different time.
     /// </summary>
     public class FanTransition : ScreenTransition
-    {        
+    {
         /// <summary>
         /// The sprite batch
         /// </summary>
@@ -90,19 +83,21 @@ namespace WaveEngine.Components.Transitions
 
             float rotation = MathHelper.PiOver2 * this.Lerp;
 
-            this.spriteBatch.Draw(this.sourceRenderTarget,
+            this.spriteBatch.Draw(
+                this.sourceRenderTarget,
                                     Vector2.Zero,
                                     null,
-                                    Color.White, 
+                                    Color.White,
                                     rotation,
                                     Vector2.Zero,
-                                    Vector2.One, 
-                                    SpriteEffects.None, 
+                                    Vector2.One,
+                                    SpriteEffects.None,
                                     0.5f);
 
             rotation -= MathHelper.PiOver2;
 
-            this.spriteBatch.Draw(this.targetRenderTarget,
+            this.spriteBatch.Draw(
+                this.targetRenderTarget,
                                     Vector2.Zero,
                                     null,
                                     Color.White,

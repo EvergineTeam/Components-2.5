@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// SliderBehavior
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -27,6 +20,7 @@ namespace WaveEngine.Components.UI
     public class SliderBehavior : FocusBehavior
     {
         #region Constants
+
         /// <summary>
         /// The default unchecked image
         /// </summary>
@@ -118,7 +112,12 @@ namespace WaveEngine.Components.UI
         /// <summary>
         /// The fadein and fadeOut
         /// </summary>
-        private SingleAnimation fadeIn, fadeOut;
+        private SingleAnimation fadeIn;
+
+        /// <summary>
+        /// The fadein and fadeOut
+        /// </summary>
+        private SingleAnimation fadeOut;
 
         /// <summary>
         /// The animation
@@ -126,6 +125,7 @@ namespace WaveEngine.Components.UI
         private AnimationUI animation;
 
         #region Cached values
+
         /// <summary>
         /// The cached difference between maximun and minimun
         /// </summary>
@@ -149,7 +149,12 @@ namespace WaveEngine.Components.UI
         /// <summary>
         /// The old cached value
         /// </summary>
-        private int oldCachedValue1, oldCachedValue2;
+        private int oldCachedValue1;
+
+        /// <summary>
+        /// The old cached value
+        /// </summary>
+        private int oldCachedValue2;
         #endregion
 
         #region Properties
@@ -215,7 +220,7 @@ namespace WaveEngine.Components.UI
                 }
 
                 if (this.value != value)
-                {                    
+                {
                     this.value = value;
 
                     if (this.bulletTransform != null)
@@ -310,6 +315,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SliderBehavior" /> class.
         /// </summary>
@@ -361,19 +367,19 @@ namespace WaveEngine.Components.UI
         {
             base.ResolveDependencies();
 
-            Entity bulletEntity = Owner.FindChild("BulletEntity");
+            Entity bulletEntity = this.Owner.FindChild("BulletEntity");
             this.bulletTransform = bulletEntity.FindComponent<Transform2D>();
             this.bulletImage = bulletEntity.FindComponent<ImageControl>();
             this.bulletImage.Width = DefaultSliderWeight;
             this.bulletImage.Height = DefaultSliderWeight;
 
-            Entity foregroundEntity = Owner.FindChild("ForegroundEntity");
+            Entity foregroundEntity = this.Owner.FindChild("ForegroundEntity");
             this.foregroundImage = foregroundEntity.FindComponent<ImageControl>();
             this.foregroundTransform = foregroundEntity.FindComponent<Transform2D>();
 
-            this.backgroundImage = Owner.FindChild("BackgroundEntity").FindComponent<ImageControl>();
+            this.backgroundImage = this.Owner.FindChild("BackgroundEntity").FindComponent<ImageControl>();
 
-            Entity textEntity = Owner.FindChild("TextEntity");
+            Entity textEntity = this.Owner.FindChild("TextEntity");
             this.textControl = textEntity.FindComponent<TextControl>();
             this.textTransform = textEntity.FindComponent<Transform2D>();
 
@@ -454,7 +460,7 @@ namespace WaveEngine.Components.UI
             }
 
             // RealTime Change event
-            if (this.RealTimeValueChanged != null  && this.oldCachedValue2 != this.value)
+            if (this.RealTimeValueChanged != null && this.oldCachedValue2 != this.value)
             {
                 this.RealTimeValueChanged(this, new ChangedEventArgs(this.oldCachedValue2, this.value));
                 this.oldCachedValue2 = this.value;
@@ -477,7 +483,7 @@ namespace WaveEngine.Components.UI
             }
 
             // RealTime Change event
-            if (this.RealTimeValueChanged != null  && this.oldCachedValue2 != this.value)
+            if (this.RealTimeValueChanged != null && this.oldCachedValue2 != this.value)
             {
                 this.RealTimeValueChanged(this, new ChangedEventArgs(this.oldCachedValue2, this.value));
                 this.oldCachedValue2 = this.value;

@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// ImageControl
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -51,6 +44,7 @@ namespace WaveEngine.Components.UI
         private bool isTextureColor;
 
         #region Properties
+
         /// <summary>
         /// Gets or sets a value indicating whether [perssistent asset].
         /// </summary>
@@ -100,7 +94,7 @@ namespace WaveEngine.Components.UI
         /// The color of the tint.
         /// </value>
         [DataMember]
-        public Color TintColor { get; set; }     
+        public Color TintColor { get; set; }
 
         /// <summary>
         /// Gets or sets the stretch.
@@ -114,6 +108,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageControl"/> class.
         /// </summary>
@@ -182,13 +177,14 @@ namespace WaveEngine.Components.UI
         protected override void DefaultValues()
         {
             base.DefaultValues();
-            
+
             this.isTextureColor = true;
         }
 
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Arranges the specified final size.
         /// </summary>
@@ -204,7 +200,7 @@ namespace WaveEngine.Components.UI
             if (currentRect.Height <= 0)
             {
                 currentRect.Height = this.desiredSize.Y;
-            }                              
+            }
 
             switch (this.Stretch)
             {
@@ -217,7 +213,7 @@ namespace WaveEngine.Components.UI
                 case Stretch.Uniform:
 
                     if (this.width >= this.height)
-                    {                        
+                    {
                         float finalProportionalHeight = (this.height * finalSize.Width) / this.width;
 
                         if (finalSize.Height < finalProportionalHeight)
@@ -286,7 +282,7 @@ namespace WaveEngine.Components.UI
 
             RectangleF rect = this.Transform2D.Rectangle;
             rect.Width *= this.Transform2D.XScale;
-            rect.Height *= this.Transform2D.YScale;  
+            rect.Height *= this.Transform2D.YScale;
 
             switch (this.HorizontalAlignment)
             {
@@ -299,7 +295,7 @@ namespace WaveEngine.Components.UI
                 case HorizontalAlignment.Right:
                     currentRect.X = finalSize.X + finalSize.Width - this.Margin.Right - rect.Width;
                     break;
-                case HorizontalAlignment.Stretch:                  
+                case HorizontalAlignment.Stretch:
                     break;
             }
 
@@ -326,6 +322,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Performs further custom initialization for this instance.
         /// </summary>

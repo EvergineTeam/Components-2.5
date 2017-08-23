@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Cone
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -20,6 +13,7 @@ namespace WaveEngine.Components.Primitives
     internal sealed class Cone : Geometric
     {
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Cone" /> class.
         /// </summary>
@@ -50,13 +44,13 @@ namespace WaveEngine.Components.Primitives
                 Vector3 normal = new Vector3(dx, 0, dz);
                 Vector3 basePos = (normal * radius) + (Vector3.Down * height);
                 Vector3 upPos = Vector3.Up * height;
-                                
+
                 normal = Vector3.Cross(upPos, basePos);
                 normal = Vector3.Cross(basePos, normal);
                 normal.Normalize();
 
-                this.AddVertex(upPos, normal, new Vector2(percent, 0));
-                this.AddVertex(basePos, normal, new Vector2(percent, 1));
+                this.AddVertex(upPos, normal, new Vector2(1 - percent, 0));
+                this.AddVertex(basePos, normal, new Vector2(1 - percent, 1));
 
                 if (i < tessellation)
                 {
@@ -111,7 +105,7 @@ namespace WaveEngine.Components.Primitives
                 Vector3 iniPosition = new Vector3(dx, 0, dz);
                 Vector3 position = (iniPosition * radius) + (normal * height);
 
-                this.AddVertex(position, normal, new Vector2(dx, dz));
+                this.AddVertex(position, normal, new Vector2(1 - ((dx * 0.5f) + 0.5f), (dz * 0.5f) + 0.5f));
             }
         }
         #endregion

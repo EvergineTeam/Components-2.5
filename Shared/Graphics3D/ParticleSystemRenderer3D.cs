@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// ParticleSystemRenderer3D
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 
@@ -58,10 +51,9 @@ namespace WaveEngine.Components.Graphics3D
         public ParticleSystem3D System;
 
         /// <summary>
-        /// Materials used rendering the particle system.
+        /// Material used rendering the particle system
         /// </summary>
-        [RequiredComponent]
-        public MaterialsMap MaterialsMap;
+        public Material material;
 
         /// <summary>
         /// Transform of the particle system emitter.
@@ -214,15 +206,19 @@ namespace WaveEngine.Components.Graphics3D
         {
             instances++;
         }
+
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Draws the particle system.
         /// </summary>
         /// <param name="gameTime">The elapsed game time.</param>
         public override void Draw(TimeSpan gameTime)
         {
+            WaveEngine.Framework.Diagnostic.Timers.BeginAveragedTimer("Old particle system");
+
             // Optimización del estado inactivo
             if (this.System.NumParticles == 0
                 || (!this.internalEnabled && !this.settings.Emit))
@@ -609,14 +605,16 @@ namespace WaveEngine.Components.Graphics3D
                     this.mesh.VertexBuffer.SetData(this.vertices, this.numVertices);
                     this.GraphicsDevice.BindVertexBuffer(this.mesh.VertexBuffer);
 
-                    this.RenderManager.DrawMesh(this.mesh, this.MaterialsMap.DefaultMaterial, ref localWorld, false);
+                    this.RenderManager.DrawMesh(this.mesh, this.material, ref localWorld, false);
                 }
             }
             else
             {
                 // if the scene is paused, draw the previous mesh
-                this.RenderManager.DrawMesh(this.mesh, this.MaterialsMap.DefaultMaterial, ref localWorld, false);
+                this.RenderManager.DrawMesh(this.mesh, this.material, ref localWorld, false);
             }
+
+            WaveEngine.Framework.Diagnostic.Timers.BeginAveragedTimer("Old particle system");
         }
         #endregion
 
@@ -628,6 +626,26 @@ namespace WaveEngine.Components.Graphics3D
         protected override void ResolveDependencies()
         {
             base.ResolveDependencies();
+
+            MaterialComponent materialComponent = this.Owner.FindComponent<MaterialComponent>();
+            if (materialComponent == null)
+            {
+                MaterialsMap materialsMap = this.Owner.FindComponent<MaterialsMap>();
+                if (materialsMap != null)
+                {
+                    materialsMap.OnComponentInitialized += (s, o) =>
+                    {
+                        this.material = materialsMap.DefaultMaterial;
+                    };
+                }
+            }
+            else
+            {
+                materialComponent.OnComponentInitialized += (s, o) =>
+                {
+                    this.material = materialComponent.Material;
+                };
+            }
 
             // If the entity is initialized, we need to update the current particle system
             if (this.isInitialized)
@@ -656,8 +674,12 @@ namespace WaveEngine.Components.Graphics3D
             {
                 if (disposing)
                 {
-                    this.GraphicsDevice.DestroyIndexBuffer(this.mesh.IndexBuffer);
-                    this.GraphicsDevice.DestroyVertexBuffer(this.mesh.VertexBuffer);
+                    if (this.GraphicsDevice != null)
+                    {
+                        this.GraphicsDevice.DestroyIndexBuffer(this.mesh.IndexBuffer);
+                        this.GraphicsDevice.DestroyVertexBuffer(this.mesh.VertexBuffer);
+                    }
+
                     this.disposed = true;
                 }
             }

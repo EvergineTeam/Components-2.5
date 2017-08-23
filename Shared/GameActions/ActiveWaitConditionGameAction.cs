@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// ActiveWaitConditionGameAction
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -34,6 +27,7 @@ namespace WaveEngine.Components.GameActions
         private int count;
 
         #region Properties
+
         /// <summary>
         /// Gets the predicate.
         /// </summary>
@@ -46,6 +40,7 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ActiveWaitConditionGameAction" /> class.
         /// </summary>
@@ -63,7 +58,7 @@ namespace WaveEngine.Components.GameActions
         /// Initializes a new instance of the <see cref="ActiveWaitConditionGameAction" /> class.
         /// </summary>
         /// <param name="parent">The parent action</param>
-        /// <param name="breakPredicate">The condition predicate</param>        
+        /// <param name="breakPredicate">The condition predicate</param>
         /// <param name="eventCount">The event count</param>
         public ActiveWaitConditionGameAction(IGameAction parent, Func<bool> breakPredicate, int eventCount = 1)
             : base(parent, "ActiveWaitConditionGameAction" + instances++)
@@ -72,8 +67,9 @@ namespace WaveEngine.Components.GameActions
             this.EventCount = eventCount;
         }
         #endregion
-        
+
         #region Public Methods
+
         /// <summary>
         /// Update the game action
         /// </summary>
@@ -93,6 +89,7 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Perform Run actions
         /// </summary>

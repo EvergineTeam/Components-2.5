@@ -1,11 +1,4 @@
-﻿#region File Description
-//----------------------------------------------------------------------------- 
-// PanelControl
-// 
-// Copyright © 2017 Wave Engine S.L. All rights reserved. 
-// Use is subject to license terms. 
-//----------------------------------------------------------------------------- 
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -24,9 +17,9 @@ namespace WaveEngine.Components.UI
     /// </summary>
     public class PanelControl : Control
     {
-        /// <summary> 
-        /// Total number of instances. 
-        /// </summary> 
+        /// <summary>
+        /// Total number of instances.
+        /// </summary>
         private static int instances;
 
         #region Initialize
@@ -52,7 +45,7 @@ namespace WaveEngine.Components.UI
             this.height = height;
         }
 
-        #region Public Methods       
+        #region Public Methods
 
         /// <summary>
         /// Arranges the specified final size.
@@ -62,19 +55,20 @@ namespace WaveEngine.Components.UI
         {
             base.Arrange(finalSize);
 
-            foreach (Entity entity in Owner.ChildEntities)
+            foreach (Entity entity in this.Owner.ChildEntities)
             {
                 Control control = entity.FindComponent<Control>(false);
 
                 if (control != null)
                 {
-                    control.Arrange(Transform2D.Rectangle);
+                    control.Arrange(this.Transform2D.Rectangle);
                 }
             }
         }
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>

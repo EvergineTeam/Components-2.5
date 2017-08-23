@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Geometric
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -33,6 +26,7 @@ namespace WaveEngine.Components.Primitives
         private readonly List<ushort> indices = new List<ushort>();
 
         #region Properties
+
         /// <summary>
         /// Gets the vertices count.
         /// </summary>
@@ -197,6 +191,7 @@ namespace WaveEngine.Components.Primitives
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Geometric" /> class.
         /// </summary>
@@ -215,6 +210,7 @@ namespace WaveEngine.Components.Primitives
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
@@ -226,13 +222,14 @@ namespace WaveEngine.Components.Primitives
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Adds a new vertex to the primitive model.
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="normal">The normal.</param>
         /// <remarks>
-        /// This should only be called during the initialization process, 
+        /// This should only be called during the initialization process,
         /// before InitializePrimitive.
         /// </remarks>
         protected void AddVertex(Vector3 position, Vector3 normal)
@@ -247,7 +244,7 @@ namespace WaveEngine.Components.Primitives
         /// <param name="normal">The normal.</param>
         /// <param name="texcoord">The texture coordinate.</param>
         /// <remarks>
-        /// This should only be called during the initialization process, 
+        /// This should only be called during the initialization process,
         /// before InitializePrimitive.
         /// </remarks>
         protected void AddVertex(Vector3 position, Vector3 normal, Vector2 texcoord)
@@ -263,7 +260,7 @@ namespace WaveEngine.Components.Primitives
         /// <param name="tangent">The tangent.</param>
         /// <param name="texcoord">The texture coordinate.</param>
         /// <remarks>
-        /// This should only be called during the initialization process, 
+        /// This should only be called during the initialization process,
         /// before InitializePrimitive.
         /// </remarks>
         protected void AddVertex(Vector3 position, Vector3 normal, Vector3 tangent, Vector2 texcoord)
@@ -277,7 +274,7 @@ namespace WaveEngine.Components.Primitives
         /// </summary>
         /// <param name="index">The index.</param>
         /// <remarks>
-        /// This should only be called during the initialization process, 
+        /// This should only be called during the initialization process,
         /// before InitializePrimitive.
         /// </remarks>
         protected void AddIndex(int index)

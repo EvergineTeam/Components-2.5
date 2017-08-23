@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Sphere
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -20,13 +13,16 @@ namespace WaveEngine.Components.Primitives
     internal sealed class Sphere : Geometric
     {
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Sphere" /> class.
         /// </summary>
         /// <param name="diameter">The sphere diameter.</param>
         /// <param name="tessellation">The sphere tessellation.</param>
+        /// <param name="uvHorizontalFlip">UV coord horizontal flip</param>
+        /// <param name="uvVerticalFlip">UV coord vertical flip</param>
         /// <exception cref="System.ArgumentOutOfRangeException">If tessellation is less than 3.</exception>
-        public Sphere(float diameter, int tessellation)
+        public Sphere(float diameter, int tessellation, bool uvHorizontalFlip = false, bool uvVerticalFlip = false)
         {
             if (tessellation < 3)
             {
@@ -39,11 +35,13 @@ namespace WaveEngine.Components.Primitives
             float vIncrement = 1f / verticalSegments;
             float radius = diameter / 2;
 
-            float u = 0;
-            float v = 0;
+            uIncrement *= uvHorizontalFlip ? 1 : -1;
+            vIncrement *= uvVerticalFlip ? 1 : -1;
+
+            float u = uvHorizontalFlip ? 0 : 1;
+            float v = uvVerticalFlip ? 0 : 1;
 
             // Start with a single vertex at the bottom of the sphere.
-            v = 1;
             for (int i = 0; i < horizontalSegments; i++)
             {
                 u += uIncrement;
@@ -51,12 +49,12 @@ namespace WaveEngine.Components.Primitives
             }
 
             // Create rings of vertices at progressively higher latitudes.
-            v = 1;
+            v = uvVerticalFlip ? 0 : 1;
             for (int i = 0; i < verticalSegments - 1; i++)
             {
                 float latitude = (((i + 1) * MathHelper.Pi) / verticalSegments) - MathHelper.PiOver2;
-                u = 0;
-                v -= vIncrement;
+                u = uvHorizontalFlip ? 0 : 1;
+                v += vIncrement;
                 float dy = (float)Math.Sin(latitude);
                 float dxz = (float)Math.Cos(latitude);
 
@@ -78,8 +76,8 @@ namespace WaveEngine.Components.Primitives
             }
 
             // Finish with a single vertex at the top of the sphere.
-            v = 0;
-            u = 0;
+            v = uvVerticalFlip ? 1 : 0;
+            u = uvHorizontalFlip ? 0 : 1;
             for (int i = 0; i < horizontalSegments; i++)
             {
                 u += uIncrement;

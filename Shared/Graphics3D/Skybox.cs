@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Skybox
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -78,6 +71,7 @@ namespace WaveEngine.Framework.Graphics
         private Matrix cachedRotation;
 
         #region Properties
+
         /// <summary>
         /// Gets or sets the SkyBox cubemap texture
         /// </summary>
@@ -142,6 +136,7 @@ namespace WaveEngine.Framework.Graphics
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Skybox" /> class.
         /// </summary>
@@ -172,6 +167,7 @@ namespace WaveEngine.Framework.Graphics
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Performs further custom initialization for this instance.
         /// </summary>
@@ -187,15 +183,15 @@ namespace WaveEngine.Framework.Graphics
 
             Vector3[] normals =
             {
-                new Vector3(0, 0, 1), 
-                new Vector3(0, 0, -1), 
+                new Vector3(0, 0, 1),
+                new Vector3(0, 0, -1),
                 new Vector3(1, 0, 0),
-                new Vector3(-1, 0, 0), 
-                new Vector3(0, 1, 0), 
+                new Vector3(-1, 0, 0),
+                new Vector3(0, 1, 0),
                 new Vector3(0, -1, 0)
             };
 
-            Vector2[] texCoord = 
+            Vector2[] texCoord =
             {
                 new Vector2(1, 1), new Vector2(0, 1), new Vector2(0, 0), new Vector2(1, 0),
                 new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1),
@@ -287,6 +283,7 @@ namespace WaveEngine.Framework.Graphics
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Refresh cubemap material
         /// </summary>

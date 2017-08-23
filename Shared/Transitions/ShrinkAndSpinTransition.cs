@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// ShrinkAndSpinTransition
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -102,7 +95,7 @@ namespace WaveEngine.Components.Transitions
             Color tint = Color.White * (float)Math.Sqrt(inverse);
 
             this.spriteBatch.Draw(this.sourceRenderTarget, center + translate, null, tint, rotation, center, scale, SpriteEffects.None, 0);
-            
+
             this.spriteBatch.Render();
 
             this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.sourceRenderTarget);

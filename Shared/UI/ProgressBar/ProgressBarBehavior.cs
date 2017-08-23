@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// ProgressBarBehavior
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -98,6 +91,7 @@ namespace WaveEngine.Components.UI
         private readonly Duration duration;
 
         #region Cached values
+
         /// <summary>
         /// The cached difference between maximun and minimun
         /// </summary>
@@ -106,6 +100,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Gets or sets the maximum.
         /// </summary>
@@ -267,6 +262,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ProgressBarBehavior" /> class.
         /// </summary>
@@ -309,7 +305,7 @@ namespace WaveEngine.Components.UI
         {
             base.ResolveDependencies();
 
-            Entity foregroundEntity = Owner.FindChild("ForegroundEntity");
+            Entity foregroundEntity = this.Owner.FindChild("ForegroundEntity");
             this.foregroundImage = foregroundEntity.FindComponent<ImageControl>();
             this.foregroundTransform = foregroundEntity.FindComponent<Transform2D>();
 
@@ -317,7 +313,7 @@ namespace WaveEngine.Components.UI
             this.foregroundImage.Width = 1;
             this.foregroundTransform.XScale = this.Panel.Width * (this.value - this.minimum) / this.difference;
 
-            this.backgroundImage = Owner.FindChild("BackgroundEntity").FindComponent<ImageControl>();
+            this.backgroundImage = this.Owner.FindChild("BackgroundEntity").FindComponent<ImageControl>();
 
             this.backgroundImage.Width = this.Panel.Width;
             this.backgroundImage.Height = this.Panel.Height;

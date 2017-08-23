@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// SpriteAtlasRenderer
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -48,6 +41,7 @@ namespace WaveEngine.Components.Graphics2D
         public AddressMode SamplerMode { get; set; }
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteAtlasRenderer" /> class.
         /// </summary>
@@ -69,6 +63,7 @@ namespace WaveEngine.Components.Graphics2D
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Allows to perform custom drawing.
         /// </summary>
@@ -112,6 +107,7 @@ namespace WaveEngine.Components.Graphics2D
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>

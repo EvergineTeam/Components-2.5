@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// GameAction
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using statements
 using System;
@@ -66,7 +59,7 @@ namespace WaveEngine.Components.GameActions
         /// <summary>
         /// The gameaction state
         /// </summary>
-        private TaskState state;
+        private GameActionState state;
 
         /// <summary>
         /// Gets the parent.
@@ -93,7 +86,7 @@ namespace WaveEngine.Components.GameActions
         /// <value>
         /// The state of the task.
         /// </value>
-        public TaskState State
+        public GameActionState State
         {
             get
             {
@@ -120,7 +113,7 @@ namespace WaveEngine.Components.GameActions
         /// <value>
         /// The child tasks.
         /// </value>
-        virtual public IEnumerable<IGameAction> ChildActions
+        public virtual IEnumerable<IGameAction> ChildActions
         {
             get
             {
@@ -136,7 +129,7 @@ namespace WaveEngine.Components.GameActions
         protected GameAction(string name, Scene scene = null)
         {
             this.IsSkippable = true;
-            this.State = TaskState.None;
+            this.State = GameActionState.None;
             this.Name = name;
             this.Scene = scene;
         }
@@ -159,12 +152,13 @@ namespace WaveEngine.Components.GameActions
 
             parent.Completed += this.OnParentComplete;
 
-            this.State = TaskState.Waiting;
+            this.State = GameActionState.Waiting;
             this.Scene = parent.Scene;
             this.Name = taskName;
         }
 
         #region Public Methods
+
         /// <summary>
         /// Ons the run.
         /// </summary>
@@ -184,21 +178,21 @@ namespace WaveEngine.Components.GameActions
                 return;
             }
 
-            if (this.State == TaskState.Finished
-                || this.State == TaskState.Aborted
-                || this.State == TaskState.Running)
+            if (this.State == GameActionState.Finished
+                || this.State == GameActionState.Aborted
+                || this.State == GameActionState.Running)
             {
                 throw new NotSupportedException(string.Format("The GameAction cannot be runned because its state ({0}) does not allow it", this.State.ToString()));
             }
 
-            if (this.Parent == null || this.Parent.State == TaskState.Finished)
+            if (this.Parent == null || this.Parent.State == GameActionState.Finished)
             {
-                this.State = TaskState.Running;
+                this.State = GameActionState.Running;
                 actionScheduler.RegisterGameAction(this);
 
                 this.PerformRun();
             }
-            else if (this.Parent.State == TaskState.None || this.Parent.State == TaskState.Waiting)
+            else if (this.Parent.State == GameActionState.None || this.Parent.State == GameActionState.Waiting)
             {
                 this.Parent.Run();
             }
@@ -217,17 +211,17 @@ namespace WaveEngine.Components.GameActions
         /// <returns>If the action is skipped susscessfully</returns>
         public bool TrySkip()
         {
-            if (this.State == TaskState.Running)
+            if (this.State == GameActionState.Running)
             {
                 // SKIP THIS
                 return this.PerformSkip();
             }
-            else if (this.Parent != null && (this.Parent.State == TaskState.Waiting || this.Parent.State == TaskState.Running))
+            else if (this.Parent != null && (this.Parent.State == GameActionState.Waiting || this.Parent.State == GameActionState.Running))
             {
                 // SKIP UP
                 return this.Parent.TrySkip();
             }
-            else if (this.State == TaskState.None || this.State == TaskState.Aborted || this.State == TaskState.Finished)
+            else if (this.State == GameActionState.None || this.State == GameActionState.Aborted || this.State == GameActionState.Finished)
             {
 #if DEBUG
                 throw new NotSupportedException("It cannot be skipped because it has not been started or already has been cancelled");
@@ -243,20 +237,20 @@ namespace WaveEngine.Components.GameActions
         ////[DebuggerStepThrough]
         public void Cancel()
         {
-            if (this.State == TaskState.Running)
+            if (this.State == GameActionState.Running)
             {
                 // CANCEL THIS
                 this.PerformCancel();
             }
-            else if (this.Parent != null && this.State == TaskState.Waiting)
+            else if (this.Parent != null && this.State == GameActionState.Waiting)
             {
                 // CANCEL UP
                 this.Parent.Cancel();
             }
             else if (
-                this.State == TaskState.None ||
-                this.State == TaskState.Aborted ||
-                this.State == TaskState.Finished)
+                this.State == GameActionState.None ||
+                this.State == GameActionState.Aborted ||
+                this.State == GameActionState.Finished)
             {
 #if DEBUG
                 throw new NotSupportedException("It cannot be canncelled because it has not been started or already has been cancelled");
@@ -265,10 +259,10 @@ namespace WaveEngine.Components.GameActions
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
+        /// A <see cref="string" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -277,15 +271,16 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Notifies the completed.
         /// </summary>
         ////[DebuggerStepThrough]
         protected void PerformCompleted()
         {
-            if (this.State == TaskState.Running)
+            if (this.State == GameActionState.Running)
             {
-                this.State = TaskState.Finished;
+                this.State = GameActionState.Finished;
                 actionScheduler.UnregisterGameAction(this);
 
                 if (this.Completed != null)
@@ -295,9 +290,9 @@ namespace WaveEngine.Components.GameActions
             }
             else
             {
-#if DEBUG
-                throw new NotSupportedException("The task cannot be completed. Incoherent current task state");
-#endif
+////#if DEBUG
+////                throw new NotSupportedException("The task cannot be completed. Incoherent current task state");
+////#endif
             }
         }
 
@@ -307,7 +302,7 @@ namespace WaveEngine.Components.GameActions
         ////[DebuggerStepThrough]
         protected virtual void PerformCancel()
         {
-            this.State = TaskState.Aborted;
+            this.State = GameActionState.Aborted;
             actionScheduler.UnregisterGameAction(this);
 
             if (this.Cancelled != null)
@@ -325,7 +320,7 @@ namespace WaveEngine.Components.GameActions
         {
             if (this.IsSkippable)
             {
-                this.State = TaskState.Finished;
+                this.State = GameActionState.Finished;
                 actionScheduler.UnregisterGameAction(this);
 
                 if (this.Skipped != null)

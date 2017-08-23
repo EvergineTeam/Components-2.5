@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Sprite
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -89,7 +82,7 @@ namespace WaveEngine.Components.Graphics2D
 
         /// <summary>
         /// Gets or sets a value indicating whether this asset is global.
-        /// By "global" it is meant this asset will be consumed anywhere else. It implies 
+        /// By "global" it is meant this asset will be consumed anywhere else. It implies
         /// once this component is disposed, the asset it-self will not be unload from memory.
         /// </summary>
         /// <value>
@@ -247,7 +240,13 @@ namespace WaveEngine.Components.Graphics2D
 
         #endregion
 
+        /// <summary>
+        /// Event fired when this sprite texture is changed
+        /// </summary>
+        public event EventHandler TextureChanged;
+
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Sprite" /> class
         /// based on a content file.
@@ -324,6 +323,7 @@ namespace WaveEngine.Components.Graphics2D
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
@@ -391,6 +391,8 @@ namespace WaveEngine.Components.Graphics2D
             {
                 this.UpdateSourceRectangle();
             }
+
+            this.TextureChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -489,6 +491,7 @@ namespace WaveEngine.Components.Graphics2D
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// The update source rectangle.
         /// </summary>

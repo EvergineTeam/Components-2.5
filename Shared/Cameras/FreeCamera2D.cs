@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// FreeCamera2D
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -71,7 +64,7 @@ namespace WaveEngine.Components.Cameras
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeCamera2D" /> class.
         /// </summary>
-        /// <param name="name">The name.</param>        
+        /// <param name="name">The name.</param>
         public FreeCamera2D(string name)
             : base(name)
         {
@@ -82,7 +75,7 @@ namespace WaveEngine.Components.Cameras
         /// Initializes a new instance of the <see cref="FreeCamera2D" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <param name="position">The position.</param>        
+        /// <param name="position">The position.</param>
         public FreeCamera2D(string name, Vector2 position)
             : base(name, position)
         {

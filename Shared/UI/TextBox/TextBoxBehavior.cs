@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// TextBoxBehavior
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -102,9 +95,15 @@ namespace WaveEngine.Components.UI
         /// <summary>
         /// Two part of text
         /// </summary>
-        private string textBeforeCursor, textAfterCursor;
+        private string textBeforeCursor;
+
+        /// <summary>
+        /// Two part of text
+        /// </summary>
+        private string textAfterCursor;
 
         #region Properties
+
         /// <summary>
         /// Gets or sets a value indicating whether [accepts return].
         /// </summary>
@@ -146,7 +145,7 @@ namespace WaveEngine.Components.UI
         }
 
         /// <summary>
-        /// Gets or sets the title used in the MessageBox 
+        /// Gets or sets the title used in the MessageBox
         /// </summary>
         public string MessageBoxTitle
         {
@@ -155,7 +154,7 @@ namespace WaveEngine.Components.UI
         }
 
         /// <summary>
-        /// Gets or sets the description used in the MessageBox 
+        /// Gets or sets the description used in the MessageBox
         /// </summary>
         public string MessageBoxDescription
         {
@@ -166,6 +165,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TextBoxBehavior" /> class.
         /// </summary>
@@ -220,14 +220,14 @@ namespace WaveEngine.Components.UI
         {
             base.ResolveDependencies();
 
-            this.textControl = Owner.FindChild("TextEntity").FindComponent<TextControl>();
+            this.textControl = this.Owner.FindChild("TextEntity").FindComponent<TextControl>();
             this.textBeforeCursor = this.textControl.Text;
 
-            Entity cursorEntity = Owner.FindChild("CursorEntity");
+            Entity cursorEntity = this.Owner.FindChild("CursorEntity");
             this.cursorTransform = cursorEntity.FindComponent<Transform2D>();
             this.cursorAnimation = cursorEntity.FindComponent<AnimationUI>();
 
-            this.imageControl = Owner.FindChild("ImageEntity").FindComponent<ImageControl>();
+            this.imageControl = this.Owner.FindChild("ImageEntity").FindComponent<ImageControl>();
             this.imageControl.Width = this.Panel.Width;
             this.imageControl.Height = this.Panel.Height;
         }
@@ -555,8 +555,8 @@ namespace WaveEngine.Components.UI
                 {
                     this.uppercase = true;
                 }
-                else if ((this.inputService.KeyboardState.LeftShift == ButtonState.Release && this.beforeKeyboardState.LeftShift != ButtonState.Release) ||
-                     (this.inputService.KeyboardState.RightShift == ButtonState.Release && this.beforeKeyboardState.RightShift != ButtonState.Release) ||
+                else if ((this.inputService.KeyboardState.LeftShift == ButtonState.Released && this.beforeKeyboardState.LeftShift != ButtonState.Released) ||
+                     (this.inputService.KeyboardState.RightShift == ButtonState.Released && this.beforeKeyboardState.RightShift != ButtonState.Released) ||
                      (this.inputService.KeyboardState.CapitalLock == ButtonState.Pressed && this.beforeKeyboardState.CapitalLock != ButtonState.Pressed && this.uppercase))
                 {
                     this.uppercase = false;
@@ -567,7 +567,7 @@ namespace WaveEngine.Components.UI
                 {
                     this.altcase = true;
                 }
-                else if (this.inputService.KeyboardState.RightAlt == ButtonState.Release)
+                else if (this.inputService.KeyboardState.RightAlt == ButtonState.Released)
                 {
                     this.altcase = false;
                 }

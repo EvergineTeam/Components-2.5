@@ -1,10 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// FreeCamera3DBehavior
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Usings Statements
 using System;
@@ -35,7 +29,7 @@ namespace WaveEngine.Components.Cameras
         /// Max pitch value of the camera
         /// </summary>
         private const float MaxPitch = MathHelper.PiOver2 * 0.95f;
-        
+
         /// <summary>
         /// The transform.
         /// </summary>
@@ -296,33 +290,53 @@ namespace WaveEngine.Components.Cameras
                 this.moveWithTouchPanel = false;
             }
 
-            if (this.isTouchPanelConnected || this.isMouseConnected)
+            if (this.isMouseConnected)
             {
-                if (this.isTouchPanelConnected)
-                {
-                    this.currentTouchPanelState = this.input.TouchPanelState;
-                }
-
-                if (this.isMouseConnected)
-                {
-                    this.currentMouseState = this.input.MouseState;
-                }
+                this.currentMouseState = this.input.MouseState;
 
                 // If there's a touch or right mouse button is pressed...
-                if ((this.isTouchPanelConnected && this.currentTouchPanelState.Count == 1)
-                    || (this.isMouseConnected && this.currentMouseState.RightButton == ButtonState.Pressed))
+                if (this.currentMouseState.RightButton == ButtonState.Pressed)
                 {
-                    // If there's a touch, capture its touch properties
-                    if (this.isTouchPanelConnected && this.currentTouchPanelState.Count == 1)
+                    // If pressed or moved
+                    if (this.currentMouseState.RightButton == ButtonState.Pressed)
                     {
-                        this.currentTouchLocation = this.currentTouchPanelState.First();
+                        if (this.isDragging == false)
+                        {
+                            // Set drag flag to true
+                            this.isDragging = true;
+                        }
+                        else
+                        {
+                            this.xDifference = this.currentMouseState.X - this.lastMouseState.X;
+                            this.yDifference = this.currentMouseState.Y - this.lastMouseState.Y;
+
+                            // Calculated yaw and pitch
+                            float yaw = -this.xDifference * this.rotationSpeed;
+                            float pitch = -this.yDifference * this.rotationSpeed;
+
+                            this.UpdateOrientation(yaw, pitch);
+                        }
                     }
 
+                    this.lastMouseState = this.currentMouseState;
+                }
+                else
+                {
+                    this.isDragging = false;
+                }
+            }
+            else if (this.isTouchPanelConnected)
+            {
+                this.currentTouchPanelState = this.input.TouchPanelState;
+
+                // If there's a touch, capture its touch properties
+                if (this.currentTouchPanelState.Count == 1)
+                {
+                    this.currentTouchLocation = this.currentTouchPanelState.First();
+
                     // If current touch is pressed or moved
-                    if ((this.isTouchPanelConnected
-                         && (this.currentTouchLocation.State == TouchLocationState.Pressed
-                             || this.currentTouchLocation.State == TouchLocationState.Moved))
-                        || (this.isMouseConnected && this.currentMouseState.RightButton == ButtonState.Pressed))
+                    if (this.currentTouchLocation.State == TouchLocationState.Pressed
+                        || this.currentTouchLocation.State == TouchLocationState.Moved)
                     {
                         if (this.isDragging == false)
                         {
@@ -333,19 +347,8 @@ namespace WaveEngine.Components.Cameras
                         {
                             // Get the current different between x and Y
                             // From touchpad
-                            if (this.currentTouchPanelState.IsConnected)
-                            {
-                                this.xDifference = this.currentTouchLocation.Position.X - this.lastTouchLocation.Position.X;
-                                this.yDifference = this.currentTouchLocation.Position.Y - this.lastTouchLocation.Position.Y;
-                            }
-
-                            if (this.isMouseConnected
-                                && (this.input.TouchPanelState.Count == 0
-                                    || (this.currentTouchLocation.Position.X == this.currentMouseState.Position.X && this.currentTouchLocation.Position.Y == this.currentMouseState.Position.Y)))
-                            {
-                                this.xDifference = this.currentMouseState.X - this.lastMouseState.X;
-                                this.yDifference = this.currentMouseState.Y - this.lastMouseState.Y;
-                            }
+                            this.xDifference = this.currentTouchLocation.Position.X - this.lastTouchLocation.Position.X;
+                            this.yDifference = this.currentTouchLocation.Position.Y - this.lastTouchLocation.Position.Y;
 
                             // Calculated yaw and pitch
                             float yaw = -this.xDifference * this.rotationSpeed;
@@ -356,7 +359,6 @@ namespace WaveEngine.Components.Cameras
                     }
 
                     this.lastTouchLocation = this.currentTouchLocation;
-                    this.lastMouseState = this.currentMouseState;
                 }
                 else
                 {
@@ -371,7 +373,7 @@ namespace WaveEngine.Components.Cameras
                 /////////////////////////////////////////////////
                 GamePadState gamePadState = this.input.GamePadState;
 
-                Vector2 leftStick = gamePadState.ThumbStricks.Left;
+                Vector2 leftStick = gamePadState.ThumbSticks.Left;
 
                 float threshold = 0.2f;
 
@@ -385,7 +387,7 @@ namespace WaveEngine.Components.Cameras
                 /////////////////////////////////////////////////
                 ////// LookAT
                 /////////////////////////////////////////////////
-                Vector2 rightStick = gamePadState.ThumbStricks.Right;
+                Vector2 rightStick = gamePadState.ThumbSticks.Right;
                 this.xDifference = rightStick.X;
                 this.yDifference = -rightStick.Y;
 

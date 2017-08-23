@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// ModelRenderer
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -26,6 +19,7 @@ namespace WaveEngine.Components.Graphics3D
     /// <summary>
     /// Renders a 3D model on the screen.
     /// </summary>
+    [Obsolete("This class is obsolete. Use MeshComponent and MeshRenderer instead.", false)]
     [DataContract(Namespace = "WaveEngine.Components.Graphics3D")]
     public class ModelRenderer : Drawable3D
     {
@@ -72,6 +66,7 @@ namespace WaveEngine.Components.Graphics3D
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelRenderer"/> class.
         /// </summary>
@@ -102,6 +97,7 @@ namespace WaveEngine.Components.Graphics3D
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Initialize model renderer
         /// </summary>

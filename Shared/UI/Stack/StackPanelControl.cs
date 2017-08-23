@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// StackPanelControl
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 
@@ -28,6 +21,7 @@ namespace WaveEngine.Components.UI
         private static int instances;
 
         #region Properties
+
         /// <summary>
         /// Gets or sets the orientation.
         /// </summary>
@@ -92,17 +86,19 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="StackPanelControl" /> class.
         /// </summary>
         public StackPanelControl()
             : base("StackPanelControl" + instances++)
         {
-            Orientation = Orientation.Vertical;
+            this.Orientation = Orientation.Vertical;
         }
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Measures the specified available size.
         /// </summary>
@@ -128,7 +124,7 @@ namespace WaveEngine.Components.UI
                 availableChildSize.Y = this.height;
             }
 
-            foreach (Entity entity in Owner.ChildEntities)
+            foreach (Entity entity in this.Owner.ChildEntities)
             {
                 Control control = entity.FindComponent<Control>(false);
 
@@ -136,7 +132,7 @@ namespace WaveEngine.Components.UI
                 {
                     Vector2 size = control.Measure(availableChildSize);
 
-                    if (Orientation == Orientation.Vertical)
+                    if (this.Orientation == Orientation.Vertical)
                     {
                         childSize.X = MathHelper.Max(childSize.X, size.X);
                         childSize.Y += size.Y;
@@ -149,8 +145,8 @@ namespace WaveEngine.Components.UI
                 }
             }
 
-            desiredSize.X = MathHelper.Max(childSize.X, desiredSize.X);
-            desiredSize.Y = MathHelper.Max(childSize.Y, desiredSize.Y);
+            this.desiredSize.X = MathHelper.Max(childSize.X, this.desiredSize.X);
+            this.desiredSize.Y = MathHelper.Max(childSize.Y, this.desiredSize.Y);
 
             return this.desiredSize;
         }
@@ -164,16 +160,16 @@ namespace WaveEngine.Components.UI
             base.Arrange(finalSize);
 
             float accum;
-            if (Orientation == Orientation.Vertical)
+            if (this.Orientation == Orientation.Vertical)
             {
-                accum = Transform2D.Rectangle.Y;
+                accum = this.Transform2D.Rectangle.Y;
             }
             else
             {
-                accum = Transform2D.Rectangle.X;
+                accum = this.Transform2D.Rectangle.X;
             }
 
-            foreach (Entity entity in Owner.ChildEntities)
+            foreach (Entity entity in this.Owner.ChildEntities)
             {
                 Control control = entity.FindComponent<Control>(false);
 
@@ -184,29 +180,29 @@ namespace WaveEngine.Components.UI
 
                     RectangleF childRect;
 
-                    if (Orientation == Orientation.Vertical)
+                    if (this.Orientation == Orientation.Vertical)
                     {
-                        x = Transform2D.Rectangle.X; 
+                        x = this.Transform2D.Rectangle.X;
                         y = accum;
                         accum += control.DesiredSize.Y;
 
                         childRect = new RectangleF(
                         x,
                         y,
-                        Transform2D.Rectangle.Width,
+                        this.Transform2D.Rectangle.Width,
                         control.DesiredSize.Y);
                     }
                     else
                     {
                         x = accum;
-                        y = Transform2D.Rectangle.Y; 
+                        y = this.Transform2D.Rectangle.Y;
                         accum += control.DesiredSize.X;
 
                         childRect = new RectangleF(
                         x,
                         y,
                         control.DesiredSize.X,
-                        Transform2D.Rectangle.Height);
+                        this.Transform2D.Rectangle.Height);
                     }
 
                     control.Arrange(childRect);

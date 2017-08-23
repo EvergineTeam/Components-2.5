@@ -1,14 +1,9 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// VRCameraRig
-//
-// Copyright © 2017 Wave Coorporation. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using WaveEngine.Common.Attributes;
 using WaveEngine.Common.Graphics;
@@ -25,7 +20,7 @@ namespace WaveEngine.Components.VR
     /// Oculus Rift manager
     /// </summary>
     [DataContract]
-    [RefreshEntityRequired]    
+    [RefreshEntityRequired]
     public class VRCameraRig : Behavior
     {
         /// <summary>
@@ -46,7 +41,12 @@ namespace WaveEngine.Components.VR
         /// <summary>
         /// Controller anchor
         /// </summary>
-        private static readonly string controllerAnchorName = "ControllerAnchor";
+        private static readonly string leftControllerAnchorName = "LeftControllerAnchor";
+
+        /// <summary>
+        /// Controller anchor
+        /// </summary>
+        private static readonly string rightControllerAnchorName = "RightControllerAnchor";
 
         /// <summary>
         /// Occurs when the eye pose anchors have been set.
@@ -88,7 +88,13 @@ namespace WaveEngine.Components.VR
         [DataMember]
         private VRMode vrMode;
 
+        /// <summary>
+        /// The controller list
+        /// </summary>
+        private List<VRController> vrControllers;
+
         #region Properties
+
         /// <summary>
         /// Gets or sets a value indicating whether the the eyes see the same image, which is rendered only by the left camera.
         /// </summary>
@@ -260,6 +266,37 @@ namespace WaveEngine.Components.VR
         }
 
         /// <summary>
+        /// Gets the VRController instance associated to the left controller.
+        /// </summary>
+        [DontRenderProperty]
+        public VRController LeftController
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the VRController instance associated to the roght controller.
+        /// </summary>
+        [DontRenderProperty]
+        public VRController RightController
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the controller list
+        /// </summary>
+        public IEnumerable<VRController> Controllers
+        {
+            get
+            {
+                return this.vrControllers.AsEnumerable();
+            }
+        }
+
+        /// <summary>
         /// Gets the root transform that always coincides with average of the left and right eye poses.
         /// </summary>
         [DontRenderProperty]
@@ -369,6 +406,7 @@ namespace WaveEngine.Components.VR
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Default values
         /// </summary>
@@ -385,6 +423,7 @@ namespace WaveEngine.Components.VR
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Initializes the OVR entities
         /// </summary>
@@ -410,7 +449,7 @@ namespace WaveEngine.Components.VR
                 return;
             }
 
-            var eyePoses = this.vrProvider.EyePoses;
+            var eyeProperties = this.vrProvider.EyesProperties;
             var trackerCameraPose = this.vrProvider.TrackerCameraPose;
 
             // Eye cameras
@@ -421,13 +460,44 @@ namespace WaveEngine.Components.VR
             this.TrackerAnchorTransform.LocalPosition = trackerCameraPose.Position;
             this.TrackerAnchorTransform.LocalOrientation = trackerCameraPose.Orientation;
 
-            // Controllers
-            this.UpdateController(this.LeftControllerAnchorTransform, this.vrProvider.LeftControllerPose);
-            this.UpdateController(this.RightControllerAnchorTransform, this.vrProvider.RightControllerPose);
+            // Update controllers
+            foreach (var vrController in this.vrControllers)
+            {
+                int index;
+                switch (vrController.Role)
+                {
+                    case VRControllerRole.LeftHand:
+                        index = this.vrProvider.LeftControllerIndex;
+                        break;
+                    case VRControllerRole.RightHand:
+                        index = this.vrProvider.RightControllerIndex;
+                        break;
+                    default:
+                        index = vrController.ControllerIndex;
+                        break;
+                }
+
+                var states = this.vrProvider.ControllerStates;
+
+                VRGenericControllerState newState;
+                if ((index >= 0)
+                    && (states != null)
+                    && (index < states.Length))
+                {
+                    newState = states[index];
+                }
+                else
+                {
+                    newState = default(VRGenericControllerState);
+                }
+
+                vrController.UpdateState(newState);
+            }
 
             // Center
-            this.CenterEyeAnchorTransform.LocalPosition = eyePoses[(int)VREyeType.CenterEye].Position;
-            this.CenterEyeAnchorTransform.LocalOrientation = eyePoses[(int)VREyeType.CenterEye].Orientation;
+            var centerEyePose = eyeProperties[(int)VREyeType.CenterEye].Pose;
+            this.CenterEyeAnchorTransform.LocalPosition = centerEyePose.Position;
+            this.CenterEyeAnchorTransform.LocalOrientation = centerEyePose.Orientation;
 
             if (this.LeftEyeCamera.RenderTarget == this.RightEyeCamera.RenderTarget)
             {
@@ -446,6 +516,7 @@ namespace WaveEngine.Components.VR
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Instantiate the ovr hierarchy
         /// </summary>
@@ -483,14 +554,16 @@ namespace WaveEngine.Components.VR
 
             if (this.LeftControllerAnchor == null)
             {
-                this.LeftControllerAnchor = this.ConfigureControllerAnchor(this.TrackingSpace, "Left");
+                this.LeftControllerAnchor = this.ConfigureControllerAnchor(this.TrackingSpace, VRControllerRole.LeftHand);
                 this.LeftControllerAnchorTransform = this.LeftControllerAnchor.FindComponent<Transform3D>();
+                this.LeftController = this.LeftControllerAnchor.FindComponent<VRController>();
             }
 
             if (this.RightControllerAnchor == null)
             {
-                this.RightControllerAnchor = this.ConfigureControllerAnchor(this.TrackingSpace, "Right");
+                this.RightControllerAnchor = this.ConfigureControllerAnchor(this.TrackingSpace, VRControllerRole.RightHand);
                 this.RightControllerAnchorTransform = this.RightControllerAnchor.FindComponent<Transform3D>();
+                this.RightController = this.RightControllerAnchor.FindComponent<VRController>();
             }
 
             bool needsCamera = this.LeftEyeCamera == null || this.RightEyeCamera == null || this.AttachedCamera == null;
@@ -520,6 +593,8 @@ namespace WaveEngine.Components.VR
 
                 this.RefreshCameraProperties();
             }
+
+            this.vrControllers = this.Owner.FindComponentsInChildren<VRController>().ToList();
 
             this.RefreshVRMode();
         }
@@ -556,26 +631,15 @@ namespace WaveEngine.Components.VR
         /// <param name="eyeIndex">The eye index</param>
         private void UpdateCamera(Camera3D camera, int eyeIndex)
         {
-            var eyeTexture = this.vrProvider.EyeTextures[eyeIndex];
-            var eyePose = this.vrProvider.EyePoses[eyeIndex];
-            var rt = eyeTexture.RenderTarget;
+            var eyeProperties = this.vrProvider.EyesProperties[eyeIndex];
+            var eyeTexture = eyeProperties.Texture;
+            var eyePose = eyeProperties.Pose;
 
-            camera.RenderTarget = rt;
+            camera.RenderTarget = eyeTexture.RenderTarget;
             camera.Viewport = eyeTexture.Viewport;
-            ////camera.View = eyePose.View;
+
             camera.Transform.LocalPosition = this.Monoscopic ? this.CenterEyeAnchorTransform.LocalPosition : eyePose.Position;
             camera.Transform.LocalOrientation = this.Monoscopic ? this.CenterEyeAnchorTransform.LocalOrientation : eyePose.Orientation;
-        }
-
-        /// <summary>
-        /// Update controller transform using VR provider data
-        /// </summary>
-        /// <param name="controllerAnchorTransform">The controller anchor transform</param>
-        /// <param name="pose">The controller pose</param>
-        private void UpdateController(Transform3D controllerAnchorTransform, VREyePose pose)
-        {
-            controllerAnchorTransform.LocalPosition = pose.Position;
-            controllerAnchorTransform.LocalOrientation = pose.Orientation;
         }
 
         /// <summary>
@@ -651,20 +715,38 @@ namespace WaveEngine.Components.VR
         /// Creates the OVR controller position
         /// </summary>
         /// <param name="root">The root entity</param>
-        /// <param name="namePrefix">The prefix for the name of the entity</param>
+        /// <param name="role">The controller role</param>
         /// <returns>The controller anchor</returns>
-        private Entity ConfigureControllerAnchor(Entity root, string namePrefix)
+        private Entity ConfigureControllerAnchor(Entity root, VRControllerRole role)
         {
-            string name = namePrefix + controllerAnchorName;
+            string name;
+
+            switch (role)
+            {
+                case VRControllerRole.LeftHand:
+                    name = leftControllerAnchorName;
+                    break;
+                case VRControllerRole.RightHand:
+                    name = rightControllerAnchorName;
+                    break;
+                default:
+                    name = string.Empty;
+                    break;
+            }
 
             Entity anchor = root.FindChild(name);
 
             if (anchor == null)
             {
                 anchor = new Entity(name)
-                .AddComponent(new Transform3D());
+                .AddComponent(new Transform3D())
+                .AddComponent(new VRController() { Role = role });
 
                 root.AddChild(anchor);
+            }
+            else if (anchor.FindComponent<VRController>() == null)
+            {
+                anchor.AddComponent(new VRController() { Role = role });
             }
 
             return anchor;

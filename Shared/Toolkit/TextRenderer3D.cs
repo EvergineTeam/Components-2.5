@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// TextRenderer3D
-//
-// Copyright © 2017 Wave Coorporation. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -58,6 +51,7 @@ namespace WaveEngine.Components.Toolkit
         private string layerTypeName;
 
         #region Properties
+
         /// <summary>
         /// Gets or sets the type of the layer.
         /// </summary>
@@ -110,6 +104,7 @@ namespace WaveEngine.Components.Toolkit
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Initializes default values
         /// </summary>
@@ -142,10 +137,11 @@ namespace WaveEngine.Components.Toolkit
 
             this.material.Diffuse = this.textComponent.SpriteFont.FontTexture;
             this.material.DiffuseColor = this.textComponent.Foreground;
+            this.material.Alpha = this.textComponent.Alpha;
 
             if (this.material.LayerType != this.LayerType)
-            {            
-                this.material.LayerType = this.LayerType;             
+            {
+                this.material.LayerType = this.LayerType;
             }
 
             var worldTransform = this.transform.WorldTransform;
@@ -154,18 +150,19 @@ namespace WaveEngine.Components.Toolkit
             Matrix.Multiply(ref scaleTransform, ref worldTransform, out worldTransform);
 
             float zOrder = Vector3.DistanceSquared(this.RenderManager.CurrentDrawingCamera3D.Position, this.transform.Position);
-            
+
             for (int i = 0; i < this.textComponent.MeshCount; i++)
             {
                 var mesh = this.textComponent.Meshes[i];
                 mesh.ZOrder = zOrder;
-                
+
                 this.RenderManager.DrawMesh(mesh, this.material, ref worldTransform);
             }
         }
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Disposes the text control
         /// </summary>

@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// GameActionFactory
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -29,14 +22,14 @@ namespace WaveEngine.Components.GameActions
         /// <summary>
         /// Continue with another action.
         /// </summary>
-        /// <param name="parent">The parent action.</param>        
+        /// <param name="parent">The parent action.</param>
         /// <param name="nextAction">The next action.</param>
         /// <returns>An action that continue with the next action when the parent is completed</returns>
         /// <exception cref="System.NotSupportedException">It is not possible to continue with, aborted or finised task. Defer the run command to a posterior stage.</exception>
         public static IGameAction ContinueWith(this IGameAction parent, IGameAction nextAction)
         {
-            if (nextAction.State == WaveEngine.Framework.Services.TaskState.Finished
-                || nextAction.State == WaveEngine.Framework.Services.TaskState.Aborted)
+            if (nextAction.State == WaveEngine.Framework.Services.GameActionState.Finished
+                || nextAction.State == WaveEngine.Framework.Services.GameActionState.Aborted)
             {
                 throw new NotSupportedException("It is not possible to continue with, aborted or finised task. Defer the run command to a posterior stage.");
             }
@@ -47,7 +40,7 @@ namespace WaveEngine.Components.GameActions
         /// <summary>
         /// Continue with another action.
         /// </summary>
-        /// <param name="parent">The parent action.</param>        
+        /// <param name="parent">The parent action.</param>
         /// <param name="nextActionGenerator">The next action generator.</param>
         /// <returns>An action that continue with the next action when the parent is completed</returns>
         /// <exception cref="System.NotSupportedException">It is not possible to continue with, aborted or finised task. Defer the run command to a posterior stage.</exception>
@@ -59,7 +52,7 @@ namespace WaveEngine.Components.GameActions
         /// <summary>
         /// Continue with another an action function
         /// </summary>
-        /// <param name="parent">The parent action.</param>        
+        /// <param name="parent">The parent action.</param>
         /// <param name="action">The next action.</param>
         /// <returns>An action that continue with the next action when the parent is completed</returns>
         /// <exception cref="System.NotSupportedException">It is not possible to continue with, aborted or finised task. Defer the run command to a posterior stage.</exception>
@@ -71,7 +64,7 @@ namespace WaveEngine.Components.GameActions
         /// <summary>
         /// Continue with another action.
         /// </summary>
-        /// <param name="parent">The parent action.</param>        
+        /// <param name="parent">The parent action.</param>
         /// <param name="childTasks">The chhild tasks.</param>
         /// <returns>An action that continue with the next action when the parent is completed</returns>
         /// <exception cref="System.NotSupportedException">It is not possible to continue with, aborted or finised task. Defer the run command to a posterior stage.</exception>
@@ -83,7 +76,7 @@ namespace WaveEngine.Components.GameActions
         /// <summary>
         /// Continue with another action.
         /// </summary>
-        /// <param name="parent">The parent action.</param>        
+        /// <param name="parent">The parent action.</param>
         /// <param name="childTasks">The chhild tasks.</param>
         /// <returns>An action that continue with the next action when the parent is completed</returns>
         /// <exception cref="System.NotSupportedException">It is not possible to continue with, aborted or finised task. Defer the run command to a posterior stage.</exception>
@@ -95,7 +88,7 @@ namespace WaveEngine.Components.GameActions
         /// <summary>
         /// Continue with another action.
         /// </summary>
-        /// <param name="parent">The parent action.</param>        
+        /// <param name="parent">The parent action.</param>
         /// <param name="childTaskGenerators">The chhild task generators.</param>
         /// <returns>An action that continue with the next action when the parent is completed</returns>
         /// <exception cref="System.NotSupportedException">It is not possible to continue with, aborted or finised task. Defer the run command to a posterior stage.</exception>
@@ -125,7 +118,7 @@ namespace WaveEngine.Components.GameActions
         {
             return new TapGameAction(parent, touchGestures);
         }
-        
+
         /// <summary>
         /// Ands the wait condition.
         /// </summary>
@@ -369,7 +362,7 @@ namespace WaveEngine.Components.GameActions
         /// <summary>
         /// Continue with another action.
         /// </summary>
-        /// <param name="parent">The parent action.</param>        
+        /// <param name="parent">The parent action.</param>
         /// <param name="childTasks">The chhild tasks.</param>
         /// <returns>An action that continue with the next action when the parent is completed</returns>
         /// <exception cref="System.NotSupportedException">It is not possible to continue with, aborted or finised task. Defer the run command to a posterior stage.</exception>

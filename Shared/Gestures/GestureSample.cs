@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// GestureSample
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using WaveEngine.Common.Math;
@@ -27,17 +20,17 @@ namespace WaveEngine.Components.Gestures
         /// Translation vector between the latest and the current point
         /// </summary>
         public Vector2 DeltaTranslation;
-        
+
         /// <summary>
         /// Angle of the rotation between the latest and the current point
         /// </summary>
         public float DeltaAngle;
-        
+
         /// <summary>
         /// Scale of the gesture
         /// </summary>
         public float DeltaScale;
-        
+
         /// <summary>
         /// Scale difference between the latest and the current point
         /// </summary>

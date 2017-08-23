@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// RotateTransition
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -94,7 +87,8 @@ namespace WaveEngine.Components.Transitions
             float rotation = MathHelper.PiOver2 * this.Lerp;
             float scale = ((((float)this.sourceRenderTarget.Height / this.sourceRenderTarget.Width) - 1) * this.Lerp) + 1;
 
-            this.spriteBatch.Draw(this.sourceRenderTarget,
+            this.spriteBatch.Draw(
+                this.sourceRenderTarget,
                                     center,
                                     null,
                                     Color.White * (1 - this.Lerp),
@@ -108,7 +102,8 @@ namespace WaveEngine.Components.Transitions
             float div = (float)this.sourceRenderTarget.Height / this.sourceRenderTarget.Width;
             scale = ((1 - div) * this.Lerp) + div;
 
-            this.spriteBatch.Draw(this.targetRenderTarget,
+            this.spriteBatch.Draw(
+                this.targetRenderTarget,
                                     center,
                                     null,
                                     Color.White * this.Lerp,

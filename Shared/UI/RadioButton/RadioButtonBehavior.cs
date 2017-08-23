@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// RadioButtonBehavior
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -48,7 +41,12 @@ namespace WaveEngine.Components.UI
         /// <summary>
         /// The fadein and fadeOut
         /// </summary>
-        private SingleAnimation fadeIn, fadeOut;
+        private SingleAnimation fadeIn;
+
+        /// <summary>
+        /// The fadein and fadeOut
+        /// </summary>
+        private SingleAnimation fadeOut;
 
         /// <summary>
         /// The image checked entity
@@ -80,12 +78,12 @@ namespace WaveEngine.Components.UI
         /// </value>
         public bool IsChecked
         {
-            get 
+            get
             {
-                return this.isChecked; 
+                return this.isChecked;
             }
 
-            set 
+            set
             {
                 if (this.isChecked == value)
                 {
@@ -184,7 +182,7 @@ namespace WaveEngine.Components.UI
         /// </summary>
         static RadioButtonBehavior()
         {
-            radioCollections = new Dictionary<string, List<RadioButtonBehavior>>();        
+            radioCollections = new Dictionary<string, List<RadioButtonBehavior>>();
         }
 
          /// <summary>
@@ -212,8 +210,8 @@ namespace WaveEngine.Components.UI
         {
             base.ResolveDependencies();
 
-            this.imageCheckedEntity = Owner.FindChild("ImageCheckedEntity");
-            
+            this.imageCheckedEntity = this.Owner.FindChild("ImageCheckedEntity");
+
             this.imageCheckedTransform = this.imageCheckedEntity.FindComponent<Transform2D>();
             if (this.isChecked)
             {
@@ -253,8 +251,8 @@ namespace WaveEngine.Components.UI
             if (!this.isChecked)
             {
                 this.Animation.BeginAnimation(Transform2D.OpacityProperty, this.fadeIn);
-                this.IsChecked = true;                
-            }            
+                this.IsChecked = true;
+            }
         }
 
         /// <summary>
@@ -269,6 +267,6 @@ namespace WaveEngine.Components.UI
         {
         }
 
-        #endregion        
+        #endregion
     }
 }

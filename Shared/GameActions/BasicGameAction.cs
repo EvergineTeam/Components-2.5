@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// BasicGameAction
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -32,6 +25,7 @@ namespace WaveEngine.Components.GameActions
         private static int instances;
 
         #region Properties
+
         /// <summary>
         /// Occurs when the action is running.
         /// </summary>
@@ -39,6 +33,7 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicGameAction" /> class.
         /// </summary>
@@ -50,6 +45,7 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Public methods
+
         /// <summary>
         /// Notifies that the action is completed.
         /// </summary>
@@ -59,8 +55,9 @@ namespace WaveEngine.Components.GameActions
             this.PerformCompleted();
         }
         #endregion
-        
+
         #region Private Methods
+
         /// <summary>
         /// Perform Run actions
         /// </summary>
@@ -70,7 +67,7 @@ namespace WaveEngine.Components.GameActions
             {
                 this.OnRun();
             }
-        } 
+        }
         #endregion
     }
 }

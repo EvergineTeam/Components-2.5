@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Billboard
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 #endregion
@@ -52,7 +45,7 @@ namespace WaveEngine.Components.Graphics2D
 
         /// <summary>
         /// The current texture is global asset.
-        /// </summary>        
+        /// </summary>
         private bool currentIsGlobalAsset;
 
         /// <summary>
@@ -69,7 +62,7 @@ namespace WaveEngine.Components.Graphics2D
 
         /// <summary>
         /// Gets or sets a value indicating whether this asset is global.
-        /// By "global" it is meant this asset will be consumed anywhere else. It implies 
+        /// By "global" it is meant this asset will be consumed anywhere else. It implies
         /// once this component is disposed, the asset it-self will not be unload from memory.
         /// </summary>
         /// <value>
@@ -180,6 +173,7 @@ namespace WaveEngine.Components.Graphics2D
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Billboard" /> class
         /// based on a content file.
@@ -211,7 +205,7 @@ namespace WaveEngine.Components.Graphics2D
         /// based on a texture.
         /// See <see cref="Texture"/> for more information.
         /// </summary>
-        /// <param name="texture">The texture.</param>        
+        /// <param name="texture">The texture.</param>
         /// <exception cref="System.ArgumentException">Texture can not be null.</exception>
         public Billboard(Texture texture)
             : base("Billboard" + instances++)
@@ -239,6 +233,7 @@ namespace WaveEngine.Components.Graphics2D
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>

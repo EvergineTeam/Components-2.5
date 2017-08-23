@@ -1,10 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Animation2D
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -128,6 +122,7 @@ namespace WaveEngine.Components.Animation
         public override event EventHandler<StringEventArgs> OnKeyFrameEvent;
 
         #region Properties
+
         /// <summary>
         /// Gets or sets the current frame of the animation.
         /// </summary>
@@ -251,6 +246,7 @@ namespace WaveEngine.Components.Animation
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Initialzie the component
         /// </summary>
@@ -402,6 +398,7 @@ namespace WaveEngine.Components.Animation
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Updates the animation.
         /// </summary>
@@ -437,7 +434,7 @@ namespace WaveEngine.Components.Animation
                         this.currentAnimationFrame = this.startFrame + (((int)(this.currentAnimationTime * this.framesPerSecond) + this.frameLength) % this.frameLength);
                     }
                 }
-                else 
+                else
                 {
                     if (this.currentAnimationTime < 0)
                     {

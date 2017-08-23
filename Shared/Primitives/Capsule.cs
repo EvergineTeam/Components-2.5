@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Capsule
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -20,6 +13,7 @@ namespace WaveEngine.Components.Primitives
     internal sealed class Capsule : Geometric
     {
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Capsule" /> class.
         /// </summary>
@@ -62,7 +56,7 @@ namespace WaveEngine.Components.Primitives
 
                     position += Vector3.Down * 0.5f * height;
 
-                    this.AddVertex(position, normal, new Vector2((0.5f * dx) + 0.5f, (0.5f * dz) + 0.5f));
+                    this.AddVertex(position, normal, new Vector2(1 - ((0.5f * dx) + 0.5f), (0.5f * dz) + 0.5f));
 
                     if (i < halfTessellation)
                     {
@@ -89,7 +83,7 @@ namespace WaveEngine.Components.Primitives
             }
 
             stride = this.VerticesCount;
-            float cylinderHeight = height - radius;
+            float cylinderHeight = height * 0.5f;
 
             // Creates the cylinder
             for (int i = 0; i <= tessellation; i++)
@@ -102,8 +96,8 @@ namespace WaveEngine.Components.Primitives
 
                 Vector3 normal = new Vector3(dx, 0, dz);
 
-                this.AddVertex((normal * radius) + (Vector3.Up * cylinderHeight), normal, new Vector2(percent, 0));
-                this.AddVertex((normal * radius) + (Vector3.Down * cylinderHeight), normal, new Vector2(percent, 1));
+                this.AddVertex((normal * radius) + (Vector3.Up * cylinderHeight), normal, new Vector2(1 - percent, 0));
+                this.AddVertex((normal * radius) + (Vector3.Down * cylinderHeight), normal, new Vector2(1 - percent, 1));
 
                 if (i < tessellation)
                 {

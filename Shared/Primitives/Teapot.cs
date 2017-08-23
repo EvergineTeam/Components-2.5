@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Teapot
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -20,6 +13,7 @@ namespace WaveEngine.Components.Primitives
     internal sealed class Teapot : Geometric
     {
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Teapot" /> class.
         /// </summary>
@@ -52,6 +46,7 @@ namespace WaveEngine.Components.Primitives
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// The teapot model consiste of 10 bezier patches. Each path has 16 controls points
         /// </summary>
@@ -304,6 +299,7 @@ namespace WaveEngine.Components.Primitives
         #endregion
 
         #region Data
+
         /// <summary>
         /// Static data array defines the bezier patches that make up the teapot.
         /// </summary>
@@ -319,7 +315,7 @@ namespace WaveEngine.Components.Primitives
 
             // Lid.
             new TeapotPatch(true, new int[] { 96, 96, 96, 96, 97, 98, 99, 100, 101, 101, 101, 101, 0, 1, 2, 3 }),
-            
+
             new TeapotPatch(true, new int[] { 0, 1, 2, 3, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117 }),
 
             // Handle.
@@ -339,7 +335,7 @@ namespace WaveEngine.Components.Primitives
         /// <summary>
         /// Static array defines the control point positions that make up the teapot.
         /// </summary>
-        private static Vector3[] teapotControlPoints = 
+        private static Vector3[] teapotControlPoints =
         {
             new Vector3(0f, 0.345f, -0.05f),
             new Vector3(-0.028f, 0.345f, -0.05f),

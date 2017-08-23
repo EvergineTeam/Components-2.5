@@ -65,22 +65,37 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics2D\Material2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics2D\ParticleSystemRenderer2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics2D\QuadRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics2D\SliceCacheItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics2D\Sprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics2D\SpriteAtlas.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics2D\SpriteAtlasRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics2D\SpriteRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\Billboard.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\BillboardRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\CapsuleMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\ConeMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\CubeMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\CylinderMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\FileMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\InternalSkinnedModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\InternalStaticModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\MaterialComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\MaterialsMap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\MeshComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\MeshRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\Model.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\ModelRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\ParticleSystemRenderer3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\PlaneMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\PyramidMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\SkinnedModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\SkinnedModelRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\Skybox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\CustomMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\SphereMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\Spinner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\TeapotMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics3D\TorusMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Particles\Particle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Particles\ParticleSystem2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Particles\ParticleSystem3D.cs" />
@@ -94,7 +109,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\Sphere.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\Teapot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\Torus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfoExt.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Toolkit\LookAtBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Toolkit\Tagalong.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Toolkit\TextComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Toolkit\TextRenderer2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Toolkit\TextRenderer3D.cs" />
@@ -148,6 +166,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Stack\StackPanelControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Stack\StackPanelRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\TextBlock\LineInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\TextBlock\SubTextInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\TextBlock\TextAlignment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\TextBlock\TextBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\TextBlock\TextControl.cs" />
@@ -161,6 +180,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Wrap\WrapPanelControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Wrap\WrapPanelRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VR\VRCameraRig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VR\VRTrackingLostMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VR\VRController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VR\VRProvider.cs" />
   </ItemGroup>
 </Project>

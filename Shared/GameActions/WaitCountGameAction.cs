@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// WaitCountGameAction
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -55,6 +48,7 @@ namespace WaveEngine.Components.GameActions
         private Func<IGameAction>[] childActionGenerators;
 
         #region Properties
+
         /// <summary>
         /// Gets the count limit.
         /// </summary>
@@ -76,6 +70,7 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WaitCountGameAction" /> class.
         /// </summary>
@@ -150,6 +145,7 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Checks the end.
         /// </summary>
@@ -185,15 +181,15 @@ namespace WaveEngine.Components.GameActions
             {
                 IGameAction action = this.childActions[i];
 
-                if (action.State == TaskState.Finished)
+                if (action.State == GameActionState.Finished)
                 {
                     this.ActionCompleted(action);
                 }
-                else if (action.State == TaskState.Aborted)
+                else if (action.State == GameActionState.Aborted)
                 {
                     this.ActionCancelled(action);
                 }
-                else if (action.State != TaskState.Running)
+                else if (action.State != GameActionState.Running)
                 {
                     action.Completed += this.ActionCompleted;
                     action.Cancelled += this.ActionCancelled;
@@ -214,7 +210,7 @@ namespace WaveEngine.Components.GameActions
                 {
                     IGameAction action = this.childActions[i];
 
-                    if (action.State == TaskState.Running || action.State == TaskState.Waiting)
+                    if (action.State == GameActionState.Running || action.State == GameActionState.Waiting)
                     {
                         action.Cancel();
                     }
@@ -230,7 +226,7 @@ namespace WaveEngine.Components.GameActions
         /// <param name="action">The game action.</param>
         protected void ActionCompleted(IGameAction action)
         {
-            if (this.State == TaskState.Running)
+            if (this.State == GameActionState.Running)
             {
                 action.Completed -= this.ActionCompleted;
                 action.Cancelled -= this.ActionCancelled;
@@ -246,7 +242,7 @@ namespace WaveEngine.Components.GameActions
         /// <param name="action">The game action.</param>
         protected void ActionCancelled(IGameAction action)
         {
-            if (this.State == TaskState.Running)
+            if (this.State == GameActionState.Running)
             {
                 action.Completed -= this.ActionCompleted;
                 action.Cancelled -= this.ActionCancelled;

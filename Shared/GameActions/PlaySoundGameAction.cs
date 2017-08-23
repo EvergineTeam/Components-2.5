@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// PlaySoundGameAction
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -45,6 +38,7 @@ namespace WaveEngine.Components.GameActions
         private bool loop;
 
         #region Properties
+
         /// <summary>
         /// Gets the sound info of the task
         /// </summary>
@@ -57,6 +51,7 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaySoundGameAction" /> class.
         /// </summary>
@@ -101,6 +96,7 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Perform Run actions
         /// </summary>

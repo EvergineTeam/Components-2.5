@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// GridControl
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System.Collections.Generic;
@@ -34,6 +27,7 @@ namespace WaveEngine.Components.UI
         private List<Control>[][] data;
 
         #region DepencencyProperties
+
         /// <summary>
         /// The row property
         /// </summary>
@@ -77,6 +71,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Gets the column definitions.
         /// </summary>
@@ -188,6 +183,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Measures the specified available size.
         /// </summary>
@@ -248,7 +244,7 @@ namespace WaveEngine.Components.UI
                 }
             }
 
-            // ----------  Calculate grid size ---------- 
+            // ----------  Calculate grid size ----------
             // Calculate Pixel
             foreach (var row in this.RowDefinitions)
             {
@@ -431,8 +427,8 @@ namespace WaveEngine.Components.UI
                         // Calculate RectangleF
                         RectangleF rect = new RectangleF()
                         {
-                            X = Transform2D.Rectangle.X + rowSize.X,
-                            Y = Transform2D.Rectangle.Y + totalSize.Y,
+                            X = this.Transform2D.Rectangle.X + rowSize.X,
+                            Y = this.Transform2D.Rectangle.Y + totalSize.Y,
                             Width = column.ActualWidth,
                             Height = row.ActualHeight
                         };
@@ -456,6 +452,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>

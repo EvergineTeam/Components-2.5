@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// CameraPoint
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System.Runtime.Serialization;
@@ -39,6 +32,7 @@ namespace WaveEngine.Components.Cameras
         public Vector3 LookAt;
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CameraPoint" /> struct.
         /// </summary>

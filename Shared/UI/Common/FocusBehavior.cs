@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// FocusBehavior
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -113,7 +106,7 @@ namespace WaveEngine.Components.UI
         /// </summary>
         public void Dispose()
         {
-            // If this component was disposed. Remove the static reference to avoid unnecessary memory withholding 
+            // If this component was disposed. Remove the static reference to avoid unnecessary memory withholding
             if (CurrentFocus == this)
             {
                 CurrentFocus = null;

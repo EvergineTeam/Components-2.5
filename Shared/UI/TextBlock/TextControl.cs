@@ -1,10 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// TextControl
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -102,6 +96,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Constructors and Destructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TextControl" /> class.
         /// </summary>
@@ -141,7 +136,7 @@ namespace WaveEngine.Components.UI
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextControl"/> class. 
+        /// Initializes a new instance of the <see cref="TextControl"/> class.
         /// </summary>
         /// <param name="fontPath">
         /// The font Path.
@@ -414,7 +409,7 @@ namespace WaveEngine.Components.UI
                 {
                     if (!this.IsGlobalAsset && !string.IsNullOrEmpty(this.fontPath))
                     {
-                        Assets.UnloadAsset(this.fontPath);
+                        this.Assets.UnloadAsset(this.fontPath);
                     }
 
                     this.disposed = true;
@@ -437,7 +432,7 @@ namespace WaveEngine.Components.UI
                 }
                 else
                 {
-                    this.SpriteFont = Assets.LoadAsset<SpriteFont>(this.fontPath);
+                    this.SpriteFont = this.Assets.LoadAsset<SpriteFont>(this.fontPath);
                 }
             }
             else
@@ -561,7 +556,7 @@ namespace WaveEngine.Components.UI
                                 XElement element = child as XElement;
                                 if (element.Name == "rtf" && element.Attribute("Foreground") != null)
                                 {
-                                    // Sets foreground 
+                                    // Sets foreground
                                     var colorAttribute = element.Attribute("Foreground");
                                     color = new Color(colorAttribute.Value);
                                 }

@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// RotateTo3DGameAction
-//
-// Copyright © 2017 Wave Coorporation. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -74,7 +67,7 @@ namespace WaveEngine.Components.GameActions
             if (this.shorterPath)
             {
                 var diff = this.to - this.from;
-                
+
                 if (diff.X > MathHelper.Pi)
                 {
                     this.to.X -= MathHelper.TwoPi;

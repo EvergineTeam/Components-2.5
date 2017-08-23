@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Torus
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -20,6 +13,7 @@ namespace WaveEngine.Components.Primitives
     internal sealed class Torus : Geometric
     {
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Torus" /> class.
         /// </summary>
@@ -63,7 +57,7 @@ namespace WaveEngine.Components.Primitives
                     position = Vector3.Transform(position, transform);
                     normal = Vector3.TransformNormal(normal, transform);
 
-                    this.AddVertex(position, normal, new Vector2(outerPercent, innerPercent));
+                    this.AddVertex(position, normal, new Vector2(outerPercent, 0.5f - innerPercent));
 
                     // And create indices for two triangles.
                     int nextI = (i + 1) % tessellationPlus;

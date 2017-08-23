@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// ButtonBehavior
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -44,7 +37,12 @@ namespace WaveEngine.Components.UI
         /// <summary>
         /// The fadein and fadeOut
         /// </summary>
-        private SingleAnimation fadeIn, fadeOut;
+        private SingleAnimation fadeIn;
+
+        /// <summary>
+        /// The fadein and fadeOut
+        /// </summary>
+        private SingleAnimation fadeOut;
 
         /// <summary>
         /// The text entity
@@ -77,7 +75,7 @@ namespace WaveEngine.Components.UI
         {
             base.ResolveDependencies();
 
-            this.textEntity = Owner.FindChild("TextEntity");        
+            this.textEntity = this.Owner.FindChild("TextEntity");
             this.Animation = this.textEntity.FindComponent<AnimationUI>();
         }
 
@@ -94,7 +92,7 @@ namespace WaveEngine.Components.UI
             this.Gestures.TouchPressed -= this.Gestures_TouchPressed;
             this.Gestures.TouchPressed += this.Gestures_TouchPressed;
             this.Gestures.TouchReleased -= this.Gestures_TouchReleased;
-            this.Gestures.TouchReleased += this.Gestures_TouchReleased;                    
+            this.Gestures.TouchReleased += this.Gestures_TouchReleased;
         }
 
         /// <summary>

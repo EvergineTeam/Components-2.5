@@ -1,17 +1,11 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// VRProvider
-//
-// Copyright © 2017 Wave Coorporation. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
 using System.Runtime.Serialization;
 using WaveEngine.Common.Attributes;
 using WaveEngine.Common.Graphics;
+using WaveEngine.Common.Input;
 using WaveEngine.Common.VR;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Graphics;
@@ -34,18 +28,12 @@ namespace WaveEngine.Components.VR
         protected VRCameraRig cameraRig;
 
         #region Properties
-        /// <summary>
-        /// Gets the eye textures information.
-        /// </summary>
-        public abstract VREyeTexture[] EyeTextures
-        {
-            get;
-        }
 
         /// <summary>
-        /// Gets the eye poses
+        /// Gets the eye properties
         /// </summary>
-        public abstract VREyePose[] EyePoses
+        [DontRenderProperty]
+        public abstract VREye[] EyesProperties
         {
             get;
         }
@@ -53,7 +41,26 @@ namespace WaveEngine.Components.VR
         /// <summary>
         /// Gets the tracker camera pose
         /// </summary>
-        public abstract VREyePose TrackerCameraPose
+        [DontRenderProperty]
+        public abstract VRPose TrackerCameraPose
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the left controller index (-1 in other case)
+        /// </summary>
+        [DontRenderProperty]
+        public abstract int LeftControllerIndex
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the right controller index (-1 in other case)
+        /// </summary>
+        [DontRenderProperty]
+        public abstract int RightControllerIndex
         {
             get;
         }
@@ -61,15 +68,20 @@ namespace WaveEngine.Components.VR
         /// <summary>
         /// Gets the left controller pose
         /// </summary>
-        public abstract VREyePose LeftControllerPose
+        [DontRenderProperty]
+        public abstract VRGenericControllerState[] ControllerStates
         {
             get;
         }
 
         /// <summary>
-        /// Gets the right controller pose
+        /// Gets the state of the generic controller.
         /// </summary>
-        public abstract VREyePose RightControllerPose
+        /// <value>
+        /// The state of the generic controller.
+        /// </value>
+        [DontRenderProperty]
+        public abstract GamePadState GamepadState
         {
             get;
         }
@@ -77,6 +89,7 @@ namespace WaveEngine.Components.VR
         /// <summary>
         /// Gets a value indicating whether the vr provider is connected
         /// </summary>
+        [DontRenderProperty]
         public abstract bool IsConnected
         {
             get;
@@ -87,6 +100,7 @@ namespace WaveEngine.Components.VR
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Update method
         /// </summary>
@@ -95,8 +109,8 @@ namespace WaveEngine.Components.VR
         {
             if (this.IsConnected)
             {
-                var leftEyeTexture = this.EyeTextures[0];
-                var rightEyeTexture = this.EyeTextures[1];
+                var leftEyeTexture = this.EyesProperties[(int)VREyeType.LeftEye].Texture;
+                var rightEyeTexture = this.EyesProperties[(int)VREyeType.RightEye].Texture;
 
                 if (this.cameraRig.LeftEyeCamera != null)
                 {

@@ -1,10 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Animation3D
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -105,6 +99,7 @@ namespace WaveEngine.Components.Animation
         public override event EventHandler<StringEventArgs> OnKeyFrameEvent;
 
         #region Properties
+
         /// <summary>
         /// Gets or sets the animation file path
         /// </summary>
@@ -253,6 +248,7 @@ namespace WaveEngine.Components.Animation
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Animation3D"/> class.
         /// </summary>
@@ -524,7 +520,7 @@ namespace WaveEngine.Components.Animation
 
                 if (!this.Backwards)
                 {
-                    // Is forward 
+                    // Is forward
                     if (this.targetFrame >= 0)
                     {
                         // TargetFrame enabled

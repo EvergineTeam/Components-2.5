@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// WrapPanelControl
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 
@@ -43,7 +36,7 @@ namespace WaveEngine.Components.UI
         public WrapPanelControl()
             : base("WrapPanel" + instances++)
         {
-            Orientation = Orientation.Horizontal;
+            this.Orientation = Orientation.Horizontal;
         }
 
         /// <summary>
@@ -132,7 +125,7 @@ namespace WaveEngine.Components.UI
                 availableChildSize.Y = this.height;
             }
 
-            foreach (Entity entity in Owner.ChildEntities)
+            foreach (Entity entity in this.Owner.ChildEntities)
             {
                 Control control = entity.FindComponent<Control>(false);
 
@@ -140,7 +133,7 @@ namespace WaveEngine.Components.UI
                 {
                     Vector2 size = control.Measure(availableChildSize);
 
-                    if (Orientation == Orientation.Horizontal)
+                    if (this.Orientation == Orientation.Horizontal)
                     {
                         // if new Line
                         if (line.X + size.X > availableChildSize.X)
@@ -173,7 +166,7 @@ namespace WaveEngine.Components.UI
 
             if (line.X > 0 || line.Y > 0)
             {
-                if (Orientation == Orientation.Horizontal)
+                if (this.Orientation == Orientation.Horizontal)
                 {
                     childSize.X = MathHelper.Max(childSize.X, line.X);
                     line.X = 0;
@@ -189,8 +182,8 @@ namespace WaveEngine.Components.UI
                 }
             }
 
-            desiredSize.X = MathHelper.Max(childSize.X, desiredSize.X);
-            desiredSize.Y = MathHelper.Max(childSize.Y, desiredSize.Y);
+            this.desiredSize.X = MathHelper.Max(childSize.X, this.desiredSize.X);
+            this.desiredSize.Y = MathHelper.Max(childSize.Y, this.desiredSize.Y);
 
             return this.desiredSize;
         }
@@ -206,7 +199,7 @@ namespace WaveEngine.Components.UI
             Vector2 line = Vector2.Zero;
             float accum = 0;
 
-            foreach (Entity entity in Owner.ChildEntities)
+            foreach (Entity entity in this.Owner.ChildEntities)
             {
                 Control control = entity.FindComponent<Control>(false);
 
@@ -215,35 +208,35 @@ namespace WaveEngine.Components.UI
                     float x;
                     float y;
 
-                    if (Orientation == Orientation.Horizontal)
+                    if (this.Orientation == Orientation.Horizontal)
                     {
                         // if new Line
-                        if (line.X + control.DesiredSize.X > Transform2D.Rectangle.Width)
+                        if (line.X + control.DesiredSize.X > this.Transform2D.Rectangle.Width)
                         {
                             line.X = 0;
                             accum += line.Y;
                             line.Y = 0;
                         }
 
-                        x = Transform2D.Rectangle.X + line.X;
+                        x = this.Transform2D.Rectangle.X + line.X;
                         line.X += control.DesiredSize.X;
                         line.Y = MathHelper.Max(line.Y, control.DesiredSize.Y);
-                        y = Transform2D.Rectangle.Y + accum;
+                        y = this.Transform2D.Rectangle.Y + accum;
                     }
                     else
                     {
                         // if new Line
-                        if (line.Y + control.DesiredSize.Y > Transform2D.Rectangle.Height)
+                        if (line.Y + control.DesiredSize.Y > this.Transform2D.Rectangle.Height)
                         {
                             line.Y = 0;
                             accum += line.X;
                             line.X = 0;
                         }
 
-                        y = Transform2D.Rectangle.Y + line.Y;
+                        y = this.Transform2D.Rectangle.Y + line.Y;
                         line.Y += control.DesiredSize.Y;
                         line.X = MathHelper.Max(line.X, control.DesiredSize.X);
-                        x = Transform2D.Rectangle.X + accum;
+                        x = this.Transform2D.Rectangle.X + accum;
                     }
 
                     RectangleF childRect = new RectangleF(

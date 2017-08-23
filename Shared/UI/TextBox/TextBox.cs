@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// TextBox
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -170,7 +163,7 @@ namespace WaveEngine.Components.UI
         }
 
         /// <summary>
-        /// Gets or sets the title used in the MessageBox 
+        /// Gets or sets the title used in the MessageBox
         /// </summary>
         [DataMember]
         public string MessageBoxTitle
@@ -187,7 +180,7 @@ namespace WaveEngine.Components.UI
         }
 
         /// <summary>
-        /// Gets or sets the description used in the MessageBox 
+        /// Gets or sets the description used in the MessageBox
         /// </summary>
         [DataMember]
         public string MessageBoxDescription

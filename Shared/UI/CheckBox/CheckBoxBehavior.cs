@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// CheckBoxBehavior
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -45,7 +38,12 @@ namespace WaveEngine.Components.UI
         /// <summary>
         /// The fadein and fadeOut
         /// </summary>
-        private SingleAnimation fadeIn, fadeOut;
+        private SingleAnimation fadeIn;
+
+        /// <summary>
+        /// The fadein and fadeOut
+        /// </summary>
+        private SingleAnimation fadeOut;
 
         /// <summary>
         /// The image checked entity
@@ -63,6 +61,7 @@ namespace WaveEngine.Components.UI
         private bool isChecked;
 
         #region Properties
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is checked.
         /// </summary>
@@ -114,6 +113,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckBoxBehavior" /> class.
         /// </summary>
@@ -131,6 +131,7 @@ namespace WaveEngine.Components.UI
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Resolves the dependencies needed for this instance to work.
         /// </summary>
@@ -138,7 +139,7 @@ namespace WaveEngine.Components.UI
         {
             base.ResolveDependencies();
 
-            this.imageCheckedEntity = Owner.FindChild("ImageCheckedEntity");
+            this.imageCheckedEntity = this.Owner.FindChild("ImageCheckedEntity");
             this.imageCheckedTransform = this.imageCheckedEntity.FindComponent<Transform2D>();
             this.Animation = this.imageCheckedEntity.FindComponent<AnimationUI>();
 

@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Pyramid
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using WaveEngine.Common.Math;
@@ -19,6 +12,7 @@ namespace WaveEngine.Components.Primitives
     internal sealed class Pyramid : Geometric
     {
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Pyramid" /> class.
         /// </summary>
@@ -58,7 +52,7 @@ namespace WaveEngine.Components.Primitives
             this.AddIndex(14);
             this.AddIndex(15);
 
-            // 0   3 
+            // 0   3
             // 1   2
             // Four vertices for a face.
             Vector3 normal = Vector3.Down;

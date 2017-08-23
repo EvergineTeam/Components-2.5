@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// GameActionNode
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -39,6 +32,7 @@ namespace WaveEngine.Components.GameActions
         private Func<IGameAction> actionFunction;
 
         #region Properties
+
         /// <summary>
         /// Gets the child tasks.
         /// </summary>
@@ -55,6 +49,7 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GameActionNode" /> class.
         /// </summary>
@@ -81,7 +76,7 @@ namespace WaveEngine.Components.GameActions
         /// Initializes a new instance of the <see cref="GameActionNode" /> class.
         /// </summary>
         /// <param name="parent">The parent action.</param>
-        /// <param name="wrappedAction">The wrapped game action</param>        
+        /// <param name="wrappedAction">The wrapped game action</param>
         public GameActionNode(IGameAction parent, IGameAction wrappedAction)
             : base(parent, "GameActionNode" + instances++)
         {
@@ -92,7 +87,7 @@ namespace WaveEngine.Components.GameActions
         /// Initializes a new instance of the <see cref="GameActionNode" /> class.
         /// </summary>
         /// <param name="parent">The parent action.</param>
-        /// <param name="actionFunction">The wrapped game action</param>        
+        /// <param name="actionFunction">The wrapped game action</param>
         public GameActionNode(IGameAction parent, Func<IGameAction> actionFunction)
             : base(parent, "GameActionNode" + instances++)
         {
@@ -101,6 +96,7 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Perform Run actions
         /// </summary>
@@ -118,7 +114,7 @@ namespace WaveEngine.Components.GameActions
             this.wrappedAction.Completed += this.WrappedActionCompleted;
             this.wrappedAction.Cancelled += this.WrappedActionCancelled;
 
-            if (this.wrappedAction.State != TaskState.Running)
+            if (this.wrappedAction.State != GameActionState.Running)
             {
                 this.wrappedAction.Run();
             }
@@ -143,7 +139,7 @@ namespace WaveEngine.Components.GameActions
         {
             action.Cancelled -= this.WrappedActionCancelled;
 
-            if (this.State == TaskState.Running || this.State == TaskState.Waiting)
+            if (this.State == GameActionState.Running || this.State == GameActionState.Waiting)
             {
                 this.PerformCancel();
             }
@@ -154,7 +150,7 @@ namespace WaveEngine.Components.GameActions
         /// </summary>
         protected override void PerformCancel()
         {
-            if (this.State == TaskState.Running)
+            if (this.State == GameActionState.Running)
             {
                 this.wrappedAction.Cancelled -= this.WrappedActionCancelled;
                 this.wrappedAction.Cancel();
@@ -181,10 +177,10 @@ namespace WaveEngine.Components.GameActions
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
+        /// A <see cref="string" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {

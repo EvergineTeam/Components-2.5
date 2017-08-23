@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// BillboardRenderer
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -72,6 +65,7 @@ namespace WaveEngine.Components.Shared.Graphics3D
         private Layer layer;
 
         #region Properties
+
         /// <summary>
         /// Gets or sets the type of the layer.
         /// </summary>
@@ -81,6 +75,11 @@ namespace WaveEngine.Components.Shared.Graphics3D
         [RenderPropertyAsLayer]
         public Type LayerType
         {
+            get
+            {
+                return this.layerType;
+            }
+
             set
             {
                 this.layerType = value;
@@ -90,11 +89,6 @@ namespace WaveEngine.Components.Shared.Graphics3D
                 {
                     this.layer = this.RenderManager.FindLayer(this.layerType);
                 }
-            }
-
-            get
-            {
-                return this.layerType;
             }
         }
 
@@ -134,6 +128,7 @@ namespace WaveEngine.Components.Shared.Graphics3D
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BillboardRenderer" /> class.
         /// </summary>
@@ -162,6 +157,7 @@ namespace WaveEngine.Components.Shared.Graphics3D
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Performs further custom initialization for this instance.
         /// </summary>
@@ -228,6 +224,7 @@ namespace WaveEngine.Components.Shared.Graphics3D
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>

@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// TextRenderer2D
-//
-// Copyright © 2017 Wave Coorporation. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -83,7 +76,7 @@ namespace WaveEngine.Components.Toolkit
             float opacity = this.RenderManager.DebugLines ? DebugAlpha : this.transform.GlobalOpacity;
             this.material.Diffuse = this.textComponent.SpriteFont.FontTexture;
             this.material.DiffuseColor = this.textComponent.Foreground;
-            this.material.Alpha = opacity;
+            this.material.Alpha = opacity * this.textComponent.Alpha;
 
             if (this.LayerType != this.material.LayerType)
             {
@@ -116,6 +109,7 @@ namespace WaveEngine.Components.Toolkit
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Disposes the text control
         /// </summary>

@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// WaitGameAction
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -39,6 +32,7 @@ namespace WaveEngine.Components.GameActions
         private Timer timer;
 
         #region Properties
+
         /// <summary>
         /// Gets or sets the duration of the game action
         /// </summary>
@@ -46,6 +40,7 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WaitGameAction" /> class.
         /// </summary>
@@ -61,7 +56,7 @@ namespace WaveEngine.Components.GameActions
         /// Initializes a new instance of the <see cref="WaitGameAction" /> class.
         /// </summary>
         /// <param name="parent">The parent action</param>
-        /// <param name="duration">The duration of the action</param>        
+        /// <param name="duration">The duration of the action</param>
         public WaitGameAction(IGameAction parent, TimeSpan duration)
             : base(parent, "WaitGameAction" + instances++)
         {
@@ -70,6 +65,7 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Perform Run actions
         /// </summary>
@@ -84,7 +80,7 @@ namespace WaveEngine.Components.GameActions
         /// </summary>
         private void TimerCompleted()
         {
-            if (this.State == WaveEngine.Framework.Services.TaskState.Running)
+            if (this.State == WaveEngine.Framework.Services.GameActionState.Running)
             {
                 this.PerformCompleted();
             }

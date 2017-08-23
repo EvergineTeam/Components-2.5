@@ -1,11 +1,4 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// TapGameAction
-//
-// Copyright © 2017 Wave Engine S.L. All rights reserved.
-// Use is subject to license terms.
-//-----------------------------------------------------------------------------
-#endregion
+﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -31,7 +24,7 @@ namespace WaveEngine.Components.GameActions
         /// Number of instances
         /// </summary>
         private static int instances;
-        
+
         /// <summary>
         /// The touch gestures to detect the tap
         /// </summary>
@@ -41,6 +34,7 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Initialize
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TapGameAction" /> class.
         /// </summary>
@@ -65,6 +59,7 @@ namespace WaveEngine.Components.GameActions
         #endregion
 
         #region Public methods
+
         /// <summary>
         /// Perform run action
         /// </summary>
@@ -73,8 +68,9 @@ namespace WaveEngine.Components.GameActions
             this.touchGestures.TouchTap += this.NotifyTap;
         }
         #endregion
-        
+
         #region Private Methods
+
         /// <summary>
         /// Handles the tap event on the touch gestures
         /// </summary>
