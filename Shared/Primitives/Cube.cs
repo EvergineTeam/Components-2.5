@@ -1,7 +1,8 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using WaveEngine.Common.Math;
+using WaveEngine.Framework.Graphics3D;
 #endregion
 
 namespace WaveEngine.Components.Primitives
@@ -19,10 +20,14 @@ namespace WaveEngine.Components.Primitives
         /// <param name="size">The size of cube.</param>
         /// <param name="uvHorizontalFlip">UV coord horizontal flip</param>
         /// <param name="uvVerticalFlip">UV coord vertical flip</param>
-        public Cube(float size, bool uvHorizontalFlip = false, bool uvVerticalFlip = false)
+        /// <param name="uTileFactor">Tile U factor</param>
+        /// <param name="vTileFactor">Tile V factor</param>
+        public Cube(float size, bool uvHorizontalFlip = false, bool uvVerticalFlip = false, float uTileFactor = 1, float vTileFactor = 1)
         {
-            var uAjust = uvHorizontalFlip ? 1 : 0;
-            var vAjust = uvVerticalFlip ? 1 : 0;
+            float uCoordMin = uvHorizontalFlip ? uTileFactor : 0;
+            float uCoordMax = uvHorizontalFlip ? 0 : uTileFactor;
+            float vCoordMin = uvVerticalFlip ? vTileFactor : 0;
+            float vCoordMax = uvVerticalFlip ? 0 : vTileFactor;
 
             // A cube has six faces, each one pointing in a different direction.
             Vector3[] normals =
@@ -37,12 +42,12 @@ namespace WaveEngine.Components.Primitives
 
             Vector2[] texCoord =
             {
-                new Vector2(1 ^ uAjust, 1 ^ vAjust), new Vector2(0 ^ uAjust, 1 ^ vAjust), new Vector2(0 ^ uAjust, 0 ^ vAjust), new Vector2(1 ^ uAjust, 0 ^ vAjust),
-                new Vector2(0 ^ uAjust, 0 ^ vAjust), new Vector2(1 ^ uAjust, 0 ^ vAjust), new Vector2(1 ^ uAjust, 1 ^ vAjust), new Vector2(0 ^ uAjust, 1 ^ vAjust),
-                new Vector2(1 ^ uAjust, 0 ^ vAjust), new Vector2(1 ^ uAjust, 1 ^ vAjust), new Vector2(0 ^ uAjust, 1 ^ vAjust), new Vector2(0 ^ uAjust, 0 ^ vAjust),
-                new Vector2(1 ^ uAjust, 0 ^ vAjust), new Vector2(1 ^ uAjust, 1 ^ vAjust), new Vector2(0 ^ uAjust, 1 ^ vAjust), new Vector2(0 ^ uAjust, 0 ^ vAjust),
-                new Vector2(0 ^ uAjust, 1 ^ vAjust), new Vector2(0 ^ uAjust, 0 ^ vAjust), new Vector2(1 ^ uAjust, 0 ^ vAjust), new Vector2(1 ^ uAjust, 1 ^ vAjust),
-                new Vector2(1 ^ uAjust, 0 ^ vAjust), new Vector2(1 ^ uAjust, 1 ^ vAjust), new Vector2(0 ^ uAjust, 1 ^ vAjust), new Vector2(0 ^ uAjust, 0 ^ vAjust),
+                new Vector2(uCoordMax, vCoordMax), new Vector2(uCoordMin, vCoordMax), new Vector2(uCoordMin, vCoordMin), new Vector2(uCoordMax, vCoordMin),
+                new Vector2(uCoordMin, vCoordMin), new Vector2(uCoordMax, vCoordMin), new Vector2(uCoordMax, vCoordMax), new Vector2(uCoordMin, vCoordMax),
+                new Vector2(uCoordMax, vCoordMin), new Vector2(uCoordMax, vCoordMax), new Vector2(uCoordMin, vCoordMax), new Vector2(uCoordMin, vCoordMin),
+                new Vector2(uCoordMax, vCoordMin), new Vector2(uCoordMax, vCoordMax), new Vector2(uCoordMin, vCoordMax), new Vector2(uCoordMin, vCoordMin),
+                new Vector2(uCoordMin, vCoordMax), new Vector2(uCoordMin, vCoordMin), new Vector2(uCoordMax, vCoordMin), new Vector2(uCoordMax, vCoordMax),
+                new Vector2(uCoordMax, vCoordMin), new Vector2(uCoordMax, vCoordMax), new Vector2(uCoordMin, vCoordMax), new Vector2(uCoordMin, vCoordMin),
             };
 
             Vector3[] tangents =
@@ -74,9 +79,8 @@ namespace WaveEngine.Components.Primitives
                 this.AddIndex(this.VerticesCount + 2);
                 this.AddIndex(this.VerticesCount + 3);
 
-                //// 0   3
-                //// 1   2
-
+                // 0   3
+                // 1   2
                 float sideOverTwo = size * 0.5f;
 
                 // Four vertices per face.

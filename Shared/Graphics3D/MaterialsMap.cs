@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -21,7 +21,6 @@ namespace WaveEngine.Components.Graphics3D
     /// <summary>
     /// A list of materials.
     /// </summary>
-    ////[Obsolete("This class is obsolete. Use MaterialComponent instead.", false)]
     [DataContract(Namespace = "WaveEngine.Components.Graphics3D")]
     public class MaterialsMap : Component
     {

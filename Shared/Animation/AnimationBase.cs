@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -8,11 +8,8 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using WaveEngine.Common.Attributes;
 using WaveEngine.Common.Helpers;
-using WaveEngine.Common.Math;
-using WaveEngine.Components.Graphics2D;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Animation;
-using WaveEngine.Framework.Graphics;
 #endregion
 
 namespace WaveEngine.Components.Animation
@@ -76,15 +73,6 @@ namespace WaveEngine.Components.Animation
         public abstract IEnumerable<string> AnimationNames { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the current active animation is played backwards.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if backwards; otherwise, <c>false</c>.
-        /// </value>
-        [DontRenderProperty]
-        public bool Backwards { get; protected set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the animation is played automatically when the CurrentAnimation
         /// </summary>
         /// <value>
@@ -107,7 +95,18 @@ namespace WaveEngine.Components.Animation
         /// Gets or sets the current frame of the animation.
         /// </summary>
         [DontRenderProperty]
-        public abstract int Frame { get; set; }
+        public abstract float PlayTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current frame of the animation.
+        /// </summary>
+        [DontRenderProperty]
+        public abstract float Frame { get; set; }
+
+        /// <summary>
+        /// Gets or sets the playback rate
+        /// </summary>
+        public abstract float PlaybackRate { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether current active animation is looping.
@@ -116,7 +115,7 @@ namespace WaveEngine.Components.Animation
         ///     <c>true</c> if the animation is looping; otherwise, <c>false</c>.
         /// </value>
         [DontRenderProperty]
-        public bool Loop { get; protected set; }
+        public virtual bool Loop { get; protected set; }
 
         /// <summary>
         /// Gets or sets the state of the current active animation.
@@ -203,7 +202,7 @@ namespace WaveEngine.Components.Animation
         /// </param>
         public void PlayAnimation(string name)
         {
-            this.PlayAnimation(name, this.Loop, this.Backwards);
+            this.PlayAnimation(name, this.Loop, 1);
         }
 
         /// <summary>
@@ -217,7 +216,7 @@ namespace WaveEngine.Components.Animation
         /// </param>
         public void PlayAnimation(string name, bool loop)
         {
-            this.PlayAnimation(name, loop, this.Backwards);
+            this.PlayAnimation(name, loop, 1);
         }
 
         /// <summary>
@@ -229,12 +228,12 @@ namespace WaveEngine.Components.Animation
         /// <param name="loop">
         /// if set to <c>true</c> loop the animation.
         /// </param>
-        /// <param name="backwards">
-        /// if set to <c>true</c> play the animation backwards.
+        /// <param name="playbackRate">
+        /// The playback rate.
         /// </param>
-        public void PlayAnimation(string name, bool loop, bool backwards)
+        public void PlayAnimation(string name, bool loop, float playbackRate)
         {
-            this.PlayAnimation(name, null, null, loop, backwards);
+            this.PlayAnimation(name, null, null, loop, playbackRate);
         }
 
         /// <summary>
@@ -251,7 +250,7 @@ namespace WaveEngine.Components.Animation
         /// </param>
         public void PlayAnimation(string name, int? startFrame, int? endFrame)
         {
-            this.PlayAnimation(name, startFrame, endFrame, this.Loop, this.Backwards);
+            this.PlayAnimation(name, startFrame, endFrame, this.Loop, 1);
         }
 
         /// <summary>
@@ -269,10 +268,10 @@ namespace WaveEngine.Components.Animation
         /// <param name="loop">
         /// if set to <c>true</c> loop the animation.
         /// </param>
-        /// <param name="backwards">
-        /// if set to <c>true</c> play the animation backwards.
+        /// <param name="playbackRate">
+        /// The playback rate.
         /// </param>
-        public abstract void PlayAnimation(string name, int? startFrame, int? endFrame, bool loop, bool backwards);
+        public abstract void PlayAnimation(string name, int? startFrame, int? endFrame, bool loop, float playbackRate = 1);
 
         /// <summary>
         /// Resume the animation.

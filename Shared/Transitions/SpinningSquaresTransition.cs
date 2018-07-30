@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -28,16 +28,6 @@ namespace WaveEngine.Components.Transitions
         /// The sprite batch
         /// </summary>
         private SpriteBatch spriteBatch;
-
-        /// <summary>
-        /// Source transition renderTarget
-        /// </summary>
-        private RenderTarget sourceRenderTarget;
-
-        /// <summary>
-        /// Target transition renderTarget
-        /// </summary>
-        private RenderTarget targetRenderTarget;
 
         /// <summary>
         /// Gets or sets the segments.
@@ -95,22 +85,18 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Draw(TimeSpan gameTime)
         {
-            this.sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
-                this.platform.ScreenWidth,
-                this.platform.ScreenHeight);
-            this.targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
-                this.platform.ScreenWidth,
-                this.platform.ScreenHeight);
+            var sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
+            var targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
 
-            this.DrawSources(gameTime, this.sourceRenderTarget);
-            this.DrawTarget(gameTime, this.targetRenderTarget);
+            this.DrawSources(gameTime, sourceRenderTarget);
+            this.DrawTarget(gameTime, targetRenderTarget);
 
             this.SetRenderState();
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
-            Vector2 center = new Vector2(this.sourceRenderTarget.Width / 2, this.sourceRenderTarget.Height / 2);
+            Vector2 center = new Vector2(sourceRenderTarget.Width / 2, sourceRenderTarget.Height / 2);
 
-            this.spriteBatch.Draw(this.targetRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
+            this.spriteBatch.Draw(targetRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
 
             System.Random random = new System.Random(23);
 
@@ -119,10 +105,10 @@ namespace WaveEngine.Components.Transitions
                 for (int y = 0; y < this.segments; y++)
                 {
                     Rectangle rect = new Rectangle(
-                        this.targetRenderTarget.Width * x / this.segments,
-                        this.targetRenderTarget.Height * y / this.segments,
-                        this.targetRenderTarget.Width / this.segments,
-                        this.targetRenderTarget.Height / this.segments);
+                        targetRenderTarget.Width * x / this.segments,
+                        targetRenderTarget.Height * y / this.segments,
+                        targetRenderTarget.Width / this.segments,
+                        targetRenderTarget.Height / this.segments);
 
                     Vector2 origin = new Vector2(rect.Width, rect.Height) / 2;
                     float inverse = 1 - this.Lerp;
@@ -132,17 +118,17 @@ namespace WaveEngine.Components.Transitions
 
                     Vector2 pos = new Vector2(rect.Center.X, rect.Center.Y);
 
-                    pos.X += (float)(random.NextDouble() - 0.5) * this.Lerp * (this.targetRenderTarget.Width / 2);
-                    pos.Y += (float)(random.NextDouble() - 0.5) * this.Lerp * (this.targetRenderTarget.Height / 2);
+                    pos.X += (float)(random.NextDouble() - 0.5) * this.Lerp * (targetRenderTarget.Width / 2);
+                    pos.Y += (float)(random.NextDouble() - 0.5) * this.Lerp * (targetRenderTarget.Height / 2);
 
-                    this.spriteBatch.Draw(this.sourceRenderTarget, pos, rect, Color.White * inverse, rotation, origin, scale, 0, 0);
+                    this.spriteBatch.Draw(sourceRenderTarget, pos, rect, Color.White * inverse, rotation, origin, scale, 0, 0);
                 }
             }
 
             this.spriteBatch.Render();
 
-            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.sourceRenderTarget);
-            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.targetRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(sourceRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(targetRenderTarget);
         }
 
         /// <summary>

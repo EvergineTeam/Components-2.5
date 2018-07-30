@@ -1,14 +1,16 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using WaveEngine.Common.Attributes;
 using WaveEngine.Common.Graphics;
 using WaveEngine.Common.Math;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Graphics;
+using WaveEngine.Framework.Managers;
 #endregion
 
 namespace WaveEngine.Components.Graphics2D
@@ -36,24 +38,11 @@ namespace WaveEngine.Components.Graphics2D
         private List<SliceCacheItem> sliceCacheItems;
 
         /// <summary>
-        /// Required <see cref="Transform2D"/>.
-        /// It provides where to draw the <see cref="Sprite"/>, which rotation to apply and which scale.
-        /// </summary>
-        [RequiredComponent]
-        public Transform2D Transform2D = null;
-
-        /// <summary>
         /// Required <see cref="Sprite"/>.
         /// It provides the in memory representation for a visual asset.
         /// </summary>
         [RequiredComponent(false)]
         public Sprite Sprite = null;
-
-        /// <summary>
-        /// Gets or sets the sampler mode
-        /// </summary>
-        [DataMember]
-        public AddressMode SamplerMode { get; set; }
 
         /// <summary>
         /// Gets or sets the draw mode
@@ -74,18 +63,14 @@ namespace WaveEngine.Components.Graphics2D
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteRenderer" /> class.
         /// </summary>
-        /// <param name="layerType">
+        /// <param name="layerId">
         /// Layer type (available at <see cref="DefaultLayers"/>).
         /// Example: new SpriteRenderer(DefaultLayers.Alpha)
         /// </param>
-        /// <param name="samplerMode">
-        /// Sampler mode <see cref="AddressMode"/>
-        /// Example: new SpriteRenderer(DefaultLayers.Alpha)
-        /// </param>
-        public SpriteRenderer(Type layerType, AddressMode samplerMode = AddressMode.LinearClamp)
-            : base("SpriteRenderer" + instances++, layerType)
+        public SpriteRenderer(int layerId)
+            : base("SpriteRenderer" + instances++, layerId)
         {
-            this.SamplerMode = samplerMode;
+            this.LayerId = layerId;
         }
 
         /// <summary>
@@ -95,7 +80,6 @@ namespace WaveEngine.Components.Graphics2D
         {
             base.DefaultValues();
 
-            this.SamplerMode = AddressMode.LinearClamp;
             this.DrawMode = SpriteDrawMode.Simple;
         }
         #endregion
@@ -122,11 +106,15 @@ namespace WaveEngine.Components.Graphics2D
         /// </remarks>
         public override void Draw(TimeSpan gameTime)
         {
+            if (this.layer == null)
+            {
+                return;
+            }
+
             if ((this.Sprite.Texture != null || this.Sprite.Material != null)
                 && this.Transform2D.GlobalOpacity > Drawable2D.Delta)
             {
-                float opacity = this.RenderManager.DebugLines ? DebugAlpha : this.Transform2D.GlobalOpacity;
-                Color color = this.Sprite.TintColor * opacity;
+                Color color = this.Sprite.TintColor * this.Transform2D.GlobalOpacity;
 
                 switch (this.DrawMode)
                 {
@@ -205,8 +193,7 @@ namespace WaveEngine.Components.Graphics2D
                     ref origin,
                     this.Transform2D.Effect,
                     ref spriteMatrix,
-                    this.Transform2D.DrawOrder,
-                    this.SamplerMode);
+                    this.Transform2D.DrawOrder);
             }
             else
             {
@@ -238,7 +225,7 @@ namespace WaveEngine.Components.Graphics2D
             var origin = Vector2.Center;
             foreach (var item in this.sliceCacheItems)
             {
-                var finalColor = this.RenderManager.DebugLines ? color * item.DebugTintColor : color;
+                var finalColor = this.RenderManager.ShouldDrawFlag(DebugLinesFlags.DebugAlphaOpacity) ? color * item.DebugTintColor : color;
 
                 this.layer.SpriteBatch.Draw(
                 this.Sprite.Texture,
@@ -247,8 +234,7 @@ namespace WaveEngine.Components.Graphics2D
                 ref origin,
                 SpriteEffects.None,
                 ref item.WorldMatrix,
-                this.Transform2D.DrawOrder,
-                this.SamplerMode);
+                this.Transform2D.DrawOrder);
             }
         }
 
@@ -393,12 +379,12 @@ namespace WaveEngine.Components.Graphics2D
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
             if (disposing && this.Sprite != null)
             {
                 this.Sprite.Dispose();
             }
         }
-
         #endregion
     }
 }

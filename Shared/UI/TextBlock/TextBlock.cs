@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -321,7 +321,7 @@ namespace WaveEngine.Components.UI
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="layer">The layer.</param>
-        public TextBlock(string name, Type layer)
+        public TextBlock(string name, int layer)
         {
             this.entity = new Entity(name)
                                 .AddComponent(new Transform2D())

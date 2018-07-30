@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -31,7 +31,7 @@ namespace WaveEngine.Framework.Graphics
         /// <summary>
         /// The camera3D
         /// </summary>
-        [RequiredComponent]
+        [RequiredComponent(false)]
         [DontRenderProperty]
         public Camera3D Camera3D;
 

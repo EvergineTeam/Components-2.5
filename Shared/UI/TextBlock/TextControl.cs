@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -661,7 +661,6 @@ namespace WaveEngine.Components.UI
                         child = child.NextNode;
                     }
 
-                    ////Debug.WriteLine("{");
                     float height = 0;
                     for (int i = 0; i < this.LinesInfo.Count; i++)
                     {
@@ -670,16 +669,7 @@ namespace WaveEngine.Components.UI
                         this.LinesInfo[i] = info;
 
                         height += info.Size.Y;
-
-                        ////Debug.WriteLine(string.Format("\tLineInfo [Size: {0} Offset: {1}]", info.Size, info.AlignmentOffsetX));
-
-                        ////foreach (var fragment in info.SubTextList)
-                        ////{
-                        ////    Debug.WriteLine(string.Format("\t\tFragment [Size: {0} Text: \"{1}\"]", fragment.Size, fragment.Text));
-                        ////}
                     }
-
-                    ////Debug.WriteLine("}");
 
                     this.Height = height + (this.LineSpacing * this.LinesInfo.Count);
 

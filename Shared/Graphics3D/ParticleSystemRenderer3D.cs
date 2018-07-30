@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 
@@ -578,16 +578,6 @@ namespace WaveEngine.Components.Graphics3D
                     this.vertices[j].Normal = transformedNormal;
                     this.vertices[j++].TexCoord = texcoord4;
 
-                    ////Vector3 pos1 = this.vertices[j - 4].Position;
-                    ////Vector3 pos2 = this.vertices[j - 3].Position;
-                    ////Vector3 pos3 = this.vertices[j - 2].Position;
-                    ////Vector3 pos4 = this.vertices[j - 1].Position;
-
-                    ////this.RenderManager.LineBatch3D.DrawLine(pos1, pos2, p.Color);
-                    ////this.RenderManager.LineBatch3D.DrawLine(pos2, pos3, p.Color);
-                    ////this.RenderManager.LineBatch3D.DrawLine(pos3, pos4, p.Color);
-                    ////this.RenderManager.LineBatch3D.DrawLine(pos4, pos1, p.Color);
-
                     // Si la partícula está viva la contamos
                     if (p.Alive)
                     {
@@ -980,7 +970,6 @@ namespace WaveEngine.Components.Graphics3D
                 Vector3.Multiply(ref vector, (float)(1f / ((float)Math.Sqrt((double)num))), out vector);
             }
 
-            ////Vector3 cameraUpVector = Vector3.Up;
             // Vector3.Cross(ref cameraUpVector, ref vector, out vector3);
             vector3.X = vector.Z;
             vector3.Y = 0;

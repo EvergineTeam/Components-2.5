@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -274,8 +274,6 @@ namespace WaveEngine.Components.UI
             this.value = this.minimum;
 
             this.duration = new Duration(TimeSpan.FromSeconds(.4f));
-
-            ////this.move = new SingleAnimation(0, 100, this.duration);
         }
         #endregion
 

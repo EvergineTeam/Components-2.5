@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -9,6 +9,7 @@ using WaveEngine.Common.Graphics.VertexFormats;
 using WaveEngine.Common.Math;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Graphics;
+using WaveEngine.Framework.Managers;
 using WaveEngine.Framework.Services;
 using WaveEngine.Materials;
 #endregion
@@ -53,7 +54,7 @@ namespace WaveEngine.Components.Toolkit
         {
             base.Initialize();
 
-            this.material = new StandardMaterial() { DiffuseColor = Color.White, LightingEnabled = false, LayerType = this.LayerType, SamplerMode = AddressMode.LinearClamp };
+            this.material = new StandardMaterial() { DiffuseColor = Color.White, LightingEnabled = false, LayerId = this.LayerId };
         }
 
         #endregion
@@ -73,14 +74,19 @@ namespace WaveEngine.Components.Toolkit
                 return;
             }
 
-            float opacity = this.RenderManager.DebugLines ? DebugAlpha : this.transform.GlobalOpacity;
-            this.material.Diffuse = this.textComponent.SpriteFont.FontTexture;
+            float opacity = this.transform.GlobalOpacity;
+            if (this.RenderManager.ShouldDrawFlag(DebugLinesFlags.DebugAlphaOpacity))
+            {
+                opacity *= 0.5f;
+            }
+
+            this.material.Diffuse1 = this.textComponent.SpriteFont.FontTexture;
             this.material.DiffuseColor = this.textComponent.Foreground;
             this.material.Alpha = opacity * this.textComponent.Alpha;
 
-            if (this.LayerType != this.material.LayerType)
+            if (this.LayerId != this.material.LayerId)
             {
-                this.material.LayerType = this.LayerType;
+                this.material.LayerId = this.LayerId;
             }
 
             var scaleTransform = Matrix.CreateScale(new Vector3(1, -1, 1));
@@ -116,6 +122,7 @@ namespace WaveEngine.Components.Toolkit
         /// <param name="disposing">If it's disposing</param>
         protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -198,7 +198,7 @@ namespace WaveEngine.Components.Toolkit
         /// <summary>
         /// Gets the meshes
         /// </summary>
-        public List<Mesh> Meshes
+        public override List<Mesh> Meshes
         {
             get
             {
@@ -248,8 +248,6 @@ namespace WaveEngine.Components.Toolkit
 
             set
             {
-                ////if (this.fontPath != value)
-                ////{
                 this.fontPath = value;
 
                 if (this.isInitialized)
@@ -257,8 +255,6 @@ namespace WaveEngine.Components.Toolkit
                     this.UpdateSpriteFont();
                     this.RefreshText();
                 }
-
-                ////}
             }
         }
 
@@ -617,7 +613,6 @@ namespace WaveEngine.Components.Toolkit
                 var handledText = this.text;
                 handledText = handledText.Replace("\r\n", " /n ");
                 handledText = handledText.Replace("\n", " /n ");
-                ////this.text = this.text.Replace("/n", "/n");
                 handledText = handledText.Replace("\t", "  ");
 
                 string[] words = handledText.Split(' ');
@@ -653,7 +648,6 @@ namespace WaveEngine.Components.Toolkit
 
                     string text = stringBuilder.ToString();
                     Vector2 size = this.SpriteFont.MeasureString(text);
-                    ////float offsetX = this.CalculateAlignmentOffset(size);
                     this.LinesInfo.Add(new LineInfo(text, this.Foreground, size, 0));
                     stringBuilder.Length = 0;
 
@@ -856,8 +850,6 @@ namespace WaveEngine.Components.Toolkit
                 return;
             }
 
-            ////this.normalLines.Clear();
-
             int index = 0;
             int remainingVertices = totalChars * CHARVERTICES;
             int bufferLength = 0;
@@ -865,11 +857,20 @@ namespace WaveEngine.Components.Toolkit
             float tW = this.SpriteFont.FontTexture.Width;
             float tH = this.SpriteFont.FontTexture.Height;
 
+            Vector3 min = new Vector3(float.MaxValue, float.MaxValue, 0);
+            Vector3 max = new Vector3(float.MinValue, float.MinValue, MathHelper.Epsilon);
+
             for (int charNum = 0; charNum < totalChars; charNum++)
             {
                 var charInfo = this.charInfoList[charNum];
                 var p = charInfo.Position;
                 var s = charInfo.SourceRectangle;
+
+                min.X = Math.Min(min.X, p.Left);
+                min.Y = Math.Min(min.Y, p.Top);
+
+                max.X = Math.Max(max.X, p.Right);
+                max.Y = Math.Max(max.Y, p.Bottom);
 
                 // Builds the vertex information.
                 // Front Vertex
@@ -910,6 +911,10 @@ namespace WaveEngine.Components.Toolkit
                     bufferLength = 0;
                 }
             }
+
+            this.BoundingBox = new BoundingBox(min, max);
+
+            this.ThrowRefreshEvent();
         }
 
         /// <summary>
@@ -943,24 +948,6 @@ namespace WaveEngine.Components.Toolkit
 
             this.charInfoList.Clear();
             this.meshes.Clear();
-        }
-
-        /// <summary>
-        /// Gets the collition info.
-        /// </summary>
-        /// <returns>Vertex array.</returns>
-        public override Vector3[] GetVertices()
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// The get indices
-        /// </summary>
-        /// <returns>Indices array</returns>
-        public override int[] GetIndices()
-        {
-            return null;
         }
 
         /// <summary>

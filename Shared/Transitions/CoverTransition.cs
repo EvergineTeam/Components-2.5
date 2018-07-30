@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -70,16 +70,6 @@ namespace WaveEngine.Components.Transitions
         /// The sprite batch
         /// </summary>
         private SpriteBatch spriteBatch;
-
-        /// <summary>
-        /// Source transition renderTarget
-        /// </summary>
-        private RenderTarget sourceRenderTarget;
-
-        /// <summary>
-        /// Target transition renderTarget
-        /// </summary>
-        private RenderTarget targetRenderTarget;
 
         /// <summary>
         /// The transition options
@@ -167,33 +157,22 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Draw(TimeSpan gameTime)
         {
-            this.sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
-                this.platform.ScreenWidth,
-                this.platform.ScreenHeight);
-            this.targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
-                this.platform.ScreenWidth,
-                this.platform.ScreenHeight);
+            var sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
+            var targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
 
-            if (this.Sources != null)
-            {
-                for (int i = 0; i < this.Sources.Length; i++)
-                {
-                    this.Sources[i].TakeSnapshot(this.sourceRenderTarget, gameTime);
-                }
-            }
+            this.DrawSources(gameTime, sourceRenderTarget);
+            this.DrawTarget(gameTime, targetRenderTarget);
 
-            this.Target.TakeSnapshot(this.targetRenderTarget, gameTime);
-
-            this.SetRenderState();
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
 
-            this.spriteBatch.Draw(this.sourceRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
-            this.spriteBatch.Draw(this.targetRenderTarget, this.position, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            this.SetRenderState();
+            this.spriteBatch.Draw(sourceRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.5f);
+            this.spriteBatch.Draw(targetRenderTarget, this.position, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
             this.spriteBatch.Render();
 
-            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.sourceRenderTarget);
-            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.targetRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(sourceRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(targetRenderTarget);
         }
 
         /// <summary>

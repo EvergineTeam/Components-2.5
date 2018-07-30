@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -21,16 +21,6 @@ namespace WaveEngine.Components.Transitions
     /// </summary>
     public class ColorFadeTransition : ScreenTransition
     {
-        /// <summary>
-        /// Source transition renderTarget
-        /// </summary>
-        private RenderTarget sourceRenderTarget;
-
-        /// <summary>
-        /// Target transition renderTarget
-        /// </summary>
-        private RenderTarget targetRenderTarget;
-
         /// <summary>
         /// The transition color
         /// </summary>
@@ -76,33 +66,26 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Draw(TimeSpan gameTime)
         {
-            this.sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
-            this.targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
+            var sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
+            var targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
 
-            this.DrawSources(gameTime, this.sourceRenderTarget);
-            this.DrawTarget(gameTime, this.targetRenderTarget);
+            this.DrawSources(gameTime, sourceRenderTarget);
+            this.DrawTarget(gameTime, targetRenderTarget);
 
             float factor = (this.Lerp <= 0.5f) ? 2 * this.Lerp : 1 - (2 * (this.Lerp - 0.5f));
+            var target = (this.Lerp <= 0.5f) ? sourceRenderTarget : targetRenderTarget;
             Color blendColor = this.transitionColor * factor;
 
-            this.SetRenderState();
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
 
-            if (this.Lerp <= 0.5f)
-            {
-                this.spriteBatch.Draw(this.sourceRenderTarget, new Rectangle(0, 0, this.sourceRenderTarget.Width, this.sourceRenderTarget.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
-            }
-            else
-            {
-                this.spriteBatch.Draw(this.targetRenderTarget, new Rectangle(0, 0, this.sourceRenderTarget.Width, this.sourceRenderTarget.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
-            }
-
+            this.SetRenderState();
+            this.spriteBatch.Draw(target, new Rectangle(0, 0, target.Width, target.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
             this.spriteBatch.Draw(StaticResources.WhitePixel, new Rectangle(0, 0, this.platform.ScreenWidth, this.platform.ScreenHeight), null, blendColor, 0, Vector2.Zero, SpriteEffects.None, 0);
             this.spriteBatch.Render();
 
-            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.sourceRenderTarget);
-            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.targetRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(sourceRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(targetRenderTarget);
         }
 
         /// <summary>

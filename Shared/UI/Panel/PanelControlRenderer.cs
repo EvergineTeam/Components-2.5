@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -23,12 +23,6 @@ namespace WaveEngine.Components.UI
         /// </summary>
         private static int instances;
 
-        /// <summary>
-        /// The transform2D
-        /// </summary>
-        [RequiredComponent]
-        public Transform2D Transform2D;
-
         #region Initialize
 
         /// <summary>
@@ -42,9 +36,9 @@ namespace WaveEngine.Components.UI
         /// <summary>
         /// Initializes a new instance of the <see cref="PanelControlRenderer" /> class.
         /// </summary>
-        /// <param name="layerType">Type of the layer.</param>
-        public PanelControlRenderer(Type layerType)
-            : this("PanelRenderer" + instances, layerType)
+        /// <param name="layerId">Type of the layer.</param>
+        public PanelControlRenderer(int layerId)
+            : this("PanelRenderer" + instances, layerId)
         {
         }
 
@@ -52,9 +46,9 @@ namespace WaveEngine.Components.UI
         /// Initializes a new instance of the <see cref="PanelControlRenderer" /> class.
         /// </summary>
         /// <param name="name">Name of this instance.</param>
-        /// <param name="layerType">Type of the layer.</param>
-        public PanelControlRenderer(string name, Type layerType)
-            : base(name, layerType)
+        /// <param name="layerId">Type of the layer.</param>
+        public PanelControlRenderer(string name, int layerId)
+            : base(name, layerId)
         {
             instances++;
         }

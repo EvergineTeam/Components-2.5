@@ -1,7 +1,8 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using WaveEngine.Common.Math;
+using WaveEngine.Framework.Graphics3D;
 #endregion
 
 namespace WaveEngine.Components.Primitives
@@ -22,7 +23,9 @@ namespace WaveEngine.Components.Primitives
         /// <param name="twoSides">Plane with two sides</param>
         /// <param name="uvHorizontalFlip">UV coord horizontal flip</param>
         /// <param name="uvVerticalFlip">UV coord vertical flip</param>
-        public Plane(Vector3 normal, float width, float height, bool twoSides = true, bool uvHorizontalFlip = false, bool uvVerticalFlip = false)
+        /// <param name="uTileFactor">Tile U factor</param>
+        /// <param name="vTileFactor">Tile V factor</param>
+        public Plane(Vector3 normal, float width, float height, bool twoSides = true, bool uvHorizontalFlip = false, bool uvVerticalFlip = false, float uTileFactor = 1, float vTileFactor = 1)
         {
             Vector3 position = Vector3.Zero;
             Vector3 up;
@@ -44,8 +47,8 @@ namespace WaveEngine.Components.Primitives
             Matrix.CreateLookAt(ref position, ref normal, ref up, out matrix);
 
             // Get two vectors perpendicular to the face normal.
-            Vector3 side1 = 0.5f * width * Vector3.UnitX; ////new Vector3(normal.Y, normal.Z, normal.X) * 0.5f;
-            Vector3 side2 = 0.5f * height * Vector3.UnitY; //// Vector3.Cross(normal, side1);
+            Vector3 side1 = 0.5f * width * Vector3.UnitX;
+            Vector3 side2 = 0.5f * height * Vector3.UnitY;
 
             Vector3 v1 = -side1 - side2;
             Vector3 v2 = -side1 + side2;
@@ -67,10 +70,10 @@ namespace WaveEngine.Components.Primitives
             this.AddIndex(3);
 
             Vector2[] uv = new Vector2[4];
-            uv[0] = new Vector2(0, 1);
+            uv[0] = new Vector2(0, vTileFactor);
             uv[1] = new Vector2(0, 0);
-            uv[2] = new Vector2(1, 0);
-            uv[3] = new Vector2(1, 1);
+            uv[2] = new Vector2(uTileFactor, 0);
+            uv[3] = new Vector2(uTileFactor, vTileFactor);
 
             Vector2 aux = Vector2.Zero;
             if (uvHorizontalFlip)

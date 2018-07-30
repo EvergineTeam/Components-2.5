@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Usings Statements
 using System;
@@ -225,7 +225,7 @@ namespace WaveEngine.Components.Cameras
 
             this.rotationSpeed = .004f;
             this.gamepadRotationSpeed = .75f;
-            this.speed = 20;
+            this.speed = 1;
         }
 
         #endregion
@@ -368,9 +368,7 @@ namespace WaveEngine.Components.Cameras
 
             if (this.input.GamePadState.IsConnected)
             {
-                /////////////////////////////////////////////////
-                ////// Position Camera
-                /////////////////////////////////////////////////
+                // Position Camera
                 GamePadState gamePadState = this.input.GamePadState;
 
                 Vector2 leftStick = gamePadState.ThumbSticks.Left;
@@ -384,14 +382,12 @@ namespace WaveEngine.Components.Cameras
 
                 this.UpdateCameraPosition(amount);
 
-                /////////////////////////////////////////////////
-                ////// LookAT
-                /////////////////////////////////////////////////
+                // LookAT
                 Vector2 rightStick = gamePadState.ThumbSticks.Right;
-                this.xDifference = rightStick.X;
-                this.yDifference = -rightStick.Y;
+                this.xDifference = -rightStick.X;
+                this.yDifference = rightStick.Y;
 
-                ////// Calculated yaw and pitch
+                // Calculated yaw and pitch
                 float yaw = this.xDifference * amount * this.gamepadRotationSpeed;
                 float pitch = this.yDifference * amount * this.gamepadRotationSpeed;
 
@@ -406,9 +402,11 @@ namespace WaveEngine.Components.Cameras
         private void UpdateCameraPosition(float amount)
         {
             Vector3 displacement = Vector3.Zero;
+            Matrix localTransform = this.Transform.LocalTransform;
+
             if (this.moveForward)
             {
-                Vector3 forward = this.Transform.WorldTransform.Forward;
+                Vector3 forward = localTransform.Forward;
 
                 // Manual inline: position += speed * forward;
                 displacement.X = displacement.X + (amount * this.speed * forward.X);
@@ -417,7 +415,7 @@ namespace WaveEngine.Components.Cameras
             }
             else if (this.moveBack)
             {
-                Vector3 backward = this.Transform.WorldTransform.Backward;
+                Vector3 backward = localTransform.Backward;
 
                 // Manual inline: position -= speed * forward;
                 displacement.X = displacement.X + (amount * this.speed * backward.X);
@@ -427,7 +425,7 @@ namespace WaveEngine.Components.Cameras
 
             if (this.moveLeft)
             {
-                Vector3 left = this.Transform.WorldTransform.Left;
+                Vector3 left = localTransform.Left;
 
                 // Manual inline: position -= speed * right;
                 displacement.X = displacement.X + (amount * this.speed * left.X);
@@ -436,7 +434,7 @@ namespace WaveEngine.Components.Cameras
             }
             else if (this.moveRight)
             {
-                Vector3 right = this.Transform.WorldTransform.Right;
+                Vector3 right = localTransform.Right;
 
                 // Manual inline: position += speed * right;
                 displacement.X = displacement.X + (amount * this.speed * right.X);
@@ -445,7 +443,7 @@ namespace WaveEngine.Components.Cameras
             }
 
             // Manual inline: camera.Position = position;
-            this.Transform.Position += displacement;
+            this.Transform.LocalPosition += displacement;
         }
 
         /// <summary>
@@ -455,7 +453,7 @@ namespace WaveEngine.Components.Cameras
         /// <param name="pitch">The pitch</param>
         private void UpdateOrientation(float yaw, float pitch)
         {
-            var rotation = this.Transform.Rotation;
+            var rotation = this.Transform.LocalRotation;
 
             rotation.Y += yaw;
 
@@ -463,7 +461,7 @@ namespace WaveEngine.Components.Cameras
             rotation.X = Math.Max(rotation.X, -MaxPitch);
             rotation.X = Math.Min(rotation.X, MaxPitch);
 
-            this.Transform.Rotation = rotation;
+            this.Transform.LocalRotation = rotation;
         }
         #endregion
     }

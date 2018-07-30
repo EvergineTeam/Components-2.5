@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -20,12 +20,6 @@ namespace WaveEngine.Components.UI
         /// Total number of instances.
         /// </summary>
         private static int instances;
-
-        /// <summary>
-        /// The transform2 D
-        /// </summary>
-        [RequiredComponent]
-        public Transform2D Transform2D;
 
         /// <summary>
         /// The text block
@@ -61,9 +55,9 @@ namespace WaveEngine.Components.UI
         /// <summary>
         /// Initializes a new instance of the <see cref="TextControlRenderer" /> class.
         /// </summary>
-        /// <param name="layerType">Type of the layer.</param>
-        public TextControlRenderer(Type layerType)
-            : this("TextControlRenderer" + instances, layerType)
+        /// <param name="layerId">Type of the layer.</param>
+        public TextControlRenderer(int layerId)
+            : this("TextControlRenderer" + instances, layerId)
         {
         }
 
@@ -71,9 +65,9 @@ namespace WaveEngine.Components.UI
         /// Initializes a new instance of the <see cref="TextControlRenderer" /> class.
         /// </summary>
         /// <param name="name">Name of this instance.</param>
-        /// <param name="layerType">Type of the layer.</param>
-        public TextControlRenderer(string name, Type layerType)
-            : base(name, layerType)
+        /// <param name="layerId">Type of the layer.</param>
+        public TextControlRenderer(string name, int layerId)
+            : base(name, layerId)
         {
             instances++;
         }
@@ -113,8 +107,6 @@ namespace WaveEngine.Components.UI
                 this.origin.X = transformOrigin.X * this.TextBlock.Width;
                 this.origin.Y = transformOrigin.Y * this.TextBlock.Height;
 
-                float opacity = this.RenderManager.DebugLines ? DebugAlpha : this.Transform2D.GlobalOpacity;
-
                 Vector2 aux;
                 for (int i = 0; i < this.TextBlock.LinesInfo.Count; i++)
                 {
@@ -127,7 +119,7 @@ namespace WaveEngine.Components.UI
                             this.TextBlock.SpriteFont,
                             this.TextBlock.LinesInfo[i].SubTextList[j].Text,
                             aux,
-                            this.TextBlock.LinesInfo[i].SubTextList[j].Color * opacity,
+                            this.TextBlock.LinesInfo[i].SubTextList[j].Color * this.Transform2D.GlobalOpacity,
                             this.Transform2D.Rotation,
                             this.origin,
                             this.scale,

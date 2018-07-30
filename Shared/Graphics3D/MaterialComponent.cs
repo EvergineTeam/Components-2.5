@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System.Collections;
@@ -71,6 +71,8 @@ namespace WaveEngine.Components.Graphics3D
 
                 this.useDummyMaterial = value == null;
 
+                this.materialPath = string.Empty;
+
                 if (this.isInitialized)
                 {
                     this.RefreshMaterial();
@@ -94,10 +96,10 @@ namespace WaveEngine.Components.Graphics3D
             get
             {
                 List<string> materialNames = new List<string>();
-                if (this.meshComponent != null && this.meshComponent.InternalModel != null)
+                if (this.meshComponent != null && this.meshComponent.Meshes != null && this.meshComponent.InternalModel != null)
                 {
                     var meshMaterials = this.meshComponent.InternalModel.Materials;
-                    var meshes = (from m in this.meshComponent.InternalModel.Meshes where m.Name == this.meshComponent.ModelMeshName select m).ToList();
+                    var meshes = this.meshComponent.Meshes;
                     foreach (Mesh mesh in meshes)
                     {
                         string materialName = meshMaterials[mesh.MaterialIndex];
@@ -146,6 +148,8 @@ namespace WaveEngine.Components.Graphics3D
             {
                 this.materialPath = value;
                 this.useDummyMaterial = string.IsNullOrEmpty(value);
+
+                this.material = null;
 
                 if (this.isInitialized)
                 {

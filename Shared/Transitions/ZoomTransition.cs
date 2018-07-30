@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -23,16 +23,6 @@ namespace WaveEngine.Components.Transitions
         /// The sprite batch
         /// </summary>
         private SpriteBatch spriteBatch;
-
-        /// <summary>
-        /// Source transition renderTarget
-        /// </summary>
-        private RenderTarget sourceRenderTarget;
-
-        /// <summary>
-        /// Target transition renderTarget
-        /// </summary>
-        private RenderTarget targetRenderTarget;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoomTransition"/> class.
@@ -67,47 +57,43 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Draw(TimeSpan gameTime)
         {
-            this.sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
-                this.platform.ScreenWidth,
-                this.platform.ScreenHeight);
-            this.targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
-                this.platform.ScreenWidth,
-                this.platform.ScreenHeight);
+            var sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
+            var targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
 
-            this.DrawSources(gameTime, this.sourceRenderTarget);
-            this.DrawTarget(gameTime, this.targetRenderTarget);
+            this.DrawSources(gameTime, sourceRenderTarget);
+            this.DrawTarget(gameTime, targetRenderTarget);
 
             this.SetRenderState();
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
-            Vector2 center = new Vector2(this.sourceRenderTarget.Width / 2, this.sourceRenderTarget.Height / 2);
+            Vector2 center = new Vector2(sourceRenderTarget.Width / 2, sourceRenderTarget.Height / 2);
 
             this.spriteBatch.Draw(
-                this.sourceRenderTarget,
-                                    center,
-                                    null,
-                                    Color.White * (1 - this.Lerp),
-                                    0f,
-                                    center,
-                                    new Vector2(this.Lerp + 1),
-                                    SpriteEffects.None,
-                                    0.5f);
+                sourceRenderTarget,
+                center,
+                null,
+                Color.White * (1 - this.Lerp),
+                0f,
+                center,
+                new Vector2(this.Lerp + 1),
+                SpriteEffects.None,
+                0.5f);
 
             this.spriteBatch.Draw(
-                this.targetRenderTarget,
-                                    center,
-                                    null,
-                                    Color.White * this.Lerp,
-                                    0f,
-                                    center,
-                                    new Vector2(this.Lerp),
-                                    SpriteEffects.None,
-                                    0f);
+                targetRenderTarget,
+                center,
+                null,
+                Color.White * this.Lerp,
+                0f,
+                center,
+                new Vector2(this.Lerp),
+                SpriteEffects.None,
+                0f);
 
             this.spriteBatch.Render();
 
-            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.sourceRenderTarget);
-            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.targetRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(sourceRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(targetRenderTarget);
         }
 
         /// <summary>

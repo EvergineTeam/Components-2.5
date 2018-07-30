@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -23,16 +23,6 @@ namespace WaveEngine.Components.Transitions
         /// The sprite batch
         /// </summary>
         private SpriteBatch spriteBatch;
-
-        /// <summary>
-        /// Source transition renderTarget
-        /// </summary>
-        private RenderTarget sourceRenderTarget;
-
-        /// <summary>
-        /// Target transition renderTarget
-        /// </summary>
-        private RenderTarget targetRenderTarget;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RotateTransition"/> class.
@@ -67,56 +57,52 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Draw(TimeSpan gameTime)
         {
-            this.sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
-                this.platform.ScreenWidth,
-                this.platform.ScreenHeight);
-            this.targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
-                this.platform.ScreenWidth,
-                this.platform.ScreenHeight);
+            var sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
+            var targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
 
-            System.Random random = new System.Random(23);
+            this.DrawSources(gameTime, sourceRenderTarget);
+            this.DrawTarget(gameTime, targetRenderTarget);
 
-            this.DrawSources(gameTime, this.sourceRenderTarget);
-            this.DrawTarget(gameTime, this.targetRenderTarget);
+            var random = new System.Random(23);
 
             this.SetRenderState();
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
-            Vector2 center = new Vector2(this.sourceRenderTarget.Width / 2, this.sourceRenderTarget.Height / 2);
+            Vector2 center = new Vector2(sourceRenderTarget.Width / 2, sourceRenderTarget.Height / 2);
 
             float rotation = MathHelper.PiOver2 * this.Lerp;
-            float scale = ((((float)this.sourceRenderTarget.Height / this.sourceRenderTarget.Width) - 1) * this.Lerp) + 1;
+            float scale = ((((float)sourceRenderTarget.Height / sourceRenderTarget.Width) - 1) * this.Lerp) + 1;
 
             this.spriteBatch.Draw(
-                this.sourceRenderTarget,
-                                    center,
-                                    null,
-                                    Color.White * (1 - this.Lerp),
-                                    rotation,
-                                    center,
-                                    new Vector2(scale),
-                                    SpriteEffects.None,
-                                    0);
+                sourceRenderTarget,
+                center,
+                null,
+                Color.White * (1 - this.Lerp),
+                rotation,
+                center,
+                new Vector2(scale),
+                SpriteEffects.None,
+                0);
 
-            rotation -= (float)MathHelper.PiOver2;
-            float div = (float)this.sourceRenderTarget.Height / this.sourceRenderTarget.Width;
+            rotation -= MathHelper.PiOver2;
+            float div = (float)sourceRenderTarget.Height / sourceRenderTarget.Width;
             scale = ((1 - div) * this.Lerp) + div;
 
             this.spriteBatch.Draw(
-                this.targetRenderTarget,
-                                    center,
-                                    null,
-                                    Color.White * this.Lerp,
-                                    rotation,
-                                    center,
-                                    new Vector2(scale),
-                                    SpriteEffects.None,
-                                    0.5f);
+                targetRenderTarget,
+                center,
+                null,
+                Color.White * this.Lerp,
+                rotation,
+                center,
+                new Vector2(scale),
+                SpriteEffects.None,
+                0.5f);
 
             this.spriteBatch.Render();
 
-            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.sourceRenderTarget);
-            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.targetRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(sourceRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(targetRenderTarget);
         }
 
         /// <summary>

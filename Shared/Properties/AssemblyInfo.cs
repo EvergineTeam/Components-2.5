@@ -2,15 +2,21 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitleAttribute("WaveEngine.Components linux")]
+[assembly: AssemblyTitleAttribute("WaveEngine.Components Android")]
 [assembly: AssemblyCompanyAttribute("Wave Engine")]
-[assembly: AssemblyDescriptionAttribute("linux")]
-[assembly: AssemblyCopyrightAttribute("Copyright (c) Wave Engine 2017")]
+[assembly: AssemblyDescriptionAttribute("Android")]
+[assembly: AssemblyCopyrightAttribute("Copyright (c) Wave Engine 2016")]
 [assembly: GuidAttribute("d4161402-ce18-494c-9f3a-cde368b1f964")]
 [assembly: ComVisibleAttribute(false)]
-[assembly: AssemblyVersionAttribute("2.4.0.0000")]
+[assembly: AssemblyVersionAttribute("2.5.0.0000")]
 namespace System {
     internal static class AssemblyVersionInformation {
-        internal const string Version = "2.4.0.0000";
+        internal const System.String AssemblyTitle = "WaveEngine.Components Android";
+        internal const System.String AssemblyCompany = "Wave Engine";
+        internal const System.String AssemblyDescription = "Android";
+        internal const System.String AssemblyCopyright = "Copyright (c) Wave Engine 2016";
+        internal const System.String Guid = "d4161402-ce18-494c-9f3a-cde368b1f964";
+        internal const System.Boolean ComVisible = false;
+        internal const System.String AssemblyVersion = "2.5.0.0000";
     }
 }

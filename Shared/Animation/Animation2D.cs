@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -74,12 +74,12 @@ namespace WaveEngine.Components.Animation
         /// <summary>
         /// Current animation time
         /// </summary>
-        private double currentAnimationTime;
+        private float currentAnimationTime;
 
         /// <summary>
         /// Current animation endtime
         /// </summary>
-        private double currentAnimationEndTime;
+        private float currentAnimationEndTime;
 
         /// <summary>
         /// Previous frame
@@ -102,16 +102,6 @@ namespace WaveEngine.Components.Animation
         private int frameLength;
 
         /// <summary>
-        /// Time animation factor
-        /// </summary>
-        private float timeFactor;
-
-        /// <summary>
-        /// Frame increment
-        /// </summary>
-        private int frameIncrement;
-
-        /// <summary>
         /// flags that indicate that an animation must be played in the next update cicle
         /// </summary>
         private bool playAnimation;
@@ -127,7 +117,24 @@ namespace WaveEngine.Components.Animation
         /// Gets or sets the current frame of the animation.
         /// </summary>
         [DontRenderProperty]
-        public override int Frame
+        public override float PlayTime
+        {
+            get
+            {
+                return this.currentAnimationTime;
+            }
+
+            set
+            {
+                this.currentAnimationTime = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the current frame of the animation.
+        /// </summary>
+        [DontRenderProperty]
+        public override float Frame
         {
             get
             {
@@ -140,7 +147,7 @@ namespace WaveEngine.Components.Animation
                     && value >= 0
                     && this.currentSpriteSheetAnimation.Length > value)
                 {
-                    this.SetFrame(value);
+                    this.SetFrame((int)value);
                 }
             }
         }
@@ -148,7 +155,7 @@ namespace WaveEngine.Components.Animation
         /// <summary>
         /// Gets or sets the Animation speed factor
         /// </summary>
-        public float SpeedFactor
+        public override float PlaybackRate
         {
             get;
             set;
@@ -241,7 +248,7 @@ namespace WaveEngine.Components.Animation
         {
             base.DefaultValues();
             this.Loop = true;
-            this.SpeedFactor = 1;
+            this.PlaybackRate = 1;
         }
         #endregion
 
@@ -267,10 +274,10 @@ namespace WaveEngine.Components.Animation
         /// <param name="startFrame">The frame where the animation starts playing.</param>
         /// <param name="endFrame">The last frame of the animation to play.</param>
         /// <param name="loop">if set to <c>true</c> loop the animation.</param>
-        /// <param name="backwards">if set to <c>true</c> play the animation backwards.</param>
-        public override void PlayAnimation(string name, int? startFrame, int? endFrame, bool loop = true, bool backwards = false)
+        /// <param name="playbackRate">if set to <c>true</c> play the animation backwards.</param>
+        public override void PlayAnimation(string name, int? startFrame, int? endFrame, bool loop = true, float playbackRate = 1)
         {
-            this.PlayAnimation(name, startFrame, endFrame, loop, backwards, null);
+            this.PlayAnimation(name, startFrame, endFrame, loop, playbackRate, null);
         }
 
         /// <summary>
@@ -280,9 +287,9 @@ namespace WaveEngine.Components.Animation
         /// <param name="startFrame">The frame where the animation starts playing.</param>
         /// <param name="endFrame">The last frame of the animation to play.</param>
         /// <param name="loop">if set to <c>true</c> loop the animation.</param>
-        /// <param name="backwards">if set to <c>true</c> play the animation backwards.</param>
+        /// <param name="playbackRate">if set to <c>true</c> play the animation backwards.</param>
         /// <param name="framesPerSecond">The frames per second.</param>
-        public void PlayAnimation(string name, int? startFrame, int? endFrame, bool loop = true, bool backwards = false, int? framesPerSecond = null)
+        public void PlayAnimation(string name, int? startFrame, int? endFrame, bool loop = true, float playbackRate = 1, int? framesPerSecond = null)
         {
             this.CurrentAnimation = name;
 
@@ -356,10 +363,9 @@ namespace WaveEngine.Components.Animation
                 this.SetFrame(0);
                 this.Loop = loop;
                 this.State = AnimationState.Playing;
-                this.Backwards = backwards;
 
                 this.currentAnimationTime = 0;
-                this.currentAnimationEndTime = this.frameLength / (double)this.framesPerSecond;
+                this.currentAnimationEndTime = this.frameLength / (float)this.framesPerSecond;
             }
         }
 
@@ -375,7 +381,7 @@ namespace WaveEngine.Components.Animation
             {
                 this.currentAnimationFrame = frame;
                 this.SpriteAtlas.TextureIndex = this.currentSpriteSheetAnimation.First + this.startFrame + frame;
-                this.currentAnimationTime = frame / (double)this.framesPerSecond;
+                this.currentAnimationTime = frame / (float)this.framesPerSecond;
                 this.previousAnimationFrame = this.currentAnimationFrame;
             }
         }
@@ -410,19 +416,16 @@ namespace WaveEngine.Components.Animation
             // Detect if there are pending animations
             if (this.playAnimation && this.SpriteSheetAnimations != null)
             {
-                this.PlayAnimation(this.currentAnimation, this.Loop, this.Backwards);
+                this.PlayAnimation(this.currentAnimation, this.Loop, this.PlaybackRate);
                 this.playAnimation = false;
             }
 
             if (this.State == AnimationState.Playing)
             {
-                this.frameIncrement = (!this.Backwards) ? 1 : -1;
-                this.timeFactor = this.SpeedFactor * this.frameIncrement;
-
-                this.currentAnimationTime += gameTime.TotalSeconds * this.timeFactor;
+                this.currentAnimationTime += (float)(gameTime.TotalSeconds * this.PlaybackRate);
 
                 // Handle end animation
-                if (!this.Backwards)
+                if (this.PlaybackRate >= 0)
                 {
                     if (this.currentAnimationTime > this.currentAnimationEndTime)
                     {
@@ -468,7 +471,7 @@ namespace WaveEngine.Components.Animation
             }
             else
             {
-                this.currentAnimationTime -= this.currentAnimationEndTime * this.timeFactor;
+                this.currentAnimationTime -= this.currentAnimationEndTime * this.PlaybackRate;
             }
         }
 
@@ -481,7 +484,7 @@ namespace WaveEngine.Components.Animation
             {
                 if (this.currentAnimationFrame != this.previousAnimationFrame)
                 {
-                    int increment = this.Backwards ? -1 : 1;
+                    int increment = this.PlaybackRate < 0 ? -1 : 1;
                     int i = this.previousAnimationFrame;
                     int counter = this.currentAnimationFrame - this.startFrame;
 

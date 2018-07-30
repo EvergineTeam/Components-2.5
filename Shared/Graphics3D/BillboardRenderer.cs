@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -44,25 +44,15 @@ namespace WaveEngine.Components.Shared.Graphics3D
         public Transform3D Transform3D = null;
 
         /// <summary>
-        /// The sampler mode
-        /// </summary>
-        [DataMember]
-        private AddressMode samplerMode;
-
-        /// <summary>
         /// The layer type
         /// </summary>
-        private Type layerType;
-
-        /// <summary>
-        /// The layer type string
-        /// </summary>
-        private string layerTypeName;
+        [DataMember]
+        private int layerId;
 
         /// <summary>
         /// The layer
         /// </summary>
-        private Layer layer;
+        private RenderLayer layer;
 
         #region Properties
 
@@ -73,56 +63,21 @@ namespace WaveEngine.Components.Shared.Graphics3D
         /// The type of the layer.
         /// </value>
         [RenderPropertyAsLayer]
-        public Type LayerType
+        public int LayerId
         {
             get
             {
-                return this.layerType;
+                return this.layerId;
             }
 
             set
             {
-                this.layerType = value;
-                this.layerTypeName = this.layerType.FullName + "," + this.layerType.GetTypeAssemblyName();
+                this.layerId = value;
 
                 if (this.RenderManager != null)
                 {
-                    this.layer = this.RenderManager.FindLayer(this.layerType);
+                    this.layer = this.RenderManager.FindLayer(this.layerId);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets Layer Type Name
-        /// </summary>
-        [DataMember]
-        private string LayerTypeName
-        {
-            get
-            {
-                return this.layerTypeName;
-            }
-
-            set
-            {
-                this.layerTypeName = value;
-                this.layerType = Type.GetType(this.layerTypeName);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the billboard sampler mode
-        /// </summary>
-        public AddressMode SamplerMode
-        {
-            get
-            {
-                return this.samplerMode;
-            }
-
-            set
-            {
-                this.samplerMode = value;
             }
         }
         #endregion
@@ -140,19 +95,14 @@ namespace WaveEngine.Components.Shared.Graphics3D
         /// <summary>
         /// Initializes a new instance of the <see cref="BillboardRenderer" /> class.
         /// </summary>
-        /// <param name="layerType">
+        /// <param name="layerId">
         /// Layer type (available at <see cref="DefaultLayers"/>).
         /// Example: new SpriteRenderer(DefaultLayers.Alpha)
         /// </param>
-        /// <param name="samplerMode">
-        /// Sampler mode <see cref="AddressMode"/>
-        /// Example: new SpriteRenderer(DefaultLayers.Alpha)
-        /// </param>
-        public BillboardRenderer(Type layerType, AddressMode samplerMode = AddressMode.LinearClamp)
+        public BillboardRenderer(int layerId)
             : base("BillboardRenderer" + instances++)
         {
-            this.samplerMode = samplerMode;
-            this.LayerType = layerType;
+            this.LayerId = layerId;
         }
         #endregion
 
@@ -164,7 +114,7 @@ namespace WaveEngine.Components.Shared.Graphics3D
         protected override void Initialize()
         {
             base.Initialize();
-            this.LayerType = this.layerType;
+            this.LayerId = this.layerId;
         }
 
         /// <summary>
@@ -187,7 +137,7 @@ namespace WaveEngine.Components.Shared.Graphics3D
         /// </remarks>
         public override void Draw(TimeSpan gameTime)
         {
-            if (this.Billboard == null || this.Billboard.Texture == null)
+            if (this.Billboard == null || this.Billboard.Texture == null || this.layer == null)
             {
                 return;
             }
@@ -202,8 +152,7 @@ namespace WaveEngine.Components.Shared.Graphics3D
                     this.Billboard.Rotation,
                     size,
                     this.Billboard.Origin,
-                    this.Billboard.TintColor,
-                    this.samplerMode);
+                    this.Billboard.TintColor);
             }
             else
             {
@@ -217,8 +166,7 @@ namespace WaveEngine.Components.Shared.Graphics3D
                     size,
                     this.Billboard.Origin,
                     this.Billboard.TintColor,
-                    this.Transform3D.WorldTransform.Up,
-                    this.samplerMode);
+                    this.Transform3D.WorldTransform.Up);
             }
         }
         #endregion

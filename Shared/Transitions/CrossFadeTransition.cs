@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -57,21 +57,11 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Draw(TimeSpan gameTime)
         {
-            RenderTarget sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
-            RenderTarget targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
+            var sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
+            var targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
 
-            if (this.Sources != null)
-            {
-                for (int i = 0; i < this.Sources.Length; i++)
-                {
-                    this.Sources[i].TakeSnapshot(sourceRenderTarget, gameTime);
-                }
-            }
-
-            if (this.Target != null)
-            {
-                this.Target.TakeSnapshot(targetRenderTarget, gameTime);
-            }
+            this.DrawSources(gameTime, sourceRenderTarget);
+            this.DrawTarget(gameTime, targetRenderTarget);
 
             Color blendColor = Color.White * this.Lerp;
 
@@ -83,8 +73,8 @@ namespace WaveEngine.Components.Transitions
             this.spriteBatch.Draw(targetRenderTarget, new Rectangle(0, 0, sourceRenderTarget.Width, sourceRenderTarget.Height), null, blendColor, 0, Vector2.Zero, SpriteEffects.None, 0);
             this.spriteBatch.Render();
 
-            this.graphicsDevice.RenderTargets.DestroyRenderTarget(sourceRenderTarget);
-            this.graphicsDevice.RenderTargets.DestroyRenderTarget(targetRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(sourceRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(targetRenderTarget);
         }
 
         /// <summary>

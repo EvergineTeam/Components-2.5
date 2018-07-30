@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -18,12 +18,6 @@ namespace WaveEngine.Components.UI
     /// </summary>
     public class BorderRenderer : DrawableGUI
     {
-        /// <summary>
-        /// The transform2D
-        /// </summary>
-        [RequiredComponent]
-        public Transform2D Transform2D;
-
         /// <summary>
         /// Total number of instances.
         /// </summary>
@@ -64,10 +58,10 @@ namespace WaveEngine.Components.UI
         /// Initializes a new instance of the <see cref="BorderRenderer" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <param name="layerType">Type of the layer.</param>
+        /// <param name="layerId">Type of the layer.</param>
         /// <param name="color">The color.</param>
-        public BorderRenderer(string name, Type layerType, Color color)
-            : base(name, layerType)
+        public BorderRenderer(string name, int layerId, Color color)
+            : base(name, layerId)
         {
             instances++;
             this.Color = color;

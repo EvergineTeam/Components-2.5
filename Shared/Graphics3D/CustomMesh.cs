@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -9,6 +9,7 @@ using WaveEngine.Common.Attributes;
 using WaveEngine.Common.Graphics;
 using WaveEngine.Common.Math;
 using WaveEngine.Components.Primitives;
+using WaveEngine.Framework.Graphics3D;
 using WaveEngine.Framework.Services;
 #endregion
 
@@ -30,7 +31,6 @@ namespace WaveEngine.Components.Graphics3D
         /// <summary>
         /// Gets or sets the diameter of the sphere mesh
         /// </summary>
-        [DataMember]
         public Mesh Mesh
         {
             get
@@ -79,7 +79,7 @@ namespace WaveEngine.Components.Graphics3D
 
             this.ModelMeshName = this.mesh.Name;
 
-            this.InternalModel = new InternalStaticModel();
+            this.InternalModel = new InternalModel();
             this.InternalModel.FromMesh(WaveServices.GraphicsDevice, this.mesh);
 
             this.ThrowRefreshEvent();

@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -11,6 +11,7 @@ using WaveEngine.Common.Graphics;
 using WaveEngine.Common.Math;
 using WaveEngine.Components.Graphics3D;
 using WaveEngine.Framework.Graphics;
+using WaveEngine.Framework.Graphics3D;
 #endregion
 
 namespace WaveEngine.Components.Graphics3D
@@ -22,9 +23,14 @@ namespace WaveEngine.Components.Graphics3D
     public abstract class MeshComponent : BaseModel, IDisposable
     {
         /// <summary>
-        /// Refresh event
+        /// The mesh content
         /// </summary>
-        public event EventHandler Refreshed;
+        private MeshContent meshContent;
+
+        /// <summary>
+        /// The model mesh name
+        /// </summary>
+        private string modelMeshName;
 
         #region Properties
 
@@ -32,7 +38,7 @@ namespace WaveEngine.Components.Graphics3D
         /// Gets or sets the model data.
         /// </summary>
         [DontRenderProperty]
-        public InternalStaticModel InternalModel { get; protected set; }
+        public InternalModel InternalModel { get; protected set; }
 
         /// <summary>
         /// Gets the number of meshes of this model.
@@ -43,7 +49,7 @@ namespace WaveEngine.Components.Graphics3D
             get
             {
                 int result = 0;
-                var meshes = this.MeshGroupByName;
+                var meshes = this.Meshes;
                 if (meshes != null)
                 {
                     result = meshes.Count;
@@ -54,11 +60,35 @@ namespace WaveEngine.Components.Graphics3D
         }
 
         /// <summary>
+        /// Gets the mesh content
+        /// </summary>
+        [DontRenderProperty]
+        public MeshContent MeshContent
+        {
+            get
+            {
+                return this.meshContent;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the specify the mesh name to render
         /// </summary>
         [RenderPropertyAsSelector("MeshNames")]
         [DataMember]
-        public virtual string ModelMeshName { get; set; }
+        public virtual string ModelMeshName
+        {
+            get
+            {
+                return this.modelMeshName;
+            }
+
+            set
+            {
+                this.modelMeshName = value;
+                this.RefreshMesh();
+            }
+        }
 
         /// <summary>
         /// Gets the mesh name list on FBX file
@@ -68,108 +98,42 @@ namespace WaveEngine.Components.Graphics3D
         {
             get
             {
-                List<string> meshNames = new List<string>();
-                if (this.InternalModel != null)
-                {
-                    foreach (Mesh mesh in this.InternalModel.Meshes)
-                    {
-                        if (!meshNames.Contains(mesh.Name))
-                        {
-                            meshNames.Add(mesh.Name);
-                        }
-                    }
-                }
-
-                return meshNames;
+                return this.InternalModel?.Meshes?.Select(m => m.Name);
             }
         }
 
         /// <summary>
-        /// Gets the Mesh selected
+        /// Gets the mesh group
         /// </summary>
         [DontRenderProperty]
-        public List<Mesh> MeshGroupByName
+        public override List<Mesh> Meshes
         {
             get
             {
-                if (this.InternalModel != null && this.InternalModel.Meshes != null)
-                {
-                    return (from e in this.InternalModel.Meshes where e.Name == this.ModelMeshName select e).ToList();
-                }
-                else
-                {
-                    return null;
-                }
+                return this.meshContent?.MeshParts;
             }
         }
 
         /// <summary>
-        /// Gets Mesh bouding box
+        /// Gets the mesh bounding box
         /// </summary>
-        /// <returns>boudning box</returns>
-        public override BoundingBox BoundingBox
+        /// <returns>The bounding box</returns>
+        public override BoundingBox? BoundingBox
         {
             get
             {
-                BoundingBox result = new BoundingBox();
-
-                if (this.InternalModel != null)
-                {
-                    var meshes = this.InternalModel.Meshes;
-                    for (int i = 0; i < meshes.Count; i++)
-                    {
-                        if (meshes[i].Name == this.ModelMeshName)
-                        {
-                            result = this.InternalModel.BoundingBoxes[i];
-                            break;
-                        }
-                    }
-                }
-
-                return result;
+                return this.meshContent?.BoundingBox;
             }
         }
         #endregion
 
         /// <summary>
-        /// Gets the indices info.
+        /// Initialize this instance
         /// </summary>
-        /// <returns>Indices array</returns>
-        public override int[] GetIndices()
+        protected override void Initialize()
         {
-            if (this.InternalModel == null)
-            {
-                return null;
-            }
-
-            return this.InternalModel.GetCollisionIndices(this.ModelMeshName);
-        }
-
-        /// <summary>
-        /// Gets the vertices info.
-        /// </summary>
-        /// <returns>
-        /// Vertex array.
-        /// </returns>
-        public override Vector3[] GetVertices()
-        {
-            if (this.InternalModel == null)
-            {
-                return null;
-            }
-
-            return this.InternalModel.GetCollisionVertices(this.ModelMeshName);
-        }
-
-        /// <summary>
-        /// Throw refresh event
-        /// </summary>
-        protected void ThrowRefreshEvent()
-        {
-            if (this.Refreshed != null)
-            {
-                this.Refreshed(this, null);
-            }
+            base.Initialize();
+            this.RefreshMesh();
         }
 
         /// <summary>
@@ -177,13 +141,7 @@ namespace WaveEngine.Components.Graphics3D
         /// </summary>
         public virtual void Dispose()
         {
-            if (this.InternalModel != null)
-            {
-                this.InternalModel.Unload();
-            }
-
-            this.InternalModel = null;
-            this.BoundingBox = new BoundingBox();
+            this.UnloadModel();
         }
 
         /// <summary>
@@ -193,22 +151,63 @@ namespace WaveEngine.Components.Graphics3D
         /// <returns>Return true whether all meshes have vertexElement or false</returns>
         public bool IsVertexElementSupported(VertexElementUsage vertexElement)
         {
-            if (this.InternalModel == null ||
-                this.InternalModel.Meshes == null ||
-                this.InternalModel.Meshes.Count == 0)
+            if (this.InternalModel?.Meshes == null ||
+                this.InternalModel.Meshes.Length == 0)
             {
                 return false;
             }
 
-            foreach (Mesh mesh in this.InternalModel.Meshes)
+            foreach (MeshContent meshContent in this.InternalModel.Meshes)
             {
-                if (!mesh.VertexBuffer.HasVertexElementUsage(vertexElement))
+                foreach (var mesh in meshContent.MeshParts)
                 {
-                    return false;
+                    if (!mesh.VertexBuffer.HasVertexElementUsage(vertexElement))
+                    {
+                        return false;
+                    }
                 }
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Unloads the internal model
+        /// </summary>
+        protected void UnloadModel()
+        {
+            if (!string.IsNullOrEmpty(this.InternalModel?.AssetPath))
+            {
+                if (this.Assets != null)
+                {
+                    this.Assets.UnloadAsset(this.InternalModel.AssetPath);
+                }
+            }
+            else
+            {
+                this.InternalModel?.Unload();
+            }
+
+            this.InternalModel = null;
+
+            this.BoundingBox = new BoundingBox();
+        }
+
+        /// <summary>
+        /// Throw refresh model
+        /// </summary>
+        protected override void ThrowRefreshEvent()
+        {
+            this.RefreshMesh();
+            base.ThrowRefreshEvent();
+        }
+
+        /// <summary>
+        /// Refresh the mesh content
+        /// </summary>
+        protected virtual void RefreshMesh()
+        {
+            this.meshContent = this.InternalModel?.FindMeshContentByName(this.modelMeshName);
         }
     }
 }

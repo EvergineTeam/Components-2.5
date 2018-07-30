@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using WaveEngine.Common.Attributes;
 using WaveEngine.Components.Primitives;
+using WaveEngine.Framework.Graphics3D;
 using WaveEngine.Framework.Services;
 #endregion
 
@@ -100,13 +101,8 @@ namespace WaveEngine.Components.Graphics3D
                 this.InternalModel = null;
             }
 
-            this.InternalModel = new InternalStaticModel();
+            this.InternalModel = new InternalModel();
             this.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Teapot(this.Size, this.Tessellation));
-
-            ////if (this.Assets != null && !string.IsNullOrEmpty(this.ModelPath))
-            ////{
-            ////    this.InternalModel = this.Assets.LoadAsset<InternalStaticModel>(this.ModelPath);
-            ////}
 
             this.ThrowRefreshEvent();
         }

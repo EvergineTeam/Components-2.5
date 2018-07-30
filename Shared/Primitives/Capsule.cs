@@ -1,8 +1,9 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
 using WaveEngine.Common.Math;
+using WaveEngine.Framework.Graphics3D;
 #endregion
 
 namespace WaveEngine.Components.Primitives

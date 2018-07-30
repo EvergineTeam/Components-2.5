@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -40,16 +40,6 @@ namespace WaveEngine.Components.Toolkit
         /// </summary>
         private StandardMaterial material;
 
-        /// <summary>
-        /// Type of layer.
-        /// </summary>
-        private Type layerType;
-
-        /// <summary>
-        /// The layer type string
-        /// </summary>
-        private string layerTypeName;
-
         #region Properties
 
         /// <summary>
@@ -59,45 +49,8 @@ namespace WaveEngine.Components.Toolkit
         /// The type of the layer.
         /// </value>
         [RenderPropertyAsLayer]
-        public Type LayerType
-        {
-            get
-            {
-                return this.layerType;
-            }
-
-            set
-            {
-                this.layerType = value;
-
-                if (this.layerType != null)
-                {
-                    string layerAssemblyName = ReflectionHelper.GetTypeAssemblyName(this.layerType);
-                    this.layerTypeName = this.layerType.FullName + "," + layerAssemblyName;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets Layer Type Name
-        /// </summary>
         [DataMember]
-        private string LayerTypeName
-        {
-            get
-            {
-                return this.layerTypeName;
-            }
-
-            set
-            {
-                this.layerTypeName = value;
-                if (!string.IsNullOrEmpty(this.layerTypeName))
-                {
-                    this.layerType = Type.GetType(this.layerTypeName);
-                }
-            }
-        }
+        public int LayerId;
         #endregion
 
         #region Initialize
@@ -111,7 +64,7 @@ namespace WaveEngine.Components.Toolkit
         protected override void DefaultValues()
         {
             base.DefaultValues();
-            this.LayerType = DefaultLayers.Alpha;
+            this.LayerId = DefaultLayers.Alpha;
         }
 
         /// <summary>
@@ -121,7 +74,7 @@ namespace WaveEngine.Components.Toolkit
         {
             base.Initialize();
 
-            this.material = new StandardMaterial() { DiffuseColor = Color.White, LightingEnabled = false, LayerType = this.LayerType, SamplerMode = AddressMode.LinearClamp };
+            this.material = new StandardMaterial() { DiffuseColor = Color.White, LightingEnabled = false, LayerId = this.LayerId };
         }
 
         /// <summary>
@@ -135,13 +88,13 @@ namespace WaveEngine.Components.Toolkit
                 return;
             }
 
-            this.material.Diffuse = this.textComponent.SpriteFont.FontTexture;
+            this.material.Diffuse1 = this.textComponent.SpriteFont.FontTexture;
             this.material.DiffuseColor = this.textComponent.Foreground;
             this.material.Alpha = this.textComponent.Alpha;
 
-            if (this.material.LayerType != this.LayerType)
+            if (this.material.LayerId != this.LayerId)
             {
-                this.material.LayerType = this.LayerType;
+                this.material.LayerId = this.LayerId;
             }
 
             var worldTransform = this.transform.WorldTransform;
@@ -197,6 +150,26 @@ namespace WaveEngine.Components.Toolkit
                 lB.DrawLine(pTR, pBR, color);
                 lB.DrawLine(pBR, pBL, color);
                 lB.DrawLine(pBL, pTL, color);
+            }
+        }
+
+        /// <summary>
+        /// Refresh the bounding box of this drawable
+        /// </summary>
+        protected override void RefreshBoundingBox()
+        {
+            this.BoundingBox = this.textComponent.BoundingBox;
+
+            if (this.BoundingBox.HasValue)
+            {
+                Matrix worldTransform = this.transform.WorldTransform;
+                Matrix scaleTransform = Matrix.CreateScale(new Vector3(0.1f));
+                Matrix.Multiply(ref scaleTransform, ref worldTransform, out worldTransform);
+
+                var bbox = this.BoundingBox.Value;
+                bbox.Transform(ref worldTransform);
+
+                this.BoundingBox = bbox;
             }
         }
         #endregion

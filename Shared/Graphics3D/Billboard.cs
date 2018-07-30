@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 #endregion
@@ -116,7 +116,7 @@ namespace WaveEngine.Components.Graphics2D
         }
 
         /// <summary>
-        ///     Gets the texture.
+        ///     Gets or sets the texture.
         ///     Such is the in-memory representation for the given asset.
         ///     See <see cref="Texture"/> for more information.
         /// </summary>
@@ -129,6 +129,17 @@ namespace WaveEngine.Components.Graphics2D
             get
             {
                 return this.texture;
+            }
+
+            set
+            {
+                this.UnloadTexture();
+                this.texture = value;
+
+                if (this.isInitialized)
+                {
+                    this.RefreshTexture();
+                }
             }
         }
 
@@ -283,9 +294,9 @@ namespace WaveEngine.Components.Graphics2D
         }
 
         /// <summary>
-        /// Reload the billboard texture
+        /// Unload texture
         /// </summary>
-        private void RefreshTexture()
+        private void UnloadTexture()
         {
             if (this.texture != null && !string.IsNullOrEmpty(this.texture.AssetPath))
             {
@@ -300,6 +311,14 @@ namespace WaveEngine.Components.Graphics2D
 
                 this.texture = null;
             }
+        }
+
+        /// <summary>
+        /// Reload the billboard texture
+        /// </summary>
+        private void RefreshTexture()
+        {
+            this.UnloadTexture();
 
             if (this.texture == null && !string.IsNullOrEmpty(this.TexturePath))
             {

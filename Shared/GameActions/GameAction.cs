@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using statements
 using System;
@@ -162,14 +162,12 @@ namespace WaveEngine.Components.GameActions
         /// <summary>
         /// Ons the run.
         /// </summary>
-        ////[DebuggerStepThrough]
         protected abstract void PerformRun();
 
         /// <summary>
         /// Runs this instance.
         /// </summary>
         /// <exception cref="System.NotSupportedException">When the action state is not correct</exception>
-        ////[DebuggerStepThrough]
         public virtual void Run()
         {
             // ignore the run if the scene is already disposed
@@ -234,7 +232,6 @@ namespace WaveEngine.Components.GameActions
         /// <summary>
         /// Cancels this instance.
         /// </summary>
-        ////[DebuggerStepThrough]
         public void Cancel()
         {
             if (this.State == GameActionState.Running)
@@ -275,7 +272,6 @@ namespace WaveEngine.Components.GameActions
         /// <summary>
         /// Notifies the completed.
         /// </summary>
-        ////[DebuggerStepThrough]
         protected void PerformCompleted()
         {
             if (this.State == GameActionState.Running)
@@ -288,18 +284,11 @@ namespace WaveEngine.Components.GameActions
                     this.Completed(this);
                 }
             }
-            else
-            {
-////#if DEBUG
-////                throw new NotSupportedException("The task cannot be completed. Incoherent current task state");
-////#endif
-            }
         }
 
         /// <summary>
         /// Notifies the cancelled.
         /// </summary>
-        ////[DebuggerStepThrough]
         protected virtual void PerformCancel()
         {
             this.State = GameActionState.Aborted;
@@ -315,7 +304,6 @@ namespace WaveEngine.Components.GameActions
         /// Notifies the skip.
         /// </summary>
         /// <returns>If the action is skipped susscessfully</returns>
-        ////[DebuggerStepThrough]
         protected virtual bool PerformSkip()
         {
             if (this.IsSkippable)

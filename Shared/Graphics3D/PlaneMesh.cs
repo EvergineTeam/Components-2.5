@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using WaveEngine.Common.Attributes;
 using WaveEngine.Common.Math;
+using WaveEngine.Framework.Graphics3D;
 using WaveEngine.Framework.Services;
 #endregion
 
@@ -48,6 +49,16 @@ namespace WaveEngine.Components.Graphics3D
         /// Plane vertical flip with UV coords
         /// </summary>
         private bool uvVerticalFlip;
+
+        /// <summary>
+        /// Tile X Factor
+        /// </summary>
+        private float uTileFactor;
+
+        /// <summary>
+        /// Tile Y Factor
+        /// </summary>
+        private float vTileFactor;
 
         #region Properties
 
@@ -189,6 +200,42 @@ namespace WaveEngine.Components.Graphics3D
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating U coords scale factor
+        /// </summary>
+        [DataMember]
+        public float UTile
+        {
+            get
+            {
+                return this.uTileFactor;
+            }
+
+            set
+            {
+                this.uTileFactor = value;
+                this.GeneratePlane();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating V coords scale factor
+        /// </summary>
+        [DataMember]
+        public float YTile
+        {
+            get
+            {
+                return this.vTileFactor;
+            }
+
+            set
+            {
+                this.vTileFactor = value;
+                this.GeneratePlane();
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -204,6 +251,8 @@ namespace WaveEngine.Components.Graphics3D
             this.twoSides = false;
             this.uvHorizontalFlip = false;
             this.uvVerticalFlip = false;
+            this.uTileFactor = 1.0f;
+            this.vTileFactor = 1.0f;
         }
 
         /// <summary>
@@ -226,8 +275,8 @@ namespace WaveEngine.Components.Graphics3D
                 this.InternalModel = null;
             }
 
-            this.InternalModel = new InternalStaticModel();
-            this.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Primitives.Plane(this.Normal, this.Width, this.Height, this.TwoSides, this.UVHorizontalFlip, this.UVVerticalFlip));
+            this.InternalModel = new InternalModel();
+            this.InternalModel.FromPrimitive(WaveServices.GraphicsDevice, new Primitives.Plane(this.Normal, this.Width, this.Height, this.TwoSides, this.UVHorizontalFlip, this.UVVerticalFlip, this.uTileFactor, this.vTileFactor));
 
             this.ThrowRefreshEvent();
         }

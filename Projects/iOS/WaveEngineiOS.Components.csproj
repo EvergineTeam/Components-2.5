@@ -132,6 +132,6 @@
   </ItemGroup>
   <Import Project="..\..\Shared\WaveEngine.Components.Shared.projitems" Label="Shared" Condition="Exists('..\..\Shared\WaveEngine.Components.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <Import Project="$(SolutionDir)\Resources\StyleCopV2\stylecop.props" />
-  <Import Project="$(SolutionDir)\Resources\PostBuildTargets\iOS.targets" />
+  <Import Project="..\..\..\..\Resources\StyleCopV2\stylecop.props" />
+  <Import Project="..\..\..\..\Resources\PostBuildTargets\iOS.targets" />
 </Project>

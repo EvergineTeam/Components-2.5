@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -257,7 +257,7 @@ namespace WaveEngine.Components.Gestures
         /// <summary>
         /// Gets or sets a value indicating whether using <see cref="TouchOrder"/>,
         /// or a different order gathered using both the <see pref="Transform2D.DrawOrder"/> and
-        /// the <see cref="Layer"/> used. Such calcs are performed during the call to
+        /// the <see cref="RenderLayer"/> used. Such calcs are performed during the call to
         /// <see cref="UpdateTouchOrder"/>.
         /// </summary>
         /// <value>
@@ -355,10 +355,6 @@ namespace WaveEngine.Components.Gestures
                 {
                     var vM = camera.UsedVirtualScreen;
                     var projectedPoint = point;
-                    ////if (vM != null)
-                    ////{
-                    ////    vM.ToVirtualPosition(ref projectedPoint);
-                    ////}
 
                     camera.CalculateRay(ref projectedPoint, out ray);
 
@@ -415,7 +411,7 @@ namespace WaveEngine.Components.Gestures
         /// <summary>
         /// If and only if <see cref="ManualTouchOrder"/> is set to <c>false</c> (by default it is)
         /// the touch order is calculated based on both <see pref="Transform2D.DrawOrder"/> and
-        /// the <see cref="Layer"/> used.
+        /// the <see cref="RenderLayer"/> used.
         /// </summary>
         public void UpdateTouchOrder()
         {
@@ -427,7 +423,7 @@ namespace WaveEngine.Components.Gestures
                 Drawable2D drawable2D = this.Owner.FindComponent<Drawable2D>(false);
                 if (drawable2D != null)
                 {
-                    Type layer = drawable2D.LayerType;
+                    int layer = drawable2D.LayerId;
                     int index = this.RenderManager.GetLayerIndex(layer);
 
                     if (index != -1)

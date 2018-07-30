@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -79,7 +79,7 @@ namespace WaveEngine.Components.Toolkit
         private string targetEntity;
 
         /// <summary>
-        /// The target entity trasnform
+        /// The target entity transform
         /// </summary>
         private Transform3D targetTransform;
 
@@ -89,7 +89,7 @@ namespace WaveEngine.Components.Toolkit
         private bool dirtyStrategy;
 
         /// <summary>
-        /// If it's neccesary to update the target
+        /// If it's necessary to update the target
         /// </summary>
         private bool dirtyTarget;
 
@@ -205,7 +205,6 @@ namespace WaveEngine.Components.Toolkit
 
             this.Axis = AxisEnum.Z;
             this.AxisConstraint = false;
-            ////this.targetEntity = null;
         }
 
         /// <summary>

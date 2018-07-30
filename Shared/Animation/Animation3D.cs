@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -7,8 +7,13 @@ using System.Linq;
 using System.Runtime.Serialization;
 using WaveEngine.Common.Attributes;
 using WaveEngine.Common.Helpers;
+using WaveEngine.Common.Math;
+using WaveEngine.Components.Graphics3D;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Animation;
+using WaveEngine.Framework.Diagnostic;
+using WaveEngine.Framework.Graphics;
+using WaveEngine.Framework.Graphics3D;
 #endregion
 
 namespace WaveEngine.Components.Animation
@@ -20,8 +25,14 @@ namespace WaveEngine.Components.Animation
     ///     Ideally this class should be used to hold all the animations related to a given 3D model.
     /// </remarks>
     [DataContract(Namespace = "WaveEngine.Components.Animation")]
-    public class Animation3D : AnimationBase
+    public class Animation3D : Behavior
     {
+        /// <summary>
+        /// The transform3D
+        /// </summary>
+        [RequiredComponent]
+        private Transform3D transform3D = null;
+
         /// <summary>
         ///     Number of instances of this component created.
         /// </summary>
@@ -31,7 +42,7 @@ namespace WaveEngine.Components.Animation
         /// The animation path.
         /// </summary>
         [DataMember]
-        private string animationPath;
+        private string modelPath;
 
         /// <summary>
         /// The current animation.
@@ -39,81 +50,67 @@ namespace WaveEngine.Components.Animation
         private string currentAnimation;
 
         /// <summary>
-        /// The frame.
+        /// The current animation clip
         /// </summary>
-        private int frame;
+        private AnimationBlendClip clip;
 
         /// <summary>
-        /// The frames per second.
+        /// If the current animation is looped
         /// </summary>
-        private int framesPerSecond;
+        private bool loop;
 
         /// <summary>
         /// The internal animation.
         /// </summary>
-        private InternalAnimation internalAnimation;
+        private InternalModel internalModel;
 
         /// <summary>
-        /// The internal frame.
+        /// Current animation track
         /// </summary>
-        private int internalFrame;
+        private AnimationClip currentAnimationTrack;
 
         /// <summary>
-        /// The last frame.
+        /// The playback rate
         /// </summary>
-        private int lastFrame;
+        [DataMember]
+        private float playbackRate;
 
         /// <summary>
-        /// The num frames.
+        /// Needs update
         /// </summary>
-        private int numFrames;
+        private bool needUpdate;
 
         /// <summary>
-        /// The prev frame.
+        /// An event fired when the animation is updated
         /// </summary>
-        private int prevFrame;
-
-        /// <summary>
-        /// The target frame.
-        /// </summary>
-        private int targetFrame;
-
-        /// <summary>
-        /// The time per frame.
-        /// </summary>
-        private TimeSpan timePerFrame;
-
-        /// <summary>
-        /// The total anim time.
-        /// </summary>
-        private TimeSpan totalAnimTime;
-
-        /// <summary>
-        /// Current animation sequence
-        /// </summary>
-        private AnimationSequence currentAnimationSequence;
+        public event EventHandler<AnimationSample> AnimationUpdated;
 
         /// <summary>
         ///     Raised when a certain frame of an animation is played.
         /// </summary>
-        public override event EventHandler<StringEventArgs> OnKeyFrameEvent;
+        public event EventHandler<AnimationKeyframeEvent> OnKeyFrameEvent;
+
+        /// <summary>
+        /// The hierarchy mapping
+        /// </summary>
+        private NodeHierarchyMapping hierarchyMapping;
 
         #region Properties
 
         /// <summary>
         /// Gets or sets the animation file path
         /// </summary>
-        [RenderPropertyAsAsset(AssetType.SkinnedModel, null, 1)]
-        public string AnimationPath
+        [RenderPropertyAsAsset(AssetType.Model)]
+        public string ModelPath
         {
             get
             {
-                return this.animationPath;
+                return this.modelPath;
             }
 
             set
             {
-                this.animationPath = value;
+                this.modelPath = value;
 
                 if (this.isInitialized)
                 {
@@ -129,18 +126,23 @@ namespace WaveEngine.Components.Animation
         /// The animation names.
         /// </value>
         [DontRenderProperty]
-        public override IEnumerable<string> AnimationNames
+        public IEnumerable<string> AnimationNames
         {
             get
             {
-                if (this.internalAnimation != null)
+                if (this.internalModel != null)
                 {
-                    return this.internalAnimation.Animations.Keys;
+                    return this.internalModel.Animations.Keys;
                 }
 
                 return new List<string>();
             }
         }
+
+        /// <summary>
+        /// Gets the current animation clip
+        /// </summary>
+        public AnimationBlendClip Clip => this.clip;
 
         /// <summary>
         ///     Gets or sets a value indicating whether the bounding box was refreshed.
@@ -159,7 +161,7 @@ namespace WaveEngine.Components.Animation
         /// </value>
         [DataMember]
         [RenderPropertyAsSelector("AnimationNames")]
-        public override string CurrentAnimation
+        public string CurrentAnimation
         {
             get
             {
@@ -171,80 +173,190 @@ namespace WaveEngine.Components.Animation
                 if (this.currentAnimation != value)
                 {
                     this.currentAnimation = value;
-                    this.frame = 0;
-                    this.lastFrame = 0;
-                    this.UpdateNumFrames();
+
+                    if (this.PlayAutomatically)
+                    {
+                        this.PlayAnimation(this.currentAnimation);
+                    }
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether current active animation is looping.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if the animation is looping; otherwise, <c>false</c>.
+        /// </value>
+        [DontRenderProperty]
+        public bool Loop
+        {
+            get
+            {
+                return this.loop;
+            }
+
+            set
+            {
+                if (this.loop != value)
+                {
+                    this.loop = value;
+
+                    if (this.clip != null)
+                    {
+                        this.clip.Loop = value;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the state of the current active animation.
+        /// </summary>
+        [DontRenderProperty]
+        public AnimationState State { get; protected set; }
+
+        /// <summary>
+        /// Gets the current animation track
+        /// </summary>
+        public AnimationClip CurrentAnimationTrack => this.currentAnimationTrack;
 
         /// <summary>
         /// Gets or sets the current frame of the animation.
         /// </summary>
         [DontRenderProperty]
-        public override int Frame
+        public float Frame
         {
             get
             {
-                return this.frame;
+                var duration = this.Duration;
+
+                if ((this.clip != null) && (duration > 0))
+                {
+                    float fps = this.clip.Framerate;
+
+                    float frameF;
+
+                    frameF = (this.PlayTime + duration) % duration;
+                    if (frameF < 0)
+                    {
+                        frameF += this.Duration;
+                    }
+
+                    ////frameF += this.StartAnimationTime;
+
+                    return frameF * fps;
+                }
+                else
+                {
+                    return 0;
+                }
             }
 
             set
             {
-                if (this.currentAnimationSequence != null
-                    && value >= 0
-                    && this.currentAnimationSequence.Frames.Count > value)
+                if (this.clip != null)
                 {
-                    this.frame = value;
-                    this.totalAnimTime = TimeSpan.FromSeconds(this.frame * this.timePerFrame.TotalMilliseconds);
+                    float fps = this.clip.Framerate;
+
+                    this.PlayTime = value / fps;
                 }
             }
         }
 
         /// <summary>
-        ///     Gets the current animation time.
+        /// Gets or sets the current animation time.
         /// </summary>
         [DontRenderProperty]
-        public TimeSpan TotalAnimTime
+        public float PlayTime
         {
             get
             {
-                return this.totalAnimTime;
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets speed of the animation.
-        /// </summary>
-        /// <value>
-        ///     The speed of the animation.
-        /// </value>
-        [DataMember]
-        public int FramesPerSecond
-        {
-            get
-            {
-                return this.framesPerSecond;
+                return (this.clip != null) ? this.clip.PlayTime : 0;
             }
 
             set
             {
-                this.framesPerSecond = value;
-                this.timePerFrame = TimeSpan.FromMilliseconds(1000 / this.framesPerSecond);
+                if (this.clip != null)
+                {
+                    this.clip.PlayTime = value;
+                    this.needUpdate = true;
+                }
             }
         }
+
+        /// <summary>
+        /// Gets the start animation time.
+        /// </summary>
+        public float StartAnimationTime
+        {
+            get
+            {
+                var trackClip = this.clip as AnimationTrackClip;
+                return (trackClip != null) ? trackClip.StartAnimationTime : 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets the end animation time.
+        /// </summary>
+        public float EndAnimationTime
+        {
+            get
+            {
+                var trackClip = this.clip as AnimationTrackClip;
+                return (trackClip != null) ? trackClip.EndAnimationTime : this.Duration;
+            }
+        }
+
+        /// <summary>
+        /// Gets the duration time.
+        /// </summary>
+        public float Duration => (this.clip != null) ? this.clip.Duration : 0;
+
+        /// <summary>
+        ///     Gets or sets the playback rate.
+        /// </summary>
+        /// <value>
+        ///     The speed of the animation.
+        /// </value>
+        public float PlaybackRate
+        {
+            get
+            {
+                return (this.clip != null) ? this.clip.PlaybackRate : this.playbackRate;
+            }
+
+            set
+            {
+                this.playbackRate = value;
+                if (this.clip != null)
+                {
+                    this.clip.PlaybackRate = this.playbackRate;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the animation is played automatically when the CurrentAnimation
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [play automatically]; otherwise, <c>false</c>.
+        /// </value>
+        [DataMember]
+        public bool PlayAutomatically { get; set; }
 
         /// <summary>
         ///     Gets the animation data.
         /// </summary>
         [DontRenderProperty]
-        public InternalAnimation InternalAnimation
-        {
-            get
-            {
-                return this.internalAnimation;
-            }
-        }
+        public InternalModel InternalModel => this.internalModel;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the root motion will be applied to this entity.
+        /// </summary>
+        [DataMember]
+        public bool ApplyRootMotion { get; set; }
         #endregion
 
         #region Initialize
@@ -285,7 +397,7 @@ namespace WaveEngine.Components.Animation
                 throw new NullReferenceException("AnimationPath cannot be null.");
             }
 
-            this.animationPath = animationPath;
+            this.modelPath = animationPath;
         }
 
         /// <summary>
@@ -295,12 +407,11 @@ namespace WaveEngine.Components.Animation
         {
             base.DefaultValues();
 
-            this.keyFrameEvents = new Dictionary<string, Dictionary<int, string>>();
-            this.FramesPerSecond = 30;
-            this.frame = 0;
-            this.lastFrame = 0;
+            this.playbackRate = 1;
+            this.PlayTime = 0;
             this.Loop = true;
-            this.targetFrame = -1;
+            this.ApplyRootMotion = true;
+
             instances++;
         }
         #endregion
@@ -316,51 +427,75 @@ namespace WaveEngine.Components.Animation
         /// <returns>
         /// The duration of the animation
         /// </returns>
-        public float GetDuration(string animation)
+        public double GetDuration(string animation)
         {
-            if (!this.internalAnimation.Animations.ContainsKey(animation))
+            AnimationClip track;
+            if (this.internalModel.Animations.TryGetValue(animation, out track))
             {
-                return 0.0f;
+                return track.Duration;
             }
-
-            return (float)this.internalAnimation.Animations[animation].Duration.TotalSeconds;
+            else
+            {
+                return 0.0;
+            }
         }
 
-        /////// <summary>
-        /////// Plays the animation.
-        /////// </summary>
-        /////// <param name="name">
-        /////// The name of the animation.
-        /////// </param>
-        /////// <param name="loop">
-        /////// if set to <c>true</c> loop the animation.
-        /////// </param>
-        /////// <param name="backwards">
-        /////// if set to <c>true</c> play the animation backwards.
-        /////// </param>
-        ////public override void PlayAnimation(string name, bool loop, bool backwards)
-        ////{
-        ////    this.totalAnimTime = TimeSpan.Zero;
+        /// <summary>
+        /// Plays the animation between the specified frames.
+        /// </summary>
+        /// <param name="name">The name of the animation.</param>
+        /// <param name="loop">Looping animation</param>
+        /// <param name="transitionTime">The transition time</param>
+        /// <param name="playbackRate">The playback rate</param>
+        /// <param name="startTime">The frame where the animation starts playing.</param>
+        /// <param name="endTime">The last frame of the animation to play.</param>
+        public void PlayAnimation(string name, bool loop = true, float transitionTime = 0, float playbackRate = 1, float? startTime = null, float? endTime = null)
+        {
+            AnimationClip track;
+            if (this.InternalModel != null && this.InternalModel.Animations.TryGetValue(name, out track))
+            {
+                this.BoundingBoxRefreshed = true;
+                this.Loop = loop;
+                this.State = AnimationState.Playing;
+                this.playbackRate = playbackRate;
 
-        ////    this.CurrentAnimation = name;
-        ////    this.BoundingBoxRefreshed = true;
-        ////    this.Loop = loop;
-        ////    this.State = AnimationState.Playing;
-        ////    this.targetFrame = -1;
-        ////    this.Backwards = backwards;
-        ////    this.totalAnimTime = TimeSpan.Zero;
+                if (transitionTime <= 0 || this.clip == null)
+                {
+                    this.clip = new AnimationTrackClip(track, loop, playbackRate, startTime, endTime);
+                }
+                else
+                {
+                    var clipB = new AnimationTrackClip(track, loop, playbackRate, startTime, endTime);
+                    this.clip = new TransitionClip(this.clip, clipB, transitionTime);
+                }
 
-        ////    if (backwards)
-        ////    {
-        ////        this.prevFrame = 0;
-        ////        this.frame = this.numFrames - 1;
-        ////    }
-        ////    else
-        ////    {
-        ////        this.prevFrame = this.numFrames - 1;
-        ////        this.frame = 0;
-        ////    }
-        ////}
+                this.clip.BaseInitializeClip(this.hierarchyMapping);
+            }
+        }
+
+        /// <summary>
+        /// Plays the animation between the specified frames.
+        /// </summary>
+        /// <param name="clip">The animation clip</param>
+        /// <param name="transitionTime">The transition time</param>
+        public void PlayAnimation(AnimationBlendClip clip, float transitionTime = 0)
+        {
+            this.BoundingBoxRefreshed = true;
+            this.State = AnimationState.Playing;
+
+            if (transitionTime <= 0 || this.clip == null)
+            {
+                this.clip = clip;
+            }
+            else
+            {
+                var clipA = this.clip;
+                var clipB = clip;
+                this.clip = new TransitionClip(clipA, clipB, transitionTime);
+            }
+
+            this.clip.BaseInitializeClip(this.hierarchyMapping);
+        }
 
         /// <summary>
         /// Plays the animation between the specified frames.
@@ -368,39 +503,33 @@ namespace WaveEngine.Components.Animation
         /// <param name="name">
         /// The name of the animation.
         /// </param>
-        /// <param name="startFrame">
+        /// <param name="startTime">
         /// The frame where the animation starts playing.
         /// </param>
-        /// <param name="endFrame">
+        /// <param name="endTime">
         /// The last frame of the animation to play.
         /// </param>
         /// <param name="loop">
         /// if set to <c>true</c> loop the animation.
         /// </param>
-        /// <param name="backwards">
-        /// if set to <c>true</c> play the animation backwards.
+        /// <param name="playbackRate">
+        /// the playback rate.
         /// </param>
-        public override void PlayAnimation(string name, int? startFrame, int? endFrame, bool loop = true, bool backwards = false)
+        public void PlayAnimation(string name, int? startTime, int? endTime, bool loop = true, float playbackRate = 1)
         {
-            this.CurrentAnimation = name;
-            this.BoundingBoxRefreshed = true;
-            this.Loop = loop;
-            this.State = AnimationState.Playing;
-            this.Backwards = backwards;
-            this.totalAnimTime = TimeSpan.Zero;
-
-            int start = this.lastFrame = startFrame.HasValue ? startFrame.Value : 0;
-            int end = this.targetFrame = endFrame.HasValue ? endFrame.Value : this.numFrames - 1;
-
-            if (backwards)
+            AnimationClip track;
+            if (this.InternalModel != null && this.InternalModel.Animations.TryGetValue(name, out track))
             {
-                this.prevFrame = end;
-                this.frame = start;
-            }
-            else
-            {
-                this.prevFrame = start;
-                this.frame = end;
+                this.BoundingBoxRefreshed = true;
+                this.State = AnimationState.Playing;
+                this.playbackRate = playbackRate;
+
+                var start = startTime ?? 0;
+                var end = endTime ?? this.currentAnimationTrack.Duration;
+                System.Diagnostics.Debug.WriteLine("Play " + track.Name + " " + track.Duration + " start: " + start + " end: " + end);
+                this.clip = new AnimationTrackClip(track, loop, playbackRate, start, end);
+
+                this.clip.BaseInitializeClip(this.hierarchyMapping);
             }
         }
 
@@ -451,7 +580,7 @@ namespace WaveEngine.Components.Animation
         /// <summary>
         /// Resume the animation.
         /// </summary>
-        public override void ResumeAnimation()
+        public void ResumeAnimation()
         {
             this.State = AnimationState.Playing;
         }
@@ -459,7 +588,7 @@ namespace WaveEngine.Components.Animation
         /// <summary>
         /// Stops the animation.
         /// </summary>
-        public override void StopAnimation()
+        public void StopAnimation()
         {
             this.State = AnimationState.Stopped;
         }
@@ -473,6 +602,7 @@ namespace WaveEngine.Components.Animation
         /// </summary>
         protected override void Initialize()
         {
+            ////this.Loop = false;
             this.RefreshAnimationAsset();
         }
 
@@ -481,21 +611,27 @@ namespace WaveEngine.Components.Animation
         /// </summary>
         private void RefreshAnimationAsset()
         {
-            if (this.internalAnimation != null && !string.IsNullOrEmpty(this.internalAnimation.AssetPath))
+            if (this.internalModel != null && !string.IsNullOrEmpty(this.internalModel.AssetPath))
             {
-                this.Assets.UnloadAsset(this.internalAnimation.AssetPath);
-                this.internalAnimation = null;
+                this.Assets.UnloadAsset(this.internalModel.AssetPath);
+                this.internalModel = null;
             }
 
-            if (!string.IsNullOrEmpty(this.animationPath))
+            if (!string.IsNullOrEmpty(this.modelPath))
             {
-                this.internalAnimation = this.Assets.LoadAsset<InternalAnimation>(this.animationPath);
-                if (string.IsNullOrEmpty(this.CurrentAnimation))
+                this.internalModel = this.Assets.LoadAsset<InternalModel>(this.modelPath);
+
+                if (this.internalModel != null)
                 {
-                    this.CurrentAnimation = this.internalAnimation.Animations.Keys.ToArray()[0];
+                    this.hierarchyMapping = new NodeHierarchyMapping(this.internalModel, this.Owner);
                 }
 
-                this.UpdateNumFrames();
+                if (string.IsNullOrEmpty(this.CurrentAnimation))
+                {
+                    this.CurrentAnimation = this.internalModel.Animations.Keys.ToArray()[0];
+                }
+
+                this.RefreshAnimationTrack();
             }
 
             if (this.PlayAutomatically && !string.IsNullOrEmpty(this.CurrentAnimation))
@@ -512,154 +648,48 @@ namespace WaveEngine.Components.Animation
         /// </param>
         protected override void Update(TimeSpan gameTime)
         {
-            if (this.State == AnimationState.Playing)
+            if (this.State == AnimationState.Playing || this.needUpdate)
             {
-                this.totalAnimTime += gameTime;
+                ////Timers.BeginAveragedTimer("Update Clip");
+                this.clip.FinalListenKeyframeEvents = this.OnKeyFrameEvent != null;
+                this.clip = this.clip.UpdateClip();
+                ////Timers.EndAveragedTimer("Update Clip");
 
-                this.internalFrame = (int)(this.totalAnimTime.TotalMilliseconds / this.timePerFrame.TotalMilliseconds);
+                var sample = this.clip.Sample;
 
-                if (!this.Backwards)
+                sample?.ApplyPose();
+
+                if (this.ApplyRootMotion)
                 {
-                    // Is forward
-                    if (this.targetFrame >= 0)
-                    {
-                        // TargetFrame enabled
-                        this.frame = this.lastFrame + this.internalFrame; // Frame Increment
-
-                        if (this.frame >= this.targetFrame)
-                        {
-                            // If animation completed
-                            this.totalAnimTime = TimeSpan.Zero;
-
-                            if (this.Loop)
-                            {
-                                // Is looped
-                                this.frame = this.numFrames - 1;
-                                this.frame = this.lastFrame;
-                            }
-                            else
-                            {
-                                this.lastFrame = this.frame = this.targetFrame;
-                                this.targetFrame = -1;
-                                this.StopAnimation();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // Normal
-                        this.frame = this.internalFrame; // Frame Increment
-
-                        if (this.frame >= this.numFrames)
-                        {
-                            // If animation completed
-                            this.totalAnimTime = TimeSpan.Zero;
-
-                            if (this.Loop)
-                            {
-                                // Is looped
-                                this.frame = this.numFrames - 1;
-                            }
-                            else
-                            {
-                                this.frame = this.lastFrame = this.numFrames - 1;
-                                this.StopAnimation();
-                            }
-                        }
-                    }
-
-                    // Throw KeyFrameEvents
-                    if (this.OnKeyFrameEvent != null && this.keyFrameEvents.ContainsKey(this.currentAnimation))
-                    {
-                        Dictionary<int, string> listKeys = this.keyFrameEvents[this.currentAnimation];
-                        int i = this.prevFrame;
-                        while (i != this.frame)
-                        {
-                            i = (i + 1) % this.numFrames;
-
-                            if (listKeys.ContainsKey(i))
-                            {
-                                this.OnKeyFrameEvent(this, new StringEventArgs(listKeys[i]));
-                            }
-                        }
-                    }
+                    ////Labels.Add("PositionOffset", sample.PositionOffset);
+                    ////Labels.Add("RotationOffset", Quaternion.ToEuler(sample.RotationOffset));
+                    this.transform3D.LocalOrientation *= sample.RotationOffset;
+                    var positionOffset = Vector3.TransformNormal(sample.PositionOffset, this.transform3D.LocalTransform);
+                    this.transform3D.LocalPosition += positionOffset;
+                    ////this.RenderManager.LineBatch3D.DrawAxis(this.transform3D.WorldTransform, 0.5f);
                 }
-                else
+
+                if (this.OnKeyFrameEvent != null)
                 {
-                    // Is backwards
-                    if (this.targetFrame >= 0)
+                    for (int i = 0; i < sample.Events.Count; i++)
                     {
-                        // TargetFrame enabled
-                        this.frame = this.lastFrame - this.internalFrame; // Frame Increment
-
-                        if (this.frame <= this.targetFrame)
-                        {
-                            // Active Target frame
-                            this.totalAnimTime = TimeSpan.Zero;
-                            this.lastFrame = this.frame = this.targetFrame;
-                            this.targetFrame = -1;
-                            this.StopAnimation();
-                        }
-                    }
-                    else
-                    {
-                        // Normal backwards
-                        this.frame = (this.numFrames - 1) - this.internalFrame; // Frame Increment
-
-                        if (this.frame < 0)
-                        {
-                            // If animation completed
-                            this.totalAnimTime = TimeSpan.Zero;
-
-                            if (this.Loop)
-                            {
-                                // Is looped
-                                this.frame = 0;
-                            }
-                            else
-                            {
-                                this.frame = this.lastFrame = 0;
-                                this.StopAnimation();
-                            }
-                        }
-                    }
-
-                    // Throw KeyFrameEvents
-                    if (this.OnKeyFrameEvent != null && this.keyFrameEvents.ContainsKey(this.currentAnimation))
-                    {
-                        Dictionary<int, string> listKeys = this.keyFrameEvents[this.currentAnimation];
-                        int i = this.prevFrame;
-
-                        while (i != this.frame)
-                        {
-                            i = i - 1;
-
-                            if (i < 0)
-                            {
-                                i = this.numFrames - 1;
-                            }
-
-                            if (listKeys.ContainsKey(i))
-                            {
-                                this.OnKeyFrameEvent(this, new StringEventArgs(listKeys[i]));
-                            }
-                        }
+                        this.OnKeyFrameEvent(this, sample.Events[i]);
                     }
                 }
 
-                this.prevFrame = this.frame;
+                this.AnimationUpdated?.Invoke(this, sample);
+                this.needUpdate = false;
             }
         }
 
         /// <summary>
         /// The update num frames.
         /// </summary>
-        private void UpdateNumFrames()
+        private void RefreshAnimationTrack()
         {
-            if (this.internalAnimation != null && this.internalAnimation.Animations.Count > 0 && this.internalAnimation.Animations.ContainsKey(this.CurrentAnimation))
+            if (this.internalModel != null && this.internalModel.Animations.Count > 0)
             {
-                this.currentAnimationSequence = this.internalAnimation.Animations[this.CurrentAnimation];
-                this.numFrames = this.currentAnimationSequence.Frames.Count;
+                this.internalModel.Animations.TryGetValue(this.CurrentAnimation, out this.currentAnimationTrack);
             }
         }
         #endregion

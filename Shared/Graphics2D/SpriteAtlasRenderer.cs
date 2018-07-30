@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -23,22 +23,10 @@ namespace WaveEngine.Components.Graphics2D
         private static int instances;
 
         /// <summary>
-        /// Transform of the <see cref="SpriteAtlas"/>.
-        /// </summary>
-        [RequiredComponent]
-        public Transform2D Transform2D;
-
-        /// <summary>
         /// <see cref="SpriteAtlas"/> to render.
         /// </summary>
         [RequiredComponent(false)]
         public SpriteAtlas Sprite;
-
-        /// <summary>
-        /// Gets or sets the sampler mode
-        /// </summary>
-        [DataMember]
-        public AddressMode SamplerMode { get; set; }
 
         #region Initialize
 
@@ -53,12 +41,11 @@ namespace WaveEngine.Components.Graphics2D
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteAtlasRenderer" /> class.
         /// </summary>
-        /// <param name="layerType">Type of the layer.</param>
-        /// <param name="samplerMode">The sampler mode.</param>
-        public SpriteAtlasRenderer(Type layerType, AddressMode samplerMode = AddressMode.LinearClamp)
-            : base("SpriteAtlasRenderer" + instances++, layerType)
+        /// <param name="layerId">Type of the layer.</param>
+        public SpriteAtlasRenderer(int layerId)
+            : base("SpriteAtlasRenderer" + instances++, layerId)
         {
-            this.SamplerMode = samplerMode;
+            this.LayerId = layerId;
         }
         #endregion
 
@@ -88,8 +75,7 @@ namespace WaveEngine.Components.Graphics2D
                 this.Sprite.SpriteSheet.Texture != null &&
                 this.Transform2D.GlobalOpacity > Drawable2D.Delta)
             {
-                float opacity = this.RenderManager.DebugLines ? DebugAlpha : this.Transform2D.GlobalOpacity;
-                Color color = this.Sprite.TintColor * opacity;
+                Color color = this.Sprite.TintColor * this.Transform2D.GlobalOpacity;
                 Vector2 origin = this.Transform2D.Origin;
 
                 Matrix spriteMatrix = this.Transform2D.WorldTransform;
@@ -100,8 +86,7 @@ namespace WaveEngine.Components.Graphics2D
                     ref origin,
                     this.Transform2D.Effect,
                     ref spriteMatrix,
-                    this.Transform2D.DrawOrder,
-                    this.SamplerMode);
+                    this.Transform2D.DrawOrder);
             }
         }
         #endregion
@@ -114,6 +99,7 @@ namespace WaveEngine.Components.Graphics2D
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
             if (disposing && this.Sprite != null)
             {
                 this.Sprite.Dispose();

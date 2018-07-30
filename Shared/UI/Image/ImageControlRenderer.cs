@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -22,12 +22,6 @@ namespace WaveEngine.Components.UI
         /// Total number of instances.
         /// </summary>
         private static int instances;
-
-        /// <summary>
-        /// The transform 2 d.
-        /// </summary>
-        [RequiredComponent]
-        public Transform2D Transform2D;
 
         /// <summary>
         /// The Image.
@@ -63,9 +57,9 @@ namespace WaveEngine.Components.UI
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageControlRenderer" /> class.
         /// </summary>
-        /// <param name="layerType">Type of the layer.</param>
-        public ImageControlRenderer(Type layerType)
-            : base("ImageRenderer" + instances++, layerType)
+        /// <param name="layerId">Type of the layer.</param>
+        public ImageControlRenderer(int layerId)
+            : base("ImageRenderer" + instances++, layerId)
         {
             this.Transform2D = null;
             this.Image = null;
@@ -109,14 +103,11 @@ namespace WaveEngine.Components.UI
                 this.origin.X = transformOrigin.X * this.Image.Texture.Width;
                 this.origin.Y = transformOrigin.Y * this.Image.Texture.Height;
 
-                float opacity = this.RenderManager.DebugLines ? DebugAlpha : this.Transform2D.GlobalOpacity;
-                Color color = this.Image.TintColor * opacity;
-
                 this.layer.SpriteBatch.Draw(
                     this.Image.Texture,
                     this.position,
                     this.Image.SourceRectangle,
-                    color,
+                    this.Image.TintColor,
                     this.Transform2D.Rotation,
                     this.origin,
                     this.scale,

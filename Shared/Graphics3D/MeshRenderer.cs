@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -36,7 +36,7 @@ namespace WaveEngine.Components.Graphics3D
         public MaterialComponent[] Materials;
 
         /// <summary>
-        /// Transform of the <see cref="Model"/>.
+        /// Transform of the <see cref="MeshRenderer"/>.
         /// </summary>
         [RequiredComponent]
         public Transform3D Transform;
@@ -45,11 +45,6 @@ namespace WaveEngine.Components.Graphics3D
         /// Wether this instance has been disposed.
         /// </summary>
         private bool disposed;
-
-        ///// <summary>
-        ///// Meshes world matrix for static entities
-        ///// </summary>
-        ////private Matrix cachedWorld;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MeshRenderer"/> class.
@@ -74,7 +69,8 @@ namespace WaveEngine.Components.Graphics3D
         {
             base.ResolveDependencies();
 
-            this.Materials = this.Owner.FindComponents<MaterialComponent>();
+            this.Materials = this.Owner.FindComponents<MaterialComponent>()
+                                       .ToArray();
         }
 
         /// <summary>
@@ -96,9 +92,17 @@ namespace WaveEngine.Components.Graphics3D
                 return;
             }
 
-            float zOrder = Vector3.DistanceSquared(this.RenderManager.CurrentDrawingCamera3D.Position, this.Transform.Position);
+            float zOrder;
+            if (this.BoundingBox.HasValue)
+            {
+                zOrder = Vector3.DistanceSquared(this.RenderManager.CurrentDrawingCamera3D.Position, this.BoundingBox.Value.Center);
+            }
+            else
+            {
+                zOrder = Vector3.DistanceSquared(this.RenderManager.CurrentDrawingCamera3D.Position, this.Transform.Position);
+            }
 
-            List<Mesh> meshGroup = this.ModelMesh.MeshGroupByName;
+            List<Mesh> meshGroup = this.ModelMesh.Meshes;
             if (meshGroup != null)
             {
                 for (int i = 0; i < meshGroup.Count; i++)
@@ -132,6 +136,23 @@ namespace WaveEngine.Components.Graphics3D
                         this.RenderManager.DrawMesh(currentMesh, currentMaterial, ref world, this.Owner.IsFinalStatic);
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Refresh the bounding box of this drawable
+        /// </summary>
+        protected override void RefreshBoundingBox()
+        {
+            if (this.ModelMesh != null && this.ModelMesh.BoundingBox.HasValue)
+            {
+                var bbox = this.ModelMesh.BoundingBox.Value;
+                bbox.Transform(this.Transform.WorldTransform);
+                this.BoundingBox = bbox;
+            }
+            else
+            {
+                this.BoundingBox = null;
             }
         }
 

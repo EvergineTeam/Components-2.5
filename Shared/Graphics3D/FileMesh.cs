@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using WaveEngine.Common.Attributes;
 using WaveEngine.Common.Math;
+using WaveEngine.Framework.Graphics3D;
 #endregion
 
 namespace WaveEngine.Components.Graphics3D
@@ -71,50 +72,18 @@ namespace WaveEngine.Components.Graphics3D
         {
             if (this.Assets != null && !string.IsNullOrEmpty(this.ModelPath))
             {
-                this.InternalModel = this.Assets.LoadAsset<InternalStaticModel>(this.ModelPath);
+                this.InternalModel = this.Assets.LoadAsset<InternalModel>(this.ModelPath);
 
                 if (this.ModelMeshName == null &&
                     this.InternalModel != null &&
                     this.InternalModel.Meshes != null &&
-                    this.InternalModel.Meshes.Count > 0)
+                    this.InternalModel.Meshes.Length > 0)
                 {
                     this.ModelMeshName = this.InternalModel.Meshes[0].Name;
                 }
-            }
-        }
 
-        /// <summary>
-        /// Unload the static model
-        /// </summary>
-        protected void UnloadModel()
-        {
-            if (this.InternalModel == null)
-            {
-                return;
+                this.ThrowRefreshEvent();
             }
-
-            if (!string.IsNullOrEmpty(this.InternalModel.AssetPath))
-            {
-                if (this.Assets != null)
-                {
-                    this.Assets.UnloadAsset(this.InternalModel.AssetPath);
-                }
-            }
-            else
-            {
-                this.InternalModel.Unload();
-            }
-
-            this.InternalModel = null;
-            this.BoundingBox = new BoundingBox();
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            this.UnloadModel();
         }
     }
 }

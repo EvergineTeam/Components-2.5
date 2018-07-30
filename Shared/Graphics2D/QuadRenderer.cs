@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -27,12 +27,6 @@ namespace WaveEngine.Components.Graphics2D
         /// Number of instances of this component created.
         /// </summary>
         private static int instances;
-
-        /// <summary>
-        /// The entity transform.
-        /// </summary>
-        [RequiredComponent]
-        public Transform2D Transform2D;
 
         /// <summary>
         /// The material
@@ -120,7 +114,7 @@ namespace WaveEngine.Components.Graphics2D
         /// <param name="texcoord1">The texcoord1.</param>
         /// <param name="texcoord2">The texcoord2.</param>
         public QuadRenderer(Vector2[] texcoord1, Vector2[] texcoord2)
-            : base("QuadRenderer" + instances, null)
+            : base("QuadRenderer" + instances, DefaultLayers.Opaque)
         {
             instances++;
 
@@ -262,6 +256,7 @@ namespace WaveEngine.Components.Graphics2D
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
             if (!this.disposed)
             {
                 if (disposing)

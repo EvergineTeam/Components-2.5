@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 
@@ -203,7 +203,7 @@ namespace WaveEngine.Components.Graphics2D
         /// </summary>
         /// <param name="name">Name of this instance.</param>
         public ParticleSystemRenderer2D(string name)
-            : base(name, null)
+            : base(name, DefaultLayers.Alpha)
         {
             instances++;
         }
@@ -588,6 +588,7 @@ namespace WaveEngine.Components.Graphics2D
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
             if (!this.disposed)
             {
                 if (disposing)
@@ -912,6 +913,12 @@ namespace WaveEngine.Components.Graphics2D
             return matrix;
         }
 
+        /// <summary>
+        /// Refresh the bounding box of this drawable
+        /// </summary>
+        protected override void RefreshBoundingBox()
+        {
+        }
         #endregion
     }
 }

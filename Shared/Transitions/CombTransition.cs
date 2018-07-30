@@ -1,4 +1,4 @@
-﻿// Copyright © 2017 Wave Engine S.L. All rights reserved. Use is subject to license terms.
+﻿// Copyright © 2018 Wave Engine S.L. All rights reserved. Use is subject to license terms.
 
 #region Using Statements
 using System;
@@ -47,16 +47,6 @@ namespace WaveEngine.Components.Transitions
         /// The sprite batch
         /// </summary>
         private SpriteBatch spriteBatch;
-
-        /// <summary>
-        /// Source transition renderTarget
-        /// </summary>
-        private RenderTarget sourceRenderTarget;
-
-        /// <summary>
-        /// Target transition renderTarget
-        /// </summary>
-        private RenderTarget targetRenderTarget;
 
         /// <summary>
         /// The transition options
@@ -158,85 +148,74 @@ namespace WaveEngine.Components.Transitions
         /// <param name="gameTime">The game time.</param>
         protected override void Draw(TimeSpan gameTime)
         {
-            this.sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
-                this.platform.ScreenWidth,
-                this.platform.ScreenHeight);
-            this.targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(
-                this.platform.ScreenWidth,
-                this.platform.ScreenHeight);
+            var sourceRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
+            var targetRenderTarget = this.graphicsDevice.RenderTargets.GetTemporalRenderTarget(this.platform.ScreenWidth, this.platform.ScreenHeight);
 
-            if (this.Sources != null)
-            {
-                for (int i = 0; i < this.Sources.Length; i++)
-                {
-                    this.Sources[i].TakeSnapshot(this.sourceRenderTarget, gameTime);
-                }
-            }
-
-            this.Target.TakeSnapshot(this.targetRenderTarget, gameTime);
+            this.DrawSources(gameTime, sourceRenderTarget);
+            this.DrawTarget(gameTime, targetRenderTarget);
 
             this.SetRenderState();
             this.graphicsDevice.RenderTargets.SetRenderTarget(null);
             this.graphicsDevice.Clear(ref this.BackgroundColor, ClearFlags.Target | ClearFlags.DepthAndStencil, 1);
 
-            int wSegment = this.targetRenderTarget.Width / this.segments;
-            int hSegment = this.targetRenderTarget.Height / this.segments;
+            int wSegment = targetRenderTarget.Width / this.segments;
+            int hSegment = targetRenderTarget.Height / this.segments;
 
             for (int i = 0; i < this.segments; i++)
             {
                 Rectangle rect;
                 if (this.effectOption == EffectOptions.Horizontal)
                 {
-                    rect = new Rectangle(0, hSegment * i, this.targetRenderTarget.Width, hSegment);
+                    rect = new Rectangle(0, hSegment * i, targetRenderTarget.Width, hSegment);
 
                     Rectangle destination = rect;
 
                     if ((i % 2) == 0)
                     {
                         destination.X = (int)this.position1.X;
-                        this.spriteBatch.Draw(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+                        this.spriteBatch.Draw(sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
 
                         destination.X = (int)this.position1.X + (int)this.initialPosition.X;
-                        this.spriteBatch.Draw(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                        this.spriteBatch.Draw(targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                     }
                     else
                     {
                         destination.X = (int)this.position2.X;
-                        this.spriteBatch.Draw(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+                        this.spriteBatch.Draw(sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
 
                         destination.X = (int)this.position2.X - (int)this.initialPosition.X;
-                        this.spriteBatch.Draw(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                        this.spriteBatch.Draw(targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                     }
                 }
                 else
                 {
-                    rect = new Rectangle(wSegment * i, 0, wSegment, this.targetRenderTarget.Height);
+                    rect = new Rectangle(wSegment * i, 0, wSegment, targetRenderTarget.Height);
 
                     Rectangle destination = rect;
 
                     if ((i % 2) == 0)
                     {
                         destination.Y = (int)this.position1.Y;
-                        this.spriteBatch.Draw(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+                        this.spriteBatch.Draw(sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
 
                         destination.Y = (int)this.position1.Y + (int)this.initialPosition.Y;
-                        this.spriteBatch.Draw(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                        this.spriteBatch.Draw(targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                     }
                     else
                     {
                         destination.Y = (int)this.position2.Y;
-                        this.spriteBatch.Draw(this.sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
+                        this.spriteBatch.Draw(sourceRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
 
                         destination.Y = (int)this.position2.Y - (int)this.initialPosition.Y;
-                        this.spriteBatch.Draw(this.targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                        this.spriteBatch.Draw(targetRenderTarget, destination, rect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                     }
                 }
             }
 
             this.spriteBatch.Render();
 
-            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.sourceRenderTarget);
-            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(this.targetRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(sourceRenderTarget);
+            this.graphicsDevice.RenderTargets.ReleaseTemporalRenderTarget(targetRenderTarget);
         }
 
         /// <summary>
